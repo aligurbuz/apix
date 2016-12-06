@@ -7,7 +7,7 @@ class config {
 
         $list=[
 
-            'app'   =>'config'
+            'app'   =>'apix'
 
         ];
 

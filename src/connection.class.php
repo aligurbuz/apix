@@ -7,7 +7,10 @@ class connection {
 
     private $config;
 
-    public function config() {
-        return config::get("app");
+    public static function run() {
+
+        require(root.'/src/app/v1/bar/index.php');
+        $apix=new \src\app\v1\bar\index();
+        return $apix->get();
     }
 }

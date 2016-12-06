@@ -13,5 +13,4 @@
     */
 
     require(root.'/lib/autoload.php');
-    $connection=new src\connection();
-    echo $connection->config();
+    echo \src\connection::run();
