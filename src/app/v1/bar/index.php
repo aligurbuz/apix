@@ -1,11 +1,11 @@
 <?php
 namespace src\app\v1\bar;
+use lib\config\config as config;
 
-class index {
-
+class index extends app {
 
     public function get(){
 
-        return \lib\config\config::get("app");
+        return config::get("app");
     }
 }
