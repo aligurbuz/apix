@@ -2,4 +2,4 @@
 
 define("root",dirname(__FILE__));
 
-require("./lib/index.php");
+require(root.'/lib/index.php');
