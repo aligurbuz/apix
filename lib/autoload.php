@@ -23,7 +23,7 @@
 
     // Use default autoload implementation
     spl_autoload_register(function(){
-        require(root.'/lib/config/app.php');
+        require(root.'/src/config/app.php');
     });
 
     require(root.'/lib/connection.php');
