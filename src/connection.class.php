@@ -1,15 +1,8 @@
 <?php
 
 namespace src;
-use lib\config\config as config;
 
 class connection {
-
-    private $config;
-
-    public function __construct(){
-        //self::config='config';
-    }
 
     public static function run() {
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace lib\config;
 
 class config {
