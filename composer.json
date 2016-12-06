@@ -1,0 +1,14 @@
+{
+    "name": "aligurbuz/apix",
+    "description": "simple restfull api service with php",
+    "type": "json",
+    "authors": [
+        {
+            "name": "aligurbuz",
+            "email": "galiant781@gmail.com"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^5.4"
+    }
+}
