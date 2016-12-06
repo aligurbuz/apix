@@ -13,4 +13,4 @@
     */
 
     require(root.'/lib/autoload.php');
-    echo \src\connection::run();
+    echo \lib\connection::run();

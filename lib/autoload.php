@@ -26,4 +26,4 @@
         require(root.'/lib/config/app.php');
     });
 
-    require(root.'/src/connection.class.php');
+    require(root.'/lib/connection.php');
