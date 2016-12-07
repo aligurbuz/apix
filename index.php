@@ -1,4 +1,5 @@
 <?php
 
 define("root",dirname(__FILE__));
-require(root.'/lib/index.php');
+require_once root.'/vendor/autoload.php';
+require_once(root.'/lib/index.php');
