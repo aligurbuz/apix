@@ -12,6 +12,7 @@ class index extends app {
 
     public function get(){
 
+        //di container
         return $this->container->get("\\src\\app\\v1\\bar\\test")->inst();
     }
 }
