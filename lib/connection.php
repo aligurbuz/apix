@@ -9,6 +9,7 @@ class connection {
         require(root.'/src/app/v1/bar/app.php');
         require(root.'/src/app/v1/bar/index.php');
         $apix=new \src\app\v1\bar\index();
-        return $apix->get();
+        $mainFunctionMethod=\src\config\config::get("mainFunctionMethod");
+        return $apix->$mainFunctionMethod();
     }
 }

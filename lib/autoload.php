@@ -12,18 +12,12 @@
     |
     */
 
-    // Your custom class dir
-    //define('CLASS_DIR', 'config/');
-
-    // Add your class dir to include path
-    //set_include_path(root.'/lib/'.CLASS_DIR);
-
-    // You can use this trick to make autoloader look for commonly used "My.class.php" type filenames
-    //spl_autoload_extensions('.class.php');
-
     // Use default autoload implementation
-    spl_autoload_register(function(){
-        require(root.'/src/config/app.php');
+    spl_autoload_register(function($class){
+        $class=root.'/'.$class.'.php';
+        $class=str_replace("\\","/",$class);
+        require($class);
     });
+
 
     require(root.'/lib/connection.php');
