@@ -9,6 +9,7 @@
         }
     ],
     "require": {
-        "php-di/php-di": "^5.4"
+        "php-di/php-di": "^5.4",
+        "ocramius/proxy-manager": "~1.0|~2.0"
     }
 }
