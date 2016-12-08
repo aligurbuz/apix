@@ -26,6 +26,7 @@ class classresolver {
         }
 
         $parameters = $constructor->getParameters();
+
         $dependencies = $this->getDependencies($parameters);
 
         return $reflector->newInstanceArgs($dependencies);
