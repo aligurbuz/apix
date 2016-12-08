@@ -1,18 +1,19 @@
 <?php
 namespace src\app\v1\bar;
+use src\app\v1\bar\test as test;
 
 class index extends app {
 
-    private $container;
+    public $test;
 
-    public function __construct(){
+    public function __construct(test $test){
 
-        $this->container=\DI\ContainerBuilder::buildDevContainer();
+        $this->test=$test;
     }
 
     public function get(){
 
         //di container
-        return $this->container->get("\\src\\app\\v1\\bar\\test")->inst();
+        return $this->test->inst();
     }
 }

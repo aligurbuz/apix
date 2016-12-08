@@ -12,11 +12,14 @@
     |
     */
 
+
+
     // Use default autoload implementation
-    spl_autoload_register(function($class){
+    spl_autoload_register(function($class) {
         $class=root.'/'.$class.'.php';
         $class=str_replace("\\","/",$class);
         require($class);
+
     });
 
 
