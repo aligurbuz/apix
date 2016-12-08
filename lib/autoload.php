@@ -12,8 +12,6 @@
     |
     */
 
-
-
     // Use default autoload implementation
     spl_autoload_register(function($class) {
         $class=root.'/'.$class.'.php';
@@ -22,5 +20,5 @@
 
     });
 
-
+    //get connection
     require(root.'/lib/connection.php');
