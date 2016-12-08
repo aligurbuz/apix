@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+$commandFile=require("./src/commands/".$argv[1].".php");
+$commandFile=new $argv[1]();
+
+$list=[];
+
+foreach ($argv as $key=>$value){
+    if($key>2){
+        $value=explode(":",$value);
+        $list[$value[0]]=$value[1];
+    }
+}
+
+
+echo $commandFile->$argv[2]($list);
+echo '
+';
