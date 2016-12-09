@@ -9,9 +9,12 @@ class index extends app {
 
     }
 
-    public function get(){
+    public function index(){
 
         //di container
-        return 'hello world';
+        print_r([
+           'root'=>root,
+            'request_uri'=>$_SERVER['REQUEST_URI']
+        ]);
     }
 }

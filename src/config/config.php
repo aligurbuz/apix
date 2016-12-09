@@ -17,7 +17,7 @@ class config {
 
     }
 
-    public static  function configOut($param,$list){
+    private static  function configOut($param,$list){
 
 
         if(array_key_exists($param,$list)){
