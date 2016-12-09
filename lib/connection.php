@@ -14,15 +14,22 @@ class connection {
      */
     public static function run() {
 
+        //this fake
         $border=new self;
 
+        //get service and file method from request uri
         $service=$border->getServiceNameAndMethodFromRequestUri();
+
+        //get only method name from service
         $serviceMethod=$border->getPureMethodNameFromService();
 
+        //get query params from service
         $queryParams=$border->getQueryParamsFromRoute();
 
+        //get version number from config
         $defaultVersionCheck=$border->getConfigVersionNumber(['serviceName'=>$service[0]]);
 
+        //assign version number
         $getVersion=(array_key_exists("version",$queryParams)) ? $queryParams['version'] : $defaultVersionCheck;
 
         //service main file extends this file
