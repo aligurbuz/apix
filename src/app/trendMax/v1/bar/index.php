@@ -1,5 +1,5 @@
 <?php
-namespace src\app\v1\bar;
+namespace src\app\trendmax\v1\bar;
 
 class index extends app {
 
