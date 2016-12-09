@@ -9,7 +9,10 @@ class config {
         $list=[
 
             //this object main key
-            'mainFunctionMethod'   =>'get'
+            'mainFunctionMethod'   =>'get',
+            'appVersions'=>[
+                'trendMax'=>'v1'
+            ]
 
         ];
 

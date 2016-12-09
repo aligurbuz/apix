@@ -19,18 +19,24 @@ class connection {
         $service=$border->getServiceNameAndMethodFromRequestUri();
         $serviceMethod=$border->getPureMethodNameFromService();
 
+        $queryParams=$border->getQueryParamsFromRoute();
+
+        $defaultVersionCheck=$border->getConfigVersionNumber(['serviceName'=>$service[0]]);
+
+        $getVersion=(array_key_exists("version",$queryParams)) ? $queryParams['version'] : $defaultVersionCheck;
+
         //service main file extends this file
-        require(root . '/src/app/trendmax/v1/bar/app.php');
+        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/'.$service[1].'/app.php');
 
         //service main file
-        require(root . '/src/app/'.$service[0].'/v1/'.$service[1].'/index.php');
+        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/'.$service[1].'/index.php');
 
         //resolve process
         $resolve=require(root.'/lib/resolver.php');
         $resolve=new \classresolver();
 
         //apix resolve
-        $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\v1\\".$service[1]."\\index");
+        $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\".$service[1]."\\index");
 
         //call service
         return $apix->$serviceMethod();
@@ -95,5 +101,55 @@ class connection {
 
         $service=$this->getServiceNameAndMethodFromRequestUri();
         return preg_replace('@\?(.*)@is','',end($service));
+    }
+
+
+    /**
+     * get query params
+     *
+     * query params
+     *
+     * @param string
+     * @return query params runner
+     */
+
+    private function getQueryParamsFromRoute(){
+
+        $service=$this->getServiceNameAndMethodFromRequestUri();
+        $params=preg_replace('@'.$this->getPureMethodNameFromService().'\?@is','',end($service));
+
+        if($params==$this->getPureMethodNameFromService()) {
+            return [];
+        }
+        else {
+
+            $getParams=explode("&",$params);
+            $paramlist=[];
+            foreach ($getParams as $main){
+                $getParamsMain=explode("=",$main);
+                $paramlist[$getParamsMain[0]]=$getParamsMain[1];
+            }
+
+            return $paramlist;
+        }
+    }
+
+
+    /**
+     * get config version number
+     *
+     * version number
+     *
+     * @param string
+     * @return get config version runner
+     */
+
+    private function getConfigVersionNumber(array $data){
+
+        if(array_key_exists($data['serviceName'],\src\config\config::get("appVersions")))
+        {
+            return \src\config\config::get("appVersions")[$data['serviceName']];
+        }
+        return 'v1';
     }
 }
