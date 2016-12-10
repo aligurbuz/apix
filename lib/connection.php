@@ -33,17 +33,17 @@ class connection {
         $getVersion=(array_key_exists("version",$queryParams)) ? $queryParams['version'] : $defaultVersionCheck;
 
         //service main file extends this file
-        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/'.$service[1].'/app.php');
+        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
 
         //service main file
-        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/'.$service[1].'/index.php');
+        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
 
         //resolve process
         $resolve=require(root.'/lib/resolver.php');
         $resolve=new \classresolver();
 
         //apix resolve
-        $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\".$service[1]."\\index");
+        $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
 
         //call service
         return $apix->$serviceMethod();

@@ -4,7 +4,7 @@
  * User: developer
  */
 
-namespace src\app\trendmax\v1\bar;
+namespace src\app\trendmax\v1\__call\bar;
 
 
 class developer
