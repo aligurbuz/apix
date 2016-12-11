@@ -8,40 +8,64 @@
 
 class project {
 
+    public $fileprocess;
+
+    public function __construct(){
+        $this->fileprocess=$this->fileprocess();
+    }
+
 
     //project create command
     public function create ($data){
 
-        //new file process
-        $fileprocess=$this->fileprocess();
+        $list[]=$this->mkdir($this->getProjectName($data));
+        $list[]=$this->mkdir($this->getProjectName($data).'/docs');
+        $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1');
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1/staticProvider');
+        $list[]=$this->touch($this->getProjectName($data).'/v1/staticProvider/index.html',null);
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');
+        $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1/config/database');
+        $list[]=$this->touch($this->getProjectName($data).'/v1/config/database/index.html',null);
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');
+        $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/index.html',null);
+        $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
+        $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
 
-        //file process mkdir
-        if($fileprocess->mkdir($this->getProjectName($data))){
-            if($fileprocess->mkdir($this->getProjectName($data).'/v1')){
-                if($fileprocess->mkdir($this->getProjectName($data).'/v1/staticProvider')){
-
-                    //return static provider true
-                    return 'project has been created';
-                }
-                else {
-
-                    //return static provider false
-                    return 'error :static provider fail';
-                }
+        return $this->fileProcessResult($list,function(){
+            return 'project has been created';
+        });
 
 
-            }
-            else{
+    }
 
-                //return version false
-                return 'error :version fail';
-            }
+
+    //set mkdir
+    public function mkdir($data){
+
+        return $this->fileprocess->mkdir($data);
+    }
+
+    //set mkdir
+    public function touch($data,$param){
+
+        return $this->fileprocess->touch($data,$param);
+    }
+
+    //mkdir process result
+    public function fileProcessResult($data,$callback){
+
+        if(in_array(false,$data)){
+
+            return 'project fail';
         }
-        else
-        {
-            //return project false
-            return 'error:project fail';
+        else {
+
+            return call_user_func($callback);
         }
+
     }
 
     //get project name

@@ -8,7 +8,7 @@
 
 class filedirprocess {
 
-    //page create command
+    //mkdir command
     public function mkdir ($projectName=null){
 
         if($projectName!==null){
@@ -21,6 +21,21 @@ class filedirprocess {
             return false;
 
 
+        }
+
+    }
+
+    //touch command
+    public function touch($filename=null,$param=null){
+
+        if($filename!==null){
+
+            $path='./src/app/'.$filename;
+            if(!file_exists($path)){
+                return touch($path);
+            }
+
+            return false;
         }
 
     }
