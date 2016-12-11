@@ -24,6 +24,11 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/docs');
             $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
+
+            $touchServiceBaseControllerParams['execution']='serviceBaseController';
+            $touchServiceBaseControllerParams['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/serviceBaseController.php',$touchServiceBaseControllerParams);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/staticProvider');
             $list[]=$this->touch($this->getProjectName($data).'/v1/staticProvider/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');
