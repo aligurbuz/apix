@@ -18,26 +18,30 @@ class project {
     //project create command
     public function create ($data){
 
-        $list[]=$this->mkdir($this->getProjectName($data));
-        $list[]=$this->mkdir($this->getProjectName($data).'/docs');
-        $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1');
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1/staticProvider');
-        $list[]=$this->touch($this->getProjectName($data).'/v1/staticProvider/index.html',null);
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');
-        $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1/config/database');
-        $list[]=$this->touch($this->getProjectName($data).'/v1/config/database/index.html',null);
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');
-        $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/index.html',null);
-        $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
-        $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
+        $list=[];
+        if($this->mkdir($this->getProjectName($data))){
 
-        return $this->fileProcessResult($list,function(){
-            return 'project has been created';
-        });
+            $list[]=$this->mkdir($this->getProjectName($data).'/docs');
+            $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1');
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/staticProvider');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/staticProvider/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/config/database');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/config/database/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
 
+            return $this->fileProcessResult($list,function(){
+                return 'project has been created';
+            });
+        }
+
+        return 'project fail';
 
     }
 
@@ -57,7 +61,7 @@ class project {
     //mkdir process result
     public function fileProcessResult($data,$callback){
 
-        if(in_array(false,$data)){
+        if(count($data)==0 OR in_array(false,$data)){
 
             return 'project fail';
         }
