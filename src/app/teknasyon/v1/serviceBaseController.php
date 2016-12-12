@@ -5,7 +5,7 @@
  * service provider
  */
 
-namespace src\app\fussy\v1;
+namespace src\app\teknasyon\v1;
 
 
 class serviceBaseController

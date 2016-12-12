@@ -4,7 +4,7 @@
  * main file extends this file
  */
 
-namespace src\app\fussy\v1\__call\videosport;
+namespace src\app\teknasyon\v1\__call\jiggle;
 
 class app {
 
