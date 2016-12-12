@@ -15,7 +15,8 @@
         "symfony/yaml": "2.*",
         "sinergi/browser-detector": "^6.1",
         "nesbot/carbon": "^1.21",
-        "symfony/http-foundation": "^3.2"
+        "symfony/http-foundation": "^3.2",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "autoload": {
         "psr-0": {"": "src/composer"}

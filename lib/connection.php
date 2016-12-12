@@ -5,6 +5,14 @@ namespace lib;
 class connection {
 
     public $container;
+    public $resolve;
+    
+    public function __construct(){
+        //class resolve
+        $resolve=require(root.'/lib/resolver.php');
+        $resolve=new \classresolver();
+        $this->resolve=$resolve;
+    }
 
     /**
      * connect to api service (created service).
@@ -18,14 +26,11 @@ class connection {
 
         //this fake
         $border=new self;
-
-        //class resolve
-        $resolve=require(root.'/lib/resolver.php');
-        $resolve=new \classresolver();
-
+        
         //get preloader classes
         $border->getPreLoaderClasses();
-        $resolve->resolve("\\lib\\appContainer")->get();
+
+        $border->resolve->resolve("\\lib\\appContainer")->get();
 
         //get service and file method from request uri
         $service=$border->getServiceNameAndMethodFromRequestUri();
@@ -53,7 +58,7 @@ class connection {
 
 
         //apix resolve
-        $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
+        $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
 
 
         //call service
