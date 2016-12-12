@@ -52,4 +52,14 @@ class httprequest {
 
         return $this->request->headers;
     }
+
+    /**
+     * get full url.
+     *
+     * @return object
+     */
+    public function fullUrl(){
+
+        return $this->request->getUri();
+    }
 }
