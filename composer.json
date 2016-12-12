@@ -14,7 +14,8 @@
         "doctrine/orm": "2.4.*",
         "symfony/yaml": "2.*",
         "sinergi/browser-detector": "^6.1",
-        "nesbot/carbon": "^1.21"
+        "nesbot/carbon": "^1.21",
+        "symfony/http-foundation": "^3.2"
     },
     "autoload": {
         "psr-0": {"": "src/composer"}

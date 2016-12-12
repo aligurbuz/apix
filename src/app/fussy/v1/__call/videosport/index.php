@@ -8,7 +8,8 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\fussy\v1\__call\promain;
+namespace src\app\fussy\v1\__call\videosport;
+use src\services\httprequest as request;
 
 /**
  * Represents a index class.
@@ -19,14 +20,17 @@ namespace src\app\fussy\v1\__call\promain;
 
 class index extends app {
 
-    public $test;
+    public $request;
 
     /**
      * Constructor.
      *
      * @param type dependency injection and function
      */
-    public function __construct(){
+    public function __construct(request $request){
+
+        //get request info
+        $this->request=$request;
 
     }
 
@@ -38,6 +42,9 @@ class index extends app {
     public function index(){
 
         //return index
-        return ['message'=>'hello world'];
+        return [
+            'environment'=>\app::environment(),
+            'clientIp'=>$this->request->getClientIp()
+        ];
     }
 }

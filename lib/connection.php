@@ -4,6 +4,8 @@ namespace lib;
 
 class connection {
 
+    public $container;
+
     /**
      * connect to api service (created service).
      *
@@ -16,6 +18,14 @@ class connection {
 
         //this fake
         $border=new self;
+
+        //class resolve
+        $resolve=require(root.'/lib/resolver.php');
+        $resolve=new \classresolver();
+
+        //get preloader classes
+        $border->getPreLoaderClasses();
+        $resolve->resolve("\\lib\\appContainer")->get();
 
         //get service and file method from request uri
         $service=$border->getServiceNameAndMethodFromRequestUri();
@@ -32,21 +42,19 @@ class connection {
         //assign version number
         $getVersion=(array_key_exists("version",$queryParams)) ? $queryParams['version'] : $defaultVersionCheck;
 
+        //get preloader class
+        //$border->getPreLoaderClass();
+
         //service main file extends this file
         require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
 
         //service main file
         require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
 
-        //resolve process
-        $resolve=require(root.'/lib/resolver.php');
-        $resolve=new \classresolver();
 
         //apix resolve
         $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
 
-        //get environment
-        $border->getEnvironment();
 
         //call service
         return $border->responseOut($apix->$serviceMethod());
@@ -156,9 +164,10 @@ class connection {
 
     private function getConfigVersionNumber(array $data){
 
-        if(array_key_exists($data['serviceName'],\src\config\config::get("appVersions")))
+
+        if(array_key_exists($data['serviceName'],\config::get("appVersions")))
         {
-            return \src\config\config::get("appVersions")[$data['serviceName']];
+            return \config::get("appVersions")[$data['serviceName']];
         }
         return 'v1';
     }
@@ -175,27 +184,35 @@ class connection {
     private function responseOut($data){
 
         header('Content-Type: application/json');
-        return json_encode($data);
-    }
-
-    /**
-     * response environment.
-     *
-     * outputs environment.
-     *
-     * @param string
-     * @return response environment runner
-     */
-
-    private function getEnvironment(){
-
-        $envpath=root.'/env.php';
-
-        if(file_exists($envpath)){
-            return define('env','local');
-        }else{
-            return define('env','production');
+        if(is_array($data) && count($data)){
+            $data=['success'=>(bool)true]+['data'=>$data];
+            return json_encode($data);
+        }
+        else{
+            $data=['success'=>(bool)false]+['message'=>'data is not array'];
+            return json_encode($data);
         }
 
     }
+
+
+
+    /**
+     * get preloader classes.
+     *
+     * outputs class_alias.
+     *
+     * @param string
+     * @return response class_alias runner
+     */
+
+    private function getPreLoaderClasses(){
+
+        class_alias("\\src\\config\\app","app");
+        class_alias("\\src\\config\\config","config");
+        return;
+
+    }
+
+
 }
