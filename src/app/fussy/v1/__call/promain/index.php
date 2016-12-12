@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\fussy\v1\__call\social;
+namespace src\app\fussy\v1\__call\promain;
 
 /**
  * Represents a index class.
@@ -38,6 +38,6 @@ class index extends app {
     public function index(){
 
         //return index
-        return ['message'=>env];
+        return ['message'=>'hello world'];
     }
 }

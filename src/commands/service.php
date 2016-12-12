@@ -47,9 +47,13 @@ class service {
 
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/index.html',null);
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/handle');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/handle/index.html',null);
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/query/index.html',null);
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/source/index.html',null);
 
                        return $this->fileProcessResult($list,function(){
                            return 'service has been created';

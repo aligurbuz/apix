@@ -45,6 +45,9 @@ class connection {
         //apix resolve
         $apix=$resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
 
+        //get environment
+        $border->getEnvironment();
+
         //call service
         return $border->responseOut($apix->$serviceMethod());
     }
@@ -173,5 +176,26 @@ class connection {
 
         header('Content-Type: application/json');
         return json_encode($data);
+    }
+
+    /**
+     * response environment.
+     *
+     * outputs environment.
+     *
+     * @param string
+     * @return response environment runner
+     */
+
+    private function getEnvironment(){
+
+        $envpath=root.'/env.php';
+
+        if(file_exists($envpath)){
+            return define('env','local');
+        }else{
+            return define('env','production');
+        }
+
     }
 }
