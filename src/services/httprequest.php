@@ -62,4 +62,14 @@ class httprequest {
 
         return $this->request->getUri();
     }
+
+    /**
+     * get http host.
+     *
+     * @return string
+     */
+    public function getHost(){
+
+        return $this->request->getHttpHost();
+    }
 }
