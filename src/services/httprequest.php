@@ -50,7 +50,7 @@ class httprequest {
      */
     public function getHeaders(){
 
-        return $this->request->headers;
+        return $this->request->headers->all();
     }
 
     /**
