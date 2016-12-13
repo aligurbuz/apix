@@ -50,6 +50,10 @@ class connection {
         //get preloader class
         //$border->getPreLoaderClass();
 
+        define("app",$service[0]);
+        define("service",$service[1]);
+        define("version",$getVersion);
+
         //service main file extends this file
         require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
 
@@ -215,6 +219,7 @@ class connection {
 
         class_alias("\\src\\config\\app","app");
         class_alias("\\src\\config\\config","config");
+        class_alias("\\src\\services\\branches","branch");
         return;
 
     }

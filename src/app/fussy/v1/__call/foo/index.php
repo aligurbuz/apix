@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main part of the teknasyon service.
+ * This file is main part of the fussy service.
  *
  * every request is called index method as default
  *
@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\teknasyon\v1\__call\jiggle;
+namespace src\app\fussy\v1\__call\foo;
 use src\services\httprequest as request;
 
 /**

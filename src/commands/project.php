@@ -21,6 +21,10 @@ class project {
         $list=[];
         if($this->mkdir($this->getProjectName($data))){
 
+            $touchServiceReadMe['execution']='project_readme';
+            $touchServiceReadMe['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/README.md',$touchServiceReadMe);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/docs');
             $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
@@ -34,6 +38,11 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');
             $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
+
+            $touchServiceApp['execution']='app';
+            $touchServiceApp['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/config/app.php',$touchServiceApp);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/config/database');
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/database/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');

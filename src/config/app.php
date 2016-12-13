@@ -4,12 +4,6 @@ namespace src\config;
 
 class app {
 
-    public $resolver;
-
-    public function __construct(){
-        $this->resolver='test';
-    }
-
     public static function getClassAlias(){
 
         return [
@@ -20,7 +14,7 @@ class app {
     }
 
 
-    private static function getContainerClassAlias(){
+    private static function getContainer(){
 
         return [
 
@@ -64,12 +58,29 @@ class app {
 
         if($class!==null){
             //class resolve
+            $container = \DI\ContainerBuilder::buildDevContainer();
+
+            //container namespace edit
             $containeralias=str_replace("\\","\\\\",$class);
 
+            $inApp="\\src\\app\\".app."\\v1\\config\\app";
+            $inApp=$container->get($inApp);
+            $inAppContainer=$inApp->container();
+
+            $inAppContainerList=[];
+            foreach ($inAppContainer as $inkey=>$invalue){
+                if(!array_key_exists($inkey,self::getContainer())){
+
+                    $inAppContainerList[$inkey]=$invalue;
+                }
+            }
+
+            $lastContainer=self::getContainer()+$inAppContainerList;
+
             //check container class alias
-            if(array_key_exists($containeralias,self::getContainerClassAlias())){
-                $class=self::getContainerClassAlias()[$class];
-                return new $class();
+            if(array_key_exists($containeralias,$lastContainer)){
+                $class=$lastContainer[$class];
+                return $container->get($class);
 
             }
 
