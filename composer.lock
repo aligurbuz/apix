@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "adb7cb92e6b20a622d7858874019a6c6",
-    "content-hash": "28b04f34fa0b5f5fd9206847dc7b2a69",
+    "hash": "9224e933c89cd9b3ac52bb84532e4ae8",
+    "content-hash": "8a3110b2746b9cc1b9a83c36c330e6bf",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1326,6 +1326,69 @@
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
             "time": "2016-11-18 21:17:59"
+        },
+        {
+            "name": "symfony/var-dumper",
+            "version": "v3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "86f4e8aeb07bd5fb467f6bdd599a30298d19fa5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/86f4e8aeb07bd5fb467f6bdd599a30298d19fa5f",
+                "reference": "86f4e8aeb07bd5fb467f6bdd599a30298d19fa5f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "twig/twig": "~1.20|~2.0"
+            },
+            "suggest": {
+                "ext-symfony_debug": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Resources/functions/dump.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Component\\VarDumper\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony mechanism for exploring and dumping PHP variables",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "debug",
+                "dump"
+            ],
+            "time": "2016-11-29 10:33:09"
         },
         {
             "name": "symfony/yaml",

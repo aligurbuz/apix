@@ -42,6 +42,7 @@ class index extends app {
     public function index(){
 
         //return index
+
         return [
             'environment'=>\app::environment(),
             'clientIp'=>$this->request->getClientIp(),
