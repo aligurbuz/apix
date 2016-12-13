@@ -50,6 +50,14 @@ class connection {
         //get preloader class
         //$border->getPreLoaderClass();
 
+        if(!file_exists(root . '/'.src.'/'.$service[0].'')){
+            return $border->responseOut([],'project has not been created');
+        }
+
+        if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
+            return $border->responseOut([],'service has not been created');
+        }
+
         define("app",$service[0]);
         define("service",$service[1]);
         define("version",$getVersion);
@@ -59,8 +67,16 @@ class connection {
         //get before middleware
         $border->middleware("before");
 
-        //service main file extends this file
-        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
+        if(file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
+
+            //service main file extends this file
+            require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
+        }
+        else{
+            return $border->responseOut([],'service has not been created');
+        }
+
+
 
         //service main file
         require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
