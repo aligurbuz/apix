@@ -54,6 +54,7 @@ class connection {
         define("service",$service[1]);
         define("version",$getVersion);
         define("method",$serviceMethod);
+        define("request",$_SERVER['REQUEST_METHOD']);
 
         //get before middleware
         $border->middleware("before");
@@ -68,9 +69,17 @@ class connection {
         //apix resolve
         $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
 
+        $requestServiceMethod=''.request.''.ucfirst($serviceMethod).'';
 
-        //call service
-        return $border->responseOut($apix->$serviceMethod());
+        if(method_exists($apix,$requestServiceMethod)){
+            //call service
+            return $border->responseOut($apix->$requestServiceMethod());
+        }
+        else{
+
+            return $border->responseOut([],'service is invalid');
+        }
+
     }
 
     /**
@@ -194,7 +203,7 @@ class connection {
      * @return response out runner
      */
 
-    private function responseOut($data){
+    private function responseOut($data,$msg=null){
 
         header('Content-Type: application/json');
         if(is_array($data) && count($data)){
@@ -202,7 +211,9 @@ class connection {
             return json_encode($data);
         }
         else{
-            $data=['success'=>(bool)false]+['message'=>'data is not array'];
+            $msg=($msg!==null) ? $msg : 'data is not array';
+
+            $data=['success'=>(bool)false]+['message'=>$msg];
             return json_encode($data);
         }
 

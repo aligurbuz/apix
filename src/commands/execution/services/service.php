@@ -39,7 +39,7 @@ class index extends app {
      *
      * @return array
      */
-    public function index(){
+    public function getIndex(){
 
         //return index
         return [
