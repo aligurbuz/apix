@@ -53,6 +53,10 @@ class connection {
         define("app",$service[0]);
         define("service",$service[1]);
         define("version",$getVersion);
+        define("method",$serviceMethod);
+
+        //get before middleware
+        $border->middleware("before");
 
         //service main file extends this file
         require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
@@ -205,6 +209,32 @@ class connection {
     }
 
 
+    /**
+     * get preloader classes.
+     *
+     * outputs class_alias.
+     *
+     * @param string
+     * @return response class_alias runner
+     */
+
+    private function middleware($prefix){
+
+        $Middleware="\\src\\middleware\\".$prefix."Middleware";
+        $Middleware=new $Middleware([]);
+
+        $app=''.app.'/'.service.'/'.method;
+
+        if(!in_array($app,$Middleware->except())){
+            return $Middleware->handle();
+        }
+
+
+
+    }
+
+
+
 
     /**
      * get preloader classes.
@@ -223,6 +253,7 @@ class connection {
         return;
 
     }
+
 
 
 }
