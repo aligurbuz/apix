@@ -15,6 +15,7 @@ namespace src\services;
  *
  * main call
  * return type string
+ *
  */
 
 class mobileDetect {
