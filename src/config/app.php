@@ -18,7 +18,8 @@ class app {
 
         return [
 
-            'device' =>'\\src\\services\\mobileDetect'
+            'device'    =>'\\src\\services\\mobileDetect',
+            'redis'     =>'\\src\\services\\redis',
         ];
 
     }
