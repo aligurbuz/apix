@@ -31,7 +31,6 @@ class index extends app {
 
         //get request info
         $this->request=$request;
-
     }
 
     /**
@@ -41,7 +40,7 @@ class index extends app {
      */
     public function getIndex(){
 
-        //return index
+        //return
         return [
             'environment'=>\app::environment(),
             'clientIp'=>$this->request->getClientIp(),
@@ -49,19 +48,4 @@ class index extends app {
         ];
     }
 
-
-    /**
-     * index method is main method.
-     *
-     * @return array
-     */
-    public function getCreate(){
-
-        //return index
-        return [
-            'environment'=>\app::environment(),
-            'clientIp'=>$this->request->getClientIp(),
-            'isMobile'=>\app::container("device")->isMobile()
-        ];
-    }
 }

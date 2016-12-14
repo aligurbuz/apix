@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9224e933c89cd9b3ac52bb84532e4ae8",
-    "content-hash": "8a3110b2746b9cc1b9a83c36c330e6bf",
+    "hash": "c4833fad7f7253c3202d67cd69b7db2b",
+    "content-hash": "5e044a9b0ade24ce4ea8543a172cf40b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -979,16 +979,16 @@
         },
         {
             "name": "sinergi/browser-detector",
-            "version": "6.1.0",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sinergi/php-browser-detector.git",
-                "reference": "8f2f13202a446abb88dcf62ec871431b9f44f14f"
+                "reference": "bf612773bda39ee89da1631b07a8412c57c8a797"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sinergi/php-browser-detector/zipball/8f2f13202a446abb88dcf62ec871431b9f44f14f",
-                "reference": "8f2f13202a446abb88dcf62ec871431b9f44f14f",
+                "url": "https://api.github.com/repos/sinergi/php-browser-detector/zipball/bf612773bda39ee89da1631b07a8412c57c8a797",
+                "reference": "bf612773bda39ee89da1631b07a8412c57c8a797",
                 "shasum": ""
             },
             "require": {
@@ -998,11 +998,6 @@
                 "phpunit/phpunit": "^4.8 || ^5.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "6.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Sinergi\\BrowserDetector\\": "src"
@@ -1014,9 +1009,7 @@
             ],
             "authors": [
                 {
-                    "name": "Chris Schuld",
-                    "email": "chris@chrisschuld.com",
-                    "homepage": "http://chrisschuld.com"
+                    "name": "Chris Schuld"
                 },
                 {
                     "name": "Gabriel Bull",
@@ -1031,20 +1024,20 @@
                 "operating system",
                 "os"
             ],
-            "time": "2016-10-28 15:15:58"
+            "time": "2016-12-13 14:57:46"
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.14",
+            "version": "v2.8.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "a871ba00e0f604dceac64c56c27f99fbeaf4854e"
+                "reference": "d5643cd095e5e37d31e004bb2606b5dd7e96602f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/a871ba00e0f604dceac64c56c27f99fbeaf4854e",
-                "reference": "a871ba00e0f604dceac64c56c27f99fbeaf4854e",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d5643cd095e5e37d31e004bb2606b5dd7e96602f",
+                "reference": "d5643cd095e5e37d31e004bb2606b5dd7e96602f",
                 "shasum": ""
             },
             "require": {
@@ -1092,7 +1085,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-15 23:02:12"
+            "time": "2016-12-06 11:59:35"
         },
         {
             "name": "symfony/debug",
@@ -1153,7 +1146,7 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
@@ -1265,16 +1258,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "64ab6fc0b42e5386631f408e6adcaaff8eee5ba1"
+                "reference": "5fd18eca88f4d187807a1eba083bc99feaa8635b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/64ab6fc0b42e5386631f408e6adcaaff8eee5ba1",
-                "reference": "64ab6fc0b42e5386631f408e6adcaaff8eee5ba1",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/5fd18eca88f4d187807a1eba083bc99feaa8635b",
+                "reference": "5fd18eca88f4d187807a1eba083bc99feaa8635b",
                 "shasum": ""
             },
             "require": {
@@ -1325,20 +1318,20 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-18 21:17:59"
+            "time": "2016-11-30 14:40:17"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "86f4e8aeb07bd5fb467f6bdd599a30298d19fa5f"
+                "reference": "f722532b0966e9b6fc631e682143c07b2cf583a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/86f4e8aeb07bd5fb467f6bdd599a30298d19fa5f",
-                "reference": "86f4e8aeb07bd5fb467f6bdd599a30298d19fa5f",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/f722532b0966e9b6fc631e682143c07b2cf583a0",
+                "reference": "f722532b0966e9b6fc631e682143c07b2cf583a0",
                 "shasum": ""
             },
             "require": {
@@ -1388,11 +1381,11 @@
                 "debug",
                 "dump"
             ],
-            "time": "2016-11-29 10:33:09"
+            "time": "2016-12-11 14:34:22"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.14",
+            "version": "v2.8.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -1438,6 +1431,46 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2016-11-14 16:15:57"
+        },
+        {
+            "name": "volnix/csrf",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/volnix/csrf.git",
+                "reference": "73743e18c22e680dfb6b34d0f7e8a649b4fc9532"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/volnix/csrf/zipball/73743e18c22e680dfb6b34d0f7e8a649b4fc9532",
+                "reference": "73743e18c22e680dfb6b34d0f7e8a649b4fc9532",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Volnix\\CSRF\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nick Volgas",
+                    "email": "nvolgas@ark.org"
+                }
+            ],
+            "description": "CSRF protection library that compares provided token to session token to ensure request validity.",
+            "homepage": "https://github.com/volnix/csrf",
+            "time": "2015-11-24 15:32:52"
         },
         {
             "name": "zendframework/zend-code",

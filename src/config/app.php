@@ -20,6 +20,7 @@ class app {
 
             'device'    =>'\\src\\services\\mobileDetect',
             'redis'     =>'\\src\\services\\redis',
+            'session'   =>'\\src\\services\\session'
         ];
 
     }

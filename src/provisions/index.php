@@ -10,6 +10,7 @@
 
 namespace src\provisions;
 use src\services\httprequest as request;
+use src\services\csrf as csrf;
 
 /**
  * Represents a provision class.
@@ -21,6 +22,7 @@ use src\services\httprequest as request;
 class index {
 
     public $request;
+    public $csrf;
 
     /**
      * Represents a provision construct class.
@@ -28,9 +30,10 @@ class index {
      * $data main variables
      * return type string
      */
-    public function __construct(request $request){
+    public function __construct(request $request,csrf $csrf){
 
         $this->request=$request;
+        $this->csrf=$csrf;
     }
 
     /**
@@ -40,6 +43,7 @@ class index {
      */
     public function getProvision(){
 
+        //get provision
         return [
             'success'=>true,
             'message'=>'Get Provision Error'
@@ -53,6 +57,7 @@ class index {
      */
     public function postProvision(){
 
+        //post provision
         return [
             'success'=>true,
             'message'=>'Get Provision Error'
