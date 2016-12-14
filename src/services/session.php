@@ -19,6 +19,20 @@ class Session
     {
         unset($this);
     }
+
+    /**
+     * construct get instance for generate csrf token
+     *
+     * @param string request - defaults to the default symfony package
+     * @return void
+     */
+    public static function getInstance()
+    {
+        //symfony request load
+        return (self::$_instance==null) ? new self() : self::$_instance;
+
+    }
+
     /**
      * Register the session.
      *
@@ -26,9 +40,7 @@ class Session
      */
     public static function register($time = 60)
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
+        self::$_instance=self::getInstance();
 
         $_SESSION['session_id'] = session_id();
         $_SESSION['session_time'] = intval($time);
@@ -41,9 +53,7 @@ class Session
      */
     public static function isRegistered()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
+        self::$_instance=self::getInstance();
 
         if (! empty($_SESSION['session_id'])) {
             return true;
@@ -59,9 +69,7 @@ class Session
      */
     public static function set($key, $value)
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
+        self::$_instance=self::getInstance();
 
         $_SESSION[$key] = $value;
     }
@@ -72,9 +80,7 @@ class Session
      */
     public static function get($key)
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
+        self::$_instance=self::getInstance();
         return isset($_SESSION[$key]) ? $_SESSION[$key]:false;
     }
     /**
@@ -84,10 +90,7 @@ class Session
      */
     public static function getSession()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
-
+        self::$_instance=self::getInstance();
         return $_SESSION;
     }
     /**
@@ -97,10 +100,7 @@ class Session
      */
     public static function getSessionId()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
-
+        self::$_instance=self::getInstance();
         return $_SESSION['session_id'];
     }
     /**
@@ -110,10 +110,7 @@ class Session
      */
     public static function isExpired()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
-
+        self::$_instance=self::getInstance();
         if ($_SESSION['session_start'] < $this->timeNow()) {
             return true;
         } else {
@@ -125,10 +122,7 @@ class Session
      */
     public static function renew()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
-
+        self::$_instance=self::getInstance();
         $_SESSION['session_start'] = $this->newTime();
     }
     /**
@@ -138,10 +132,7 @@ class Session
      */
     private static function timeNow()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
-
+        self::$_instance=self::getInstance();
         $currentHour = date('H');
         $currentMin = date('i');
         $currentSec = date('s');
@@ -157,9 +148,7 @@ class Session
      */
     private static function newTime()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
+        self::$_instance=self::getInstance();
 
         $currentHour = date('H');
         $currentMin = date('i');
@@ -174,9 +163,7 @@ class Session
      */
     public static function end()
     {
-        if (self::$_instance==null) {
-            self::$_instance = new self();
-        }
+        self::$_instance=self::getInstance();
         session_destroy();
         $_SESSION = array();
     }
