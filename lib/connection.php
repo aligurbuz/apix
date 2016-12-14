@@ -347,8 +347,9 @@ class connection {
         $provision="\\src\\provisions\\index";
         $provision=$this->resolve->resolve($provision);
         $provisionMethod=''.request.'Provision';
+        $provisionMethodExcept=''.request.'Except';
 
-        if($provision->$provisionMethod()['success']){
+        if($provision->$provisionMethod()['success'] OR in_array(app.'/'.service.'/'.method.'',$provision->$provisionMethodExcept())){
             return call_user_func($callback);
         }
 

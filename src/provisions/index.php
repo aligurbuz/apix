@@ -68,7 +68,7 @@ class index {
     public function getExcept(){
 
         return [
-            //'app/service/method'
+            //app.'/service/method'
         ];
     }
 
@@ -81,7 +81,7 @@ class index {
     public function postExcept(){
 
         return [
-            //'app/service/method'
+            //app.'/service/method'
         ];
     }
 
