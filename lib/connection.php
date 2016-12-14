@@ -67,34 +67,40 @@ class connection {
         //get before middleware
         $border->middleware("before");
 
-        if(file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
+        if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
 
-            //service main file extends this file
-            require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
-        }
-        else{
             return $border->responseOut([],'service has not been created');
         }
 
+        //token run
+        return $border->token(function() use ($service,$serviceMethod,$getVersion,$border) {
+
+            //provision run
+            return $border->provision(function() use ($service,$serviceMethod,$getVersion,$border) {
+
+                //service main file extends this file
+                require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
+
+                //service main file
+                require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
+
+                //apix resolve
+                $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
+
+                $requestServiceMethod=''.request.''.ucfirst($serviceMethod).'';
+
+                if(method_exists($apix,$requestServiceMethod)){
+                    //call service
+                    return $border->responseOut($apix->$requestServiceMethod());
+                }
+                else{
+
+                    return $border->responseOut([],'service is invalid');
+                }
+            });
+        });
 
 
-        //service main file
-        require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
-
-
-        //apix resolve
-        $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
-
-        $requestServiceMethod=''.request.''.ucfirst($serviceMethod).'';
-
-        if(method_exists($apix,$requestServiceMethod)){
-            //call service
-            return $border->responseOut($apix->$requestServiceMethod());
-        }
-        else{
-
-            return $border->responseOut([],'service is invalid');
-        }
 
     }
 
@@ -261,6 +267,94 @@ class connection {
     }
 
 
+    /**
+     * get token classes.
+     *
+     * outputs token.
+     *
+     * @param string
+     * @return response token runner
+     */
+
+    private function token($callback){
+
+        //get token
+        $token="\\src\\provisions\\token";
+        $token=$this->resolve->resolve($token);
+        $tokenhandle=$token->handle();
+        $tokenexcept=$token->except();
+
+        if(!$tokenhandle['status']){
+
+            //return token provision
+            return call_user_func($callback);
+        }
+
+        $queryParams=$this->getQueryParamsFromRoute();
+
+        //token provision
+        if(array_key_exists("_token",$queryParams)){
+
+            if(in_array($queryParams['_token'],$tokenhandle['tokens'])){
+
+                if(!array_key_exists($queryParams['_token'],$tokenhandle['clientIp'])){
+                    //return token provision
+                    return call_user_func($callback);
+                }
+
+                if($tokenhandle['clientIp'][$queryParams['_token']]==$_SERVER['REMOTE_ADDR']){
+
+                    //return token provision
+                    return call_user_func($callback);
+                }
+
+            }
+        }
+
+        //except provision
+        if(in_array(app.'/'.service.'/'.method.'',$tokenexcept)){
+            //return token provision
+            return call_user_func($callback);
+        }
+
+        //except provision clientIp
+        if(array_key_exists($_SERVER['REMOTE_ADDR'],$tokenexcept['clientIp'])){
+            if(in_array(app.'/'.service.'/'.method.'',$tokenexcept['clientIp'][$_SERVER['REMOTE_ADDR']])){
+                //return token provision
+                return call_user_func($callback);
+            }
+        }
+
+        //return token provision false
+        return $this->responseOut([],'token provision error');
+
+
+
+    }
+
+
+    /**
+     * get provision classes.
+     *
+     * outputs provision.
+     *
+     * @param string
+     * @return response class_alias runner
+     */
+
+    private function provision($callback){
+
+        $provision="\\src\\provisions\\index";
+        $provision=$this->resolve->resolve($provision);
+        $provisionMethod=''.request.'Provision';
+
+        if($provision->$provisionMethod()['success']){
+            return call_user_func($callback);
+        }
+
+        return $this->responseOut([],$provision->$provisionMethod()['message']);
+
+    }
 
 
     /**
