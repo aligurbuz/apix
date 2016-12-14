@@ -35,6 +35,19 @@ class csrf {
     }
 
     /**
+     * construct get instance for generate csrf token
+     *
+     * @param string request - defaults to the default symfony package
+     * @return void
+     */
+    public static function getInstance()
+    {
+        //symfony request load
+        return (self::$_instance==null) ? new self() : self::$_instance;
+
+    }
+
+    /**
      * (Re-)Generate a token and write it to session
      *
      * @param string $token_name - defaults to the default token name
@@ -43,7 +56,7 @@ class csrf {
     public function generateToken()
     {
         //self instance
-        self::$_instance=(self::$_instance==null) ? new self() : self::$_instance;
+        self::$_instance=self::getInstance();
 
         // generate as random of a token as possible
         $clientIp   = self::$_instance->request->getClientIp();
@@ -62,7 +75,7 @@ class csrf {
     {
         if (empty(\session::get(self::$token_name))) {
 
-            self::$_instance=(self::$_instance==null) ? new self() : self::$_instance;
+            self::$_instance=self::getInstance();
             return self::$_instance->generateToken();
         }
 
