@@ -42,7 +42,6 @@ class objectloader {
 
         //get object
         $list=[];
-        $list['client']['prefix']='prefix';
 
         //return
         return $list;
@@ -57,7 +56,6 @@ class objectloader {
 
         //get object
         $list=[];
-        $list['client']['prefix']='prefix';
 
         //return
         return $list;
