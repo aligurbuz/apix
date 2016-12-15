@@ -25,12 +25,58 @@ class filedirprocess {
 
     }
 
+    //mkdir command
+    public function mkdir_path ($projectName=null){
+
+        if($projectName!==null){
+            //return
+            $path=$projectName;
+            if(!file_exists($path)){
+                return mkdir($path, 0777);
+            }
+
+            return false;
+
+
+        }
+
+    }
+
     //touch command
     public function touch($filename=null,$param=null){
 
         if($filename!==null){
 
             $path='./src/app/'.$filename;
+
+            if($param!==null AND is_array($param)){
+
+                if(!file_exists($path)){
+                    touch($path);
+                }
+
+                return $this->fopenprocess($path,$param);
+
+            }else{
+
+                if(!file_exists($path)){
+                    return touch($path);
+                }
+            }
+
+
+            return false;
+        }
+
+    }
+
+
+    //touch command
+    public function touch_path($filename=null,$param=null){
+
+        if($filename!==null){
+
+            $path=$filename;
 
             if($param!==null AND is_array($param)){
 
