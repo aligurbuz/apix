@@ -54,10 +54,14 @@ class index {
      */
     public function postProvision(){
 
+        //default
+        $input=$this->request->input();
+        $success=(\src\services\csrf::checkTokenForPostMethod($input)) ? true : false;
+
         //post provision
         return [
-            'success'=>true,
-            'message'=>'Get Provision Error'
+            'success'=>$success,
+            'message'=>'Post Provision Error'
         ];
     }
 

@@ -93,6 +93,30 @@ class csrf {
         return self::$token_name;
     }
 
+
+    /**
+     * check the token for post.  This is just a CRUD method to make your code cleaner.
+     *
+     * @param string $token_name
+     * @return string
+     */
+    public static function checkTokenForPostMethod($input=false)
+    {
+        if($input){
+            if(array_key_exists("_token",$input)){
+                if($input['_token']==self::getToken()){
+                    return true;
+                }
+
+            }
+
+        }
+
+        return false;
+
+
+    }
+
     /**
      * Validate the token.  If there's not one yet, it will set one and return false.
      *

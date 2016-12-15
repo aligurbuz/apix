@@ -54,6 +54,14 @@ class connection {
             return $border->responseOut([],'project has not been created');
         }
 
+        //check package auto service and method
+        if($border->checkPackageAuto($service)['status']){
+
+            $packageAuto=$border->resolve->resolve($border->checkPackageAuto($service)['class']);
+            return $border->responseOut($packageAuto->$serviceMethod());
+
+        }
+
         if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
             return $border->responseOut([],'service has not been created');
         }
@@ -64,13 +72,15 @@ class connection {
         define("method",$serviceMethod);
         define("request",$_SERVER['REQUEST_METHOD']);
 
-        //get before middleware
-        $border->middleware("before");
 
         if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
 
             return $border->responseOut([],'service has not been created');
         }
+
+
+        //get before middleware
+        $border->middleware("before");
 
         //token run
         return $border->token(function() use ($service,$serviceMethod,$getVersion,$border) {
@@ -264,6 +274,30 @@ class connection {
 
 
 
+    }
+
+
+
+    /**
+     * get preloader classes.
+     *
+     * outputs class_alias.
+     *
+     * @param string
+     * @return response class_alias runner
+     */
+
+    private function checkPackageAuto($service){
+
+        if(file_exists(root."/src/packages/auto/".$service[1]."/".$service[1].".php")){
+            return [
+                'status'=>true,
+                'class'=>"\\src\\packages\\auto\\".$service[1]."\\".$service[1]
+            ];
+        }
+        return [
+            'status'=>false
+        ];
     }
 
 

@@ -72,4 +72,14 @@ class httprequest {
 
         return $this->request->getHttpHost();
     }
+
+    /**
+     * get input.
+     *
+     * @return string
+     */
+    public function input(){
+
+        return $this->request->request->all();
+    }
 }
