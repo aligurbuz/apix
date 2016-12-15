@@ -6,6 +6,7 @@ class connection {
 
     public $container;
     public $resolve;
+    public static $_instance=null;
     
     public function __construct(){
         //class resolve
@@ -25,7 +26,12 @@ class connection {
     public static function run() {
 
         //this fake
-        $border=new self;
+        if(self::$_instance==null){
+            self::$_instance=new self;
+            $border=self::$_instance;
+
+        }
+
         
         //get preloader classes
         $border->getPreLoaderClasses();
@@ -54,6 +60,12 @@ class connection {
             return $border->responseOut([],'project has not been created');
         }
 
+        define("app",$service[0]);
+        define("service",$service[1]);
+        define("version",$getVersion);
+        define("method",$serviceMethod);
+        define("request",$_SERVER['REQUEST_METHOD']);
+
         //check package auto service and method
         if($border->checkPackageAuto($service)['status']){
 
@@ -66,11 +78,7 @@ class connection {
             return $border->responseOut([],'service has not been created');
         }
 
-        define("app",$service[0]);
-        define("service",$service[1]);
-        define("version",$getVersion);
-        define("method",$serviceMethod);
-        define("request",$_SERVER['REQUEST_METHOD']);
+
 
 
         if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
@@ -239,7 +247,17 @@ class connection {
 
         header('Content-Type: application/json');
         if(is_array($data) && count($data)){
-            $data=['success'=>(bool)true]+['data'=>$data];
+
+            if(\config::get("objectloader")!==null && \config::get("objectloader")){
+
+                //object loader
+                $data=['success'=>(bool)true]+['data'=>$data+self::objectLoaderMethodCall()];
+            }
+            else{
+                //default
+                $data=['success'=>(bool)true]+['data'=>$data];
+            }
+
             return json_encode($data);
         }
         else{
@@ -274,6 +292,55 @@ class connection {
 
 
 
+    }
+
+
+    /**
+     * get object loader classes.
+     *
+     * outputs class_alias.
+     *
+     * @param string
+     * @return response class_alias runner
+     */
+
+    private function objectLoaderMethodCall(){
+
+        $border=self::$_instance;
+
+        $objectLoader="\\src\\provisions\\objectloader";
+        $objectLoader=$border->resolve->resolve($objectLoader);
+        $objectLoaderMethod=request.'ObjectLoader';
+
+
+        $serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
+        $serviceobjectLoader=$border->resolve->resolve($serviceobjectLoader);
+        $serviceobjectLoaderMethod=request.'ObjectLoader';
+
+        $servicemethodicCall=$serviceobjectLoader->$serviceobjectLoaderMethod();
+        $s_serviceobjectLoaderMethodExcept=strtolower(request).'Except';
+
+        if(in_array(service,$serviceobjectLoader->$s_serviceobjectLoaderMethodExcept())){
+
+            $servicemethodicCall=[];
+        }
+
+
+        //individual method like getStk()
+        $s_serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
+        $s_serviceobjectLoader=$border->resolve->resolve($s_serviceobjectLoader);
+        $s_serviceobjectLoaderMethod=strtolower(request).''.ucfirst(service);
+
+
+
+
+
+        $s_serviceobjectLoaderMethodcall=[];
+        if(method_exists($s_serviceobjectLoader,$s_serviceobjectLoaderMethod)){
+            $s_serviceobjectLoaderMethodcall=$s_serviceobjectLoader->$s_serviceobjectLoaderMethod();
+        }
+
+        return array_merge_recursive($servicemethodicCall,$s_serviceobjectLoaderMethodcall,$objectLoader->$objectLoaderMethod());
     }
 
 

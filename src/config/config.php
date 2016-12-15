@@ -10,6 +10,7 @@ class config {
 
             //this object main key
             'mainFunctionMethod'   =>'get',
+            'objectloader'=>false,
             'appVersions'=>[
                 'trendMax'=>'v1'
             ]
@@ -28,7 +29,7 @@ class config {
         }
         else
         {
-            return 'config param key not found';
+            return null;
         }
     }
 }

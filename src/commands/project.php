@@ -39,6 +39,13 @@ class project {
             $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
 
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/provisions');
+
+            $touchprovisionobjectloader['execution']='services/objectloader';
+            $touchprovisionobjectloader['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/provisions/objectloader.php',$touchprovisionobjectloader);
+
             $touchServiceApp['execution']='app';
             $touchServiceApp['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/app.php',$touchServiceApp);
