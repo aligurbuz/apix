@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\provisions;
+namespace src\app\mobi\v1\provisions;
 use src\services\httprequest as request;
 
 /**
@@ -42,6 +42,7 @@ class objectloader {
 
         //get object
         $list=[];
+        //$list['client']['developer']='aligurbuz';
 
         //return
         return $list;
@@ -56,6 +57,7 @@ class objectloader {
 
         //get object
         $list=[];
+        //$list['client']['developer']='aligurbuz';
 
         //return
         return $list;
@@ -70,7 +72,7 @@ class objectloader {
     public function getExcept(){
 
         return [
-            //app.'/stk'
+            //app.'/service/method'
         ];
     }
 
@@ -83,7 +85,7 @@ class objectloader {
     public function postExcept(){
 
         return [
-            //app.'/stk'
+            //app.'/service/method'
         ];
     }
 

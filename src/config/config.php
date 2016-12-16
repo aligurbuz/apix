@@ -10,7 +10,7 @@ class config {
 
             //this object main key
             'mainFunctionMethod'   =>'get',
-            'objectloader'=>false,
+            'objectloader'=>true,
             'appVersions'=>[
                 'trendMax'=>'v1'
             ]

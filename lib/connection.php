@@ -32,7 +32,6 @@ class connection {
 
         }
 
-        
         //get preloader classes
         $border->getPreLoaderClasses();
 
@@ -55,6 +54,10 @@ class connection {
 
         //get preloader class
         //$border->getPreLoaderClass();
+
+        if(strlen($service[0])==0){
+            return $border->responseOut([],'project path invalid : path/service/app/servicename/method');
+        }
 
         if(!file_exists(root . '/'.src.'/'.$service[0].'')){
             return $border->responseOut([],'project has not been created');
@@ -312,6 +315,17 @@ class connection {
         $objectLoader=$border->resolve->resolve($objectLoader);
         $objectLoaderMethod=request.'ObjectLoader';
 
+        $objectLoaderExcept=strtolower(request).'Except';
+
+        $objectMethodicCall=$objectLoader->$objectLoaderMethod();
+
+        $exceptapp=app.'/'.service;
+
+        if(in_array($exceptapp,$objectLoader->$objectLoaderExcept())){
+
+            $objectMethodicCall=[];
+        }
+
 
         $serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
         $serviceobjectLoader=$border->resolve->resolve($serviceobjectLoader);
@@ -340,7 +354,7 @@ class connection {
             $s_serviceobjectLoaderMethodcall=$s_serviceobjectLoader->$s_serviceobjectLoaderMethod();
         }
 
-        return array_merge_recursive($servicemethodicCall,$s_serviceobjectLoaderMethodcall,$objectLoader->$objectLoaderMethod());
+        return array_merge_recursive($servicemethodicCall,$s_serviceobjectLoaderMethodcall,$objectMethodicCall);
     }
 
 
