@@ -9,8 +9,6 @@
  */
 
 namespace src\services;
-use src\app\mobi\v1\model\task;
-use src\packages\auto\csrf\csrf;
 
 /**
  * Represents a redis class.
@@ -31,7 +29,6 @@ class db {
     private static $table=null;
     private static $select="*";
     private static $find=null;
-    private static $dbtable=null;
 
 
     public function __construct(){
