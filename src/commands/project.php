@@ -55,8 +55,10 @@ class project {
             $touchServiceApp['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/app.php',$touchServiceApp);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/config/database');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/config/database/index.html',null);
+            $database['execution']='services/database';
+            $database['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/config/database.php',$database);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');
             $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');

@@ -137,7 +137,7 @@ class branches {
 
         $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\query\\'.$file;
         $container = \DI\ContainerBuilder::buildDevContainer();
-        return $container->get($sourcename)->$method();
+        return ['queryResult'=>$container->get($sourcename)->$method()];
     }
 
 
