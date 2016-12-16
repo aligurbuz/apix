@@ -53,7 +53,7 @@ class token {
 
         //client ip tokens
         $token['clientIp']=[];
-        //$token['clientIp']['apix']='192.168.33.12';
+        //$token['clientIp']['apix']='192.168.33.1';
 
         return $token;
     }
@@ -68,11 +68,11 @@ class token {
 
         //except routes
         $except=[];
-        //$except[]=app.'/service/method';
+        //$except[]=app.'/service/method?';
 
         //excepts client ip
         $except['clientIp']=[];
-        //$except['clientIp']['192.168.33.1'][]=app.'/service/method';
+        //$except['clientIp']['192.168.33.1'][]=app.'/service/method?';
 
         return $except;
     }

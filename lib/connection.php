@@ -427,14 +427,14 @@ class connection {
         }
 
         //except provision
-        if(in_array(app.'/'.service.'/'.method.'',$tokenexcept)){
+        if(in_array(app.'/'.service.'/'.method.'',$tokenexcept) OR in_array(app.'/'.service.'',$tokenexcept)){
             //return token provision
             return call_user_func($callback);
         }
 
         //except provision clientIp
         if(array_key_exists($_SERVER['REMOTE_ADDR'],$tokenexcept['clientIp'])){
-            if(in_array(app.'/'.service.'/'.method.'',$tokenexcept['clientIp'][$_SERVER['REMOTE_ADDR']])){
+            if(in_array(app.'/'.service.'/'.method.'',$tokenexcept['clientIp'][$_SERVER['REMOTE_ADDR']]) OR in_array(app.'/'.service.'',$tokenexcept['clientIp'][$_SERVER['REMOTE_ADDR']])){
                 //return token provision
                 return call_user_func($callback);
             }
@@ -464,8 +464,19 @@ class connection {
         $provisionMethod=''.request.'Provision';
         $provisionMethodExcept=''.request.'Except';
 
-        if($provision->$provisionMethod()['success'] OR in_array(app.'/'.service.'/'.method.'',$provision->$provisionMethodExcept())){
-            return call_user_func($callback);
+        if($provision->$provisionMethod()['success'] OR in_array(app.'/'.service.'',$provision->$provisionMethodExcept())){
+
+            $serviceprovision="\\src\\app\\".app."\\v1\\provisions\\index";
+            $serviceprovision=$this->resolve->resolve($serviceprovision);
+            $serviceprovisionMethod=''.request.'Provision';
+            $serviceprovisionExcept=''.request.'Except';
+
+            if($serviceprovision->$serviceprovisionMethod()['success'] OR in_array(service,$serviceprovision->$serviceprovisionExcept())){
+
+                return call_user_func($callback);
+            }
+
+
         }
 
         return $this->responseOut([],$provision->$provisionMethod()['message']);

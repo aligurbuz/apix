@@ -1,29 +1,29 @@
 <?php
 /*
- * This file is data object loader of the every service.
+ * This file is provision of the every service.
  *
- * object loader returns array value
+ * provision returns boolean value (true|false)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace src\app\mobi\v1\provisions;
+namespace src\app\__projectName__\v1\provisions;
 use src\services\httprequest as request;
 
 /**
- * Represents a object loader class.
+ * Represents a provision class.
  *
  * main call
  * return type boolean
  */
 
-class objectloader {
+class index {
 
     public $request;
 
     /**
-     * Represents a object loader construct class.
+     * Represents a provision construct class.
      *
      * $data main variables
      * return type string
@@ -34,33 +34,31 @@ class objectloader {
     }
 
     /**
-     * object loader for get method.
+     * provision for get method.
      *
      * @return array
      */
-    public function getObjectLoader(){
+    public function getProvision(){
 
-        //get object
-        $list=[];
-        //$list['client']['developer']='aligurbuz';
-
-        //return
-        return $list;
+        //get provision
+        return [
+            'success'=>true,
+            'message'=>'Get Provision Error'
+        ];
     }
 
     /**
-     * object loader for post method.
+     * provision for post method.
      *
      * @return array
      */
-    public function postObjectLoader(){
+    public function postProvision(){
 
-        //get object
-        $list=[];
-        //$list['client']['developer']='aligurbuz';
-
-        //return
-        return $list;
+        //post provision
+        return [
+            'success'=>true,
+            'message'=>'Post Provision Error'
+        ];
     }
 
 
@@ -72,7 +70,7 @@ class objectloader {
     public function getExcept(){
 
         return [
-            //app.'/service/method'
+            //'stk'
         ];
     }
 
@@ -85,7 +83,7 @@ class objectloader {
     public function postExcept(){
 
         return [
-            //app.'/service/method'
+            //'stk'
         ];
     }
 
