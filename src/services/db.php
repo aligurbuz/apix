@@ -26,9 +26,11 @@ class db {
     private $user;
     private $password;
     private static $db;
-    private static $table=null;
     private static $select="*";
     private static $find=null;
+    private static $where=[];
+
+    private static $primarykey_static=null;
 
 
     public function __construct(){
@@ -45,31 +47,6 @@ class db {
         self::$db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
         self::$db->exec("SET CHARACTER SET utf8");
         self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    }
-
-    /**
-     * database table.
-     *
-     * @return pdo class
-     */
-    public static function table($table=null,$find=null){
-
-        if(self::$_instance==null){
-            self::$_instance=new self();
-        }
-
-        if($table!==null){
-            self::$table=$table;
-        }
-
-        if($find!==null){
-
-            self::$find=$find;
-            return self::get();
-        }
-
-        return new static;
-
     }
 
 
@@ -89,6 +66,28 @@ class db {
         return new static;
 
     }
+
+
+    /**
+     * query where.
+     *
+     * @return pdo class
+     */
+    public static function where($field,$operator,$value){
+
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        self::$where['field'][]=$field;
+        self::$where['operator'][]=$operator;
+        self::$where['value'][]=$value;
+
+
+        return new static;
+
+    }
+
 
 
     /**
@@ -121,6 +120,11 @@ class db {
      */
     public static function get(){
 
+        //dd(self::$where);
+        $model=new static;
+        //get primary key
+        self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
+
         $execute=[];
         $where='';
 
@@ -128,17 +132,34 @@ class db {
         $select=(is_array(self::$select)) ? implode(",",self::$select) : self::$select;
 
         //where filter
-        if(self::$find!==null){
-            $where.='WHERE id=:id';
-            $execute[':id']=self::$find;
-
+        $whereOperation=self::getWhereOperation();
+        if(count($whereOperation)){
+            $where.=self::getWhereOperation()['where'];
+            $execute=self::getWhereOperation()['execute'];
         }
 
-
-        $query=self::$db->prepare("select ".$select." from ".self::$table." ".$where."");
+        $query=self::$db->prepare("select ".$select." from ".$model->table." ".$where."");
         $query->execute($execute);
         return $query->fetchAll(\PDO::FETCH_OBJ);
 
+    }
+
+    /**
+     * query get where operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getWhereOperation(){
+
+        $list=[];
+        if(self::$find!==null){
+            $list['where']='WHERE '.self::$primarykey_static.'=:'.self::$primarykey_static.'';
+            $list['execute']=array(':'.self::$primarykey_static.''=>self::$find);
+
+        }
+
+        return $list;
     }
 
 
