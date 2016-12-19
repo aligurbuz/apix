@@ -158,6 +158,18 @@ class db {
             $list['execute']=array(':'.self::$primarykey_static.''=>self::$find);
 
         }
+        else{
+            if(count(self::$where)){
+                $fieldPrepareArray=[];
+                foreach(self::$where['field'] as $field_key=>$field_value){
+                    $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
+                    $fieldPrepareArrayExexute[':'.$field_value.'']=self::$where['value'][$field_key];
+                }
+                $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
+                $list['execute']=$fieldPrepareArrayExexute;
+            }
+
+        }
 
         return $list;
     }

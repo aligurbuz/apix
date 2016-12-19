@@ -43,6 +43,6 @@ class index {
     public function get(){
 
         //return source
-        return task::find(56);
+        return task::where("com_id","=",2)->get();
     }
 }
