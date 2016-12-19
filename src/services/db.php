@@ -73,15 +73,31 @@ class db {
      *
      * @return pdo class
      */
-    public static function where($field,$operator,$value){
+    public static function where($field=null,$operator=null,$value=null){
 
+        //instance check
         if(self::$_instance==null){
             self::$_instance=new self();
         }
 
-        self::$where['field'][]=$field;
-        self::$where['operator'][]=$operator;
-        self::$where['value'][]=$value;
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            call_user_func_array($field,self::$where);
+
+        }
+        else{
+            //where criteria coming with all values
+            //where nested true
+            if($field!==null AND $operator!==null AND $value!==null){
+                self::$where['field'][]=$field;
+                self::$where['operator'][]=$operator;
+                self::$where['value'][]=$value;
+            }
+        }
+
+
+
 
 
         return new static;
@@ -163,10 +179,10 @@ class db {
                 $fieldPrepareArray=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
                     $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
-                    $fieldPrepareArrayExexute[':'.$field_value.'']=self::$where['value'][$field_key];
+                    $fieldPrepareArrayExecute[':'.$field_value.'']=self::$where['value'][$field_key];
                 }
                 $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
-                $list['execute']=$fieldPrepareArrayExexute;
+                $list['execute']=$fieldPrepareArrayExecute;
             }
 
         }
