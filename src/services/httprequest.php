@@ -82,4 +82,23 @@ class httprequest {
 
         return $this->request->request->all();
     }
+
+    /**
+     * get input.
+     *
+     * @return string
+     */
+    public function getQueryString(){
+
+        $list=[];
+        if($this->request->getQueryString()!==null){
+            $getQueryString=explode("&",$this->request->getQueryString());
+            foreach ($getQueryString as $value){
+                $valueexplode=explode("=",$value);
+                $list[$valueexplode[0]]=$valueexplode[1];
+            }
+        }
+
+        return $list;
+    }
 }

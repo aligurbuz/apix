@@ -1,9 +1,16 @@
 <?php
 namespace src\app\mobi\v1\model;
 
-class task extends \src\services\db {
+class user extends \src\services\db {
     //tablename
-    protected $table='tasks';
+    protected $table='users';
+
+    //this value is run for auto paginator
+    protected $paginator=['auto'=>10];
+
+    //this value is run for auto order by desc
+    protected $orderBy=['auto'=>['id'=>'desc']];
+
     //this scope is automatically run
     //protected $scope=['auto'=>'active'];
 

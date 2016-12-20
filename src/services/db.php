@@ -9,6 +9,7 @@
  */
 
 namespace src\services;
+use src\services\httprequest as request;
 
 /**
  * Represents a redis class.
@@ -32,10 +33,14 @@ class db {
 
     private static $primarykey_static=null;
     private static $modelscope=null;
+    private static $page=null;
+    private static $order=null;
+    private static $request=null;
 
 
     public function __construct(){
 
+        self::$request=new request();
         $config="\\src\\app\\".app."\\".version."\\config\\database";
         $configdb=$config::dbsettings();
 
@@ -112,11 +117,6 @@ class db {
 
             }
         }
-
-
-
-
-
         return new static;
 
     }
@@ -147,13 +147,47 @@ class db {
 
 
     /**
+     * query paginate.
+     *
+     * @return pdo class
+     */
+    public static function paginate($page=null){
+
+        if($page!==null){
+
+            self::$page=$page;
+        }
+        return self::get();
+
+    }
+
+    /**
+     * query order by.
+     *
+     * @return pdo class
+     */
+    public static function orderBy($key=null,$order=null){
+
+        if($key!==null){
+
+            if($order==null){
+                $order='desc';
+            }
+
+            self::$order=['key'=>$key,'order'=>$order];
+        }
+        return new static;
+
+    }
+
+
+    /**
      * query get.
      *
      * @return pdo class
      */
     public static function get(){
 
-        //dd(self::$where);
         $model=new static;
         //get primary key
         self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
@@ -162,7 +196,14 @@ class db {
         $where='';
 
         //select filter
-        $select=(is_array(self::$select)) ? implode(",",self::$select) : self::$select;
+        $select=self::getSelectOperation();
+        //get select hidden
+        if(property_exists($model,"selectHidden")){
+            $query=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
+            $query->execute();
+            $columns=$query->fetchAll(\PDO::FETCH_OBJ);
+            $select=self::getSelectOperation($columns);
+        }
 
         //where filter
         $whereOperation=self::getWhereOperation();
@@ -171,9 +212,98 @@ class db {
             $execute=self::getWhereOperation()['execute'];
         }
 
-        $query=self::$db->prepare("select ".$select." from ".$model->table." ".$where."");
+        //ofset filter
+        $offsetOperation=self::getOffsetOperation();
+        $offset='';
+        if(count($offsetOperation)){
+            $offset.='LIMIT ';
+            $offset.=self::getOffsetOperation()['offset'];
+            $offset.=',';
+            $offset.=self::getOffsetOperation()['limit'];
+        }
+
+        //get Orderby
+        $order=self::getOrderByOperation();
+
+        $query=self::$db->prepare("select ".$select." from ".$model->table." ".$where." ".$order." ".$offset."");
         $query->execute($execute);
         return $query->fetchAll(\PDO::FETCH_OBJ);
+
+    }
+
+    /**
+     * query get order by operation.
+     *
+     * @return pdo class
+     */
+    public static  function getOrderByOperation(){
+
+        $model=new static;
+
+        if(self::$order!==null && is_array(self::$order)){
+            $order='';
+            $order.='ORDER BY '.self::$order['key'].' '.self::$order['order'].'';
+        }
+        else{
+            $order='';
+            if(property_exists($model,"orderBy")){
+                if(array_key_exists("auto",$model->orderBy)){
+                    foreach($model->orderBy['auto'] as $order_key=>$order_value){
+                        $order.='ORDER BY '.$order_key.' '.$order_value.'';
+                    }
+                }
+            }
+        }
+
+
+        return $order;
+    }
+
+    /**
+     * query get order by operation.
+     *
+     * @return pdo class
+     */
+    public static  function getSelectOperation($columns=null){
+        //select filter
+        $model=new static;
+        $select=(is_array(self::$select)) ? implode(",",self::$select) : self::$select;
+        if($columns==null){
+            if(property_exists($model,"selectHiddenPasswordField")){
+                $selectExclude=[];
+                foreach ($model->selectHiddenPasswordField as $exclude) {
+                    if(self::$select=="*" OR in_array($exclude,self::$select)){
+                        $selectExclude[]=" '***' as ".$exclude."";
+                    }
+                }
+                if(count($selectExclude)){
+                    $select=''.$select.' ,'.implode(",",$selectExclude).'';
+                }
+            }
+        }
+        else{
+            $collist=[];
+            if(property_exists($model,"selectHidden")){
+                if(is_array(self::$select) && count(self::$select)){
+                    $columns=self::$select;
+                    foreach($columns as $col_key=>$col_value){
+                        if(!in_array($col_value,$model->selectHidden)){
+                            $collist[]=$col_value;
+                        }
+                    }
+                }
+                else{
+                    foreach($columns as $col){
+                        if(!in_array($col->Field,$model->selectHidden)){
+                            $collist[]=$col->Field;
+                        }
+                    }
+                }
+
+                $select=implode(",",$collist);
+            }
+        }
+        return $select;
 
     }
 
@@ -212,6 +342,43 @@ class db {
         }
 
         return $list;
+    }
+
+
+    /**
+     * query get offset operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getOffsetOperation(){
+
+        $list=[];
+        $model=new static;
+        $request=self::$request;
+
+        if(self::$page==null && property_exists($model,"paginator")){
+            if(array_key_exists("auto",$model->paginator)){
+                self::$page=$model->paginator['auto'];
+            }
+        }
+
+        if(self::$page!==null){
+
+            $offset=0;
+            $getQueryString=$request->getQueryString();
+            if(count($getQueryString)){
+                if(array_key_exists("page",$getQueryString)){
+                    $offset=$getQueryString['page']-1;
+                    $offset=$offset*self::$page;
+                }
+            }
+            $list['offset']=$offset;
+            $list['limit']=self::$page;
+        }
+
+        return $list;
+
     }
 
 

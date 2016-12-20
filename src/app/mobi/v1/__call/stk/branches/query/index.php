@@ -9,7 +9,9 @@
  */
 
 namespace src\app\mobi\v1\__call\stk\branches\query;
-use src\app\mobi\v1\model\task;
+use src\app\mobi\v1\model\admin;
+use src\app\mobi\v1\model\log;
+use src\app\mobi\v1\model\user;
 use src\services\httprequest as request;
 
 /**
@@ -42,7 +44,7 @@ class index {
      */
     public function get(){
 
-        return task::get();
+        return log::get();
 
     }
 }
