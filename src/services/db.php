@@ -31,6 +31,7 @@ class db {
     private static $where=[];
 
     private static $primarykey_static=null;
+    private static $modelscope=null;
 
 
     public function __construct(){
@@ -67,6 +68,21 @@ class db {
 
     }
 
+    /**
+     * query where scope.
+     *
+     * @return pdo class
+     */
+    public static function scope($scope=null){
+
+        if($scope!==null){
+           self::$modelscope=$scope;
+        }
+
+        return new static;
+
+    }
+
 
     /**
      * query where.
@@ -93,6 +109,7 @@ class db {
                 self::$where['field'][]=$field;
                 self::$where['operator'][]=$operator;
                 self::$where['value'][]=$value;
+
             }
         }
 
@@ -169,6 +186,12 @@ class db {
     private static function getWhereOperation(){
 
         $list=[];
+        $model=new static;
+
+        //model scope
+        self::getScopeOperation();
+
+        //find method
         if(self::$find!==null){
             $list['where']='WHERE '.self::$primarykey_static.'=:'.self::$primarykey_static.'';
             $list['execute']=array(':'.self::$primarykey_static.''=>self::$find);
@@ -176,6 +199,7 @@ class db {
         }
         else{
             if(count(self::$where)){
+
                 $fieldPrepareArray=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
                     $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
@@ -191,4 +215,56 @@ class db {
     }
 
 
+    /**
+     * query scope where operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getScopeOperation(){
+
+        //get model
+        $model=new static;
+        //get scope
+        $scope=[];
+        if(self::$modelscope!==null){
+            $scope=$model->modelScope(self::$modelscope);
+            if(is_array(self::$modelscope)){
+                $modelScopeJoin=[];
+                foreach (self::$modelscope as $modelscope_key=>$modelscope_value) {
+                    foreach($model->modelScope($modelscope_value) as $mvkey=>$mvvalue){
+                        $scope[$mvkey]=$mvvalue;
+                    }
+                }
+            }
+        }
+        else{
+            if(property_exists($model,"scope")){
+                if(array_key_exists("auto",$model->scope)){
+                    if(!is_array($model->scope['auto'])){
+                        $scope=$model->modelScope($model->scope['auto']);
+                    }
+                    else{
+                        $modelScopeJoin=[];
+                        foreach ($model->scope['auto'] as $modelscope_key=>$modelscope_value) {
+                            foreach($model->modelScope($modelscope_value) as $mvkey=>$mvvalue){
+                                $scope[$mvkey]=$mvvalue;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        //get scope where
+        foreach($scope as $scope_key=>$scope_value){
+            self::$where['field'][]=$scope_key;
+            self::$where['operator'][]="=";
+            self::$where['value'][]=$scope_value;
+        }
+
+        return self::$where;
+    }
 }
