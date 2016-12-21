@@ -36,6 +36,9 @@ class db {
     private static $page=null;
     private static $order=null;
     private static $request=null;
+    private static $toSql=null;
+    private static $rand=null;
+    private static $all=null;
 
 
     public function __construct(){
@@ -182,6 +185,56 @@ class db {
 
 
     /**
+     * query toSql.
+     *
+     * @return pdo class
+     */
+    public static function toSql(){
+
+        self::$toSql="toSql";
+        return self::get();
+
+    }
+
+    /**
+     * query rand.
+     *
+     * @return pdo class
+     */
+    public static function rand($value=null){
+
+        if($value==null){
+            self::$rand=0;
+        }
+        else{
+            if(is_numeric($value)){
+                self::$rand=$value;
+            }
+            else{
+                self::$rand=0;
+            }
+
+        }
+
+        return self::get();
+
+    }
+
+
+    /**
+     * query rand.
+     *
+     * @return pdo class
+     */
+    public static function all(){
+
+        self::$all=1;
+        return self::get();
+
+    }
+
+
+    /**
      * query get.
      *
      * @return pdo class
@@ -213,21 +266,43 @@ class db {
         }
 
         //ofset filter
-        $offsetOperation=self::getOffsetOperation();
         $offset='';
-        if(count($offsetOperation)){
-            $offset.='LIMIT ';
-            $offset.=self::getOffsetOperation()['offset'];
-            $offset.=',';
-            $offset.=self::getOffsetOperation()['limit'];
+        if(self::$all==null){
+            $offsetOperation=self::getOffsetOperation();
+            if(count($offsetOperation)){
+                $offset.='LIMIT ';
+                $offset.=self::getOffsetOperation()['offset'];
+                $offset.=',';
+                $offset.=self::getOffsetOperation()['limit'];
+            }
         }
+
+
 
         //get Orderby
         $order=self::getOrderByOperation();
 
-        $query=self::$db->prepare("select ".$select." from ".$model->table." ".$where." ".$order." ".$offset."");
-        $query->execute($execute);
-        return $query->fetchAll(\PDO::FETCH_OBJ);
+        $table=$model->table;
+        if(self::$rand!==null){
+            $table='(select '.$select.' from '.$model->table.' '.$where.' '.$order.' '.$offset.') as '.$table.'';
+            $where='';
+            $order='ORDER BY RAND()';
+            if(self::$rand>0){
+                $offset='LIMIT '.self::$rand;
+            }
+
+        }
+
+
+        if(self::$toSql==null){
+            $query=self::$db->prepare("select ".$select." from ".$table." ".$where." ".$order." ".$offset."");
+            $query->execute($execute);
+            return $query->fetchAll(\PDO::FETCH_OBJ);
+        }
+        else{
+            return "select ".$select." from ".$model->table." ".$where." ".$order." ".$offset."";
+        }
+
 
     }
 
@@ -236,25 +311,25 @@ class db {
      *
      * @return pdo class
      */
-    public static  function getOrderByOperation(){
+    private static  function getOrderByOperation(){
 
         $model=new static;
 
         if(self::$order!==null && is_array(self::$order)){
             $order='';
             $order.='ORDER BY '.self::$order['key'].' '.self::$order['order'].'';
+
         }
         else{
             $order='';
             if(property_exists($model,"orderBy")){
                 if(array_key_exists("auto",$model->orderBy)){
-                    foreach($model->orderBy['auto'] as $order_key=>$order_value){
-                        $order.='ORDER BY '.$order_key.' '.$order_value.'';
+                    foreach ($model->orderBy['auto'] as $order_key => $order_value) {
+                        $order .= 'ORDER BY ' . $order_key . ' ' . $order_value . '';
                     }
                 }
             }
         }
-
 
         return $order;
     }
@@ -264,7 +339,7 @@ class db {
      *
      * @return pdo class
      */
-    public static  function getSelectOperation($columns=null){
+    private static  function getSelectOperation($columns=null){
         //select filter
         $model=new static;
         $select=(is_array(self::$select)) ? implode(",",self::$select) : self::$select;
