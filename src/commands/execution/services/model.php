@@ -11,6 +11,9 @@ class __className__ extends \src\services\db {
     //this value is run for auto order by desc
     protected $orderBy=['auto'=>['id'=>'desc']];
 
+    //this value is similar field that on the joined tables
+    //protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname']]];
+
     //this value hiddens with password value to select field
     //protected $selectHiddenPasswordField=['password'];
 

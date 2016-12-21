@@ -21,8 +21,9 @@ class log extends \src\services\db {
     //protected $scope=['auto'=>'active'];
 
     //scope query
-    /*public static function modelScope($scope=null){
+    public static function modelScope($scope=null){
         $list['active']['status']=1;
         return $list[$scope];
-    }*/
+    }
+
 }

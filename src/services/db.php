@@ -39,6 +39,10 @@ class db {
     private static $toSql=null;
     private static $rand=null;
     private static $all=null;
+    private static $callstatic_scope=[];
+    private static $join=null;
+    private static $joinType=null;
+    private static $joinTypeField=null;
 
 
     public function __construct(){
@@ -56,6 +60,21 @@ class db {
         self::$db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
         self::$db->exec("SET CHARACTER SET utf8");
         self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    }
+
+    /**
+     * query callstatic.
+     *
+     * @return pdo class
+     */
+    public static function __callStatic($name,$parameters=[]){
+
+        //instance check
+
+        self::$callstatic_scope[]=$name;
+
+        return new static;
+
     }
 
 
@@ -197,6 +216,22 @@ class db {
     }
 
     /**
+     * query join.
+     *
+     * @return pdo class
+     */
+    public static function join($table=null,$joinType="inner"){
+
+        if($table!==null){
+            self::$join=$table;
+            self::$joinType=$joinType;
+        }
+
+        return new static;
+
+    }
+
+    /**
      * query rand.
      *
      * @return pdo class
@@ -242,6 +277,7 @@ class db {
     public static function get(){
 
         $model=new static;
+
         //get primary key
         self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
 
@@ -250,19 +286,21 @@ class db {
 
         //select filter
         $select=self::getSelectOperation();
+
+        $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
+        $showColumns->execute();
+        $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+
         //get select hidden
         if(property_exists($model,"selectHidden")){
-            $query=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
-            $query->execute();
-            $columns=$query->fetchAll(\PDO::FETCH_OBJ);
             $select=self::getSelectOperation($columns);
         }
 
         //where filter
         $whereOperation=self::getWhereOperation();
         if(count($whereOperation)){
-            $where.=self::getWhereOperation()['where'];
-            $execute=self::getWhereOperation()['execute'];
+            $where.=$whereOperation['where'];
+            $execute=$whereOperation['execute'];
         }
 
         //ofset filter
@@ -277,14 +315,36 @@ class db {
             }
         }
 
-
-
         //get Orderby
         $order=self::getOrderByOperation();
 
+        $join=self::getJoinOperation();
+
+        //values coming from join type
+        if(self::$joinTypeField!==null){
+            if($select!=="*"){
+                $selectVal=explode(",",$select);
+                $selectList=[];
+                foreach($selectVal as $val){
+                    $selectList[]=''.$model->table.'.'.$val.'';
+                }
+
+                $select=implode(",",$selectList);
+            }
+            $select=($select=="*") ? implode(",",self::getTableColumns($columns)) : $select;
+            $select=''.$select.','.implode(",",self::$joinTypeField).'';
+
+            $where=str_replace(":".$model->table.".",":",$where);
+            $executeList=[];
+            foreach($execute as $execute_key=>$execute_val){
+                $executeList[str_replace(":".$model->table.".",":",$execute_key)]=$execute_val;
+            }
+            $execute=$executeList;
+        }
+
         $table=$model->table;
         if(self::$rand!==null){
-            $table='(select '.$select.' from '.$model->table.' '.$where.' '.$order.' '.$offset.') as '.$table.'';
+            $table='(select '.$select.' from '.$model->table.' '.$join.' '.$where.' '.$order.' '.$offset.') as '.$table.'';
             $where='';
             $order='ORDER BY RAND()';
             if(self::$rand>0){
@@ -295,12 +355,16 @@ class db {
 
 
         if(self::$toSql==null){
-            $query=self::$db->prepare("select ".$select." from ".$table." ".$where." ".$order." ".$offset."");
+            //dd("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."",$execute);
+            $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
             $query->execute($execute);
             return $query->fetchAll(\PDO::FETCH_OBJ);
         }
         else{
-            return "select ".$select." from ".$model->table." ".$where." ".$order." ".$offset."";
+            foreach ($execute as $execute_key=>$execute_value){
+                $where=str_replace($execute_key,$execute_value,$where);
+            }
+            return "select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."";
         }
 
 
@@ -317,7 +381,7 @@ class db {
 
         if(self::$order!==null && is_array(self::$order)){
             $order='';
-            $order.='ORDER BY '.self::$order['key'].' '.self::$order['order'].'';
+            $order.='ORDER BY '.$model->table.'.'.self::$order['key'].' '.self::$order['order'].'';
 
         }
         else{
@@ -325,7 +389,7 @@ class db {
             if(property_exists($model,"orderBy")){
                 if(array_key_exists("auto",$model->orderBy)){
                     foreach ($model->orderBy['auto'] as $order_key => $order_value) {
-                        $order .= 'ORDER BY ' . $order_key . ' ' . $order_value . '';
+                        $order .= 'ORDER BY '.$model->table.'.' . $order_key . ' ' . $order_value . '';
                     }
                 }
             }
@@ -394,7 +458,7 @@ class db {
         $model=new static;
 
         //model scope
-        self::getScopeOperation();
+        self::$where=self::getScopeOperation();
 
         //find method
         if(self::$find!==null){
@@ -458,6 +522,31 @@ class db {
 
 
     /**
+     * query get join operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getJoinOperation(){
+
+        $list='';
+        if(self::$join!==null){
+            $model=new static;
+            if(property_exists($model,"joinField")){
+                $joiTypeFieldList=[];
+                foreach ($model->joinField[self::$join]['joinField'] as $jtf){
+                    $joiTypeFieldList[]=''.self::$join.'.'.$jtf;
+                }
+                self::$joinTypeField=$joiTypeFieldList;
+                $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$model->joinField[self::$join]['match'].'='.self::$join.'.id';
+            }
+        }
+        return $list;
+
+    }
+
+
+    /**
      * query scope where operation.
      *
      * @return pdo class
@@ -508,5 +597,28 @@ class db {
         }
 
         return self::$where;
+    }
+
+
+    /**
+     * query scope where operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getTableColumns($columns=null){
+
+        //get model
+        $model=new static;
+
+        $list=[];
+        if($columns!==null){
+            foreach($columns as $cols){
+                $list[]=''.$model->table.'.'.$cols->Field.'';
+            }
+        }
+
+        return $list;
+
     }
 }

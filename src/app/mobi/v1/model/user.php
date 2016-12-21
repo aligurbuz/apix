@@ -11,6 +11,9 @@ class user extends \src\services\db {
     //this value is run for auto order by desc
     protected $orderBy=['auto'=>['id'=>'desc']];
 
+    //this value is similar field that on the joined tables
+    protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname']]];
+
     //this value hiddens with password value to select field
     //protected $selectHiddenPasswordField=['password'];
 
@@ -21,8 +24,8 @@ class user extends \src\services\db {
     //protected $scope=['auto'=>'active'];
 
     //scope query
-    /*public static function modelScope($scope=null){
+    public static function modelScope($scope=null){
         $list['active']['status']=1;
         return $list[$scope];
-    }*/
+    }
 }
