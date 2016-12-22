@@ -11,6 +11,7 @@
 namespace src\app\mobi\v1\__call\stk\branches\query;
 use src\app\mobi\v1\model\log;
 use src\app\mobi\v1\model\role;
+use src\app\mobi\v1\model\trigger;
 use src\app\mobi\v1\model\user;
 use src\services\httprequest as request;
 
@@ -45,6 +46,6 @@ class index {
     public function get(){
 
         //return source
-        return user::join("books","left")->get();
+        return user::join("books")->get();
     }
 }

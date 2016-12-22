@@ -1,9 +1,9 @@
 <?php
-namespace src\app\__projectName__\v1\model;
+namespace src\app\mobi\v1\model;
 
-class __className__ extends \src\services\db {
+class trigger extends \src\services\db {
     //tablename
-    protected $table='__tableName__';
+    protected $table='prosystem_admin_report_trigger';
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
@@ -24,8 +24,8 @@ class __className__ extends \src\services\db {
     //protected $scope=['auto'=>'active'];
 
     //scope query
-    public static function modelScope($scope=null){
+    /*public static function modelScope($scope=null){
         $list['active']['status']=1;
         return $list[$scope];
-    }
+    }*/
 }

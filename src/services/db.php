@@ -331,13 +331,14 @@ class db {
 
                 $select=implode(",",$selectList);
             }
+
             $select=($select=="*") ? implode(",",self::getTableColumns($columns)) : $select;
             $select=''.$select.','.implode(",",self::$joinTypeField).'';
 
-            $where=str_replace(":".$model->table.".",":",$where);
+            $where=preg_replace('@:(\w+)\.@is',':',$where);
             $executeList=[];
             foreach($execute as $execute_key=>$execute_val){
-                $executeList[str_replace(":".$model->table.".",":",$execute_key)]=$execute_val;
+                $executeList[preg_replace('@:(\w+)\.@is',':',$execute_key)]=$execute_val;
             }
             $execute=$executeList;
         }
@@ -535,7 +536,15 @@ class db {
             if(property_exists($model,"joinField")){
                 $joiTypeFieldList=[];
                 foreach ($model->joinField[self::$join]['joinField'] as $jtf){
-                    $joiTypeFieldList[]=''.self::$join.'.'.$jtf;
+                    $jtf=explode("/",$jtf);
+                    if(array_key_exists(1,$jtf)){
+                        $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0].' as '.$jtf[1];
+                    }
+                    else
+                    {
+                        $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0];
+                    }
+
                 }
                 self::$joinTypeField=$joiTypeFieldList;
                 $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$model->joinField[self::$join]['match'].'='.self::$join.'.id';

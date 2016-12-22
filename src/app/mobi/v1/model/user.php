@@ -12,7 +12,7 @@ class user extends \src\services\db {
     protected $orderBy=['auto'=>['id'=>'desc']];
 
     //this value is similar field that on the joined tables
-    protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname']]];
+    protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']]];
 
     //this value hiddens with password value to select field
     //protected $selectHiddenPasswordField=['password'];
