@@ -12,7 +12,9 @@ class __className__ extends \src\services\db {
     protected $orderBy=['auto'=>['id'=>'desc']];
 
     //this value is similar field that on the joined tables
-    //protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname']]];
+    /*protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
+        'chats'=>['hasOne'=>'userid','joinField'=>['message']]
+    ];*/
 
     //this value hiddens with password value to select field
     //protected $selectHiddenPasswordField=['password'];

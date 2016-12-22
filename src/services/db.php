@@ -43,6 +43,7 @@ class db {
     private static $join=null;
     private static $joinType=null;
     private static $joinTypeField=null;
+    private static $hasMany=null;
 
 
     public function __construct(){
@@ -335,6 +336,7 @@ class db {
             $select=($select=="*") ? implode(",",self::getTableColumns($columns)) : $select;
             $select=''.$select.','.implode(",",self::$joinTypeField).'';
 
+
             $where=preg_replace('@:(\w+)\.@is',':',$where);
             $executeList=[];
             foreach($execute as $execute_key=>$execute_val){
@@ -357,9 +359,65 @@ class db {
 
         if(self::$toSql==null){
             //dd("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."",$execute);
-            $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
-            $query->execute($execute);
-            return $query->fetchAll(\PDO::FETCH_OBJ);
+            try {
+                $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
+                $query->execute($execute);
+                if(self::$hasMany==null){
+                    return $query->fetchAll(\PDO::FETCH_OBJ);
+                }
+
+                $query=$query->fetchAll(\PDO::FETCH_OBJ);
+                $resultlist=[];
+                $purecolumns=self::getTableColumns($columns,true);
+
+                $idlist=[];
+                $keylist=[];
+                $d=0;
+                $dj=-1;
+                foreach($query as $key=>$result){
+
+                    if(!in_array($result->id,$keylist)){
+                        foreach($purecolumns as $pure){
+                            $resultlist[$d][$pure]=$result->$pure;
+                        }
+                        $d=$d+1;
+                        $keylist[]=$result->id;
+                        $idlist[]=$key;
+                    }
+
+
+                    if(in_array($key,$idlist)){
+                        $dj=-1;
+                    }
+
+                    $dj=$dj+1;
+
+                    $hasManyAs=(array_key_exists("as",$model->joinField[self::$join])) ? $model->joinField[self::$join]['as'] : self::$join;
+                    foreach(self::getJoinOperationFieldAs(true) as $joinas){
+                        $resultlist[$d-1][$hasManyAs][$dj][$joinas]=$result->$joinas;
+                    }
+
+
+                }
+
+
+
+
+                return $resultlist;
+
+
+
+            }
+            catch(\Exception $e){
+                return [
+                    'error'=>$e->getMessage(),
+                    'code'=>$e->getCode(),
+                    'file'=>$e->getFile(),
+                    'line'=>$e->getLine(),
+                    'trace'=>$e->getTrace()
+                ];
+            }
+
         }
         else{
             foreach ($execute as $execute_key=>$execute_value){
@@ -535,23 +593,66 @@ class db {
             $model=new static;
             if(property_exists($model,"joinField")){
                 $joiTypeFieldList=[];
-                foreach ($model->joinField[self::$join]['joinField'] as $jtf){
-                    $jtf=explode("/",$jtf);
-                    if(array_key_exists(1,$jtf)){
-                        $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0].' as '.$jtf[1];
-                    }
-                    else
-                    {
-                        $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0];
-                    }
+                self::$joinTypeField=self::getJoinOperationFieldAs();
+
+                if(array_key_exists("match",$model->joinField[self::$join])){
+                    $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$model->joinField[self::$join]['match'].'='.self::$join.'.id';
+                }
+
+                if(array_key_exists("hasOne",$model->joinField[self::$join])){
+                    $hasOne=explode(":",$model->joinField[self::$join]['hasOne']);
+                    $hasOneField=(!array_key_exists(1,$hasOne)) ? 'id' : $hasOne[1];
+
+                    $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$hasOneField.'='.self::$join.'.'.$hasOne[0];
 
                 }
-                self::$joinTypeField=$joiTypeFieldList;
-                $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$model->joinField[self::$join]['match'].'='.self::$join.'.id';
+
+                if(array_key_exists("hasMany",$model->joinField[self::$join])){
+                    $hasOne=explode(":",$model->joinField[self::$join]['hasMany']);
+                    $hasOneField=(!array_key_exists(1,$hasOne)) ? 'id' : $hasOne[1];
+
+                    $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$hasOneField.'='.self::$join.'.'.$hasOne[0];
+
+                    self::$hasMany=1;
+
+                }
+
             }
         }
+
         return $list;
 
+    }
+
+
+    /**
+     * query get join operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getJoinOperationFieldAs($type=false){
+        $model=new static;
+        $joiTypeFieldList=[];
+        $joinTypeAs=[];
+        foreach ($model->joinField[self::$join]['joinField'] as $jtf){
+            $jtf=explode("/",$jtf);
+            if(array_key_exists(1,$jtf)){
+                $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0].' as '.$jtf[1];
+                $joinTypeAs[]=$jtf[1];
+            }
+            else
+            {
+                $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0];
+                $joinTypeAs[]=$jtf[0];
+            }
+
+        }
+
+        if($type){
+            return $joinTypeAs;
+        }
+        return $joiTypeFieldList;
     }
 
 
@@ -615,7 +716,7 @@ class db {
      * @return pdo class
      */
 
-    private static function getTableColumns($columns=null){
+    private static function getTableColumns($columns=null,$pure=false){
 
         //get model
         $model=new static;
@@ -623,7 +724,13 @@ class db {
         $list=[];
         if($columns!==null){
             foreach($columns as $cols){
-                $list[]=''.$model->table.'.'.$cols->Field.'';
+                if($pure==false){
+                    $list[]=''.$model->table.'.'.$cols->Field.'';
+                }
+                else{
+                    $list[]=''.$cols->Field.'';
+                }
+
             }
         }
 
