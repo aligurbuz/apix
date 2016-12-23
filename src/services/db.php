@@ -337,6 +337,7 @@ class db {
             $select=''.$select.','.implode(",",self::$joinTypeField).'';
 
 
+
             $where=preg_replace('@:(\w+)\.@is',':',$where);
             $executeList=[];
             foreach($execute as $execute_key=>$execute_val){
@@ -360,56 +361,62 @@ class db {
         if(self::$toSql==null){
             //dd("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."",$execute);
             try {
-                $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
-                $query->execute($execute);
-                if(self::$hasMany==null){
-                    return $query->fetchAll(\PDO::FETCH_OBJ);
-                }
-
-                $query=$query->fetchAll(\PDO::FETCH_OBJ);
-                $resultlist=[];
-                $purecolumns=self::getTableColumns($columns,true);
-
-                $idlist=[];
-                $keylist=[];
-                $d=0;
-                $dj=-1;
-                foreach($query as $key=>$result){
-
-                    if(!in_array($result->id,$keylist)){
-                        foreach($purecolumns as $pure){
-                            $resultlist[$d][$pure]=$result->$pure;
+                if(self::$hasMany!==null){
+                    //dd(self::getJoinOperationFieldAs(false));
+                    $listAs=self::getJoinOperationFieldAs("list");
+                    $listAsArray=[];
+                    foreach($listAs['list'] as $listAsValue){
+                        if(array_key_exists($listAsValue,$listAs['listAs'])){
+                            $listAsArray[]="GROUP_CONCAT(".$listAsValue." SEPARATOR '@@@@@___@@@@@') as ".$listAs['listAs'][$listAsValue];
                         }
-                        $d=$d+1;
-                        $keylist[]=$result->id;
-                        $idlist[]=$key;
+                        else{
+                            $listAsValueEx=explode(".",$listAsValue);
+                            $listAsArray[]="GROUP_CONCAT(".$listAsValue." SEPARATOR '@@@@@___@@@@@') as ".$listAsValueEx[1];
+                        }
+
                     }
 
+                    $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
+                     ".$order." ".$offset."");
+                    $query->execute($execute);
 
-                    if(in_array($key,$idlist)){
-                        $dj=-1;
+                    $query=$query->fetchAll(\PDO::FETCH_OBJ);
+
+                    $hasManyJoinAs=(array_key_exists("as",$model->joinField[self::$join])) ? $model->joinField[self::$join]['as'] : self::$join;
+
+                    foreach($query as $key=>$result){
+
+
+                        foreach(self::getTableColumns($columns,true) as $fkey){
+                            $resultList[$key][$fkey]=$result->$fkey;
+                        }
+
+                        foreach(self::getJoinOperationFieldAs(false) as $jfkx){
+                            $joins[$key][$jfkx]=explode("@@@@@___@@@@@",$result->$jfkx);
+                            for($i=0; $i<count($joins[$key][$jfkx]); $i++){
+                                $resultList[$key][$hasManyJoinAs][$i][$jfkx]=$joins[$key][$jfkx][$i];
+                            }
+                        }
+
+
                     }
 
-                    $dj=$dj+1;
+                    return $resultList;
+                }
+                else{
+                    $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
+                    $query->execute($execute);
 
-                    $hasManyAs=(array_key_exists("as",$model->joinField[self::$join])) ? $model->joinField[self::$join]['as'] : self::$join;
-                    foreach(self::getJoinOperationFieldAs(true) as $joinas){
-                        $resultlist[$d-1][$hasManyAs][$dj][$joinas]=$result->$joinas;
-                    }
-
+                    return $query->fetchAll(\PDO::FETCH_OBJ);
 
                 }
-
-
-
-
-                return $resultlist;
 
 
 
             }
             catch(\Exception $e){
                 return [
+                    'query'=>"select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."",
                     'error'=>$e->getMessage(),
                     'code'=>$e->getCode(),
                     'file'=>$e->getFile(),
@@ -593,7 +600,8 @@ class db {
             $model=new static;
             if(property_exists($model,"joinField")){
                 $joiTypeFieldList=[];
-                self::$joinTypeField=self::getJoinOperationFieldAs();
+                self::$joinTypeField=self::getJoinOperationFieldAs(true);
+
 
                 if(array_key_exists("match",$model->joinField[self::$join])){
                     $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$model->joinField[self::$join]['match'].'='.self::$join.'.id';
@@ -613,7 +621,7 @@ class db {
 
                     $list.=''.self::$joinType.' JOIN '.self::$join.' ON '.$model->table.'.'.$hasOneField.'='.self::$join.'.'.$hasOne[0];
 
-                    self::$hasMany=1;
+                    self::$hasMany=["status"=>1,"hasOneField"=>$hasOneField,"joinHasOne"=>$hasOne[0],"hasManyJoinField"=>$model->joinField[self::$join]['joinField']];
 
                 }
 
@@ -635,23 +643,36 @@ class db {
         $model=new static;
         $joiTypeFieldList=[];
         $joinTypeAs=[];
+        $joinTypeAsList=[];
+        $joinTypeAsListAs=[];
         foreach ($model->joinField[self::$join]['joinField'] as $jtf){
             $jtf=explode("/",$jtf);
             if(array_key_exists(1,$jtf)){
                 $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0].' as '.$jtf[1];
+                $joinTypeAsList[]=''.self::$join.'.'.$jtf[0].'';
+                $joinTypeAsListAs[''.self::$join.'.'.$jtf[0].'']=$jtf[1];
                 $joinTypeAs[]=$jtf[1];
             }
             else
             {
                 $joiTypeFieldList[]=''.self::$join.'.'.$jtf[0];
+                $joinTypeAsList[]=''.self::$join.'.'.$jtf[0].'';
                 $joinTypeAs[]=$jtf[0];
             }
 
         }
 
-        if($type){
+
+
+        if($type===false){
             return $joinTypeAs;
         }
+
+        if($type==="list"){
+
+            return ['list'=>$joinTypeAsList,'listAs'=>$joinTypeAsListAs];
+        }
+
         return $joiTypeFieldList;
     }
 
