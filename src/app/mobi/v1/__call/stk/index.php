@@ -44,4 +44,16 @@ class index extends app {
         //return index
         return \branch::query()->get();
     }
+
+
+    /**
+     * index method is main method.
+     *
+     * @return array
+     */
+    public function postIndex(){
+
+        //return index
+        return \branch::query()->get();
+    }
 }

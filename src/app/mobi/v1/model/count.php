@@ -1,9 +1,9 @@
 <?php
-namespace src\app\__projectName__\v1\model;
+namespace src\app\mobi\v1\model;
 
-class __className__ extends \src\services\db {
+class count extends \src\services\db {
     //tablename
-    protected $table='__tableName__';
+    protected $table='counters';
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
@@ -15,7 +15,7 @@ class __className__ extends \src\services\db {
     //protected $insertedPost=[];
 
     //this method is auto method for values it will be inserted
-    //protected static function insertedPostAttachFunction($id){}
+    //protected static function insertedPostAttachFunction($query,$id){}
 
     //this value is run for auto join type (left|inner)
     //protected $joiner=['auto'=>"left"];

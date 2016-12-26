@@ -225,7 +225,14 @@ class db {
 
         if($table!==null){
             self::$join=$table;
-            self::$joinType=$joinType;
+            $model=new static;
+            if(property_exists($model,"joiner")){
+                self::$joinType=$model->joiner['auto'];
+            }
+            else{
+                self::$joinType=$joinType;
+            }
+
         }
 
         return new static;
@@ -384,11 +391,14 @@ class db {
 
                     $hasManyJoinAs=(array_key_exists("as",$model->joinField[self::$join])) ? $model->joinField[self::$join]['as'] : self::$join;
 
+
                     foreach($query as $key=>$result){
 
-
                         foreach(self::getTableColumns($columns,true) as $fkey){
-                            $resultList[$key][$fkey]=$result->$fkey;
+                            if(property_exists($result,$fkey)){
+                                $resultList[$key][$fkey]=$result->$fkey;
+                            }
+
                         }
 
                         foreach(self::getJoinOperationFieldAs(false) as $jfkx){
@@ -758,4 +768,102 @@ class db {
         return $list;
 
     }
+
+
+    /**
+     * query insert operation.
+     *
+     * @return pdo class
+     */
+
+    public static function insert($data=array(),$callback){
+        //get callable
+        $postStatus=false;
+        //get model
+        $model=new static;
+
+        $input=self::$request->input();
+
+        $insertedPost=[];
+        if(property_exists($model,"insertedPost")){
+            $insertedPost=$model->insertedPost;
+        }
+
+        if(count($input)){
+            foreach($input as $key=>$value){
+                if($key!=="_token"){
+                    if(count($insertedPost)){
+                        if(in_array($key,$insertedPost)){
+                            $data[$key]=$value;
+                        }
+                    }
+                    else{
+                        $data[$key]=$value;
+                    }
+
+                }
+            }
+        }
+
+        if(count($data)){
+
+            $dataKeyValues=[];
+            $dataPrepareValues=[];
+            $dataExecuteValues=[];
+            foreach($data as $key=>$value){
+                $dataKeyValues[]=$key;
+                $dataPrepareValues[]='?';
+                $dataExecuteValues[]=$value;
+            }
+
+
+            try {
+
+                $query=self::$db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                $query->execute($dataExecuteValues);
+
+                if(method_exists($model,"insertedPostAttachFunction")){
+                    $model->insertedPostAttachFunction(self::$db->lastInsertId());
+
+                }
+
+                $postStatus=true;
+            }
+            catch(\Exception $e){
+                if(\app::environment()=="local"){
+                    return [
+                        'error'=>true,
+                        'message'=>$e->getMessage(),
+                        'trace'=>$e->getTrace()
+                    ];
+                }
+                else{
+                    return [
+                      'error'=>true,
+                        'message'=>'error occured'
+                    ];
+                }
+
+            }
+
+
+        }
+        if($postStatus && is_callable($callback)){
+            return call_user_func($callback);
+        }
+
+        if(count($data)==false){
+            return [
+                'error'=>true,
+                'message'=>'postdata is invalid'
+            ];
+        }
+
+
+
+
+
+
+    }
+
 }

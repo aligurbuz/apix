@@ -248,6 +248,14 @@ class connection {
 
     private function responseOut($data,$msg=null){
 
+        $queryError=[];
+        if(array_key_exists("queryResult",$data)){
+            if(is_array($data['queryResult']) && array_key_exists("error",$data['queryResult'])){
+                if($data['queryResult']['error']){
+                    $queryError=['success'=>(bool)false]+['error'=>$data['queryResult']];
+                }
+            }
+        }
         header('Content-Type: application/json');
         if(is_array($data) && count($data)){
 
@@ -261,14 +269,17 @@ class connection {
                 $data=['success'=>(bool)true]+['data'=>$data];
             }
 
-            return json_encode($data);
         }
         else{
             $msg=($msg!==null) ? $msg : 'data is not array';
 
             $data=['success'=>(bool)false]+['message'=>$msg];
-            return json_encode($data);
         }
+
+        if(count($queryError)){
+            return json_encode($queryError);
+        }
+        return json_encode($data);
 
     }
 
