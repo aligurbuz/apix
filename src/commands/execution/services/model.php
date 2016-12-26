@@ -2,8 +2,12 @@
 namespace src\app\__projectName__\v1\model;
 
 class __className__ extends \src\services\db {
+
     //tablename
     protected $table='__tableName__';
+
+    //created at and updated at fields
+    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];

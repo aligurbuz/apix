@@ -46,7 +46,11 @@ class index {
     public function get(){
 
         //return query source
-        $post=['firstName'=>'kakalin','lastName'=>'bluebird'];
+        $post=[
+                'firstName'=>'kakalin',
+                'lastName'=>'bluebird'
+        ];
+
         return user::insert($post,function(){
            return user::get();
         });

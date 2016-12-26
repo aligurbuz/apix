@@ -807,6 +807,12 @@ class db {
 
         if(count($data)){
 
+            if(property_exists($model,"createdAndUpdatedFields")){
+                $time=time();
+                $data[$model->createdAndUpdatedFields['created_at']]=$time;
+                $data[$model->createdAndUpdatedFields['updated_at']]=$time;
+            }
+
             $dataKeyValues=[];
             $dataPrepareValues=[];
             $dataExecuteValues=[];

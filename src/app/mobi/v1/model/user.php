@@ -5,6 +5,9 @@ class user extends \src\services\db {
     //tablename
     protected $table='users';
 
+    //created at and updated at fields
+    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
+
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
 
