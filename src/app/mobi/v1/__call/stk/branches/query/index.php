@@ -9,6 +9,7 @@
  */
 
 namespace src\app\mobi\v1\__call\stk\branches\query;
+use src\app\mobi\v1\model\count;
 use src\app\mobi\v1\model\log;
 use src\app\mobi\v1\model\role;
 use src\app\mobi\v1\model\trigger;
@@ -47,12 +48,19 @@ class index {
 
         //return query source
         $post=[
-                'firstName'=>'kakalin',
-                'lastName'=>'bluebird'
+                'firstName'=>'ali',
+                'lastName'=>'gurbuz'
         ];
 
-        return user::insert($post,function(){
-           return user::get();
+        $post2=[
+            'groupx'=>'user_insert',
+            'group_counter'=>1
+        ];
+
+        return user::get();
+        return user::transaction(function() use($post,$post2){
+            user::insert($post);
+            count::insert($post2);
         });
     }
 }

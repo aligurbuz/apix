@@ -5,8 +5,13 @@ class user extends \src\services\db {
     //tablename
     protected $table='users';
 
-    //created at and updated at fields
-    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
+    //data for Insert And Update And Delete
+    protected static function dataForIUD() {
+        $list['table']='users';
+        $list['createdAndUpdatedFields']['created_at']='createdAt';
+        $list['createdAndUpdatedFields']['updated_at']='updatedAt';
+        return (object)$list;
+    }
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
@@ -15,13 +20,14 @@ class user extends \src\services\db {
     protected $orderBy=['auto'=>['id'=>'desc']];
 
     //this value is validator for values it will be inserted
-    protected $insertedPost=['firstName','lastName'];
+    //protected $insertedPost=['firstName','lastName'];
 
     //this method is auto method for values it will be inserted
     /*protected static function insertedPostAttachFunction($id){
-        return count::insert(['groupx'=>'user_insert','group_counterttt'=>$id],function(){
-           return true;
-        });
+        $list['count']['fields']=['groupx','group_counter'];
+        $list['count']['values'][]=['user_insert',$id];
+
+        return $list;
     }*/
 
     //this value is run for auto join type (left|inner)
@@ -46,4 +52,6 @@ class user extends \src\services\db {
         $list['active']['users.status']=1;
         return $list[$scope];
     }
+
+
 }

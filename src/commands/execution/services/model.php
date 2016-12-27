@@ -6,8 +6,14 @@ class __className__ extends \src\services\db {
     //tablename
     protected $table='__tableName__';
 
-    //created at and updated at fields
-    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
+    //data for Insert And Update And Delete
+    protected static function dataForIUD() {
+        $list['table']='__tableName__';
+        $list['createdAndUpdatedFields']['created_at']='createdAt';
+        $list['createdAndUpdatedFields']['updated_at']='updatedAt';
+        return (object)$list;
+    }
+
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];

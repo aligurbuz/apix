@@ -9,6 +9,8 @@
  */
 
 namespace src\services;
+use src\app\mobi\v1\model\count;
+use src\app\mobi\v1\model\user;
 use src\services\httprequest as request;
 
 /**
@@ -44,6 +46,7 @@ class db {
     private static $joinType=null;
     private static $joinTypeField=null;
     private static $hasMany=null;
+    private static $attach=null;
 
 
     public function __construct(){
@@ -63,19 +66,10 @@ class db {
         self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
-    /**
-     * query callstatic.
-     *
-     * @return pdo class
-     */
-    public static function __callStatic($name,$parameters=[]){
 
-        //instance check
-
-        self::$callstatic_scope[]=$name;
-
-        return new static;
-
+    public static function dbTable(){
+        $border=new static;
+        return $border->table;
     }
 
 
@@ -776,11 +770,12 @@ class db {
      * @return pdo class
      */
 
-    public static function insert($data=array(),$callback){
+    public static function insert($data=array(),$callback=false){
         //get callable
         $postStatus=false;
+
         //get model
-        $model=new static;
+        $model="\\".get_called_class();
 
         $input=self::$request->input();
 
@@ -807,33 +802,52 @@ class db {
 
         if(count($data)){
 
-            if(property_exists($model,"createdAndUpdatedFields")){
-                $time=time();
-                $data[$model->createdAndUpdatedFields['created_at']]=$time;
-                $data[$model->createdAndUpdatedFields['updated_at']]=$time;
-            }
+            $createdAt=$model::dataForIUD()->createdAndUpdatedFields['created_at'];
+            $updatedAt=$model::dataForIUD()->createdAndUpdatedFields['updated_at'];
+
+            $time=time();
+            $data[$createdAt]=$time;
+            $data[$updatedAt]=$time;
+
 
             $dataKeyValues=[];
             $dataPrepareValues=[];
             $dataExecuteValues=[];
+
             foreach($data as $key=>$value){
                 $dataKeyValues[]=$key;
                 $dataPrepareValues[]='?';
                 $dataExecuteValues[]=$value;
             }
 
+            $dbh=self::$db;
+
+            if(!is_callable($callback)){
+                $query=self::$db->prepare("INSERT INTO ".$model::dataForIUD()->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                return $query->execute($dataExecuteValues);
+            }
+
 
             try {
 
-                $query=self::$db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
-                $query->execute($dataExecuteValues);
-
                 if(method_exists($model,"insertedPostAttachFunction")){
-                    $model->insertedPostAttachFunction(self::$db->lastInsertId());
+                    return self::transaction($dbh,function() use($dbh,$model,$dataKeyValues,$dataPrepareValues,$dataExecuteValues){
+                        $query=$dbh->prepare("INSERT INTO ".$model::dataForIUD()->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                        $query->execute($dataExecuteValues);
+                        //dd($model->insertedPostAttachFunction($dbh->lastInsertId()));
+                        //$query=$dbh->prepare("insert into counters (groupxxxx,group_counter) values (?,?)");
+                        //$query->execute(array("aa",111));
+                    });
+
+                }
+                else{
+                        $query=$dbh->prepare("INSERT INTO ".$model::dataForIUD()->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                        $query->execute($dataExecuteValues);
+                        $postStatus=true;
 
                 }
 
-                $postStatus=true;
+
             }
             catch(\Exception $e){
                 if(\app::environment()=="local"){
@@ -871,5 +885,40 @@ class db {
 
 
     }
+
+
+
+    /**
+     * query transaction operation.
+     *
+     * @return pdo class
+     */
+    public static function transaction($callback){
+
+        new self;
+
+        try {
+            self::$db->beginTransaction();
+
+            //$query=self::$db->prepare("insert into users (firstName,lastName) values (?,?)");
+            //$query->execute(array("kk","kk2"));
+            if(is_callable($callback)){
+                call_user_func($callback);
+            }
+            self::$db->commit();
+            return true;
+        } catch(\Exception $e) {
+            self::$db->rollBack();
+            return [
+                'error'=>true,
+                'message'=>$e->getMessage(),
+                'trace'=>$e->getTrace()
+            ];
+
+        }
+    }
+
+
+
 
 }

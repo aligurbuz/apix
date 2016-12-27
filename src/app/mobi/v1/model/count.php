@@ -5,6 +5,14 @@ class count extends \src\services\db {
     //tablename
     protected $table='counters';
 
+    //data for Insert And Update And Delete
+    protected static function dataForIUD() {
+        $list['table']='counters';
+        $list['createdAndUpdatedFields']['created_at']='createdAt';
+        $list['createdAndUpdatedFields']['updated_at']='updatedAt';
+        return (object)$list;
+    }
+
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
 
