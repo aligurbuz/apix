@@ -2,16 +2,9 @@
 namespace src\app\mobi\v1\model;
 
 class user extends \src\services\db {
+
     //tablename
     protected $table='users';
-
-    //data for Insert And Update And Delete
-    protected static function dataForIUD() {
-        $list['table']='users';
-        $list['createdAndUpdatedFields']['created_at']='createdAt';
-        $list['createdAndUpdatedFields']['updated_at']='updatedAt';
-        return (object)$list;
-    }
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
@@ -21,6 +14,9 @@ class user extends \src\services\db {
 
     //this value is validator for values it will be inserted
     //protected $insertedPost=['firstName','lastName'];
+
+    //this value is created and updated time for values it will be inserted
+    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
 
     //this method is auto method for values it will be inserted
     /*protected static function insertedPostAttachFunction($id){

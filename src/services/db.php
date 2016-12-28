@@ -364,6 +364,7 @@ class db {
             try {
                 if(self::$hasMany!==null){
                     //dd(self::getJoinOperationFieldAs(false));
+                    $resultList=[];
                     $listAs=self::getJoinOperationFieldAs("list");
                     $listAsArray=[];
                     foreach($listAs['list'] as $listAsValue){
@@ -774,8 +775,7 @@ class db {
         //get callable
         $postStatus=false;
 
-        //get model
-        $model="\\".get_called_class();
+        $model=new static;
 
         $input=self::$request->input();
 
@@ -802,13 +802,14 @@ class db {
 
         if(count($data)){
 
-            $createdAt=$model::dataForIUD()->createdAndUpdatedFields['created_at'];
-            $updatedAt=$model::dataForIUD()->createdAndUpdatedFields['updated_at'];
+            if(property_exists($model,"createdAndUpdatedFields")){
+                $createdAt=$model->createdAndUpdatedFields['created_at'];
+                $updatedAt=$model->createdAndUpdatedFields['updated_at'];
 
-            $time=time();
-            $data[$createdAt]=$time;
-            $data[$updatedAt]=$time;
-
+                $time=time();
+                $data[$createdAt]=$time;
+                $data[$updatedAt]=$time;
+            }
 
             $dataKeyValues=[];
             $dataPrepareValues=[];
@@ -823,33 +824,21 @@ class db {
             $dbh=self::$db;
 
             if(!is_callable($callback)){
-                $query=self::$db->prepare("INSERT INTO ".$model::dataForIUD()->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                $query=self::$db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
                 return $query->execute($dataExecuteValues);
             }
 
 
             try {
-
-                if(method_exists($model,"insertedPostAttachFunction")){
-                    return self::transaction($dbh,function() use($dbh,$model,$dataKeyValues,$dataPrepareValues,$dataExecuteValues){
-                        $query=$dbh->prepare("INSERT INTO ".$model::dataForIUD()->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
-                        $query->execute($dataExecuteValues);
-                        //dd($model->insertedPostAttachFunction($dbh->lastInsertId()));
-                        //$query=$dbh->prepare("insert into counters (groupxxxx,group_counter) values (?,?)");
-                        //$query->execute(array("aa",111));
-                    });
-
-                }
-                else{
-                        $query=$dbh->prepare("INSERT INTO ".$model::dataForIUD()->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
-                        $query->execute($dataExecuteValues);
-                        $postStatus=true;
-
-                }
-
+                self::$db->beginTransaction();
+                $query=$dbh->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                $query->execute($dataExecuteValues);
+                self::$db->commit();
+                $postStatus=true;
 
             }
             catch(\Exception $e){
+                self::$db->rollBack();
                 if(\app::environment()=="local"){
                     return [
                         'error'=>true,

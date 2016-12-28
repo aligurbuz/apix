@@ -6,15 +6,6 @@ class __className__ extends \src\services\db {
     //tablename
     protected $table='__tableName__';
 
-    //data for Insert And Update And Delete
-    protected static function dataForIUD() {
-        $list['table']='__tableName__';
-        $list['createdAndUpdatedFields']['created_at']='createdAt';
-        $list['createdAndUpdatedFields']['updated_at']='updatedAt';
-        return (object)$list;
-    }
-
-
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
 
@@ -23,6 +14,9 @@ class __className__ extends \src\services\db {
 
     //this value is validator for values it will be inserted
     //protected $insertedPost=[];
+
+    //this value is created and updated time for values it will be inserted
+    //protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
 
     //this method is auto method for values it will be inserted
     //protected static function insertedPostAttachFunction($id){}

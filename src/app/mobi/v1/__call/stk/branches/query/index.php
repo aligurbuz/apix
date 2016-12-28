@@ -48,19 +48,15 @@ class index {
 
         //return query source
         $post=[
-                'firstName'=>'ali',
+                'firstName'=>'alimmm',
                 'lastName'=>'gurbuz'
         ];
 
         $post2=[
             'groupx'=>'user_insert',
-            'group_counter'=>1
+            'group_counterxx'=>1
         ];
 
         return user::get();
-        return user::transaction(function() use($post,$post2){
-            user::insert($post);
-            count::insert($post2);
-        });
     }
 }
