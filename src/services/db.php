@@ -479,16 +479,30 @@ class db {
                         $getTableColumns=self::$select;
                     }
 
+
                     $resultsWithTypes=[];
                     foreach($results as $key=>$rwt){
                         foreach($getTableColumns as $cols){
-                            if(preg_match('@int@is',self::getTypeColumnsFromDatabase($cols))){
-                                $resultsWithTypes[$key][$cols]=(int)$rwt->$cols;
-                            }
-                            else{
-                                $resultsWithTypes[$key][$cols]=$rwt->$cols;
-                            }
+                            if(property_exists($rwt,$cols)){
+                                if(preg_match('@int@is',self::getTypeColumnsFromDatabase($cols))){
+                                    $resultsWithTypes[$key][$cols]=(int)$rwt->$cols;
+                                }
+                                elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($cols))){
+                                    $resultsWithTypes[$key][$cols]=(float)$rwt->$cols;
+                                }
+                                elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($cols))){
+                                    if($rwt->$cols>0){
+                                        $resultsWithTypes[$key][$cols]=(bool)true;
+                                    }
+                                    else{
+                                        $resultsWithTypes[$key][$cols]=(bool)false;
+                                    }
 
+                                }
+                                else{
+                                    $resultsWithTypes[$key][$cols]=$rwt->$cols;
+                                }
+                            }
                         }
                     }
 
@@ -912,7 +926,13 @@ class db {
 
         $list=[];
         foreach($columns as $result){
-            $list[$result->Field]=$result->Type;
+            if($result->Type=="tinyint(1)"){
+                $list[$result->Field]="bool";
+            }
+            else{
+                $list[$result->Field]=$result->Type;
+            }
+
         }
 
         if($field==null){
