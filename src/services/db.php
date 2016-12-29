@@ -343,6 +343,7 @@ class db {
         $showColumns->execute();
         $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
 
+
         //get select hidden
         if(property_exists($model,"selectHidden")){
             $select=self::getSelectOperation($columns);
@@ -471,6 +472,25 @@ class db {
 
                     $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
                     $query->execute($execute);
+                    $results=$query->fetchAll(\PDO::FETCH_OBJ);
+
+                    $resultsWithTypes=[];
+                    foreach($results as $key=>$rwt){
+                        foreach(self::getTableColumns($columns,true) as $cols){
+                            if(preg_match('@int@is',self::getTypeColumnsFromDatabase($cols))){
+                                $resultsWithTypes[$key][$cols]=(int)$rwt->$cols;
+                            }
+                            else{
+                                $resultsWithTypes[$key][$cols]=$rwt->$cols;
+                            }
+
+                        }
+                    }
+
+                    if(count($resultsWithTypes)){
+                        $results=$resultsWithTypes;
+                    }
+
 
                     if(count($paginatorCount)){
 
@@ -483,13 +503,13 @@ class db {
                             'paginator'=>(int)self::$page,
                             'totalPageNo'=>(int)$totalPageNo,
                             'currentPage'=>(int)$pageNo,
-                            'data'=>$query->fetchAll(\PDO::FETCH_OBJ)
+                            'data'=>$results
 
                         ];
 
                     }
 
-                    return $query->fetchAll(\PDO::FETCH_OBJ);
+                    return $results;
 
                 }
 
@@ -875,6 +895,27 @@ class db {
 
         return $list;
 
+    }
+
+
+    private static function getTypeColumnsFromDatabase($field=null){
+
+        $model=new static;
+        $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
+        $showColumns->execute();
+        $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+
+        $list=[];
+        foreach($columns as $result){
+            $list[$result->Field]=$result->Type;
+        }
+
+        if($field==null){
+            return $list;
+        }
+        else{
+            return $list[$field];
+        }
     }
 
 
