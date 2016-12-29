@@ -474,9 +474,14 @@ class db {
                     $query->execute($execute);
                     $results=$query->fetchAll(\PDO::FETCH_OBJ);
 
+                    $getTableColumns=self::getTableColumns($columns,true);
+                    if(is_array(self::$select)){
+                        $getTableColumns=self::$select;
+                    }
+
                     $resultsWithTypes=[];
                     foreach($results as $key=>$rwt){
-                        foreach(self::getTableColumns($columns,true) as $cols){
+                        foreach($getTableColumns as $cols){
                             if(preg_match('@int@is',self::getTypeColumnsFromDatabase($cols))){
                                 $resultsWithTypes[$key][$cols]=(int)$rwt->$cols;
                             }
