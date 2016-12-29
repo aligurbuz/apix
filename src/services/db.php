@@ -47,6 +47,7 @@ class db {
     private static $joinTypeField=null;
     private static $hasMany=null;
     private static $attach=null;
+    private static $sum=null;
 
 
     public function __construct(){
@@ -67,9 +68,8 @@ class db {
     }
 
 
-    public static function dbTable(){
-        $border=new static;
-        return $border->table;
+    public static function staticFlowCallback(){
+        return new static;
     }
 
 
@@ -121,7 +121,8 @@ class db {
         //if the field value is callback value
         //a callback function is run
         if(is_callable($field)){
-            call_user_func_array($field,self::$where);
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
 
         }
         else{
@@ -134,6 +135,53 @@ class db {
 
             }
         }
+        return new static;
+
+    }
+
+
+    /**
+     * query where between.
+     *
+     * @return pdo class
+     */
+    public static function between($field=null,$value1=null,$value2=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        if($field!==null AND $value1!==null AND $value2!==null){
+            self::$where['field'][]=$field;
+            self::$where['operator'][]='BETWEEN';
+            self::$where['value'][]=''.$value1.','.$value2.'';
+            self::$where['between'][]=':'.md5($value1).' AND :'.md5($value2).' ';
+
+        }
+
+        return new static;
+
+    }
+
+
+    /**
+     * query where between.
+     *
+     * @return pdo class
+     */
+    public static function sum($field=null,$query=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        if($field!==null OR $query!==null){
+            self::$sum=$field;
+        }
+
+
         return new static;
 
     }
@@ -279,6 +327,8 @@ class db {
     public static function get(){
 
         $model=new static;
+        $request=self::$request;
+        $getQueryString=$request->getQueryString();
 
         //get primary key
         self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
@@ -409,8 +459,35 @@ class db {
                     return $resultList;
                 }
                 else{
+
+                    //get count pagination
+                    $paginatorCount=[];
+                    if($offset!==""){
+                        $query=self::$db->prepare("select count(*) as queryTotal from ".$table." ".$join." ".$where." ".$order."");
+                        $query->execute($execute);
+                        $paginatorCount['dataCount']=$query->fetchColumn();
+
+                    }
+
                     $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
                     $query->execute($execute);
+
+                    if(count($paginatorCount)){
+
+                        $pageNo=(self::checkPageOnQueryString()) ? $getQueryString['page'] : 1;
+                        $totalPageNo=ceil((int)$paginatorCount['dataCount']/(int)self::$page);
+
+                        return [
+
+                            'dataCount'=>(int)$paginatorCount['dataCount'],
+                            'paginator'=>(int)self::$page,
+                            'totalPageNo'=>(int)$totalPageNo,
+                            'currentPage'=>(int)$pageNo,
+                            'data'=>$query->fetchAll(\PDO::FETCH_OBJ)
+
+                        ];
+
+                    }
 
                     return $query->fetchAll(\PDO::FETCH_OBJ);
 
@@ -477,6 +554,18 @@ class db {
     private static  function getSelectOperation($columns=null){
         //select filter
         $model=new static;
+
+        if(self::$sum!==null){
+            $as=explode(":",self::$sum);
+            if(array_key_exists(1,$as)){
+                self::$select='SUM('.$as[0].') as '.$as[1];
+            }
+            else{
+                self::$select='SUM('.$as[0].') as '.$as[0];
+            }
+
+        }
+
         $select=(is_array(self::$select)) ? implode(",",self::$select) : self::$select;
         if($columns==null){
             if(property_exists($model,"selectHiddenPasswordField")){
@@ -540,10 +629,22 @@ class db {
         else{
             if(count(self::$where)){
 
+
                 $fieldPrepareArray=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
-                    $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
-                    $fieldPrepareArrayExecute[':'.$field_value.'']=self::$where['value'][$field_key];
+                    if(self::$where['operator'][$field_key]=="BETWEEN"){
+                        $fieldPrepareArray[]=''.$field_value.' '.self::$where['operator'][$field_key].' '.self::$where['between'][$field_key].' ';
+                        $whereBetweenValue=explode(",",self::$where['value'][$field_key]);
+                        foreach($whereBetweenValue as $wbv){
+                            $fieldPrepareArrayExecute[':'.md5($wbv).'']=$wbv;
+                        }
+
+                    }
+                    else{
+                        $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
+                        $fieldPrepareArrayExecute[':'.$field_value.'']=self::$where['value'][$field_key];
+                    }
+
                 }
                 $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
                 $list['execute']=$fieldPrepareArrayExecute;
@@ -552,6 +653,18 @@ class db {
         }
 
         return $list;
+    }
+
+    private static function checkPageOnQueryString(){
+        $request=self::$request;
+        $getQueryString=$request->getQueryString();
+        if(count($getQueryString)) {
+            if (array_key_exists("page", $getQueryString)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
 
@@ -573,16 +686,16 @@ class db {
             }
         }
 
+
         if(self::$page!==null){
 
             $offset=0;
+            $request=self::$request;
             $getQueryString=$request->getQueryString();
-            if(count($getQueryString)){
-                if(array_key_exists("page",$getQueryString)){
-                    $offset=$getQueryString['page']-1;
-                    $offset=$offset*self::$page;
-                }
-            }
+           if(self::checkPageOnQueryString()){
+               $offset=$getQueryString['page']-1;
+               $offset=$offset*self::$page;
+           }
             $list['offset']=$offset;
             $list['limit']=self::$page;
         }

@@ -47,16 +47,6 @@ class index {
     public function get(){
 
         //return query source
-        $post=[
-                'firstName'=>'alimmm',
-                'lastName'=>'gurbuz'
-        ];
-
-        $post2=[
-            'groupx'=>'user_insert',
-            'group_counterxx'=>1
-        ];
-
         return user::get();
     }
 }

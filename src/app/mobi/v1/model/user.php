@@ -45,7 +45,7 @@ class user extends \src\services\db {
 
     //scope query
     public static function modelScope($scope=null){
-        $list['active']['users.status']=1;
+        $list['active']['status']=1;
         return $list[$scope];
     }
 
