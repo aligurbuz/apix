@@ -57,5 +57,32 @@ class redis {
         return $this->client->get($key);
     }
 
+    /**
+     * redis get data exists.
+     *
+     * @return redis class
+     */
+    public function exists($key){
+
+        //get exists
+        if($this->client->exists($key)){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * redis get data expire.
+     *
+     * @return redis class
+     */
+    public function expire($key,$ttl){
+
+        //get expire
+        $this->client->expire($key,$ttl);
+    }
+
+
 
 }

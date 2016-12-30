@@ -499,12 +499,7 @@ class db {
 
                             }
                         }
-
-
-
-
                     }
-
 
                     if(count($paginatorCount)){
 
@@ -536,9 +531,39 @@ class db {
 
                     }
 
-                    $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
-                    $query->execute($execute);
-                    $results=$query->fetchAll(\PDO::FETCH_OBJ);
+                    //query redis modelling
+                    if(property_exists($model,"redis") && $model->redis['status']){
+
+                        $redisDataKey=''.$select.'_'.$join.'_'.$where.'_'.$order.'_'.$offset;
+                        $redisDataKeyHash=''.$model->table.'__'.md5($redisDataKey);
+
+                        $redisConnection=\app::container("redis");
+
+
+                        if($redisConnection->exists($redisDataKeyHash)){
+                            $results=unserialize($redisConnection->get($redisDataKeyHash));
+                        }
+                        else{
+                            $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
+                            $query->execute($execute);
+                            $results=$query->fetchAll(\PDO::FETCH_OBJ);
+
+                            if(count($results)){
+                                $redisConnection->set([$redisDataKeyHash,serialize($results)]);
+                                $redisConnection->expire($redisDataKeyHash,$model->redis['expire']);
+                            }
+
+                        }
+
+
+                    }
+                    else{
+                        $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
+                        $query->execute($execute);
+                        $results=$query->fetchAll(\PDO::FETCH_OBJ);
+                    }
+
+
 
                     $getTableColumns=self::getTableColumns($columns,true);
                     if(is_array(self::$select)){

@@ -1,10 +1,10 @@
 <?php
-namespace src\app\__projectName__\v1\model;
+namespace src\app\teknasyon\v1\model;
 
-class __className__ extends \src\services\db {
+class user extends \src\services\db {
 
     //tablename
-    protected $table='__tableName__';
+    protected $table='users';
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
@@ -13,13 +13,13 @@ class __className__ extends \src\services\db {
     protected $orderBy=['auto'=>['id'=>'desc']];
 
     //query result with this value is called from redis
-    protected $redis=['status'=>false,'expire'=>60];
+    protected $redis=['status'=>true,'expire'=>60];
 
     //this value is validator for values it will be inserted
     //protected $insertedPost=[];
 
     //this value is created and updated time for values it will be inserted
-    //protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
+    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
 
     //this method is auto method for values it will be inserted
     //protected static function insertedPostAttachFunction($id){}
@@ -28,9 +28,9 @@ class __className__ extends \src\services\db {
     //protected $joiner=['auto'=>"left"];
 
     //this value is similar field that on the joined tables
-    /*protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
-        'chats'=>['hasOne'=>'userid','joinField'=>['message']]
-    ];*/
+    protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
+        'chats'=>['hasMany'=>'userid','as'=>'Conversations','joinField'=>['id/chat_id','message']]
+    ];
 
     //this value hiddens with password value to select field
     //protected $selectHiddenPasswordField=['password'];
