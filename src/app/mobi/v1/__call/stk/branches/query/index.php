@@ -47,6 +47,6 @@ class index {
     public function get(){
 
         //return query source
-        return user::get();
+        return user::join("chats")->get();
     }
 }
