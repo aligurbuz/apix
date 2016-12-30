@@ -9,6 +9,8 @@
  */
 
 namespace src\app\teknasyon\v1\__call\turkcell\branches\query;
+use src\app\teknasyon\v1\model\log;
+use src\app\teknasyon\v1\model\notification;
 use src\app\teknasyon\v1\model\user;
 use src\services\httprequest as request;
 

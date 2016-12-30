@@ -330,6 +330,10 @@ class db {
         $request=self::$request;
         $getQueryString=$request->getQueryString();
 
+        if(property_exists($model,"redis") && $model->redis['status']){
+            $redisConnection=\app::container("redis");
+        }
+
         //get primary key
         self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
 
@@ -339,9 +343,27 @@ class db {
         //select filter
         $select=self::getSelectOperation();
 
-        $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
-        $showColumns->execute();
-        $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+        if(property_exists($model,"redis") && $model->redis['status']){
+
+            if($redisConnection->exists(''.$model->table.'__COLUMNS')){
+                $columns=unserialize($redisConnection->get(''.$model->table.'__COLUMNS'));
+            }
+            else{
+                $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
+                $showColumns->execute();
+                $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+
+                $redisConnection->set([''.$model->table.'__COLUMNS',serialize($columns)]);
+            }
+
+        }
+        else{
+            $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
+            $showColumns->execute();
+            $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+
+        }
+
 
 
         //get select hidden
@@ -525,9 +547,31 @@ class db {
                     //get count pagination
                     $paginatorCount=[];
                     if($offset!==""){
-                        $query=self::$db->prepare("select count(*) as queryTotal from ".$table." ".$join." ".$where." ".$order."");
-                        $query->execute($execute);
-                        $paginatorCount['dataCount']=$query->fetchColumn();
+
+                        if(property_exists($model,"redis") && $model->redis['status']){
+
+                            $redisDataKey=''.$table.'_'.$join.'_'.$where.'_'.$order.'';
+                            $redisDataKeyHash=''.$model->table.'__count__'.md5($redisDataKey);
+
+                            if($redisConnection->exists($redisDataKeyHash)){
+                                $paginatorCount['dataCount']=$redisConnection->get($redisDataKeyHash);
+                            }
+                            else{
+                                $query=self::$db->prepare("select count(*) as queryTotal from ".$table." ".$join." ".$where." ".$order."");
+                                $query->execute($execute);
+                                $paginatorCount['dataCount']=$query->fetchColumn();
+
+                                $redisConnection->set([$redisDataKeyHash,$paginatorCount['dataCount']]);
+                                $redisConnection->expire($redisDataKeyHash,$model->redis['expire']);
+                            }
+
+                        }
+                        else{
+                            $query=self::$db->prepare("select count(*) as queryTotal from ".$table." ".$join." ".$where." ".$order."");
+                            $query->execute($execute);
+                            $paginatorCount['dataCount']=$query->fetchColumn();
+                        }
+
 
                     }
 
@@ -536,8 +580,6 @@ class db {
 
                         $redisDataKey=''.$select.'_'.$join.'_'.$where.'_'.$order.'_'.$offset;
                         $redisDataKeyHash=''.$model->table.'__'.md5($redisDataKey);
-
-                        $redisConnection=\app::container("redis");
 
 
                         if($redisConnection->exists($redisDataKeyHash)){
