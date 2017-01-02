@@ -32,6 +32,7 @@ class db {
     private static $select="*";
     private static $find=null;
     private static $where=[];
+    private static $execute=[];
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -48,6 +49,8 @@ class db {
     private static $hasMany=null;
     private static $attach=null;
     private static $sum=null;
+    private static $offset='';
+    private static $joiner='';
 
 
     public function __construct(){
@@ -326,81 +329,49 @@ class db {
      */
     public static function get(){
 
-        $model=new static;
+        //get model
+        $model=self::staticFlowCallback();
+
+        //get symfony request
         $request=self::$request;
+
+        //url query string
         $getQueryString=$request->getQueryString();
 
         //get primary key
-        self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
-
-        $execute=[];
-        $where='';
+        self::getPrimaryKeyStatic();
 
         //select filter
         $select=self::getSelectOperation();
 
-        $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
-        $showColumns->execute();
-        $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+        //get table columns for model
+        $columns=self::getShowColumns();
 
+        //initial
+        $execute=[];
+        $where='';
 
-        //get select hidden
-        if(property_exists($model,"selectHidden")){
-            $select=self::getSelectOperation($columns);
-        }
-
-        //where filter
+        //where method
         $whereOperation=self::getWhereOperation();
+
+        //where key
         if(count($whereOperation)){
-            $where.=$whereOperation['where'];
-            $execute=$whereOperation['execute'];
+            $where.=self::$where;
+            $execute=self::$execute;
         }
 
         //ofset filter
-        $offset='';
-        if(self::$all==null){
-            $offsetOperation=self::getOffsetOperation();
-            if(count($offsetOperation)){
-                $offset.='LIMIT ';
-                $offset.=self::getOffsetOperation()['offset'];
-                $offset.=',';
-                $offset.=self::getOffsetOperation()['limit'];
-            }
-        }
+        $offset=self::getOffsetOperation();
 
         //get Orderby
         $order=self::getOrderByOperation();
 
+        //get join operation
         $join=self::getJoinOperation();
 
-        //values coming from join type
-        if(self::$joinTypeField!==null){
-            if($select!=="*"){
-                $selectVal=explode(",",$select);
-                $selectList=[];
-                foreach($selectVal as $val){
-                    $selectList[]=''.$model->table.'.'.$val.'';
-                }
-
-                $select=implode(",",$selectList);
-            }
-
-            $select=($select=="*") ? implode(",",self::getTableColumns($columns)) : $select;
-            $select=''.$select.','.implode(",",self::$joinTypeField).'';
-
-
-
-            $where=preg_replace('@:(\w+)\.@is',':',$where);
-            $executeList=[];
-            foreach($execute as $execute_key=>$execute_val){
-                $executeList[preg_replace('@:(\w+)\.@is',':',$execute_key)]=$execute_val;
-            }
-            $execute=$executeList;
-        }
-
-        $table=$model->table;
+        //get random data
         if(self::$rand!==null){
-            $table='(select '.$select.' from '.$model->table.' '.$join.' '.$where.' '.$order.' '.$offset.') as '.$table.'';
+            $table='(select '.$select.' from '.$model->table.' '.$join.' '.$where.' '.$order.' '.$offset.') as '.$model->table.'';
             $where='';
             $order='ORDER BY RAND()';
             if(self::$rand>0){
@@ -433,14 +404,14 @@ class db {
                     //get count pagination
                     $paginatorCount=[];
                     if($offset!==""){
-                        $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
+                        $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$model->table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
                      ".$order."");
                         $query->execute($execute);
                         $paginatorCount['dataCount']=$query->fetchColumn();
 
                     }
 
-                    $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
+                    $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$model->table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
                      ".$order." ".$offset."");
                     $query->execute($execute);
 
@@ -522,87 +493,14 @@ class db {
                 }
                 else{
 
-                    //get count pagination
-                    $paginatorCount=[];
-                    if($offset!==""){
-                        $query=self::$db->prepare("select count(*) as queryTotal from ".$table." ".$join." ".$where." ".$order."");
-                        $query->execute($execute);
-                        $paginatorCount['dataCount']=$query->fetchColumn();
-
-                    }
-
-
-                    $query=self::$db->prepare("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."");
-                    $query->execute($execute);
-                    $results=$query->fetchAll(\PDO::FETCH_OBJ);
-
-
-
-
-                    $getTableColumns=self::getTableColumns($columns,true);
-                    if(is_array(self::$select)){
-                        $getTableColumns=self::$select;
-                    }
-
-
-                    $resultsWithTypes=[];
-                    foreach($results as $key=>$rwt){
-                        foreach($getTableColumns as $cols){
-                            if(property_exists($rwt,$cols)){
-                                if(preg_match('@int@is',self::getTypeColumnsFromDatabase($cols))){
-                                    $resultsWithTypes[$key][$cols]=(int)$rwt->$cols;
-                                }
-                                elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($cols))){
-                                    $resultsWithTypes[$key][$cols]=(float)$rwt->$cols;
-                                }
-                                elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($cols))){
-                                    if($rwt->$cols>0){
-                                        $resultsWithTypes[$key][$cols]=(bool)true;
-                                    }
-                                    else{
-                                        $resultsWithTypes[$key][$cols]=(bool)false;
-                                    }
-
-                                }
-                                else{
-                                    $resultsWithTypes[$key][$cols]=$rwt->$cols;
-                                }
-                            }
-                        }
-                    }
-
-                    if(count($resultsWithTypes)){
-                        $results=$resultsWithTypes;
-                    }
-
-
-                    if(count($paginatorCount)){
-
-                        $pageNo=(self::checkPageOnQueryString()) ? $getQueryString['page'] : 1;
-                        $totalPageNo=ceil((int)$paginatorCount['dataCount']/(int)self::$page);
-
-                        return [
-
-                            'dataCount'=>(int)$paginatorCount['dataCount'],
-                            'paginator'=>(int)self::$page,
-                            'totalPageNo'=>(int)$totalPageNo,
-                            'currentPage'=>(int)$pageNo,
-                            'data'=>$results
-
-                        ];
-
-                    }
-
-                    return $results;
-
+                    //get query result
+                    return self::getQueryResult();
                 }
-
-
 
             }
             catch(\Exception $e){
                 return [
-                    'query'=>"select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."",
+                    'query'=>"select ".$select." from ".$model->table." ".$join." ".$where." ".$order." ".$offset."",
                     'error'=>$e->getMessage(),
                     'code'=>$e->getCode(),
                     'file'=>$e->getFile(),
@@ -616,10 +514,123 @@ class db {
             foreach ($execute as $execute_key=>$execute_value){
                 $where=str_replace($execute_key,$execute_value,$where);
             }
-            return "select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."";
+            return "select ".$select." from ".$model->table." ".$join." ".$where." ".$order." ".$offset."";
         }
 
 
+    }
+
+
+    /**
+     * query show columns.
+     *
+     * @return pdo class
+     */
+    private static function getShowColumns($table=null){
+        if($table==null){
+            $model=self::staticFlowCallback();
+            $showColumns=self::$db->prepare("SHOW COLUMNS FROM ".$model->table."");
+            $showColumns->execute();
+            return $showColumns->fetchAll(\PDO::FETCH_OBJ);
+        }
+    }
+
+    /**
+     * query paginator count.
+     *
+     * @return pdo class
+     */
+    private static function getPaginatorDataCount(){
+        if(self::$offset!==""){
+            $model=self::staticFlowCallback();
+            $query=self::$db->prepare("select count(*) as queryTotal from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order."");
+            $query->execute(self::$execute);
+            return $query->fetchColumn();
+        }
+
+        return 0;
+    }
+
+    /**
+     * query query result.
+     *
+     * @return pdo class
+     */
+    private static function getQueryResult(){
+        $model=self::staticFlowCallback();
+        $query=self::$db->prepare("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order." ".self::$offset."");
+        $query->execute(self::$execute);
+        $results=$query->fetchAll(\PDO::FETCH_OBJ);
+
+        $getTableColumns=self::getTableColumns(self::getShowColumns(),true);
+        if(is_array(self::$select)){
+            $getTableColumns=self::$select;
+        }
+
+        $resultsWithTypes=[];
+        foreach($results as $key=>$rwt){
+            foreach($getTableColumns as $cols){
+                if(property_exists($rwt,$cols)){
+                    if(preg_match('@int@is',self::getTypeColumnsFromDatabase($cols))){
+                        $resultsWithTypes[$key][$cols]=(int)$rwt->$cols;
+                    }
+                    elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($cols))){
+                        $resultsWithTypes[$key][$cols]=(float)$rwt->$cols;
+                    }
+                    elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($cols))){
+                        if($rwt->$cols>0){
+                            $resultsWithTypes[$key][$cols]=(bool)true;
+                        }
+                        else{
+                            $resultsWithTypes[$key][$cols]=(bool)false;
+                        }
+
+                    }
+                    else{
+                        $resultsWithTypes[$key][$cols]=$rwt->$cols;
+                    }
+                }
+            }
+        }
+
+        if(count($resultsWithTypes)){
+            $results=$resultsWithTypes;
+        }
+
+
+        //get count pagination
+        $paginatorCount['dataCount']=self::getPaginatorDataCount();
+
+        //get symfony request
+        $request=self::$request;
+
+        //url query string
+        $getQueryString=$request->getQueryString();
+
+
+        $pageNo=(self::checkPageOnQueryString()) ? $getQueryString['page'] : 1;
+        $totalPageNo=ceil((int)$paginatorCount['dataCount']/(int)self::$page);
+
+        return [
+
+            'dataCount'=>(int)$paginatorCount['dataCount'],
+            'paginator'=>(int)self::$page,
+            'totalPageNo'=>(int)$totalPageNo,
+            'currentPage'=>(int)$pageNo,
+            'data'=>$results
+
+        ];
+
+    }
+
+    /**
+     * get primary key .
+     *
+     * @return pdo class
+     */
+    public static function getPrimaryKeyStatic(){
+        $model=self::staticFlowCallback();
+        self::$primarykey_static=(property_exists($model,"primaryKey")) ? $model->primaryKey : 'id';
     }
 
     /**
@@ -647,6 +658,7 @@ class db {
             }
         }
 
+        self::$order=$order;
         return $order;
     }
 
@@ -657,7 +669,7 @@ class db {
      */
     private static  function getSelectOperation($columns=null){
         //select filter
-        $model=new static;
+        $model=self::staticFlowCallback();
 
         if(self::$sum!==null){
             $as=explode(":",self::$sum);
@@ -706,8 +718,47 @@ class db {
                 $select=implode(",",$collist);
             }
         }
+
+        //get select hidden
+        if(property_exists($model,"selectHidden")){
+            //$select=self::getSelectOperation(self::getShowColumns());
+        }
+
+        //values coming from join type
+        if(self::$joinTypeField!==null){
+            if($select!=="*"){
+                $selectVal=explode(",",$select);
+                $selectList=[];
+                foreach($selectVal as $val){
+                    $selectList[]=''.$model->table.'.'.$val.'';
+                }
+
+                $select=implode(",",$selectList);
+            }
+
+            $select=($select=="*") ? implode(",",self::getTableColumns($columns)) : $select;
+            $select=''.$select.','.implode(",",self::$joinTypeField).'';
+
+            self::$where=preg_replace('@:(\w+)\.@is',':',$where);
+            $executeList=[];
+            foreach($execute as $execute_key=>$execute_val){
+                $executeList[preg_replace('@:(\w+)\.@is',':',$execute_key)]=$execute_val;
+            }
+            self::$execute=$executeList;
+        }
+
+        self::$select=$select;
         return $select;
 
+    }
+
+    /**
+     * query get where string.
+     *
+     * @return pdo class
+     */
+    private static function getStringWhere(){
+        return (count(self::$where)) ? self::$where : '';
     }
 
     /**
@@ -733,7 +784,6 @@ class db {
         else{
             if(count(self::$where)){
 
-
                 $fieldPrepareArray=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
                     if(self::$where['operator'][$field_key]=="BETWEEN"){
@@ -752,6 +802,9 @@ class db {
                 }
                 $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
                 $list['execute']=$fieldPrepareArrayExecute;
+
+                self::$where=$list['where'];
+                self::$execute=$list['execute'];
             }
 
         }
@@ -781,7 +834,7 @@ class db {
     private static function getOffsetOperation(){
 
         $list=[];
-        $model=new static;
+        $model=self::staticFlowCallback();
         $request=self::$request;
 
         if(self::$page==null && property_exists($model,"paginator")){
@@ -800,11 +853,19 @@ class db {
                $offset=$getQueryString['page']-1;
                $offset=$offset*self::$page;
            }
-            $list['offset']=$offset;
-            $list['limit']=self::$page;
+
+            $offsetparam='';
+            if(self::$all==null){
+                $offsetparam.='LIMIT ';
+                $offsetparam.=$offset;
+                $offsetparam.=',';
+                $offsetparam.=self::$page;
+
+            }
         }
 
-        return $list;
+        self::$offset=$offsetparam;
+        return $offsetparam;
 
     }
 
@@ -850,6 +911,7 @@ class db {
             }
         }
 
+        self::$joiner=$list;
         return $list;
 
     }

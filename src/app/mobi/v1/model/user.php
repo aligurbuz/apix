@@ -28,9 +28,9 @@ class user extends \src\services\db {
     //protected $joiner=['auto'=>"left"];
 
     //this value is similar field that on the joined tables
-    /*protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
-        'chats'=>['hasOne'=>'userid','joinField'=>['message']]
-    ];*/
+    protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
+        'chats'=>['hasMany'=>'userid','joinField'=>['id/chat_id','message']]
+    ];
 
     //this value hiddens with password value to select field
     //protected $selectHiddenPasswordField=['password'];
