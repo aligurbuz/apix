@@ -391,7 +391,13 @@ class db {
             }
             else{
                 //get query result
-                return self::getQueryResult();
+                if(property_exists($model,"redis") && $model->redis['status']){
+                    return self::getQueryRedisResult();
+                }
+                else{
+                    return self::getQueryResult();
+                }
+
             }
 
         }
@@ -542,6 +548,28 @@ class db {
 
         ];
 
+    }
+
+
+    /**
+     * query query redis result.
+     *
+     * @return pdo class
+     */
+    private static function getQueryRedisResult(){
+        $model=self::staticFlowCallback();
+
+        $redisInfo=''.self::$select.'_'.$model->table.'_'.self::getStringWhere().'_'.self::$joiner.'_'.self::$order.'__'.self::$offset.'';
+        $redisHash=''.$model->table.'__'.md5($redisInfo).'';
+
+        $redisConnection=\app::container("redis");
+
+        if($redisConnection->exists($redisHash)){
+            return unserialize($redisConnection->get($redisHash));
+        }
+        $redisConnection->set([$redisHash,serialize(self::getQueryResult())]);
+        $redisConnection->expire($redisHash,$model->redis['expire']);
+        return self::getQueryResult();
     }
 
 
