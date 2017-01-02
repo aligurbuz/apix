@@ -4,7 +4,7 @@
  * main file extends this file
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__;
+namespace src\app\mobi\v1\__call\stk;
 
 /**
  * Represents a app class.

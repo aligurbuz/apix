@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main part of the __projectName__ service.
+ * This file is main part of the mobi service.
  *
  * every request is called index method as default
  *
@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__;
+namespace src\app\mobi\v1\__call\stk;
 use src\services\httprequest as request;
 
 /**
@@ -42,10 +42,6 @@ class index extends app {
     public function getIndex(){
 
         //return index
-        return [
-            'environment'=>\app::environment(),
-            'clientIp'=>$this->request->getClientIp(),
-            'isMobile'=>\app::container("device")->isMobile()
-        ];
+        return $this->model->get();
     }
 }
