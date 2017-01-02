@@ -380,142 +380,25 @@ class db {
 
         }
 
+        if(self::$toSql!==null){
+           return self::toSqlShow();
+        }
 
-        if(self::$toSql==null){
-            //dd("select ".$select." from ".$table." ".$join." ".$where." ".$order." ".$offset."",$execute);
-            try {
-                if(self::$hasMany!==null){
-                    //dd(self::getJoinOperationFieldAs(false));
-                    $resultList=[];
-                    $listAs=self::getJoinOperationFieldAs("list");
-                    $listAsArray=[];
-                    foreach($listAs['list'] as $listAsValue){
-                        if(array_key_exists($listAsValue,$listAs['listAs'])){
-                            $listAsArray[]="GROUP_CONCAT(".$listAsValue." SEPARATOR '@@@@@___@@@@@') as ".$listAs['listAs'][$listAsValue];
-                        }
-                        else{
-                            $listAsValueEx=explode(".",$listAsValue);
-                            $listAsArray[]="GROUP_CONCAT(".$listAsValue." SEPARATOR '@@@@@___@@@@@') as ".$listAsValueEx[1];
-                        }
-
-                    }
-
-
-                    //get count pagination
-                    $paginatorCount=[];
-                    if($offset!==""){
-                        $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$model->table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
-                     ".$order."");
-                        $query->execute($execute);
-                        $paginatorCount['dataCount']=$query->fetchColumn();
-
-                    }
-
-                    $query=self::$db->prepare("select ".$select.",".implode(",",$listAsArray)." from ".$model->table." ".$join." ".$where." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
-                     ".$order." ".$offset."");
-                    $query->execute($execute);
-
-                    $query=$query->fetchAll(\PDO::FETCH_OBJ);
-
-                    $hasManyJoinAs=(array_key_exists("as",$model->joinField[self::$join])) ? $model->joinField[self::$join]['as'] : self::$join;
-
-
-                    foreach($query as $key=>$result){
-
-                        foreach(self::getTableColumns($columns,true) as $fkey){
-                            if(property_exists($result,$fkey)){
-                                if(preg_match('@int@is',self::getTypeColumnsFromDatabase($fkey))){
-                                    $resultList[$key][$fkey]=(int)$result->$fkey;
-                                }
-                                elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($fkey))){
-                                    $resultList[$key][$fkey]=(float)$result->$fkey;
-                                }
-                                elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($fkey))){
-                                    $resultList[$key][$fkey]=(bool)$result->$fkey;
-                                }
-                                else{
-                                    $resultList[$key][$fkey]=$result->$fkey;
-                                }
-
-                            }
-
-                        }
-
-
-                        $jfkxListe=[];
-                        foreach(self::getJoinOperationFieldAs(false) as $jfkx){
-                            $listAsKey=self::getJoinOperationFieldAs("list")['listAs'];
-                            if(in_array($jfkx,$listAsKey)){
-                                $jfkxem=explode(".",array_search($jfkx,$listAsKey));
-                                $jfkxListe[$jfkx]=$jfkxem[1];
-                            }
-                            else{
-                                $jfkxListe[$jfkx]=$jfkx;
-                            }
-
-                            $joins[$key][$jfkx]=explode("@@@@@___@@@@@",$result->$jfkx);
-                            for($i=0; $i<count($joins[$key][$jfkx]); $i++){
-                                if(preg_match('@int@is',self::getTypeColumnsFromDatabase($jfkxListe[$jfkx],self::$join))){
-                                    $resultList[$key][$hasManyJoinAs][$i][$jfkx]=(int)$joins[$key][$jfkx][$i];
-                                }
-                                elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($jfkxListe[$jfkx],self::$join))){
-                                    $resultList[$key][$hasManyJoinAs][$i][$jfkx]=(int)$joins[$key][$jfkx][$i];
-                                }
-                                elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($jfkxListe[$jfkx],self::$join))){
-                                    $resultList[$key][$hasManyJoinAs][$i][$jfkx]=(int)$joins[$key][$jfkx][$i];
-                                }
-                                else{
-                                    $resultList[$key][$hasManyJoinAs][$i][$jfkx]=$joins[$key][$jfkx][$i];
-                                }
-
-                            }
-                        }
-                    }
-
-                    if(count($paginatorCount)){
-
-                        $pageNo=(self::checkPageOnQueryString()) ? $getQueryString['page'] : 1;
-                        $totalPageNo=ceil((int)$paginatorCount['dataCount']/(int)self::$page);
-
-                        return [
-
-                            'dataCount'=>(int)$paginatorCount['dataCount'],
-                            'paginator'=>(int)self::$page,
-                            'totalPageNo'=>(int)$totalPageNo,
-                            'currentPage'=>(int)$pageNo,
-                            'data'=>$resultList
-
-                        ];
-
-                    }
-
-                    return $resultList;
-                }
-                else{
-
-                    //get query result
-                    return self::getQueryResult();
-                }
-
+        try {
+            if(self::$hasMany!==null){
+                //get query result
+                return self::getHasManyQueryResult();
             }
-            catch(\Exception $e){
-                return [
-                    'query'=>"select ".$select." from ".$model->table." ".$join." ".$where." ".$order." ".$offset."",
-                    'error'=>$e->getMessage(),
-                    'code'=>$e->getCode(),
-                    'file'=>$e->getFile(),
-                    'line'=>$e->getLine(),
-                    'trace'=>$e->getTrace()
-                ];
+            else{
+                //get query result
+                return self::getQueryResult();
             }
 
         }
-        else{
-            foreach ($execute as $execute_key=>$execute_value){
-                $where=str_replace($execute_key,$execute_value,$where);
-            }
-            return "select ".$select." from ".$model->table." ".$join." ".$where." ".$order." ".$offset."";
+        catch(\Exception $e){
+            return self::getExceptionResult($e);
         }
+
 
 
     }
@@ -535,20 +418,58 @@ class db {
         }
     }
 
+
+    /**
+     * query to query and to sql.
+     *
+     * @return pdo class
+     */
+    private static function toSqlShow(){
+        $model=self::staticFlowCallback();
+        foreach (self::$execute as $execute_key=>$execute_value){
+            $where=str_replace($execute_key,$execute_value,self::getStringWhere());
+        }
+        return "select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order." ".self::$offset."";
+    }
+
     /**
      * query paginator count.
      *
      * @return pdo class
      */
-    private static function getPaginatorDataCount(){
+    private static function getPaginatorDataCount($data=array()){
         if(self::$offset!==""){
             $model=self::staticFlowCallback();
-            $query=self::$db->prepare("select count(*) as queryTotal from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order."");
+
+            $select=(array_key_exists("select",$data)) ? $data['select'] : 'count(*) as total';
+            $groupBy=(array_key_exists("groupBy",$data)) ? $data['groupBy'] : '';
+
+            //dd("select ".$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order."",self::$execute);
+
+            $query=self::$db->prepare("select ".$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".$groupBy." ".self::$order."");
             $query->execute(self::$execute);
             return $query->fetchColumn();
         }
 
         return 0;
+    }
+
+
+    /**
+     * query exception method.
+     *
+     * @return pdo class
+     */
+    private static function getExceptionResult($e){
+        $model=self::staticFlowCallback();
+        return [
+            'query'=>"select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order." ".self::$offset."",
+            'error'=>$e->getMessage(),
+            'code'=>$e->getCode(),
+            'file'=>$e->getFile(),
+            'line'=>$e->getLine(),
+            'trace'=>$e->getTrace()
+        ];
     }
 
     /**
@@ -621,6 +542,116 @@ class db {
 
         ];
 
+    }
+
+
+    /**
+     * query has Many result.
+     *
+     * @return pdo class
+     */
+    private static function getHasManyQueryResult(){
+        $model=self::staticFlowCallback();
+        $request=self::$request;
+
+        //url query string
+        $getQueryString=$request->getQueryString();
+
+
+        $resultList=[];
+        $listAs=self::getJoinOperationFieldAs("list");
+        $listAsArray=[];
+        foreach($listAs['list'] as $listAsValue){
+            if(array_key_exists($listAsValue,$listAs['listAs'])){
+                $listAsArray[]="GROUP_CONCAT(".$listAsValue." SEPARATOR '@@@@@___@@@@@') as ".$listAs['listAs'][$listAsValue];
+            }
+            else{
+                $listAsValueEx=explode(".",$listAsValue);
+                $listAsArray[]="GROUP_CONCAT(".$listAsValue." SEPARATOR '@@@@@___@@@@@') as ".$listAsValueEx[1];
+            }
+
+        }
+
+
+        //get count pagination
+        //get count pagination
+        $paginatorCount['dataCount']=self::getPaginatorDataCount(['select'=>''.self::$select.','.implode(",",$listAsArray).'',
+        'groupBy'=>'GROUP BY '.$model->table.'.'.self::$hasMany['hasOneField'].'']);
+
+        $query=self::$db->prepare("select ".self::$select.",".implode(",",$listAsArray)." from ".$model->table." ".self::$joiner."
+         ".self::getStringWhere()." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
+                     ".self::$order." ".self::$offset."");
+        $query->execute(self::$execute);
+
+        $query=$query->fetchAll(\PDO::FETCH_OBJ);
+
+        $hasManyJoinAs=(array_key_exists("as",$model->joinField[self::$join])) ? $model->joinField[self::$join]['as'] : self::$join;
+
+
+        foreach($query as $key=>$result){
+
+            foreach(self::getTableColumns(self::getShowColumns(),true) as $fkey){
+                if(property_exists($result,$fkey)){
+                    if(preg_match('@int@is',self::getTypeColumnsFromDatabase($fkey))){
+                        $resultList[$key][$fkey]=(int)$result->$fkey;
+                    }
+                    elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($fkey))){
+                        $resultList[$key][$fkey]=(float)$result->$fkey;
+                    }
+                    elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($fkey))){
+                        $resultList[$key][$fkey]=(bool)$result->$fkey;
+                    }
+                    else{
+                        $resultList[$key][$fkey]=$result->$fkey;
+                    }
+
+                }
+
+            }
+
+
+            $jfkxListe=[];
+            foreach(self::getJoinOperationFieldAs(false) as $jfkx){
+                $listAsKey=self::getJoinOperationFieldAs("list")['listAs'];
+                if(in_array($jfkx,$listAsKey)){
+                    $jfkxem=explode(".",array_search($jfkx,$listAsKey));
+                    $jfkxListe[$jfkx]=$jfkxem[1];
+                }
+                else{
+                    $jfkxListe[$jfkx]=$jfkx;
+                }
+
+                $joins[$key][$jfkx]=explode("@@@@@___@@@@@",$result->$jfkx);
+                for($i=0; $i<count($joins[$key][$jfkx]); $i++){
+                    if(preg_match('@int@is',self::getTypeColumnsFromDatabase($jfkxListe[$jfkx],self::$join))){
+                        $resultList[$key][$hasManyJoinAs][$i][$jfkx]=(int)$joins[$key][$jfkx][$i];
+                    }
+                    elseif(preg_match('@float@is',self::getTypeColumnsFromDatabase($jfkxListe[$jfkx],self::$join))){
+                        $resultList[$key][$hasManyJoinAs][$i][$jfkx]=(int)$joins[$key][$jfkx][$i];
+                    }
+                    elseif(preg_match('@bool@is',self::getTypeColumnsFromDatabase($jfkxListe[$jfkx],self::$join))){
+                        $resultList[$key][$hasManyJoinAs][$i][$jfkx]=(int)$joins[$key][$jfkx][$i];
+                    }
+                    else{
+                        $resultList[$key][$hasManyJoinAs][$i][$jfkx]=$joins[$key][$jfkx][$i];
+                    }
+
+                }
+            }
+        }
+
+        $pageNo=(self::checkPageOnQueryString()) ? $getQueryString['page'] : 1;
+        $totalPageNo=ceil((int)$paginatorCount['dataCount']/(int)self::$page);
+
+        return [
+
+            'dataCount'=>(int)$paginatorCount['dataCount'],
+            'paginator'=>(int)self::$page,
+            'totalPageNo'=>(int)$totalPageNo,
+            'currentPage'=>(int)$pageNo,
+            'data'=>$resultList
+
+        ];
     }
 
     /**
