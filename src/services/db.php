@@ -51,6 +51,7 @@ class db {
     private static $sum=null;
     private static $offset='';
     private static $joiner='';
+    private static $whereIn=null;
 
 
     public function __construct(){
@@ -100,8 +101,27 @@ class db {
      */
     public static function scope($scope=null){
 
+
         if($scope!==null){
            self::$modelscope=$scope;
+        }
+
+        return new static;
+
+    }
+
+
+    /**
+     * query where In.
+     *
+     * @return pdo class
+     */
+    public static function whereIn($field=null,$data=array()){
+
+        if($field!==null && count($data)){
+
+            self::$whereIn['field']=$field;
+            self::$whereIn['data']=$data;
         }
 
         return new static;
@@ -354,11 +374,7 @@ class db {
         //where method
         $whereOperation=self::getWhereOperation();
 
-        //where key
-        if(count($whereOperation)){
-            $where.=self::$where;
-            $execute=self::$execute;
-        }
+
 
         //ofset filter
         $offset=self::getOffsetOperation();
@@ -387,7 +403,12 @@ class db {
         try {
             if(self::$hasMany!==null){
                 //get query result
-                return self::getHasManyQueryResult();
+                if(property_exists($model,"redis") && $model->redis['status']){
+                    return self::getHasManyQueryRedisResult();
+                }
+                else{
+                    return self::getHasManyQueryResult();
+                }
             }
             else{
                 //get query result
@@ -494,6 +515,17 @@ class db {
             $getTableColumns=self::$select;
         }
 
+        $hiddenLists=[];
+        foreach($getTableColumns as $gkey=>$gvalue){
+            if(property_exists($model,"selectHidden") && !in_array($gvalue,$model->selectHidden)){
+                $hiddenLists[]=$gvalue;
+            }
+        }
+
+        if(count($hiddenLists)){
+            $getTableColumns=$hiddenLists;
+        }
+
         $resultsWithTypes=[];
         foreach($results as $key=>$rwt){
             foreach($getTableColumns as $cols){
@@ -559,7 +591,7 @@ class db {
     private static function getQueryRedisResult(){
         $model=self::staticFlowCallback();
 
-        $redisInfo=''.self::$select.'_'.$model->table.'_'.self::getStringWhere().'_'.self::$joiner.'_'.self::$order.'__'.self::$offset.'';
+        $redisInfo=''.self::$select.'_'.$model->table.'_'.self::getStringWhere().'_'.self::$joiner.'_'.self::$order.'__'.self::$offset.'__'.implode(",",self::$execute);
         $redisHash=''.$model->table.'__'.md5($redisInfo).'';
 
         $redisConnection=\app::container("redis");
@@ -567,9 +599,16 @@ class db {
         if($redisConnection->exists($redisHash)){
             return unserialize($redisConnection->get($redisHash));
         }
-        $redisConnection->set([$redisHash,serialize(self::getQueryResult())]);
-        $redisConnection->expire($redisHash,$model->redis['expire']);
-        return self::getQueryResult();
+
+        $result=self::getQueryResult();
+
+
+        if(count($result['data'])){
+            $redisConnection->set([$redisHash,serialize($result)]);
+            $redisConnection->expire($redisHash,$model->redis['expire']);
+        }
+
+        return $result;
     }
 
 
@@ -680,6 +719,28 @@ class db {
             'data'=>$resultList
 
         ];
+    }
+
+
+    /**
+     * query query has Many redis result.
+     *
+     * @return pdo class
+     */
+    private static function getHasManyQueryRedisResult(){
+        $model=self::staticFlowCallback();
+
+        $redisInfo=''.self::$select.'_'.$model->table.'_'.self::getStringWhere().'_'.self::$joiner.'_'.self::$order.'__'.self::$offset.'';
+        $redisHash=''.$model->table.'__'.md5($redisInfo).'';
+
+        $redisConnection=\app::container("redis");
+
+        if($redisConnection->exists($redisHash)){
+            return unserialize($redisConnection->get($redisHash));
+        }
+        $redisConnection->set([$redisHash,serialize(self::getHasManyQueryResult())]);
+        $redisConnection->expire($redisHash,$model->redis['expire']);
+        return self::getHasManyQueryResult();
     }
 
     /**
@@ -829,19 +890,28 @@ class db {
     private static function getWhereOperation(){
 
         $list=[];
-        $model=new static;
+        $model=self::staticFlowCallback();
 
         //model scope
         self::$where=self::getScopeOperation();
 
         //find method
         if(self::$find!==null){
-            $list['where']='WHERE '.self::$primarykey_static.'=:'.self::$primarykey_static.'';
-            $list['execute']=array(':'.self::$primarykey_static.''=>self::$find);
-
+            self::getFindOperation();
         }
         else{
-            if(count(self::$where)){
+            if(count(self::$where) OR self::$whereIn!==null){
+
+                if(self::$whereIn!==null){
+                    if(count(self::$where)==0){
+                        self::$where['field'][]=self::$primarykey_static;
+                        self::$where['operator'][]=">";
+                        self::$where['value'][]=0;
+
+                    }
+
+                }
+
 
                 $fieldPrepareArray=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
@@ -859,8 +929,18 @@ class db {
                     }
 
                 }
+
+
                 $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
                 $list['execute']=$fieldPrepareArrayExecute;
+
+                if(self::$whereIn!==null && is_array(self::$whereIn)){
+                    $whereIn=self::getWhereInString();
+                    $list['where']=$list['where'].' AND '.$whereIn['prepare'];
+                    $list['execute']=$list['execute']+$whereIn['execute'];
+
+                }
+
 
                 self::$where=$list['where'];
                 self::$execute=$list['execute'];
@@ -881,6 +961,46 @@ class db {
             return false;
         }
         return false;
+    }
+
+    private static function getWhereInString(){
+        if(self::$whereIn!==null && is_array(self::$whereIn)){
+            foreach(self::$whereIn['data'] as $key=>$value){
+                $prepare[]=':a'.$key.'';
+                $execute[':a'.$key.'']=$value;
+            }
+            return ['prepare'=>self::$whereIn['field'].' IN ('.implode(",",$prepare).')','execute'=>$execute];
+        }
+        return '';
+
+    }
+
+    /**
+     * query get find operation.
+     *
+     * @return pdo class
+     */
+    private static function getFindOperation(){
+
+        if(is_array(self::$find)){
+
+            $prepare=[];
+            $preparare_execute=[];
+            foreach(self::$find as $key=>$value){
+                $prepare[]=''.self::$primarykey_static.''.$key.'=:'.self::$primarykey_static.''.$key.'';
+                $prepare_execute[':'.self::$primarykey_static.''.$key.'']=$value;
+            }
+
+            $placeholders = str_repeat ('?,', count(self::$find)-1).'?';
+            self::$where='WHERE '.self::$primarykey_static.' IN ('.$placeholders.')';
+            self::$execute=self::$find;
+
+        }
+        else{
+            self::$where='WHERE '.self::$primarykey_static.'=:'.self::$primarykey_static.'';
+            self::$execute=array(':'.self::$primarykey_static.''=>self::$find);
+        }
+
     }
 
 
@@ -1030,45 +1150,49 @@ class db {
 
         //get model
         $model=new static;
+
         //get scope
         $scope=[];
-        if(self::$modelscope!==null){
-            $scope=$model->modelScope(self::$modelscope);
-            if(is_array(self::$modelscope)){
-                $modelScopeJoin=[];
-                foreach (self::$modelscope as $modelscope_key=>$modelscope_value) {
-                    foreach($model->modelScope($modelscope_value) as $mvkey=>$mvvalue){
-                        $scope[$mvkey]=$mvvalue;
-                    }
-                }
-            }
-        }
-        else{
-            if(property_exists($model,"scope")){
-                if(array_key_exists("auto",$model->scope)){
-                    if(!is_array($model->scope['auto'])){
-                        $scope=$model->modelScope($model->scope['auto']);
-                    }
-                    else{
-                        $modelScopeJoin=[];
-                        foreach ($model->scope['auto'] as $modelscope_key=>$modelscope_value) {
-                            foreach($model->modelScope($modelscope_value) as $mvkey=>$mvvalue){
-                                $scope[$mvkey]=$mvvalue;
-                            }
+        if(self::$modelscope!==false){
+            if(self::$modelscope!==null){
+                $scope=$model->modelScope(self::$modelscope);
+                if(is_array(self::$modelscope)){
+                    $modelScopeJoin=[];
+                    foreach (self::$modelscope as $modelscope_key=>$modelscope_value) {
+                        foreach($model->modelScope($modelscope_value) as $mvkey=>$mvvalue){
+                            $scope[$mvkey]=$mvvalue;
                         }
                     }
+                }
+            }
+            else{
+                if(property_exists($model,"scope")){
+                    if(array_key_exists("auto",$model->scope)){
+                        if(!is_array($model->scope['auto'])){
+                            $scope=$model->modelScope($model->scope['auto']);
+                        }
+                        else{
+                            $modelScopeJoin=[];
+                            foreach ($model->scope['auto'] as $modelscope_key=>$modelscope_value) {
+                                foreach($model->modelScope($modelscope_value) as $mvkey=>$mvvalue){
+                                    $scope[$mvkey]=$mvvalue;
+                                }
+                            }
+                        }
+
+                    }
 
                 }
+            }
 
+            //get scope where
+            foreach($scope as $scope_key=>$scope_value){
+                self::$where['field'][]=$scope_key;
+                self::$where['operator'][]="=";
+                self::$where['value'][]=$scope_value;
             }
         }
 
-        //get scope where
-        foreach($scope as $scope_key=>$scope_value){
-            self::$where['field'][]=$scope_key;
-            self::$where['operator'][]="=";
-            self::$where['value'][]=$scope_value;
-        }
 
         return self::$where;
     }

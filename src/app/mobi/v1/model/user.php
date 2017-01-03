@@ -1,10 +1,10 @@
 <?php
-namespace src\app\__projectName__\v1\model;
+namespace src\app\mobi\v1\model;
 
-class __className__ extends \src\services\db {
+class user extends \src\services\db {
 
     //tablename
-    protected $table='__tableName__';
+    protected $table='users';
 
     //this value is run for auto paginator
     protected $paginator=['auto'=>10];
@@ -28,9 +28,9 @@ class __className__ extends \src\services\db {
     //protected $joiner=['auto'=>"left"];
 
     //this value is similar field that on the joined tables
-    /*protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
-        'chats'=>['hasOne'=>'userid','joinField'=>['message']]
-    ];*/
+    protected $joinField=['books'=>['match'=>'BookId','joinField'=>['bookname','status/bookstatus']],
+        'chats'=>['hasMany'=>'userid','as'=>'Conversation','joinField'=>['id/chat_id','message']]
+    ];
 
     //this value hiddens  to select field
     //protected $selectHidden=['id'];
