@@ -52,6 +52,8 @@ class db {
     private static $offset='';
     private static $joiner='';
     private static $whereIn=null;
+    private static $whereNotIn=null;
+    private static $orWhere=[];
 
 
     public function __construct(){
@@ -128,6 +130,24 @@ class db {
 
     }
 
+    /**
+     * query where Not In.
+     *
+     * @return pdo class
+     */
+    public static function whereNotIn($field=null,$data=array()){
+
+        if($field!==null && count($data)){
+
+            self::$whereNotIn['field']=$field;
+            self::$whereNotIn['data']=$data;
+        }
+
+        return new static;
+
+    }
+
+
 
     /**
      * query where.
@@ -155,6 +175,40 @@ class db {
                 self::$where['field'][]=$field;
                 self::$where['operator'][]=$operator;
                 self::$where['value'][]=$value;
+
+            }
+        }
+        return new static;
+
+    }
+
+
+    /**
+     * query where.
+     *
+     * @return pdo class
+     */
+    public static function orWhere($field=null,$operator=null,$value=null,$join=false){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            //where criteria coming with all values
+            //where nested true
+            if($field!==null AND $operator!==null AND $value!==null){
+                self::$orWhere['field'][]=$field;
+                self::$orWhere['operator'][]=$operator;
+                self::$orWhere['value'][]=$value;
 
             }
         }
@@ -900,9 +954,9 @@ class db {
             self::getFindOperation();
         }
         else{
-            if(count(self::$where) OR self::$whereIn!==null){
+            if(count(self::$where) OR self::$whereIn!==null OR self::$whereNotIn!==null){
 
-                if(self::$whereIn!==null){
+                if(self::$whereIn!==null OR self::$whereNotIn!==null){
                     if(count(self::$where)==0){
                         self::$where['field'][]=self::$primarykey_static;
                         self::$where['operator'][]=">";
@@ -911,6 +965,7 @@ class db {
                     }
 
                 }
+
 
 
                 $fieldPrepareArray=[];
@@ -942,8 +997,19 @@ class db {
                 }
 
 
+                if(self::$whereNotIn!==null && is_array(self::$whereNotIn)){
+                    $whereNotIn=self::getWhereNotInString();
+                    $list['where']=$list['where'].' AND '.$whereNotIn['prepare'];
+                    $list['execute']=$list['execute']+$whereNotIn['execute'];
+
+                }
+
                 self::$where=$list['where'];
                 self::$execute=$list['execute'];
+
+                if(count(self::$where) && count(self::$orWhere)){
+                    self::getOrWhereOperation();
+                }
             }
 
         }
@@ -951,6 +1017,31 @@ class db {
         return $list;
     }
 
+
+    /**
+     * query get or where operation.
+     *
+     * @return pdo class
+     */
+    private static function getOrWhereOperation(){
+        $list=[];
+        foreach(self::$orWhere['field'] as $field_key=>$field_value){
+            $list['prepare'][]=''.$field_value.''.self::$orWhere['operator'][$field_key].':'.$field_value.''.$field_key.'';
+            $list['execute'][':'.$field_value.''.$field_key.'']=self::$orWhere['value'][$field_key];
+        }
+
+
+
+        self::$where=self::$where.' OR '.implode(" OR ",$list['prepare']);
+        self::$execute=self::$execute+$list['execute'];
+    }
+
+
+    /**
+     * query get checkPageOnQueryString operation.
+     *
+     * @return pdo class
+     */
     private static function checkPageOnQueryString(){
         $request=self::$request;
         $getQueryString=$request->getQueryString();
@@ -963,6 +1054,11 @@ class db {
         return false;
     }
 
+    /**
+     * query get Where In operation.
+     *
+     * @return pdo class
+     */
     private static function getWhereInString(){
         if(self::$whereIn!==null && is_array(self::$whereIn)){
             foreach(self::$whereIn['data'] as $key=>$value){
@@ -970,6 +1066,24 @@ class db {
                 $execute[':a'.$key.'']=$value;
             }
             return ['prepare'=>self::$whereIn['field'].' IN ('.implode(",",$prepare).')','execute'=>$execute];
+        }
+        return '';
+
+    }
+
+
+    /**
+     * query get Where Not In operation.
+     *
+     * @return pdo class
+     */
+    private static function getWhereNotInString(){
+        if(self::$whereNotIn!==null && is_array(self::$whereNotIn)){
+            foreach(self::$whereNotIn['data'] as $key=>$value){
+                $prepare[]=':a'.$key.'';
+                $execute[':a'.$key.'']=$value;
+            }
+            return ['prepare'=>self::$whereNotIn['field'].' NOT IN ('.implode(",",$prepare).')','execute'=>$execute];
         }
         return '';
 
