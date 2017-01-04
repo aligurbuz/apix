@@ -54,6 +54,7 @@ class db {
     private static $whereIn=null;
     private static $whereNotIn=null;
     private static $orWhere=[];
+    private static $whereColumn=[];
 
 
     public function __construct(){
@@ -188,6 +189,40 @@ class db {
      *
      * @return pdo class
      */
+    public static function whereColumn($field=null,$operator=null,$value=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            //where criteria coming with all values
+            //where nested true
+            if($field!==null AND $operator!==null AND $value!==null){
+                self::$whereColumn['field'][]=$field;
+                self::$whereColumn['operator'][]=$operator;
+                self::$whereColumn['value'][]=$value;
+
+            }
+        }
+        return new static;
+
+    }
+
+
+    /**
+     * query where.
+     *
+     * @return pdo class
+     */
     public static function orWhere($field=null,$operator=null,$value=null,$join=false){
 
         //instance check
@@ -209,6 +244,9 @@ class db {
                 self::$orWhere['field'][]=$field;
                 self::$orWhere['operator'][]=$operator;
                 self::$orWhere['value'][]=$value;
+                if($join){
+                    self::$orWhere['join'][]=$join;
+                }
 
             }
         }
@@ -427,8 +465,6 @@ class db {
 
         //where method
         $whereOperation=self::getWhereOperation();
-
-
 
         //ofset filter
         $offset=self::getOffsetOperation();
@@ -949,6 +985,16 @@ class db {
         //model scope
         self::$where=self::getScopeOperation();
 
+        if(count(self::$whereColumn)){
+            $selflist=[];
+            foreach(self::$whereColumn['field'] as $fkey=>$fvalue){
+                self::$where['field'][]='COLUMN'.self::$whereColumn['field'][$fkey];
+                self::$where['operator'][]=self::$whereColumn['operator'][$fkey];
+                self::$where['value'][]='COLUMN'.self::$whereColumn['value'][$fkey];
+            }
+
+        }
+
         //find method
         if(self::$find!==null){
             self::getFindOperation();
@@ -969,6 +1015,7 @@ class db {
 
 
                 $fieldPrepareArray=[];
+                $fieldPrepareArrayExecute=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
                     if(self::$where['operator'][$field_key]=="BETWEEN"){
                         $fieldPrepareArray[]=''.$field_value.' '.self::$where['operator'][$field_key].' '.self::$where['between'][$field_key].' ';
@@ -979,15 +1026,25 @@ class db {
 
                     }
                     else{
-                        $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
-                        $fieldPrepareArrayExecute[':'.$field_value.'']=self::$where['value'][$field_key];
+                        if(preg_match('@COLUMN@is',$field_value)){
+                            $fieldPrepareArray[]=''.str_replace('COLUMN','',$field_value).''.self::$where['operator'][$field_key].''.str_replace('COLUMN','',self::$where['value'][$field_key]).'';
+                        }
+                        else{
+                            $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
+                        }
+
+                        if(!preg_match('@COLUMN@is',self::$where['value'][$field_key])){
+                            $fieldPrepareArrayExecute[':'.$field_value.'']=self::$where['value'][$field_key];
+                        }
+
+
                     }
 
                 }
 
-
                 $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
                 $list['execute']=$fieldPrepareArrayExecute;
+
 
                 if(self::$whereIn!==null && is_array(self::$whereIn)){
                     $whereIn=self::getWhereInString();
@@ -1012,6 +1069,7 @@ class db {
                 }
             }
 
+
         }
 
         return $list;
@@ -1025,15 +1083,45 @@ class db {
      */
     private static function getOrWhereOperation(){
         $list=[];
-        foreach(self::$orWhere['field'] as $field_key=>$field_value){
-            $list['prepare'][]=''.$field_value.''.self::$orWhere['operator'][$field_key].':'.$field_value.''.$field_key.'';
-            $list['execute'][':'.$field_value.''.$field_key.'']=self::$orWhere['value'][$field_key];
+
+        if(array_key_exists("join",self::$orWhere) && count(self::$orWhere['join'])>1){
+            $joinOrWhereList=[];
+            foreach(self::$orWhere['field'] as $field_key=>$field_value){
+                $joinOrWhereList[self::$orWhere['join'][$field_key]]['field'][$field_key]=self::$orWhere['field'][$field_key];
+                $joinOrWhereList[self::$orWhere['join'][$field_key]]['operator'][$field_key]=self::$orWhere['operator'][$field_key];
+                $joinOrWhereList[self::$orWhere['join'][$field_key]]['value'][$field_key]=self::$orWhere['value'][$field_key];
+            }
+
+            foreach($joinOrWhereList as $key=>$array){
+                foreach($array['field'] as $field_key=>$field_value){
+                    $list['prepare'][$key][]=''.$field_value.''.$array['operator'][$field_key].':'.$field_value.''.$key.''.$field_key.'';
+                    $list['execute'][':'.$field_value.''.$key.''.$field_key.'']=$array['value'][$field_key];
+                }
+            }
+
+            $prepareLists=[];
+            foreach($list['prepare'] as $key=>$value){
+                $prepareLists[]='('.implode(" OR ",$list['prepare'][$key]).')';
+            }
+
+
+            self::$where=self::$where.' AND '.implode(" AND ",$prepareLists).'';
+            self::$execute=self::$execute+$list['execute'];
+
+
+
+
+        }
+        else{
+            foreach(self::$orWhere['field'] as $field_key=>$field_value){
+                $list['prepare'][]=''.$field_value.''.self::$orWhere['operator'][$field_key].':'.$field_value.''.$field_key.'';
+                $list['execute'][':'.$field_value.''.$field_key.'']=self::$orWhere['value'][$field_key];
+            }
+
+            self::$where=self::$where.' OR '.implode(" OR ",$list['prepare']);
+            self::$execute=self::$execute+$list['execute'];
         }
 
-
-
-        self::$where=self::$where.' OR '.implode(" OR ",$list['prepare']);
-        self::$execute=self::$execute+$list['execute'];
     }
 
 
@@ -1088,6 +1176,9 @@ class db {
         return '';
 
     }
+
+
+
 
     /**
      * query get find operation.
