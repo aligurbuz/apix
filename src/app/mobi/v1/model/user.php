@@ -19,7 +19,7 @@ class user extends \src\services\db {
     //protected $insertedPost=[];
 
     //this value is created and updated time for values it will be inserted
-    //protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
+    protected $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
 
     //this method is auto method for values it will be inserted
     //protected static function insertedPostAttachFunction($id){}

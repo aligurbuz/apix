@@ -55,6 +55,7 @@ class db {
     private static $whereNotIn=null;
     private static $orWhere=[];
     private static $whereColumn=[];
+    private static $whereYear=[];
 
 
     public function __construct(){
@@ -211,6 +212,43 @@ class db {
                 self::$whereColumn['operator'][]=$operator;
                 self::$whereColumn['value'][]=$value;
 
+            }
+        }
+        return new static;
+
+    }
+
+
+    /**
+     * query where year.
+     *
+     * @return pdo class
+     */
+    public static function whereYear($year='2016',$field=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        $model=self::staticFlowCallback();
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            //where criteria coming with all values
+            if($field==null){
+                self::$whereYear['year'][]=$year;
+                self::$whereYear['field'][]=$model->createdAndUpdatedFields['created_at'];
+            }
+            else{
+                self::$whereYear['year'][]=$year;
+                self::$whereYear['field'][]=$field;
             }
         }
         return new static;
@@ -985,8 +1023,17 @@ class db {
         //model scope
         self::$where=self::getScopeOperation();
 
+        if(count(self::$whereYear)){
+            foreach(self::$whereYear['year'] as $fkey=>$fvalue){
+                self::$where['field'][]='YEAR'.$fkey.''.self::$whereYear['field'][$fkey];
+                self::$where['operator'][]="=";
+                self::$where['value'][]='YEAR'.$fkey.'-'.self::$whereYear['year'][$fkey];
+            }
+
+        }
+
+
         if(count(self::$whereColumn)){
-            $selflist=[];
             foreach(self::$whereColumn['field'] as $fkey=>$fvalue){
                 self::$where['field'][]='COLUMN'.self::$whereColumn['field'][$fkey];
                 self::$where['operator'][]=self::$whereColumn['operator'][$fkey];
@@ -1029,18 +1076,28 @@ class db {
                         if(preg_match('@COLUMN@is',$field_value)){
                             $fieldPrepareArray[]=''.str_replace('COLUMN','',$field_value).''.self::$where['operator'][$field_key].''.str_replace('COLUMN','',self::$where['value'][$field_key]).'';
                         }
+                        elseif(preg_match('@YEAR(\d+)@is',$field_value)){
+                            $fieldPrepareArray[]='FROM_UNIXTIME('.preg_replace('@YEAR(\d+)@is','',$field_value).',"%Y")=:'.$field_value;
+                        }
                         else{
                             $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
                         }
 
-                        if(!preg_match('@COLUMN@is',self::$where['value'][$field_key])){
+                        if(!preg_match('@COLUMN|YEAR@is',self::$where['value'][$field_key])){
                             $fieldPrepareArrayExecute[':'.$field_value.'']=self::$where['value'][$field_key];
                         }
+
+                        if(preg_match('@YEAR(\d+)@is',self::$where['value'][$field_key])){
+                            $fieldPrepareArrayExecute[':'.$field_value.'']=(int)preg_replace('@YEAR(\d+)\-@is','',self::$where['value'][$field_key]);
+                        }
+
 
 
                     }
 
                 }
+
+                //dd($fieldPrepareArray,$fieldPrepareArrayExecute,self::$where);
 
                 $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
                 $list['execute']=$fieldPrepareArrayExecute;

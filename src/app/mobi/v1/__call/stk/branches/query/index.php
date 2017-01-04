@@ -43,7 +43,7 @@ class index {
     public function get(){
 
         //return source
-        return user::get();
+        return user::whereYear(2016)->get();
 
     }
 }
