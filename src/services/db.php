@@ -224,7 +224,7 @@ class db {
      *
      * @return pdo class
      */
-    public static function whereYear($year='2016',$field=null){
+    public static function whereYear($year='NOW',$field=null){
 
         //instance check
         if(self::$_instance==null){
@@ -241,14 +241,36 @@ class db {
 
         }
         else{
+            $year=($year=="NOW") ? date("Y") : $year;
+
             //where criteria coming with all values
             if($field==null){
-                self::$whereYear['year'][]=$year;
-                self::$whereYear['field'][]=$model->createdAndUpdatedFields['created_at'];
+                if(is_array($year)){
+                    foreach($year as $y){
+                        self::$whereYear['year'][]=$y;
+                        self::$whereYear['field'][]=$model->createdAndUpdatedFields['created_at'];
+                    }
+
+                }
+                else{
+                    self::$whereYear['year'][]=$year;
+                    self::$whereYear['field'][]=$model->createdAndUpdatedFields['created_at'];
+                }
+
             }
             else{
-                self::$whereYear['year'][]=$year;
-                self::$whereYear['field'][]=$field;
+                if(is_array($year)){
+                    foreach($year as $y){
+                        self::$whereYear['year'][]=$y;
+                        self::$whereYear['field'][]=$field;
+                    }
+
+                }
+                else{
+                    self::$whereYear['year'][]=$year;
+                    self::$whereYear['field'][]=$field;
+                }
+
             }
         }
         return new static;

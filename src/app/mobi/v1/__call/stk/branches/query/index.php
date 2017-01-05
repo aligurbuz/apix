@@ -43,6 +43,6 @@ class index {
     public function get(){
 
         //return source
-        return user::Where("id",">",1)->whereColumn("status",">","bookId")->get();
+        return user::whereYear()->get();
     }
 }
