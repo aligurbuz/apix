@@ -59,6 +59,7 @@ class db {
     private static $whereMonth=[];
     private static $whereDay=[];
     private static $whereDate=[];
+    private static $addToSelectSql=null;
 
 
     public function __construct(){
@@ -95,6 +96,23 @@ class db {
             if(is_array($select)){
                 self::$select=$select;
             }
+        }
+
+        return new static;
+
+    }
+
+    /**
+     * query add to select sql.
+     *
+     * @return pdo class
+     */
+    public static function addToSelectSql($select=null,$as='total',$type="string"){
+
+        if($select!==null){
+            self::$addToSelectSql['select']=$select;
+            self::$addToSelectSql['as']=$as;
+            self::$addToSelectSql['type']=$type;
         }
 
         return new static;
@@ -975,9 +993,11 @@ class db {
      */
     private static function getQueryResult(){
         $model=self::staticFlowCallback();
+
         $query=self::$db->prepare("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order." ".self::$offset."");
         $query->execute(self::$execute);
         $results=$query->fetchAll(\PDO::FETCH_OBJ);
+
 
         $getTableColumns=self::getTableColumns(self::getShowColumns(),true);
         if(is_array(self::$select)){
@@ -994,6 +1014,12 @@ class db {
         if(count($hiddenLists)){
             $getTableColumns=$hiddenLists;
         }
+
+
+        if(self::$addToSelectSql!==null){
+            $getTableColumns[]=self::$addToSelectSql['as'];
+        }
+
 
         $resultsWithTypes=[];
         foreach($results as $key=>$rwt){
@@ -1334,6 +1360,10 @@ class db {
                 $executeList[preg_replace('@:(\w+)\.@is',':',$execute_key)]=$execute_val;
             }
             self::$execute=$executeList;
+        }
+
+        if(self::$addToSelectSql){
+            $select=''.$select.',('.self::$addToSelectSql['select'].') as '.self::$addToSelectSql['as'].'';
         }
 
         self::$select=$select;
@@ -1912,6 +1942,7 @@ class db {
         $showColumns->execute();
         $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
 
+
         $list=[];
         foreach($columns as $result){
             if($result->Type=="tinyint(1)"){
@@ -1922,6 +1953,12 @@ class db {
             }
 
         }
+
+        if(self::$addToSelectSql!==null){
+            $list[self::$addToSelectSql['as']]=self::$addToSelectSql['type'];
+        }
+
+
 
         if($field==null){
             return $list;
