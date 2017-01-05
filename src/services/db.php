@@ -58,6 +58,7 @@ class db {
     private static $whereYear=[];
     private static $whereMonth=[];
     private static $whereDay=[];
+    private static $whereDate=[];
 
 
     public function __construct(){
@@ -390,6 +391,203 @@ class db {
                 else{
                     self::$whereDay['day'][]=$day;
                     self::$whereDay['field'][]=$field;
+                }
+
+            }
+        }
+        return new static;
+
+    }
+
+
+
+    /**
+     * query where day.
+     *
+     * @return pdo class
+     */
+    public static function whereDate($date='NOW',$field=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        $model=self::staticFlowCallback();
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            $date=($date=="NOW") ? date("Y-m-d") : $date;
+
+            //where criteria coming with all values
+            if($field==null){
+                if(is_array($date)){
+                    $dateYear=[];
+                    $dateMonth=[];
+                    $dateDay=[];
+                    foreach($date as $y){
+                        $dateValue=explode("-",$y);
+                        $dateYear[]=$dateValue[0];
+                        if(array_key_exists(1,$dateValue)){
+                            $dateMonth[]=$dateValue[1];
+                        }
+
+                        if(array_key_exists(2,$dateValue)){
+                            $dateDay[]=$dateValue[2];
+                        }
+                    }
+
+                    if(count($dateYear)){
+                        foreach ($dateYear as $val) {
+                            self::$whereYear['year'][]=$val;
+                            self::$whereYear['field'][]=$model->createdAndUpdatedFields['created_at'];
+                        }
+                    }
+
+
+                    if(count($dateMonth)){
+                        foreach ($dateMonth as $val) {
+                            self::$whereMonth['month'][]=$val;
+                            self::$whereMonth['field'][]=$model->createdAndUpdatedFields['created_at'];
+                        }
+                    }
+
+
+                    if(count($dateDay)){
+                        foreach ($dateDay as $val) {
+                            self::$whereDay['day'][]=$val;
+                            self::$whereDay['field'][]=$model->createdAndUpdatedFields['created_at'];
+                        }
+                    }
+
+
+                }
+                else{
+
+                    $dateYear=[];
+                    $dateMonth=[];
+                    $dateDay=[];
+
+                    $dateValue=explode("-",$date);
+                    $dateYear[]=$dateValue[0];
+                    if(array_key_exists(1,$dateValue)){
+                        $dateMonth[]=$dateValue[1];
+                    }
+
+                    if(array_key_exists(2,$dateValue)){
+                        $dateDay[]=$dateValue[2];
+                    }
+
+                    if(count($dateYear)){
+                        foreach ($dateYear as $val) {
+                            self::$whereYear['year'][]=$val;
+                            self::$whereYear['field'][]=$model->createdAndUpdatedFields['created_at'];
+                        }
+                    }
+
+
+                    if(count($dateMonth)){
+                        foreach ($dateMonth as $val) {
+                            self::$whereMonth['month'][]=$val;
+                            self::$whereMonth['field'][]=$model->createdAndUpdatedFields['created_at'];
+                        }
+                    }
+
+
+                    if(count($dateDay)){
+                        foreach ($dateDay as $val) {
+                            self::$whereDay['day'][]=$val;
+                            self::$whereDay['field'][]=$model->createdAndUpdatedFields['created_at'];
+                        }
+                    }
+                }
+
+            }
+            else{
+                if(is_array($date)){
+                    $dateYear=[];
+                    $dateMonth=[];
+                    $dateDay=[];
+                    foreach($date as $y){
+                        $dateValue=explode("-",$y);
+                        $dateYear[]=$dateValue[0];
+                        if(array_key_exists(1,$dateValue)){
+                            $dateMonth[]=$dateValue[1];
+                        }
+
+                        if(array_key_exists(2,$dateValue)){
+                            $dateDay[]=$dateValue[2];
+                        }
+                    }
+
+                    if(count($dateYear)){
+                        foreach ($dateYear as $val) {
+                            self::$whereYear['year'][]=$val;
+                            self::$whereYear['field'][]=$field;
+                        }
+                    }
+
+
+                    if(count($dateMonth)){
+                        foreach ($dateMonth as $val) {
+                            self::$whereMonth['month'][]=$val;
+                            self::$whereMonth['field'][]=$field;
+                        }
+                    }
+
+
+                    if(count($dateDay)){
+                        foreach ($dateDay as $val) {
+                            self::$whereDay['day'][]=$val;
+                            self::$whereDay['field'][]=$field;
+                        }
+                    }
+
+                }
+                else{
+
+                    $dateYear=[];
+                    $dateMonth=[];
+                    $dateDay=[];
+
+                    $dateValue=explode("-",$date);
+                    $dateYear[]=$dateValue[0];
+                    if(array_key_exists(1,$dateValue)){
+                        $dateMonth[]=$dateValue[1];
+                    }
+
+                    if(array_key_exists(2,$dateValue)){
+                        $dateDay[]=$dateValue[2];
+                    }
+
+                    if(count($dateYear)){
+                        foreach ($dateYear as $val) {
+                            self::$whereYear['year'][]=$val;
+                            self::$whereYear['field'][]=$field;
+                        }
+                    }
+
+
+                    if(count($dateMonth)){
+                        foreach ($dateMonth as $val) {
+                            self::$whereMonth['month'][]=$val;
+                            self::$whereMonth['field'][]=$field;
+                        }
+                    }
+
+
+                    if(count($dateDay)){
+                        foreach ($dateDay as $val) {
+                            self::$whereDay['day'][]=$val;
+                            self::$whereDay['field'][]=$field;
+                        }
+                    }
                 }
 
             }
@@ -1843,7 +2041,6 @@ class db {
 
 
     }
-
 
 
     /**
