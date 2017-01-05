@@ -1074,13 +1074,13 @@ class db {
                     }
                     else{
                         if(preg_match('@COLUMN@is',$field_value)){
-                            $fieldPrepareArray[]=''.str_replace('COLUMN','',$field_value).''.self::$where['operator'][$field_key].''.str_replace('COLUMN','',self::$where['value'][$field_key]).'';
+                            $fieldPrepareArray['list'][]=''.str_replace('COLUMN','',$field_value).''.self::$where['operator'][$field_key].''.str_replace('COLUMN','',self::$where['value'][$field_key]).'';
                         }
                         elseif(preg_match('@YEAR(\d+)@is',$field_value)){
-                            $fieldPrepareArray[]='FROM_UNIXTIME('.preg_replace('@YEAR(\d+)@is','',$field_value).',"%Y")=:'.$field_value;
+                            $fieldPrepareArray['year'][]='FROM_UNIXTIME('.preg_replace('@YEAR(\d+)@is','',$field_value).',"%Y")=:'.$field_value;
                         }
                         else{
-                            $fieldPrepareArray[]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
+                            $fieldPrepareArray['list'][]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
                         }
 
                         if(!preg_match('@COLUMN|YEAR@is',self::$where['value'][$field_key])){
@@ -1099,9 +1099,21 @@ class db {
 
                 //dd($fieldPrepareArray,$fieldPrepareArrayExecute,self::$where);
 
-                $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray);
+                if(array_key_exists("list",$fieldPrepareArray)){
+                    $list['where']='WHERE '.implode(" AND ",$fieldPrepareArray['list']);
+                }
+
+
+                if(array_key_exists("year",$fieldPrepareArray)){
+                    $whereExtension=(array_key_exists("list",$fieldPrepareArray)) ? ''.$list['where'].' AND ' : 'WHERE ';
+                    $list['where']=''.$whereExtension.' ('.implode(" OR ",$fieldPrepareArray['year']).')';
+                }
+
+
                 $list['execute']=$fieldPrepareArrayExecute;
 
+
+                //dd($list);
 
                 if(self::$whereIn!==null && is_array(self::$whereIn)){
                     $whereIn=self::getWhereInString();
