@@ -43,6 +43,6 @@ class index {
     public function get(){
 
         //return source
-        return user::whereMonth(01)->get();
+        return user::get();
     }
 }

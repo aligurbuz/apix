@@ -57,6 +57,7 @@ class db {
     private static $whereColumn=[];
     private static $whereYear=[];
     private static $whereMonth=[];
+    private static $whereDay=[];
 
 
     public function __construct(){
@@ -280,7 +281,7 @@ class db {
 
 
     /**
-     * query where year.
+     * query where month.
      *
      * @return pdo class
      */
@@ -329,6 +330,66 @@ class db {
                 else{
                     self::$whereMonth['month'][]=$month;
                     self::$whereMonth['field'][]=$field;
+                }
+
+            }
+        }
+        return new static;
+
+    }
+
+
+
+    /**
+     * query where day.
+     *
+     * @return pdo class
+     */
+    public static function whereDay($day='NOW',$field=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        $model=self::staticFlowCallback();
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            $day=($day=="NOW") ? date("d") : $day;
+
+            //where criteria coming with all values
+            if($field==null){
+                if(is_array($day)){
+                    foreach($day as $y){
+                        self::$whereDay['day'][]=$y;
+                        self::$whereDay['field'][]=$model->createdAndUpdatedFields['created_at'];
+                    }
+
+                }
+                else{
+                    self::$whereDay['day'][]=$day;
+                    self::$whereDay['field'][]=$model->createdAndUpdatedFields['created_at'];
+                }
+
+            }
+            else{
+                if(is_array($day)){
+                    foreach($day as $y){
+                        self::$whereDay['day'][]=$y;
+                        self::$whereDay['field'][]=$field;
+                    }
+
+                }
+                else{
+                    self::$whereDay['day'][]=$day;
+                    self::$whereDay['field'][]=$field;
                 }
 
             }
@@ -1124,6 +1185,16 @@ class db {
         }
 
 
+        if(count(self::$whereDay)){
+            foreach(self::$whereDay['day'] as $fkey=>$fvalue){
+                self::$where['field'][]='DAY'.$fkey.''.self::$whereDay['field'][$fkey];
+                self::$where['operator'][]="=";
+                self::$where['value'][]='DAY'.$fkey.'-'.self::$whereDay['day'][$fkey];
+            }
+
+        }
+
+
         if(count(self::$whereColumn)){
             foreach(self::$whereColumn['field'] as $fkey=>$fvalue){
                 self::$where['field'][]='COLUMN'.self::$whereColumn['field'][$fkey];
@@ -1156,7 +1227,7 @@ class db {
                 $fieldPrepareArrayExecute=[];
                 foreach(self::$where['field'] as $field_key=>$field_value){
                     if(self::$where['operator'][$field_key]=="BETWEEN"){
-                        $fieldPrepareArray[]=''.$field_value.' '.self::$where['operator'][$field_key].' '.self::$where['between'][$field_key].' ';
+                        $fieldPrepareArray['list'][]=''.$field_value.' '.self::$where['operator'][$field_key].' '.self::$where['between'][$field_key].' ';
                         $whereBetweenValue=explode(",",self::$where['value'][$field_key]);
                         foreach($whereBetweenValue as $wbv){
                             $fieldPrepareArrayExecute[':'.md5($wbv).'']=$wbv;
@@ -1172,6 +1243,9 @@ class db {
                         }
                         elseif(preg_match('@MONTH(\d+)@is',$field_value)){
                             $fieldPrepareArray['month'][]='FROM_UNIXTIME('.preg_replace('@MONTH(\d+)@is','',$field_value).',"%m")=:'.$field_value;
+                        }
+                        elseif(preg_match('@DAY(\d+)@is',$field_value)){
+                            $fieldPrepareArray['day'][]='FROM_UNIXTIME('.preg_replace('@DAY(\d+)@is','',$field_value).',"%d")=:'.$field_value;
                         }
                         else{
                             $fieldPrepareArray['list'][]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
@@ -1189,6 +1263,12 @@ class db {
                             $monthx=preg_replace('@MONTH(\d+)\-@is','',self::$where['value'][$field_key]);
                             $monthx=(strlen($monthx)==1) ? '0'.$monthx.'' : $monthx;
                             $fieldPrepareArrayExecute[':'.$field_value.'']=$monthx;
+                        }
+
+                        if(preg_match('@DAY(\d+)@is',self::$where['value'][$field_key])){
+                            $dayx=preg_replace('@DAY(\d+)\-@is','',self::$where['value'][$field_key]);
+                            $dayx=(strlen($dayx)==1) ? '0'.$dayx.'' : $dayx;
+                            $fieldPrepareArrayExecute[':'.$field_value.'']=$dayx;
                         }
 
 
@@ -1221,7 +1301,22 @@ class db {
                 }
 
 
+                if(array_key_exists("day",$fieldPrepareArray)){
+                    $whereExtension=(array_key_exists("list",$fieldPrepareArray)) ? ''.$list['where'].' AND ' : 'WHERE ';
+                    if(array_key_exists("year",$fieldPrepareArray)){
+                        $list['where']=''.$list['where'].' AND  ('.implode(" OR ",$fieldPrepareArray['day']).')';
+                    }
+                    else{
+                        $list['where']=''.$whereExtension.' ('.implode(" OR ",$fieldPrepareArray['day']).')';
+                    }
+
+                }
+
+
                 $list['execute']=$fieldPrepareArrayExecute;
+
+                //dd($list);
+
 
 
                 if(self::$whereIn!==null && is_array(self::$whereIn)){
