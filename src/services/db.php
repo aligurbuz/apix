@@ -56,6 +56,7 @@ class db {
     private static $orWhere=[];
     private static $whereColumn=[];
     private static $whereYear=[];
+    private static $whereMonth=[];
 
 
     public function __construct(){
@@ -269,6 +270,65 @@ class db {
                 else{
                     self::$whereYear['year'][]=$year;
                     self::$whereYear['field'][]=$field;
+                }
+
+            }
+        }
+        return new static;
+
+    }
+
+
+    /**
+     * query where year.
+     *
+     * @return pdo class
+     */
+    public static function whereMonth($month='NOW',$field=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        $model=self::staticFlowCallback();
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            $month=($month=="NOW") ? date("m") : $month;
+
+            //where criteria coming with all values
+            if($field==null){
+                if(is_array($month)){
+                    foreach($month as $y){
+                        self::$whereMonth['month'][]=$y;
+                        self::$whereMonth['field'][]=$model->createdAndUpdatedFields['created_at'];
+                    }
+
+                }
+                else{
+                    self::$whereMonth['month'][]=$month;
+                    self::$whereMonth['field'][]=$model->createdAndUpdatedFields['created_at'];
+                }
+
+            }
+            else{
+                if(is_array($month)){
+                    foreach($month as $y){
+                        self::$whereMonth['month'][]=$y;
+                        self::$whereMonth['field'][]=$field;
+                    }
+
+                }
+                else{
+                    self::$whereMonth['month'][]=$month;
+                    self::$whereMonth['field'][]=$field;
                 }
 
             }
@@ -1054,6 +1114,15 @@ class db {
 
         }
 
+        if(count(self::$whereMonth)){
+            foreach(self::$whereMonth['month'] as $fkey=>$fvalue){
+                self::$where['field'][]='MONTH'.$fkey.''.self::$whereMonth['field'][$fkey];
+                self::$where['operator'][]="=";
+                self::$where['value'][]='MONTH'.$fkey.'-'.self::$whereMonth['month'][$fkey];
+            }
+
+        }
+
 
         if(count(self::$whereColumn)){
             foreach(self::$whereColumn['field'] as $fkey=>$fvalue){
@@ -1101,6 +1170,9 @@ class db {
                         elseif(preg_match('@YEAR(\d+)@is',$field_value)){
                             $fieldPrepareArray['year'][]='FROM_UNIXTIME('.preg_replace('@YEAR(\d+)@is','',$field_value).',"%Y")=:'.$field_value;
                         }
+                        elseif(preg_match('@MONTH(\d+)@is',$field_value)){
+                            $fieldPrepareArray['month'][]='FROM_UNIXTIME('.preg_replace('@MONTH(\d+)@is','',$field_value).',"%m")=:'.$field_value;
+                        }
                         else{
                             $fieldPrepareArray['list'][]=''.$field_value.''.self::$where['operator'][$field_key].':'.$field_value.'';
                         }
@@ -1111,6 +1183,12 @@ class db {
 
                         if(preg_match('@YEAR(\d+)@is',self::$where['value'][$field_key])){
                             $fieldPrepareArrayExecute[':'.$field_value.'']=(int)preg_replace('@YEAR(\d+)\-@is','',self::$where['value'][$field_key]);
+                        }
+
+                        if(preg_match('@MONTH(\d+)@is',self::$where['value'][$field_key])){
+                            $monthx=preg_replace('@MONTH(\d+)\-@is','',self::$where['value'][$field_key]);
+                            $monthx=(strlen($monthx)==1) ? '0'.$monthx.'' : $monthx;
+                            $fieldPrepareArrayExecute[':'.$field_value.'']=$monthx;
                         }
 
 
@@ -1131,11 +1209,20 @@ class db {
                     $list['where']=''.$whereExtension.' ('.implode(" OR ",$fieldPrepareArray['year']).')';
                 }
 
+                if(array_key_exists("month",$fieldPrepareArray)){
+                    $whereExtension=(array_key_exists("list",$fieldPrepareArray)) ? ''.$list['where'].' AND ' : 'WHERE ';
+                    if(array_key_exists("year",$fieldPrepareArray)){
+                        $list['where']=''.$list['where'].' AND  ('.implode(" OR ",$fieldPrepareArray['month']).')';
+                    }
+                    else{
+                        $list['where']=''.$whereExtension.' ('.implode(" OR ",$fieldPrepareArray['month']).')';
+                    }
+
+                }
+
 
                 $list['execute']=$fieldPrepareArrayExecute;
 
-
-                //dd($list);
 
                 if(self::$whereIn!==null && is_array(self::$whereIn)){
                     $whereIn=self::getWhereInString();
