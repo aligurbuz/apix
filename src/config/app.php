@@ -64,7 +64,7 @@ class app {
             //container namespace edit
             $containeralias=str_replace("\\","\\\\",$class);
 
-            $inApp="\\src\\app\\".app."\\v1\\config\\app";
+            $inApp="\\src\\app\\".app."\\".version."\\config\\app";
             $inApp=$container->get($inApp);
             $inAppContainer=$inApp->container();
 
@@ -86,7 +86,7 @@ class app {
             }
 
             //return pure container
-            return new $class();
+            return $container->get($class);
         }
 
 

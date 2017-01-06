@@ -249,6 +249,9 @@ class connection {
     private function responseOut($data,$msg=null){
 
         $queryError=[];
+        if(!is_array($data)){
+            $data=[$data];
+        }
         if(array_key_exists("queryResult",$data)){
             if(is_array($data['queryResult']) && array_key_exists("error",$data['queryResult'])){
                 if($data['queryResult']['error']){
