@@ -29,9 +29,9 @@ class database
 
             $db['mysql']['driver']='mysql';
             $db['mysql']['host']='localhost';
-            $db['mysql']['database']='database';
-            $db['mysql']['user']='user';
-            $db['mysql']['password']='password';
+            $db['mysql']['database']='Prosystem';
+            $db['mysql']['user']='root';
+            $db['mysql']['password']='laraappdevman*09';
 
         }
 

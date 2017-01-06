@@ -45,7 +45,7 @@ class index extends app {
         return [
             'environment'=>\app::environment(),
             'clientIp'=>$this->request->getClientIp(),
-            'isMobile'=>\app::container("device")->isMobile(),
+            'isMobile'=>\container::device()->isMobile()
         ];
     }
 }

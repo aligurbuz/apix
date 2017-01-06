@@ -1133,7 +1133,7 @@ class db {
         $redisInfo=''.self::$select.'_'.$model->table.'_'.self::getStringWhere().'_'.self::$joiner.'_'.self::$order.'__'.self::$offset.'__'.implode(",",self::$execute);
         $redisHash=''.$model->table.'__'.md5($redisInfo).'';
 
-        $redisConnection=\app::container("redis");
+        $redisConnection=\container::redis();
 
         if($redisConnection->exists($redisHash)){
             return unserialize($redisConnection->get($redisHash));
@@ -1272,7 +1272,7 @@ class db {
         $redisInfo=''.self::$select.'_'.$model->table.'_'.self::getStringWhere().'_'.self::$joiner.'_'.self::$order.'__'.self::$offset.'';
         $redisHash=''.$model->table.'__'.md5($redisInfo).'';
 
-        $redisConnection=\app::container("redis");
+        $redisConnection=\container::redis();
 
         if($redisConnection->exists($redisHash)){
             return unserialize($redisConnection->get($redisHash));

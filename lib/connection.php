@@ -32,11 +32,6 @@ class connection {
 
         }
 
-        //get preloader classes
-        $border->getPreLoaderClasses();
-
-        $border->resolve->resolve("\\lib\\appContainer")->get();
-
         //get service and file method from request uri
         $service=$border->getServiceNameAndMethodFromRequestUri();
 
@@ -64,10 +59,19 @@ class connection {
         }
 
         define("app",$service[0]);
-        define("service",$service[1]);
+        if(array_key_exists(1,$service)){
+            define("service",$service[1]);
+        }
+        else{
+            $service[1]=null;
+        }
+
         define("version",$getVersion);
         define("method",$serviceMethod);
         define("request",$_SERVER['REQUEST_METHOD']);
+
+        //get preloader classes
+        $border->getPreLoaderClasses();
 
         //check package auto service and method
         if($border->checkPackageAuto($service)['status']){
@@ -230,9 +234,9 @@ class connection {
     private function getConfigVersionNumber(array $data){
 
 
-        if(array_key_exists($data['serviceName'],\config::get("appVersions")))
+        if(array_key_exists($data['serviceName'],\src\config\config::get("appVersions")))
         {
-            return \config::get("appVersions")[$data['serviceName']];
+            return \src\config\config::get("appVersions")[$data['serviceName']];
         }
         return 'v1';
     }
@@ -513,6 +517,7 @@ class connection {
         class_alias("\\src\\config\\app","app");
         class_alias("\\src\\config\\config","config");
         class_alias("\\src\\services\\branches","branch");
+        class_alias("\\lib\\appContainer","container");
 
         return;
 
