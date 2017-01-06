@@ -25,6 +25,10 @@ class project {
             $touchServiceReadMe['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/README.md',$touchServiceReadMe);
 
+            $touchServiceVersionMe['execution']='project_version';
+            $touchServiceVersionMe['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/version.php',$touchServiceVersionMe);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/docs');
             $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
