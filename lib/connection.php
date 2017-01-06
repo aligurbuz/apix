@@ -59,12 +59,7 @@ class connection {
         }
 
         define("app",$service[0]);
-        if(array_key_exists(1,$service)){
-            define("service",$service[1]);
-        }
-        else{
-            $service[1]=null;
-        }
+        if(array_key_exists(1,$service)){ define("service",$service[1]);} else{ $service[1]=null;}
 
         define("version",$getVersion);
         define("method",$serviceMethod);
