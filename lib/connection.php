@@ -220,11 +220,15 @@ class connection {
      */
 
     private function getConfigVersionNumber(array $data){
-        $version=require_once(root.'/src/app/'.$data['serviceName'].'/version.php');
-        if(is_array($version) && array_key_exists("version",$version)) {
-            return $version['version'];
+
+        if(file_exists(root.'/src/app/'.$data['serviceName'].'/version.php')){
+            $version=require_once(root.'/src/app/'.$data['serviceName'].'/version.php');
+            if(is_array($version) && array_key_exists("version",$version)) {
+                return $version['version'];
+            }
+            return 'v1';
         }
-        return 'v1';
+
     }
 
     /**
