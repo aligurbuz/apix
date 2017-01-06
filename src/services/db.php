@@ -1442,8 +1442,15 @@ class db {
             $fieldPrepareArray=[];
             $fieldPrepareArrayExecute=[];
             foreach(self::$having['field'] as $field_key=>$field_value){
-                $fieldPrepareArray['list'][]=''.$field_value.''.self::$having['operator'][$field_key].':'.$field_value.'';
-                $fieldPrepareArrayExecute[':'.$field_value.'']=self::$having['value'][$field_key];
+                if(preg_match('@select.*from.*@is',$field_value)){
+                    $fieldPrepareArray['list'][]='('.$field_value.')'.self::$having['operator'][$field_key].':'.md5($field_value).'';
+                    $fieldPrepareArrayExecute[':'.md5($field_value).'']=self::$having['value'][$field_key];
+                }
+                else{
+                    $fieldPrepareArray['list'][]=''.$field_value.''.self::$having['operator'][$field_key].':'.$field_value.'';
+                    $fieldPrepareArrayExecute[':'.$field_value.'']=self::$having['value'][$field_key];
+                }
+
             }
 
             //dd($fieldPrepareArray,$fieldPrepareArrayExecute,self::$where);
