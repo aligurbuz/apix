@@ -70,24 +70,17 @@ class connection {
 
         //check package auto service and method
         if($border->checkPackageAuto($service)['status']){
-
             $packageAuto=$border->resolve->resolve($border->checkPackageAuto($service)['class']);
             return $border->responseOut($packageAuto->$serviceMethod());
-
         }
 
         if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
             return $border->responseOut([],'service has not been created');
         }
 
-
-
-
         if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
-
             return $border->responseOut([],'service has not been created');
         }
-
 
         //get before middleware
         $border->middleware("before");
