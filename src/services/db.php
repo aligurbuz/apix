@@ -60,6 +60,7 @@ class db {
     private static $whereDay=[];
     private static $whereDate=[];
     private static $addToSelectSql=null;
+    private static $having=[];
 
 
     public function __construct(){
@@ -204,6 +205,42 @@ class db {
         return new static;
 
     }
+
+
+
+    /**
+     * query having.
+     *
+     * @return pdo class
+     */
+    public static function having($field=null,$operator=null,$value=null){
+
+        //instance check
+        if(self::$_instance==null){
+            self::$_instance=new self();
+        }
+
+        //if the field value is callback value
+        //a callback function is run
+        if(is_callable($field)){
+            $getclass="\\".get_called_class();
+            call_user_func_array($field,[$getclass::staticFlowCallback()]);
+
+        }
+        else{
+            //where criteria coming with all values
+            //where nested true
+            if($field!==null AND $operator!==null AND $value!==null){
+                self::$having['field'][]=$field;
+                self::$having['operator'][]=$operator;
+                self::$having['value'][]=$value;
+
+            }
+        }
+        return new static;
+
+    }
+
 
 
     /**
@@ -863,6 +900,9 @@ class db {
         //where method
         $whereOperation=self::getWhereOperation();
 
+        //having method
+        $havingOperation=self::getHavingOperation();
+
         //ofset filter
         $offset=self::getOffsetOperation();
 
@@ -943,7 +983,10 @@ class db {
         foreach (self::$execute as $execute_key=>$execute_value){
             $where=str_replace($execute_key,$execute_value,self::getStringWhere());
         }
-        return "select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order." ".self::$offset."";
+        return [
+            "select"=>"select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$having." ".self::$order." ".self::$offset."",
+            "execute"=>self::$execute
+        ];
     }
 
     /**
@@ -959,10 +1002,11 @@ class db {
             $groupBy=(array_key_exists("groupBy",$data)) ? $data['groupBy'] : '';
 
             //dd("select ".$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order."",self::$execute);
+            //dd("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$having." ".$groupBy." ".self::$order."",self::$execute);
 
-            $query=self::$db->prepare("select ".$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".$groupBy." ".self::$order."");
+            $query=self::$db->prepare("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$having." ".$groupBy." ".self::$order."");
             $query->execute(self::$execute);
-            return $query->fetchColumn();
+            return $query->rowCount();
         }
 
         return 0;
@@ -994,7 +1038,7 @@ class db {
     private static function getQueryResult(){
         $model=self::staticFlowCallback();
 
-        $query=self::$db->prepare("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$order." ".self::$offset."");
+        $query=self::$db->prepare("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$having." ".self::$order." ".self::$offset."");
         $query->execute(self::$execute);
         $results=$query->fetchAll(\PDO::FETCH_OBJ);
 
@@ -1378,6 +1422,51 @@ class db {
      */
     private static function getStringWhere(){
         return (count(self::$where)) ? self::$where : '';
+    }
+
+
+    /**
+     * query get where operation.
+     *
+     * @return pdo class
+     */
+
+    private static function getHavingOperation(){
+
+        $list=[];
+
+
+        if(count(self::$having)){
+            $model=self::staticFlowCallback();
+
+            $fieldPrepareArray=[];
+            $fieldPrepareArrayExecute=[];
+            foreach(self::$having['field'] as $field_key=>$field_value){
+                $fieldPrepareArray['list'][]=''.$field_value.''.self::$having['operator'][$field_key].':'.$field_value.'';
+                $fieldPrepareArrayExecute[':'.$field_value.'']=self::$having['value'][$field_key];
+            }
+
+            //dd($fieldPrepareArray,$fieldPrepareArrayExecute,self::$where);
+
+            if(array_key_exists("list",$fieldPrepareArray)){
+                $list['where']='HAVING '.implode(" AND ",$fieldPrepareArray['list']);
+            }
+
+
+            $list['execute']=$fieldPrepareArrayExecute;
+
+
+            self::$having=$list['where'];
+            self::$execute=self::$execute+$list['execute'];
+        }
+        else{
+            self::$having='';
+        }
+
+
+
+
+        return $list;
     }
 
     /**
