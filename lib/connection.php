@@ -95,12 +95,12 @@ class connection {
                 require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
 
                 //service main file
-                require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
+                //require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
 
                 //apix resolve
-                $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\index");
+                $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
 
-                $requestServiceMethod=''.request.''.ucfirst($serviceMethod).'';
+                $requestServiceMethod=$serviceMethod;
 
                 if(method_exists($apix,$requestServiceMethod)){
                     //call service

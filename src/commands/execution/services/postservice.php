@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main part of the mobi service.
+ * This file is main part of the __projectName__ service.
  *
  * every request is called index method as default
  *
@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\mobi\v1\__call\stk;
+namespace src\app\__projectName__\v1\__call\__serviceName__;
 use src\services\httprequest as request;
 
 /**
@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class index extends app {
+class postService extends app {
 
     public $request;
 
@@ -39,9 +39,11 @@ class index extends app {
      *
      * @return array
      */
-    public function getIndex(){
+    public function index(){
 
         //return index
-        return $this->model->get();
+        return [
+            'post'=>true
+        ];
     }
 }

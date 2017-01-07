@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\branches\source;
+namespace src\app\__projectName__\v1\__call\__serviceName__\branches\source\__methodName__;
 use src\services\httprequest as request;
 
 /**
@@ -42,8 +42,6 @@ class __sourceName__ {
     public function get(){
 
         //return source
-        return [
-            'source'=>'__projectName__ source __serviceName__'
-        ];
+        return "__projectName__ source __serviceName__ __methodName__";
     }
 }

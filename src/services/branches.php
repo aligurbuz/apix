@@ -113,7 +113,7 @@ class branches {
         //get service name
         $service=$this->getService();
 
-        $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\source\\'.$file;
+        $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
         $container = \DI\ContainerBuilder::buildDevContainer();
         return $container->get($sourcename)->$method();
     }

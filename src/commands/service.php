@@ -32,10 +32,15 @@ class service {
                        $touchReadmeParams['params']['projectName']=$project;
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/README.md',$touchReadmeParams);
 
-                       $touchServiceParams['execution']='services/service';
-                       $touchServiceParams['params']['projectName']=$project;
-                       $touchServiceParams['params']['serviceName']=$service;
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/index.php',$touchServiceParams);
+                       $touchServiceGetParams['execution']='services/getservice';
+                       $touchServiceGetParams['params']['projectName']=$project;
+                       $touchServiceGetParams['params']['serviceName']=$service;
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/getService.php',$touchServiceGetParams);
+
+                       $touchServicePostParams['execution']='services/postservice';
+                       $touchServicePostParams['params']['projectName']=$project;
+                       $touchServicePostParams['params']['serviceName']=$service;
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/postService.php',$touchServicePostParams);
 
 
                        $touchdeveloperParams['execution']='services/developer';
@@ -69,12 +74,23 @@ class service {
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/index.php',$touchQueryParams);
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source');
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source/get');
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source/post');
 
-                       $touchSourceParams['execution']='services/source';
-                       $touchSourceParams['params']['projectName']=$project;
-                       $touchSourceParams['params']['serviceName']=$service;
-                       $touchSourceParams['params']['sourceName']='index';
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/source/index.php',$touchSourceParams);
+                       $touchSourceParamsGet['execution']='services/source';
+                       $touchSourceParamsGet['params']['projectName']=$project;
+                       $touchSourceParamsGet['params']['serviceName']=$service;
+                       $touchSourceParamsGet['params']['methodName']='get';
+                       $touchSourceParamsGet['params']['sourceName']='index';
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/source/get/index.php',$touchSourceParamsGet);
+
+
+                       $touchSourceParamsPost['execution']='services/source';
+                       $touchSourceParamsPost['params']['projectName']=$project;
+                       $touchSourceParamsPost['params']['serviceName']=$service;
+                       $touchSourceParamsPost['params']['methodName']='post';
+                       $touchSourceParamsPost['params']['sourceName']='index';
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/source/post/index.php',$touchSourceParamsPost);
 
                        return $this->fileProcessResult($list,function(){
                            return 'service has been created';
