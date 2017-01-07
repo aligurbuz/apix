@@ -21,10 +21,9 @@ class service {
 
        foreach ($this->getParams($data) as $key=>$value){
            if($key==0){
-               require ('./src/config/config.php');
-               $config=\src\config\config::get("appVersions");
                foreach ($value as $project=>$service){
-                   $version=(array_key_exists($project,$config)) ? $config[$project] : 'v1';
+                   $version=require ('./src/app/'.$project.'/version.php');
+                   $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                    $list=[];
                    if($this->mkdir(''.$project.'/'.$version.'/__call/'.$service)){
 
