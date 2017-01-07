@@ -14,7 +14,7 @@ class app
     /**
      * project app.
      *
-     * static call access for every service.
+     * class loc container call access for every service.
      *
      * @param string
      * @return response container runner
@@ -24,6 +24,23 @@ class app
         return [
 
             'base' =>'\\src\\app\\__projectName__\\v1\\serviceBaseController'
+        ];
+
+    }
+
+
+    /**
+     * project app.
+     *
+     * class static call access for every service.
+     *
+     * @param string
+     * @return response container runner
+     */
+    public function staticProvider(){
+
+        return [
+
         ];
 
     }
