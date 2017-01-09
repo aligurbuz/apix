@@ -113,7 +113,13 @@ class branches {
         //get service name
         $service=$this->getService();
 
-        $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
+        if(defined("devPackage")){
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
+        }
+        else{
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
+        }
+
         $container = \DI\ContainerBuilder::buildDevContainer();
         return $container->get($sourcename)->$method();
     }
@@ -135,7 +141,13 @@ class branches {
         //get service name
         $service=$this->getService();
 
-        $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\query\\'.$file;
+        if(defined("devPackage")){
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\query\\'.$file;
+        }
+        else{
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\query\\'.$file;
+        }
+
         $container = \DI\ContainerBuilder::buildDevContainer();
         return ['queryResult'=>$container->get($sourcename)->$method()];
     }
@@ -157,7 +169,13 @@ class branches {
         //get service name
         $service=$this->getService();
 
-        $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\handle\\'.$file;
+        if(defined("devPackage")){
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\handle\\'.$file;
+        }
+        else{
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\handle\\'.$file;
+        }
+
         $container = \DI\ContainerBuilder::buildDevContainer();
         return $container->get($sourcename)->$method();
     }

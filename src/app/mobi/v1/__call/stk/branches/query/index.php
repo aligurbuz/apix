@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main part of the __projectName__ service.
+ * This file is main part of the mobi service.
  *
  * every request is called index method as default
  *
@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\branches\handle;
+namespace src\app\mobi\v1\__call\stk\branches\query;
 use src\services\httprequest as request;
 
 /**
@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class __handleName__ extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class index {
 
     public $request;
 
@@ -30,7 +30,6 @@ class __handleName__ extends \src\app\__projectName__\v1\__call\__serviceName__\
     public function __construct(request $request){
 
         //get request info
-        parent::__construct();
         $this->request=$request;
 
     }
@@ -44,7 +43,7 @@ class __handleName__ extends \src\app\__projectName__\v1\__call\__serviceName__\
 
         //return source
         return [
-            'source'=>'__projectName__ source handle __serviceName__'
+            'source'=>'mobi source query stk'
         ];
     }
 }

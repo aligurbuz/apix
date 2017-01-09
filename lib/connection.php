@@ -74,6 +74,13 @@ class connection {
             return $border->responseOut($packageAuto->$serviceMethod());
         }
 
+        //check package dev service and method
+        if($border->checkPackageDev($service)['status']){
+            $packageDev=$border->resolve->resolve($border->checkPackageDev($service)['class']);
+            define("devPackage",true);
+            return $border->responseOut($packageDev->$serviceMethod());
+        }
+
         if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
             return $border->responseOut([],'service has not been created');
         }
@@ -365,7 +372,6 @@ class connection {
     }
 
 
-
     /**
      * get preloader classes.
      *
@@ -387,6 +393,31 @@ class connection {
             'status'=>false
         ];
     }
+
+
+
+    /**
+     * get preloader dev classes.
+     *
+     * outputs project package dev.
+     *
+     * @param string
+     * @return response package dev runner
+     */
+
+    private function checkPackageDev($service){
+
+        if(file_exists(root."/src/packages/dev/".$service[1]."/".request."Service.php")){
+            return [
+                'status'=>true,
+                'class'=>"\\src\\packages\\dev\\".$service[1]."\\".strtolower(request)."Service"
+            ];
+        }
+        return [
+            'status'=>false
+        ];
+    }
+
 
 
     /**

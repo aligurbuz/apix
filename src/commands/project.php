@@ -37,6 +37,10 @@ class project {
             $touchServiceBaseControllerParams['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/serviceBaseController.php',$touchServiceBaseControllerParams);
 
+            $servicePackageDevController['execution']='servicePackageDevController';
+            $servicePackageDevController['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/servicePackageDevController.php',$servicePackageDevController);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/staticProvider');
             $list[]=$this->touch($this->getProjectName($data).'/v1/staticProvider/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');

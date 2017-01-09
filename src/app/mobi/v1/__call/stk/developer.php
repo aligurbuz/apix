@@ -4,7 +4,7 @@
  * User: developer
  */
 
-namespace src\app\apixpackage\v1\__call\login;
+namespace src\app\mobi\v1\__call\stk;
 
 
 class developer

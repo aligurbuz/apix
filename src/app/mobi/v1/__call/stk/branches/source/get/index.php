@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main part of the apixpackage service.
+ * This file is main part of the mobi service.
  *
  * every request is called index method as default
  *
@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\apixpackage\v1\__call\login\branches\query;
+namespace src\app\mobi\v1\__call\stk\branches\source\get;
 use src\services\httprequest as request;
 
 /**
@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class index {
+class index extends \src\app\mobi\v1\__call\stk\app {
 
     public $request;
 
@@ -30,6 +30,7 @@ class index {
     public function __construct(request $request){
 
         //get request info
+        parent::__construct();
         $this->request=$request;
 
     }
@@ -42,8 +43,6 @@ class index {
     public function get(){
 
         //return source
-        return [
-            'source'=>'apixpackage source query login'
-        ];
+        return $this->model->get();
     }
 }

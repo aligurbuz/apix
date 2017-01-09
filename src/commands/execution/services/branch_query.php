@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class __className__ {
+class __className__ extends \src\app\__projectName__\v1\__call\__serviceName__\app {
 
     public $request;
 
@@ -30,6 +30,7 @@ class __className__ {
     public function __construct(request $request){
 
         //get request info
+        parent::__construct();
         $this->request=$request;
 
     }
