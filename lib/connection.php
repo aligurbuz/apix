@@ -68,26 +68,6 @@ class connection {
         //get preloader classes
         $border->getPreLoaderClasses();
 
-        //check package auto service and method
-        if($border->checkPackageAuto($service)['status']){
-            $packageAuto=$border->resolve->resolve($border->checkPackageAuto($service)['class']);
-            return $border->responseOut($packageAuto->$serviceMethod());
-        }
-
-        //check package dev service and method
-        if($border->checkPackageDev($service)['status']){
-            $packageDev=$border->resolve->resolve($border->checkPackageDev($service)['class']);
-            define("devPackage",true);
-            return $border->responseOut($packageDev->$serviceMethod());
-        }
-
-        if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
-            return $border->responseOut([],'service has not been created');
-        }
-
-        if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
-            return $border->responseOut([],'service has not been created');
-        }
 
         //get before middleware
         $border->middleware("before");
@@ -97,6 +77,26 @@ class connection {
 
             //provision run
             return $border->provision(function() use ($service,$serviceMethod,$getVersion,$border) {
+                //check package auto service and method
+                if($border->checkPackageAuto($service)['status']){
+                    $packageAuto=$border->resolve->resolve($border->checkPackageAuto($service)['class']);
+                    return $border->responseOut($packageAuto->$serviceMethod());
+                }
+
+                //check package dev service and method
+                if($border->checkPackageDev($service)['status']){
+                    $packageDev=$border->resolve->resolve($border->checkPackageDev($service)['class']);
+                    define("devPackage",true);
+                    return $border->responseOut($packageDev->$serviceMethod($border->checkPackageDev($service)['definitions']));
+                }
+
+                if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
+                    return $border->responseOut([],'service has not been created');
+                }
+
+                if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
+                    return $border->responseOut([],'service has not been created');
+                }
 
                 //service main file extends this file
                 require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
@@ -407,15 +407,33 @@ class connection {
 
     private function checkPackageDev($service){
 
+        $servicePackageDev=require(root.'/src/app/'.app.'/'.version.'/servicePackageDevController.php');
+
+        if(is_array($servicePackageDev))
+        {
+            if(!in_array($service[1],$servicePackageDev['packageDevSource']['package'])){
+                $service[1]=null;
+            }
+
+        }
+
         if(file_exists(root."/src/packages/dev/".$service[1]."/".request."Service.php")){
+            $definitions=(array_key_exists($service[1],$servicePackageDev['packageDevSource']['packageDefinition'])) ? $servicePackageDev['packageDevSource']['packageDefinition'][$service[1]] : null;
             return [
                 'status'=>true,
-                'class'=>"\\src\\packages\\dev\\".$service[1]."\\".strtolower(request)."Service"
+                'definitions'=>$definitions,
+                'class'=>"\\src\\packages\\dev\\".$service[1]."\\".strtolower(request)."Service",
+                'service'=>$service[1]
             ];
         }
+
         return [
             'status'=>false
         ];
+
+
+
+
     }
 
 

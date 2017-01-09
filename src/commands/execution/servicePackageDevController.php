@@ -6,5 +6,8 @@
  */
 
 return [
-
+    'packageDevSource'=>[
+        'package'=>[],
+        'packageDefinition'=>[]
+    ]
 ];
