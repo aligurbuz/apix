@@ -4,7 +4,7 @@
  * main file extends this file
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__;
+namespace src\app\mobi\v1\__call\stk;
 
 /**
  * Represents a app class.
@@ -18,6 +18,7 @@ class app {
     public $source;
     public $model;
     public $handle;
+    public $serviceConf;
 
     /**
      * example method.
@@ -30,5 +31,15 @@ class app {
         $this->handle=\branch::handle();
     }
 
+    /**
+     * example method.
+     *
+     * @param type dependency injection and function
+     */
+    public function getBar(){
+
+        //return app
+        return 'somethings';
+    }
 
 }
