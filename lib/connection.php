@@ -110,8 +110,16 @@ class connection {
                 $requestServiceMethod=$serviceMethod;
 
                 if(method_exists($apix,$requestServiceMethod)){
+                    if(property_exists($apix,"forbidden") && \app::environment()=="production"){
+                        if($apix->forbidden){
+                            return $border->responseOut([],'you dont have the access right to this service');
+                        }
+                    }
                     //call service
-                    return $border->responseOut($apix->$requestServiceMethod());
+                    return $border->logging($apix->$requestServiceMethod(),function() use ($border,$apix,$requestServiceMethod){
+                        return $border->responseOut($apix->$requestServiceMethod());
+                    });
+
                 }
                 else{
 
@@ -136,6 +144,54 @@ class connection {
     private function requestUri(){
 
         return $_SERVER['REQUEST_URI'];
+    }
+
+
+    /**
+     * get logging.
+     *
+     * this checks data uri parameter.
+     *
+     * @param string
+     * @return request logging runner
+     */
+
+    private function logging($data,$callback){
+
+        //this fake
+        $border=self::$_instance;
+
+
+        if(array_key_exists("token",$this->getQueryParamsFromRoute())){
+            $token=$this->getQueryParamsFromRoute()['token'];
+        }
+        else{
+            $token=null;
+        }
+
+        $logdata=[
+            'project'=>app,
+            'version'=>version,
+            'service'=>service,
+            'method'=>method,
+            'http'=>request,
+            'token'=>$token,
+            'data'=>$data
+        ];
+
+        $log="\\src\\app\\".app."\\".version."\\serviceLogController";
+        $log=$border->resolve->resolve($log);
+        if(property_exists($log,"status") && !$log->status){
+            return call_user_func($callback);
+        }
+        else{
+            if($log->handle($logdata)){
+                return call_user_func($callback);
+            }
+
+            return $border->responseOut([],'logging false');
+        }
+
     }
 
     /**

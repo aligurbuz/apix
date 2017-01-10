@@ -21,6 +21,7 @@ use src\services\httprequest as request;
 class postService extends app {
 
     public $request;
+    public $forbidden=false;
 
     /**
      * Constructor.
