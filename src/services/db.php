@@ -9,8 +9,6 @@
  */
 
 namespace src\services;
-use src\app\mobi\v1\model\count;
-use src\app\mobi\v1\model\user;
 use src\services\httprequest as request;
 
 /**
@@ -129,7 +127,7 @@ class db {
 
 
         if($scope!==null){
-           self::$modelscope=$scope;
+            self::$modelscope=$scope;
         }
 
         return new static;
@@ -893,6 +891,7 @@ class db {
         //get table columns for model
         $columns=self::getShowColumns();
 
+
         //initial
         $execute=[];
         $where='';
@@ -901,7 +900,8 @@ class db {
         $whereOperation=self::getWhereOperation();
 
         //having method
-        $havingOperation=self::getHavingOperation();
+        self::$having='';
+        //$havingOperation=self::getHavingOperation();
 
         //ofset filter
         $offset=self::getOffsetOperation();
@@ -924,7 +924,7 @@ class db {
         }
 
         if(self::$toSql!==null){
-           return self::toSqlShow();
+            return self::toSqlShow();
         }
 
         try {
@@ -943,6 +943,7 @@ class db {
                     return self::getQueryRedisResult();
                 }
                 else{
+
                     return self::getQueryResult();
                 }
 
@@ -1041,6 +1042,7 @@ class db {
         $query=self::$db->prepare("select ".self::$select." from ".$model->table." ".self::$joiner." ".self::getStringWhere()." ".self::$having." ".self::$order." ".self::$offset."");
         $query->execute(self::$execute);
         $results=$query->fetchAll(\PDO::FETCH_OBJ);
+
 
 
         $getTableColumns=self::getTableColumns(self::getShowColumns(),true);
@@ -1182,7 +1184,7 @@ class db {
         //get count pagination
         //get count pagination
         $paginatorCount['dataCount']=self::getPaginatorDataCount(['select'=>''.self::$select.','.implode(",",$listAsArray).'',
-        'groupBy'=>'GROUP BY '.$model->table.'.'.self::$hasMany['hasOneField'].'']);
+            'groupBy'=>'GROUP BY '.$model->table.'.'.self::$hasMany['hasOneField'].'']);
 
         $query=self::$db->prepare("select ".self::$select.",".implode(",",$listAsArray)." from ".$model->table." ".self::$joiner."
          ".self::getStringWhere()." GROUP BY ".$model->table.".".self::$hasMany['hasOneField']."
@@ -1487,8 +1489,14 @@ class db {
         $list=[];
         $model=self::staticFlowCallback();
 
+        self::$where="WHERE id>:id";
+        self::$execute=[':id'=>13];
+
+        return $list;
+
         //model scope
         self::$where=self::getScopeOperation();
+
 
         if(count(self::$whereYear)){
             foreach(self::$whereYear['year'] as $fkey=>$fvalue){
@@ -1667,7 +1675,10 @@ class db {
             }
 
 
+
         }
+
+
 
         return $list;
     }
@@ -1830,10 +1841,10 @@ class db {
             $offset=0;
             $request=self::$request;
             $getQueryString=$request->getQueryString();
-           if(self::checkPageOnQueryString()){
-               $offset=$getQueryString['page']-1;
-               $offset=$offset*self::$page;
-           }
+            if(self::checkPageOnQueryString()){
+                $offset=$getQueryString['page']-1;
+                $offset=$offset*self::$page;
+            }
 
             $offsetparam='';
             if(self::$all==null){
@@ -2148,7 +2159,7 @@ class db {
                 }
                 else{
                     return [
-                      'error'=>true,
+                        'error'=>true,
                         'message'=>'error occured'
                     ];
                 }
