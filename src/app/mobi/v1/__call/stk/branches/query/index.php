@@ -43,6 +43,6 @@ class index {
     public function get(){
 
         //return source
-        return user::get();
+        return user::select(['id','firstName','lastName'])->get();
     }
 }

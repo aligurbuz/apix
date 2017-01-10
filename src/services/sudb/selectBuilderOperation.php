@@ -51,7 +51,10 @@ class selectBuilderOperation {
         if(is_array($selectData)){
             $selectDataValueList=[];
             foreach($selectData as $selectDataValue){
-                if(!in_array($selectDataValue,$model['model']->selectHidden)){
+                if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
+                    $selectDataValueList[]=$selectDataValue;
+                }
+                else{
                     $selectDataValueList[]=$selectDataValue;
                 }
             }
@@ -59,7 +62,16 @@ class selectBuilderOperation {
         }
         else{
             $columns=$this->getSelectTableColumns($model);
-            dd($columns['field']);
+            $selectDataValueList=[];
+            foreach($columns['field'] as $selectDataValue){
+                if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
+                    $selectDataValueList[]=$selectDataValue;
+                }
+                else{
+                    $selectDataValueList[]=$selectDataValue;
+                }
+            }
+            return $selectDataValueList;
         }
 
     }

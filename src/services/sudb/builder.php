@@ -70,7 +70,7 @@ class builder {
      */
     public function select($select=null){
         if(is_array($select) && array_key_exists(0,$select)){
-            $this->select=$this->selectBuilderOperation->selectMainProcess($select[0],$this->SqlPrepareFormatterHandleObject());
+            $this->select=$select[0];
         }
         return $this;
     }
@@ -90,6 +90,7 @@ class builder {
      * @return array
      */
     public function get(){
+        $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
         return ['data'=>$this->queryFormatter()];
     }
 
