@@ -152,7 +152,8 @@ class builder {
      */
     public function get(){
         return $this->allMethodProcess(function(){
-            return ['data'=>$this->queryFormatter()];
+            $result=$this->queryFormatter();
+            return ['CountAllData'=>$result['getCountAllTotal'],'data'=>$result['result']];
         });
 
     }
