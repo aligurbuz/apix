@@ -90,8 +90,10 @@ class builder {
      * @return array
      */
     public function get(){
-        $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
-        return ['data'=>$this->queryFormatter()];
+        return $this->allMethodProcess(function(){
+            return ['data'=>$this->queryFormatter()];
+        });
+
     }
 
     /**
@@ -122,5 +124,15 @@ class builder {
             'model'=>$this->subClassOf,
             'select'=>$this->select
         ];
+    }
+
+    /**
+     * allmethodprocess method is main method.
+     *
+     * @return array
+     */
+    private function allMethodProcess($callback){
+        $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
+        return call_user_func($callback);
     }
 }

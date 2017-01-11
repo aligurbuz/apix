@@ -49,30 +49,31 @@ class selectBuilderOperation {
      */
     private function getSelectHiddenFields($selectData,$model){
         if(is_array($selectData)){
-            $selectDataValueList=[];
-            foreach($selectData as $selectDataValue){
-                if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
-                    $selectDataValueList[]=$selectDataValue;
-                }
-                else{
-                    $selectDataValueList[]=$selectDataValue;
-                }
-            }
-            return $selectDataValueList;
+            return $this->getSelectDataValueList($selectData,$model);
         }
         else{
             $columns=$this->getSelectTableColumns($model);
-            $selectDataValueList=[];
-            foreach($columns['field'] as $selectDataValue){
-                if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
-                    $selectDataValueList[]=$selectDataValue;
-                }
-                else{
-                    $selectDataValueList[]=$selectDataValue;
-                }
+            return $this->getSelectDataValueList($columns['field'],$model);
+        }
+
+    }
+
+    /**
+     * getSelectDataValueList method is main method.
+     *
+     * @return array
+     */
+    public function getSelectDataValueList($data,$model){
+        $selectDataValueList=[];
+        foreach($data as $selectDataValue){
+            if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
+                $selectDataValueList[]=$selectDataValue;
             }
+        }
+        if(count($selectDataValueList)){
             return $selectDataValueList;
         }
+        return $data;
 
     }
 

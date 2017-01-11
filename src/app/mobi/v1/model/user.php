@@ -33,7 +33,7 @@ class user extends \src\services\sudb\model {
     ];*/
 
     //this value hiddens  to select field
-    public $selectHidden=['id'];
+    //public $selectHidden=['id'];
 
     //this scope is automatically run
     //protected $scope=['auto'=>'active'];
