@@ -28,6 +28,7 @@ class builder {
     private $find=null;
     private $where=[];
     private $page=0;
+    private $order=null;
     private $execute=[];
     private $querySqlFormatter;
     private $selectBuilderOperation;
@@ -36,7 +37,6 @@ class builder {
 
     private static $primarykey_static=null;
     private static $modelscope=null;
-    private static $order=null;
     private static $request=null;
     private static $toSql=null;
     private static $rand=null;
@@ -109,6 +109,29 @@ class builder {
         return $this;
     }
 
+
+    /**
+     * query order by.
+     *
+     * @return pdo class
+     */
+    public function orderBy($key=null,$order=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if($key!==null && is_array($key)){
+
+            $this->order=['key'=>$key[0],'order'=>$key[1]];
+        }
+        else{
+            $this->order=['key'=>$key,'order'=>$order];
+        }
+        return $this;
+
+    }
+
     /**
      * paginate method is main method.
      *
@@ -163,7 +186,8 @@ class builder {
             'select'=>$this->select,
             'where'=>$this->where,
             'execute'=>$this->execute,
-            'paginate'=>$this->page
+            'paginate'=>$this->page,
+            'orderBy'=>$this->order
         ];
     }
 

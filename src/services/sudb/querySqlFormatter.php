@@ -68,7 +68,7 @@ class querySqlFormatter {
      */
 
     public function sqlBuilderDefinition($model){
-        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getPaginateProcessor($model)."";
+        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getOrderByProcessor($model)." ".$this->getPaginateProcessor($model)."";
     }
 
     /**
@@ -110,6 +110,36 @@ class querySqlFormatter {
             return 'LIMIT '.$page.','.$model['paginate'].'';
         }
     }
+
+
+    /**
+     * Represents a getPaginateProcessor class.
+     *
+     * main call
+     * return type array
+     */
+
+    public function getOrderByProcessor($model){
+
+        if($model['orderBy']!==null && is_array($model['orderBy'])){
+            $order='';
+            $order.='ORDER BY '.$model['model']->table.'.'.$model['orderBy']['key'].' '.$model['orderBy']['order'].'';
+
+        }
+        else{
+            $order='';
+            if(property_exists($model['model'],"orderBy")){
+                if(array_key_exists("auto",$model['model']->orderBy)){
+                    foreach ($model['model']->orderBy['auto'] as $order_key => $order_value) {
+                        $order .= 'ORDER BY '.$model['model']->table.'.' . $order_key . ' ' . $order_value . '';
+                    }
+                }
+            }
+        }
+
+        return $order;
+    }
+
 
 
     /**
