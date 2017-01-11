@@ -52,7 +52,7 @@ class querySqlFormatter {
 
     public function getSqlPrepareFormatter($model){
         $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
-        $prepare->execute([]);
+        $prepare->execute($model['execute']);
         return $prepare->fetchAll(\PDO::FETCH_OBJ);
 
     }
@@ -65,7 +65,7 @@ class querySqlFormatter {
      */
 
     public function sqlBuilderDefinition($model){
-        return "SELECT ".$model['select']." FROM ".$model['model']->table."";
+        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']."";
     }
 
 

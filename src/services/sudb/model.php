@@ -21,6 +21,7 @@ class model {
 
     public $subClassOf=null;
 
+
     /**
      * __callStatic method is main method.
      *
@@ -41,8 +42,19 @@ class model {
     public function getQuery($name,$args){
         $model=\app::resolve("\\src\\services\\sudb\\builder");
         $model->subClassOf($this->subClassOf);
+        if($name=="where"){
+            if(!is_callable($args[0])){
+                return $model->where($args[0],$args[1],$args[2]);
+            }
+            else{
+                return $model->where($args[0],$model);
+            }
+
+        }
+
         return $model->$name($args);
     }
+
 
     /**
      * getQuery method is main method.
@@ -55,4 +67,5 @@ class model {
         }
 
     }
+
 }

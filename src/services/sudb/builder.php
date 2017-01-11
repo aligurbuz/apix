@@ -11,6 +11,7 @@
 namespace src\services\sudb;
 use \src\services\sudb\querySqlFormatter as querySqlFormatter;
 use \src\services\sudb\selectBuilderOperation as selectBuilderOperation;
+use \src\services\sudb\whereBuilderOperation as whereBuilderOperation;
 
 /**
  * Represents a index class.
@@ -28,6 +29,7 @@ class builder {
     private $execute=[];
     private $querySqlFormatter;
     private $selectBuilderOperation;
+    private $whereBuilderOperation;
     private $subClassOf=null;
 
     private static $primarykey_static=null;
@@ -58,9 +60,10 @@ class builder {
     private static $addToSelectSql=null;
     private static $having=[];
 
-    public function __construct(querySqlFormatter $querySqlFormatter,selectBuilderOperation $selectBuilderOperation){
+    public function __construct(querySqlFormatter $querySqlFormatter,selectBuilderOperation $selectBuilderOperation,whereBuilderOperation $whereBuilderOperation){
         $this->querySqlFormatter=$querySqlFormatter;
         $this->selectBuilderOperation=$selectBuilderOperation;
+        $this->whereBuilderOperation=$whereBuilderOperation;
     }
 
     /**
@@ -75,12 +78,23 @@ class builder {
         return $this;
     }
 
+
     /**
      * where method is main method.
      *
      * @return array
      */
-    public function where(){
+    public function where($field=null,$operator=null,$value=null){
+        if(is_callable($field)){
+            call_user_func_array($field,[$operator]);
+        }
+        else{
+            $this->where['field'][]=$field;
+            $this->where['operator'][]=$operator;
+            $this->where['value'][]=$value;
+        }
+
+
         return $this;
     }
 
@@ -122,7 +136,9 @@ class builder {
     public function SqlPrepareFormatterHandleObject(){
         return [
             'model'=>$this->subClassOf,
-            'select'=>$this->select
+            'select'=>$this->select,
+            'where'=>$this->where,
+            'execute'=>$this->execute
         ];
     }
 
@@ -133,6 +149,9 @@ class builder {
      */
     private function allMethodProcess($callback){
         $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
+        $whereOperation=$this->whereBuilderOperation->whereMainProcess($this->where,$this->SqlPrepareFormatterHandleObject());
+        $this->where=$whereOperation->where;
+        $this->execute=$whereOperation->execute;
         return call_user_func($callback);
     }
 }

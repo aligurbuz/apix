@@ -9,6 +9,7 @@
  */
 
 namespace src\services\sudb;
+use \src\services\sudb\querySqlFormatter as querySqlFormatter;
 
 /**
  * Represents a index class.
@@ -20,13 +21,36 @@ namespace src\services\sudb;
 class whereBuilderOperation {
 
 
+    private $querySqlFormatter;
+
+    /**
+     * getConstruct method is main method.
+     *
+     * @param querySqlFormatter $querySqlFormatter
+     */
+    public function __construct(querySqlFormatter $querySqlFormatter){
+        $this->querySqlFormatter=$querySqlFormatter;
+    }
+
     /**
      * getSelect method is main method.
      *
      * @return array
      */
-    public function get(){
+    public function whereMainProcess($whereData,$model){
+        $list['where']='';
+        $list['execute']=[];
+        if(count($whereData)){
+            foreach ($whereData['field'] as $key=>$value){
+                $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
+                $list['execute'][':'.$value.'']=$whereData['value'][$key];
+            }
 
+            $list['where']='WHERE '.implode(" AND ",$list['where']);
+
+        }
+
+        return (object)$list;
     }
 
 }
