@@ -23,9 +23,11 @@ use \src\services\sudb\whereBuilderOperation as whereBuilderOperation;
 class builder {
 
 
+    private $model=null;
     private $select="*";
     private $find=null;
     private $where=[];
+    private $page=0;
     private $execute=[];
     private $querySqlFormatter;
     private $selectBuilderOperation;
@@ -34,7 +36,6 @@ class builder {
 
     private static $primarykey_static=null;
     private static $modelscope=null;
-    private static $page=null;
     private static $order=null;
     private static $request=null;
     private static $toSql=null;
@@ -47,7 +48,6 @@ class builder {
     private static $hasMany=null;
     private static $attach=null;
     private static $sum=null;
-    private static $offset='';
     private static $joiner='';
     private static $whereIn=null;
     private static $whereNotIn=null;
@@ -71,7 +71,8 @@ class builder {
      *
      * @return array
      */
-    public function select($select=null){
+    public function select($select=null,$model){
+        $this->model=$model;
         if(is_array($select) && array_key_exists(0,$select)){
             $this->select=$select[0];
         }
@@ -84,16 +85,39 @@ class builder {
      *
      * @return array
      */
-    public function where($field=null,$operator=null,$value=null){
+    public function where($field=null,$operator=null,$value=null,$model=null){
         if(is_callable($field)){
-            call_user_func_array($field,[$operator]);
+            if($operator!==null){
+                $this->model=$operator;
+            }
+            call_user_func_array($field,[$this->model]);
         }
         else{
-            $this->where['field'][]=$field;
-            $this->where['operator'][]=$operator;
-            $this->where['value'][]=$value;
+            if($field!==null && $operator!==null && $value!==null){
+                if($this->model==null){
+                    $this->model=$model;
+                }
+
+                $this->where['field'][]=$field;
+                $this->where['operator'][]=$operator;
+                $this->where['value'][]=$value;
+            }
+
         }
 
+
+        return $this;
+    }
+
+    /**
+     * paginate method is main method.
+     *
+     * @return array
+     */
+    public function paginate($paginate=null){
+        if(is_numeric($paginate[0])){
+            $this->page=$paginate[0];
+        }
 
         return $this;
     }
@@ -138,7 +162,8 @@ class builder {
             'model'=>$this->subClassOf,
             'select'=>$this->select,
             'where'=>$this->where,
-            'execute'=>$this->execute
+            'execute'=>$this->execute,
+            'paginate'=>$this->page
         ];
     }
 

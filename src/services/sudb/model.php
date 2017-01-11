@@ -43,16 +43,22 @@ class model {
         $model=\app::resolve("\\src\\services\\sudb\\builder");
         $model->subClassOf($this->subClassOf);
         if($name=="where"){
-            if(!is_callable($args[0])){
-                return $model->where($args[0],$args[1],$args[2]);
+            if(array_key_exists(0,$args)){
+                if(!is_callable($args[0])){
+                    return $model->where($args[0],$args[1],$args[2],$model);
+                }
+                else{
+                    return $model->where($args[0],$model);
+                }
             }
             else{
-                return $model->where($args[0],$model);
+                return $model->where(null,null,null);
             }
+
 
         }
 
-        return $model->$name($args);
+        return $model->$name($args,$model);
     }
 
 

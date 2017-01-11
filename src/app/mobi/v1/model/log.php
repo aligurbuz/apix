@@ -1,10 +1,10 @@
 <?php
-namespace src\app\__projectName__\v1\model;
+namespace src\app\mobi\v1\model;
 
-class __className__ extends \src\services\sudb\model {
+class log extends \src\services\sudb\model {
 
     //tablename
-    public $table='__tableName__';
+    public $table='prosystem_administrator_process_logs';
 
     //this value is run for auto paginator
     public $paginator=['auto'=>10];

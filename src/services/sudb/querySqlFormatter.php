@@ -9,6 +9,7 @@
  */
 
 namespace src\services\sudb;
+use src\services\httprequest as request;
 
 /**
  * Represents a index class.
@@ -26,9 +27,11 @@ class querySqlFormatter {
     private $user;
     private $password;
     private $db;
+    private $request;
 
-    public function __construct(){
+    public function __construct(request $request){
 
+        $this->request=$request;
         $config="\\src\\app\\".app."\\".version."\\config\\database";
         $configdb=$config::dbsettings();
 
@@ -65,7 +68,47 @@ class querySqlFormatter {
      */
 
     public function sqlBuilderDefinition($model){
-        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']."";
+        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getPaginateProcessor($model)."";
+    }
+
+    /**
+     * Represents a getPaginateProcessor class.
+     *
+     * main call
+     * return type array
+     */
+
+    public function getPaginateProcessor($model){
+
+        $offset=0;
+        if(property_exists($model['model'],"paginator")) {
+            if (array_key_exists("auto", $model['model']->paginator)) {
+                $offset = $model['model']->paginator['auto'];
+            }
+        }
+
+        if($model['paginate']==0 && $offset==0){
+            return '';
+        }
+
+        if(array_key_exists("page",$this->request->getQueryString())){
+            $page=$this->request->getQueryString()['page']-1;
+        }
+        else{
+            $page=0;
+        }
+
+
+        if($model['paginate']==0){
+
+            $page=$page*$offset;
+
+            return 'LIMIT '.$page.','.$offset.'';
+        }
+        else{
+            $page=$page*$model['paginate'];
+            return 'LIMIT '.$page.','.$model['paginate'].'';
+        }
     }
 
 

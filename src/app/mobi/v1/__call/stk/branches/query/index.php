@@ -9,6 +9,7 @@
  */
 
 namespace src\app\mobi\v1\__call\stk\branches\query;
+use src\app\mobi\v1\model\log;
 use src\app\mobi\v1\model\user;
 use src\services\httprequest as request;
 
@@ -43,6 +44,6 @@ class index {
     public function get(){
 
         //return source
-        return user::get();
+        return log::get();
     }
 }

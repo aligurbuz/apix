@@ -7,7 +7,7 @@ class user extends \src\services\sudb\model {
     public $table='users';
 
     //this value is run for auto paginator
-    protected $paginator=['auto'=>10];
+    //public $paginator=['auto'=>10];
 
     //this value is run for auto order by desc
     protected $orderBy=['auto'=>['id'=>'desc']];
