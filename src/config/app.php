@@ -61,5 +61,26 @@ class app {
 
     }
 
+    /**
+     * response arraydelete.
+     *
+     * outputs environment.
+     *
+     * @param string
+     * @return response environment runner
+     */
+
+    public static function arrayDelete($data,$delete){
+
+        $list=[];
+        foreach($data as $key=>$value){
+            if(!in_array($key,$delete)){
+                $list[$key]=$value;
+            }
+        }
+
+        return $list;
+    }
+
 
 }

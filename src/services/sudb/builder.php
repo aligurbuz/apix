@@ -204,4 +204,24 @@ class builder {
         $this->execute=$whereOperation->execute;
         return call_user_func($callback);
     }
+
+    /**
+     * select method is main method.
+     *
+     * @return array
+     */
+    public function insert($data){
+        if(request=="POST"){
+            if(is_array($data) && count($data)){
+                return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->subClassOf);
+            }
+        }
+
+        return [
+            'error'=>true,
+            'message'=>'You have to use post method for insert',
+        ];
+
+    }
+
 }

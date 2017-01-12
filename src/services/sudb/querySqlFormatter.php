@@ -42,7 +42,7 @@ class querySqlFormatter {
         $this->password=$configdb['password'];
 
         $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
-        $this->db->exec("SET CHARACTER SET utf8");
+        $this->db->exec("SET NAMES utf8");
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
@@ -200,6 +200,65 @@ class querySqlFormatter {
 
            return $columnsList;
        }
+
+    }
+
+
+    /**
+     * Represents a getSqlPrepareFormatter class.
+     *
+     * main call
+     * return type array
+     */
+
+    public function getInsertQueryFormatter($data,$model){
+        $dataKeyValues=[];
+        $dataPrepareValues=[];
+        $dataExecuteValues=[];
+
+        if(count($data)==0){
+            $input=$this->request->input();
+            $data=(count($input)) ? $input : $data;
+        }
+
+
+        if(array_key_exists("_token",$data)){
+            $data=\app::arrayDelete($data,['_token']);
+        }
+
+        foreach($data as $key=>$value){
+            if($key!=="id"){
+                $dataKeyValues[]=$key;
+            }
+
+            $dataPrepareValues[]='?';
+            $dataExecuteValues[]=$value;
+        }
+
+
+        try {
+            $query=$this->db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+            if($query->execute($dataExecuteValues)){
+                return ['post'=>['status'=>true]];
+            }
+        }
+        catch(\Exception $e){
+            if(\app::environment()=="local"){
+                return [
+                    'error'=>true,
+                    'message'=>$e->getMessage(),
+                    'trace'=>$e->getTrace()
+                ];
+            }
+            else{
+                return [
+                    'error'=>true,
+                    'message'=>'error occured'
+                ];
+            }
+        }
+
+
 
     }
 

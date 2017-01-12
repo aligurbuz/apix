@@ -116,8 +116,9 @@ class connection {
                         }
                     }
                     //call service
-                    return $border->logging($apix->$requestServiceMethod(),function() use ($border,$apix,$requestServiceMethod){
-                        return $border->responseOut($apix->$requestServiceMethod());
+                    $requestServiceMethodReal=$apix->$requestServiceMethod();
+                    return $border->logging($requestServiceMethodReal,function() use ($border,$requestServiceMethodReal){
+                        return $border->responseOut($requestServiceMethodReal);
                     });
 
                 }
