@@ -56,7 +56,12 @@ class querySqlFormatter {
     public function getSqlPrepareFormatter($model){
         $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
         $prepare->execute($model['execute']);
-        return ['getCountAllTotal'=>$this->getCountAllProcessor($model)->getCountAllTotal,'result'=>$prepare->fetchAll(\PDO::FETCH_OBJ)];
+        return [
+                'getCountAllTotal'=>$this->getCountAllProcessor($model)->getCountAllTotal,
+                'paginator'=>$this->getModelOffsetPaginator($model),
+                'currentPage'=>$this->getPaginatorUrlPage(),
+                'result'=>$prepare->fetchAll(\PDO::FETCH_OBJ)
+        ];
 
     }
 
@@ -91,6 +96,47 @@ class querySqlFormatter {
         }
         //return select definition
         return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
+    }
+
+    /**
+     * Represents a getSqlPrepareFormatter class.
+     *
+     * main call
+     * return type array
+     */
+
+    public function getPaginatorUrlPage(){
+        if(array_key_exists("page",$this->request->getQueryString())){
+            $page=$this->request->getQueryString()['page'];
+        }
+        else{
+            $page=1;
+        }
+
+        return $page;
+    }
+
+
+    /**
+     * Represents a getSqlPrepareFormatter class.
+     *
+     * main call
+     * return type array
+     */
+
+    public function getModelOffsetPaginator($model){
+        $paginatorDefinitive=0;
+        if(property_exists($model['model'],"paginator")) {
+            if (array_key_exists("auto", $model['model']->paginator)) {
+                $paginatorDefinitive = $model['model']->paginator['auto'];
+            }
+        }
+
+        if($model['paginate']>0){
+            $paginatorDefinitive=$model['paginate'];
+        }
+
+        return $paginatorDefinitive;
     }
 
     /**

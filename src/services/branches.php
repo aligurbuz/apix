@@ -58,7 +58,7 @@ class branches {
             else{
                 $arg=$arguments[0];
             }
-            return $this->get($arg);
+            return $this->runBranch($arg);
         }
 
 
@@ -119,7 +119,7 @@ class branches {
      *
      * @return array
      */
-    public function get($arguments){
+    public function runBranch($arguments){
         $branches='branch'.ucfirst($this->name);
         return $this->$branches();
     }

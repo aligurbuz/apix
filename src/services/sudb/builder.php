@@ -153,7 +153,21 @@ class builder {
     public function get(){
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
-            return ['CountAllData'=>$result['getCountAllTotal'],'data'=>$result['result']];
+
+            if($result['paginator']>0){
+                $lastpage=(int)$result['getCountAllTotal']/(int)$result['paginator'];
+                return [
+                    'CountAllData'=>(int)$result['getCountAllTotal'],
+                    'paginator'=>(int)$result['paginator'],
+                    'currentPage'=>(int)$result['currentPage'],
+                    'lastPage'=>(int)ceil($lastpage),
+                    'data'=>$result['result']
+                ];
+            }
+            else{
+                return $result['result'];
+            }
+
         });
 
     }
