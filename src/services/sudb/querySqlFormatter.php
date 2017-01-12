@@ -226,6 +226,57 @@ class querySqlFormatter {
             $data=\app::arrayDelete($data,['_token']);
         }
 
+        //insert condition according to model
+        if(property_exists($model,"insertConditions") && $model->insertConditions['status']){
+            foreach($data as $key=>$value){
+                //wanted fields
+                if(count($model->insertConditions['wantedFields']) && !in_array($key,$model->insertConditions['wantedFields'])){
+                    return [
+                        'error'=>true,
+                        'message'=>'there is forbidden data in post sent'
+                    ];
+                }
+                //except fields
+                if(count($model->insertConditions['exceptFields']) && in_array($key,$model->insertConditions['exceptFields'])){
+                    return [
+                        'error'=>true,
+                        'message'=>'there is forbidden data in post sent'
+                    ];
+                }
+            }
+
+            //except fields
+            $obligatoryFields=$model->insertConditions['obligatoryFields'];
+            if(count($obligatoryFields)){
+                foreach($obligatoryFields as $value){
+                    if(!array_key_exists($value,$data)){
+                        return [
+                            'error'=>true,
+                            'message'=>'there is no obligatory data in post sent'
+                        ];
+                    }
+                }
+            }
+
+            //queue fields
+            $queueFields=$model->insertConditions['queueFields'];
+            if(count($queueFields)) {
+                foreach ($queueFields as $key=>$value) {
+                    $data[$key]=$value;
+                }
+            }
+
+            //queue createdAt AND updatedAt fields
+            if(property_exists($model,"createdAndUpdatedFields") && count($model->createdAndUpdatedFields)) {
+                $time=time();
+                foreach ($model->createdAndUpdatedFields as $key=>$value) {
+                    $data[$value]=$time;
+                }
+            }
+        }
+
+
+        //last data
         foreach($data as $key=>$value){
             if($key!=="id"){
                 $dataKeyValues[]=$key;
@@ -258,6 +309,20 @@ class querySqlFormatter {
             }
         }
 
+
+
+    }
+
+
+
+    /**
+     * Represents a getSqlPrepareFormatter class.
+     *
+     * main call
+     * return type array
+     */
+
+    private function getModelInsertedConditions($data,$model){
 
 
     }

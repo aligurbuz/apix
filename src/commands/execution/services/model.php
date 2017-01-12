@@ -15,14 +15,8 @@ class __className__ extends \src\services\sudb\model {
     //query result with this value is called from redis
     public $redis=['status'=>false,'expire'=>60];
 
-    //this value is validator for values it will be inserted
-    //protected $insertedPost=[];
-
     //this value is created and updated time for values it will be inserted
     public $createdAndUpdatedFields=['created_at'=>'createdAt','updated_at'=>'updatedAt'];
-
-    //this method is auto method for values it will be inserted
-    //protected static function insertedPostAttachFunction($id){}
 
     //this value is run for auto join type (left|inner)
     //protected $joiner=['auto'=>"left"];
@@ -43,4 +37,13 @@ class __className__ extends \src\services\sudb\model {
         $list['active']['status']=1;
         return $list[$scope];
     }
+
+    //insert conditions
+    public $insertConditions=[
+        'status'=>false,
+        'wantedFields'=>[],
+        'exceptFields'=>[],
+        'obligatoryFields'=>[],
+        'queueFields'=>[]
+    ];
 }
