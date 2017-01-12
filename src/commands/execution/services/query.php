@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\branches\query;
+namespace src\app\__projectName__\v1\__call\__serviceName__\branches\query\__methodName__;
 use src\services\httprequest as request;
 
 /**
@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class __queryName__ {
+class __queryName__ extends \src\app\__projectName__\v1\__call\__serviceName__\app {
 
     public $request;
 
@@ -30,6 +30,7 @@ class __queryName__ {
     public function __construct(request $request){
 
         //get request info
+        parent::__construct();
         $this->request=$request;
 
     }
@@ -43,7 +44,7 @@ class __queryName__ {
 
         //return source
         return [
-            'source'=>'__projectName__ source query __serviceName__'
+            'source'=>'__projectName__ source query __serviceName__ __methodName__'
         ];
     }
 }

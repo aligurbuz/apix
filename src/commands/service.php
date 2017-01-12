@@ -71,12 +71,30 @@ class service {
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/handle/index.php',$touchHandleParams);
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query');
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query/get');
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query/post');
 
                        $touchQueryParams['execution']='services/query';
                        $touchQueryParams['params']['projectName']=$project;
                        $touchQueryParams['params']['serviceName']=$service;
                        $touchQueryParams['params']['queryName']='index';
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/index.php',$touchQueryParams);
+
+
+                       $touchModelParamsGet['execution']='services/query';
+                       $touchModelParamsGet['params']['projectName']=$project;
+                       $touchModelParamsGet['params']['serviceName']=$service;
+                       $touchModelParamsGet['params']['methodName']='get';
+                       $touchModelParamsGet['params']['queryName']='index';
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/get/index.php',$touchModelParamsGet);
+
+
+                       $touchModelParamsPost['execution']='services/query';
+                       $touchModelParamsPost['params']['projectName']=$project;
+                       $touchModelParamsPost['params']['serviceName']=$service;
+                       $touchModelParamsPost['params']['methodName']='post';
+                       $touchModelParamsPost['params']['queryName']='index';
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/post/index.php',$touchModelParamsPost);
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source');
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source/get');

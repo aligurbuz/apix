@@ -23,6 +23,7 @@ class branches {
     public $method=null;
     public $filename=null;
     public $servicename=null;
+    public $instance=null;
 
 
     /**
@@ -37,6 +38,34 @@ class branches {
         $border->name=$name;
 
         return $border;
+    }
+
+    /**
+     * get branch name.
+     *
+     * @return array
+     */
+    public function __call($name,$arguments=[]){
+
+        if($this->instance==null){
+            $this->filename=$name;
+        }
+        else{
+            $this->method=$name;
+            if(count($arguments)==0){
+                $arg=[];
+            }
+            else{
+                $arg=$arguments[0];
+            }
+            return $this->get($arg);
+        }
+
+
+        if($this->instance==null){
+            $this->instance=1;
+        }
+        return $this;
     }
 
     /**
@@ -90,8 +119,7 @@ class branches {
      *
      * @return array
      */
-    public function get(){
-
+    public function get($arguments){
         $branches='branch'.ucfirst($this->name);
         return $this->$branches();
     }
@@ -142,10 +170,10 @@ class branches {
         $service=$this->getService();
 
         if(defined("devPackage")){
-            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\query\\'.$file;
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\query\\'.strtolower(request).'\\'.$file;
         }
         else{
-            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\query\\'.$file;
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\query\\'.strtolower(request).'\\'.$file;
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
