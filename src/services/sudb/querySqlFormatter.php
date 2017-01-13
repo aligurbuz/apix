@@ -41,6 +41,7 @@ class querySqlFormatter {
         $this->user=$configdb['user'];
         $this->password=$configdb['password'];
 
+        /** @var TYPE_NAME $this */
         $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
         $this->db->exec("SET NAMES utf8");
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
