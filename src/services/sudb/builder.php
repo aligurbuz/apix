@@ -67,6 +67,19 @@ class builder {
     }
 
     /**
+     * scope method is main method.
+     *
+     * @return array
+     */
+    public function initial($data=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+        return $this;
+    }
+
+
+    /**
      * select method is main method.
      *
      * @return array
@@ -104,7 +117,6 @@ class builder {
             }
 
         }
-
 
         return $this;
     }
@@ -151,6 +163,7 @@ class builder {
      * @return array
      */
     public function get(){
+
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
 
@@ -188,22 +201,25 @@ class builder {
      */
     private function getColumnsType($data,$types,$fields){
         $list=[];
-        foreach ($fields as $key=>$value) {
-            foreach($data as $dkey=>$dvalue){
-                if(preg_match('@int@is',$types['type'][$key])){
-                    $list[$dkey][$key]=(int)$dvalue->$key;
-                }
-                elseif(preg_match('@float@is',$types['type'][$key])){
-                    $list[$dkey][$key]=(float)$dvalue->$key;
-                }
-                elseif(preg_match('@bool@is',$types['type'][$key])){
-                    $list[$dkey][$key]=(bool)$dvalue->$key;
-                }
-                else{
-                    $list[$dkey][$key]=$dvalue->$key;
+        if($fields!==null){
+            foreach ($fields as $key=>$value) {
+                foreach($data as $dkey=>$dvalue){
+                    if(preg_match('@int@is',$types['type'][$key])){
+                        $list[$dkey][$key]=(int)$dvalue->$key;
+                    }
+                    elseif(preg_match('@float@is',$types['type'][$key])){
+                        $list[$dkey][$key]=(float)$dvalue->$key;
+                    }
+                    elseif(preg_match('@bool@is',$types['type'][$key])){
+                        $list[$dkey][$key]=(bool)$dvalue->$key;
+                    }
+                    else{
+                        $list[$dkey][$key]=$dvalue->$key;
+                    }
                 }
             }
         }
+
 
         return $list;
 
@@ -249,11 +265,30 @@ class builder {
     }
 
     /**
+     * scope method is main method.
+     *
+     * @return array
+     */
+    public function scope($data=null,$model=null){
+        $static=$model->subClassOf;
+        if(is_array($data)){
+            $scopedata=(is_array($data[0])) ? $data[0] : $data;
+            foreach($scopedata as $value){
+                $static->modelScope($value,$model::initial([]));
+            }
+        }
+
+        return $this;
+
+
+    }
+
+    /**
      * select method is main method.
      *
      * @return array
      */
-    public function insert($data){
+    public function create($data){
         if(request=="POST"){
             if(is_array($data) && count($data)){
                 return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->subClassOf);
@@ -266,5 +301,6 @@ class builder {
         ];
 
     }
+
 
 }

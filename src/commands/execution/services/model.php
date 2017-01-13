@@ -33,9 +33,16 @@ class __className__ extends \src\services\sudb\model {
     //public $scope=['auto'=>'active'];
 
     //scope query
-    public static function modelScope($scope=null){
-        $list['active']['status']=1;
-        return $list[$scope];
+    /**
+     * @param $data
+     * @param $query
+     */
+    public function modelScope($data,$query){
+        //scopes
+        if($data=="status"){
+            $query->where("status","=",1);
+        }
+
     }
 
     //insert conditions

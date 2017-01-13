@@ -1,8 +1,22 @@
 <?php
 
 namespace src\config;
+use src\services\httprequest as request;
 
 class app {
+
+    public $request;
+
+    /**
+     * Constructor.
+     *
+     * @param type dependency injection and function
+     */
+    public function __construct(){
+
+        //get request info
+        $this->request=new request();
+    }
 
     public static function getClassAlias(){
 
@@ -80,6 +94,41 @@ class app {
         }
 
         return $list;
+    }
+
+    /**
+     * response checkUrlParam.
+     *
+     * outputs environment.
+     *
+     * @param string
+     * @return response environment runner
+     */
+
+    public static function checkUrlParam($param){
+        $border=new self;
+        if(array_key_exists($param,$border->request->getQueryString())){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * response getUrlParam.
+     *
+     * outputs environment.
+     *
+     * @param string
+     * @return response environment runner
+     */
+
+    public static function getUrlParam($param){
+        $border=new self;
+        $string=$border->request->getQueryString();
+        if(array_key_exists($param,$string)){
+            return $string[$param];
+        }
+        return null;
     }
 
 
