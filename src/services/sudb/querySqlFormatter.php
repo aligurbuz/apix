@@ -56,11 +56,14 @@ class querySqlFormatter {
     public function getSqlPrepareFormatter($model){
         $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
         $prepare->execute($model['execute']);
+        $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
         return [
                 'getCountAllTotal'=>$this->getCountAllProcessor($model)->getCountAllTotal,
                 'paginator'=>$this->getModelOffsetPaginator($model),
                 'currentPage'=>$this->getPaginatorUrlPage(),
-                'result'=>$prepare->fetchAll(\PDO::FETCH_OBJ)
+                'result'=>$result,
+                'columns'=>$this->getModelTableShowColumns($model['model']->table),
+                'fields'=>$this->getResultFields($result)
         ];
 
     }
@@ -241,7 +244,13 @@ class querySqlFormatter {
             $columnsList=[];
             foreach($columns as $key=>$value){
                 $columnsList['field'][]=$columns[$key]->Field;
-                $columnsList['type'][]=$columns[$key]->Type;
+                if($columns[$key]->Type=="tinyint(1)"){
+                    $columnsList['type'][$columns[$key]->Field]="bool";
+                }
+                else{
+                    $columnsList['type'][$columns[$key]->Field]=$columns[$key]->Type;
+                }
+
             }
 
            return $columnsList;
@@ -279,6 +288,7 @@ class querySqlFormatter {
                 if(count($model->insertConditions['wantedFields']) && !in_array($key,$model->insertConditions['wantedFields'])){
                     return [
                         'error'=>true,
+                        'code'=>203,
                         'message'=>'there is forbidden data in post sent'
                     ];
                 }
@@ -286,6 +296,7 @@ class querySqlFormatter {
                 if(count($model->insertConditions['exceptFields']) && in_array($key,$model->insertConditions['exceptFields'])){
                     return [
                         'error'=>true,
+                        'code'=>203,
                         'message'=>'there is forbidden data in post sent'
                     ];
                 }
@@ -298,6 +309,7 @@ class querySqlFormatter {
                     if(!array_key_exists($value,$data)){
                         return [
                             'error'=>true,
+                            'code'=>203,
                             'message'=>'there is no obligatory data in post sent'
                         ];
                     }
@@ -343,6 +355,7 @@ class querySqlFormatter {
             if(\app::environment()=="local"){
                 return [
                     'error'=>true,
+                    'code'=>$e->getCode(),
                     'message'=>$e->getMessage(),
                     'trace'=>$e->getTrace()
                 ];
@@ -350,6 +363,7 @@ class querySqlFormatter {
             else{
                 return [
                     'error'=>true,
+                    'code'=>$e->getCode(),
                     'message'=>'error occured'
                 ];
             }
@@ -368,9 +382,10 @@ class querySqlFormatter {
      * return type array
      */
 
-    private function getModelInsertedConditions($data,$model){
-
-
+    private function getResultFields($data){
+        foreach($data as $key=>$value){
+            return json_decode(json_encode($data[$key]),1);
+        }
     }
 
 }

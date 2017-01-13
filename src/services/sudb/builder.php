@@ -161,7 +161,7 @@ class builder {
                     'paginator'=>(int)$result['paginator'],
                     'currentPage'=>(int)$result['currentPage'],
                     'lastPage'=>(int)ceil($lastpage),
-                    'data'=>$result['result']
+                    'data'=>$this->getColumnsType($result['result'],$result['columns'],$result['fields'])
                 ];
             }
             else{
@@ -177,8 +177,37 @@ class builder {
      *
      * @return array
      */
-    public function queryFormatter(){
+    private function queryFormatter(){
         return $this->querySqlFormatter->getSqlPrepareFormatter($this->SqlPrepareFormatterHandleObject());
+    }
+
+    /**
+     * get columns type is main method.
+     *
+     * @return array
+     */
+    private function getColumnsType($data,$types,$fields){
+        $list=[];
+        foreach ($fields as $key=>$value) {
+            foreach($data as $dkey=>$dvalue){
+                if(preg_match('@int@is',$types['type'][$key])){
+                    $list[$dkey][$key]=(int)$dvalue->$key;
+                }
+                elseif(preg_match('@float@is',$types['type'][$key])){
+                    $list[$dkey][$key]=(float)$dvalue->$key;
+                }
+                elseif(preg_match('@bool@is',$types['type'][$key])){
+                    $list[$dkey][$key]=(bool)$dvalue->$key;
+                }
+                else{
+                    $list[$dkey][$key]=$dvalue->$key;
+                }
+            }
+        }
+
+        return $list;
+
+
     }
 
     /**
@@ -195,7 +224,7 @@ class builder {
      *
      * @return array
      */
-    public function SqlPrepareFormatterHandleObject(){
+    private function SqlPrepareFormatterHandleObject(){
         return [
             'model'=>$this->subClassOf,
             'select'=>$this->select,
