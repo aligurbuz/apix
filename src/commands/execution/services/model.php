@@ -39,7 +39,7 @@ class __className__ extends \src\services\sudb\model {
      */
     public function modelScope($data,$query){
         //scopes
-        if($data=="status"){
+        if($data=="active"){
             $query->where("status","=",1);
         }
 

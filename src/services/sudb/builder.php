@@ -34,6 +34,7 @@ class builder {
     private $selectBuilderOperation;
     private $whereBuilderOperation;
     private $subClassOf=null;
+    private $autoScope=null;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -106,10 +107,12 @@ class builder {
             call_user_func_array($field,[$this->model]);
         }
         else{
+
+            if($this->model==null){
+                $this->model=$model;
+            }
+
             if($field!==null && $operator!==null && $value!==null){
-                if($this->model==null){
-                    $this->model=$model;
-                }
 
                 $this->where['field'][]=$field;
                 $this->where['operator'][]=$operator;
@@ -162,8 +165,11 @@ class builder {
      *
      * @return array
      */
-    public function get(){
+    public function get($args=null,$model=null){
 
+        if($this->model==null){
+            $this->model=$model;
+        }
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
 
@@ -257,6 +263,7 @@ class builder {
      * @return array
      */
     private function allMethodProcess($callback){
+        $this->autoScope=$this->getAutoScope();
         $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
         $whereOperation=$this->whereBuilderOperation->whereMainProcess($this->where,$this->SqlPrepareFormatterHandleObject());
         $this->where=$whereOperation->where;
@@ -270,8 +277,12 @@ class builder {
      * @return array
      */
     public function scope($data=null,$model=null){
-        $static=$model->subClassOf;
         if(is_array($data)){
+            if($this->model==null){
+                $this->model=$model;
+                $model=$this->model;
+            }
+            $static=$model->subClassOf;
             $scopedata=(is_array($data[0])) ? $data[0] : $data;
             foreach($scopedata as $value){
                 $static->modelScope($value,$model::initial([]));
@@ -280,6 +291,25 @@ class builder {
 
         return $this;
 
+
+    }
+
+    /**
+     * scope method is main method.
+     *
+     * @return array
+     */
+    private function getAutoScope(){
+        $model=$this->model;
+        $static=$this->model->subClassOf;
+        if(property_exists($static,"scope") && array_key_exists("auto",$static->scope)){
+            $this->autoScope=$static->scope['auto'];
+        }
+        if($this->autoScope!==null && !is_array($this->autoScope)){
+            $this->autoScope=[$this->autoScope];
+        }
+
+        $this->scope($this->autoScope,$model);
 
     }
 

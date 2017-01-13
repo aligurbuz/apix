@@ -52,11 +52,12 @@ class model {
                 }
             }
             else{
-                return $model->where(null,null,null);
+                return $model->where(null,null,null,$model);
             }
 
 
         }
+
         return $model->$name($args,$model);
     }
 
