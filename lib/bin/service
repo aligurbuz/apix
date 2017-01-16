@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-$commandFile=require("./src/commands/".$argv[1].".php");
+$commandFile=require("./lib/bin/commands/".$argv[1].".php");
 $commandFile=new $argv[1]();
 
 $list=[];

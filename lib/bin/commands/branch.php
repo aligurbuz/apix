@@ -19,6 +19,9 @@ class branch {
     //service create command
     public function source ($data){
 
+
+        //usage : branch source project:service file:file request:get|post
+
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
                 foreach ($value as $project=>$service){
@@ -30,8 +33,10 @@ class branch {
                     $sourceParams['execution']='services/branch_source';
                     $sourceParams['params']['projectName']=$project;
                     $sourceParams['params']['serviceName']=$service;
+                    $sourceParams['params']['requestName']=$this->getParams($data)[2]['request'];
                     $sourceParams['params']['className']=$this->getParams($data)[1]['file'];
-                    $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/source/'.$this->getParams($data)[1]['file'].'.php',$sourceParams);
+
+                    $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/source/'.$this->getParams($data)[2]['request'].'/'.$this->getParams($data)[1]['file'].'.php',$sourceParams);
 
                     return $this->fileProcessResult($list,function(){
                         return 'branch source new file has been created';
@@ -59,8 +64,9 @@ class branch {
                     $sourceParams['execution']='services/branch_query';
                     $sourceParams['params']['projectName']=$project;
                     $sourceParams['params']['serviceName']=$service;
+                    $sourceParams['params']['requestName']=$this->getParams($data)[2]['request'];
                     $sourceParams['params']['className']=$this->getParams($data)[1]['file'];
-                    $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/'.$this->getParams($data)[1]['file'].'.php',$sourceParams);
+                    $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/'.$this->getParams($data)[2]['request'].'/'.$this->getParams($data)[1]['file'].'.php',$sourceParams);
 
                     return $this->fileProcessResult($list,function(){
                         return 'branch query new file has been created';
@@ -151,7 +157,7 @@ class branch {
     public  function fileprocess(){
 
         //file process new instance
-        $fd=require ('./src/commands/lib/filedirprocess.php');
+        $fd=require ('./lib/bin/commands/lib/filedirprocess.php');
         return new filedirprocess();
 
     }

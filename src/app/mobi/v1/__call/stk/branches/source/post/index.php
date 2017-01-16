@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\branches\source;
+namespace src\app\mobi\v1\__call\stk\branches\source\post;
 use src\services\httprequest as request;
 
 /**
@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class __className__ {
+class index extends \src\app\mobi\v1\__call\stk\app {
 
     public $request;
 
@@ -30,6 +30,7 @@ class __className__ {
     public function __construct(request $request){
 
         //get request info
+        parent::__construct();
         $this->request=$request;
 
     }
@@ -42,8 +43,6 @@ class __className__ {
     public function get(){
 
         //return source
-        return [
-            'source'=>'__projectName__ source __serviceName__ __className__'
-        ];
+        return "mobi source stk post";
     }
 }

@@ -46,7 +46,6 @@ class branches {
      * @return array
      */
     public function __call($name,$arguments=[]){
-
         if($this->instance==null){
             $this->filename=$name;
         }

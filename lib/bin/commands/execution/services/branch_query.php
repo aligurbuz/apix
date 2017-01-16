@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\branches\query;
+namespace src\app\__projectName__\v1\__call\__serviceName__\branches\query\__requestName__;
 use src\services\httprequest as request;
 
 /**
@@ -44,7 +44,7 @@ class __className__ extends \src\app\__projectName__\v1\__call\__serviceName__\a
 
         //return source
         return [
-            'source'=>'__projectName__ query __serviceName__ __className__'
+            'source'=>'__projectName__ query __serviceName__ __className__ __requestName__'
         ];
     }
 }

@@ -102,7 +102,7 @@ class filedirprocess {
     //fopen process
     public function fopenprocess($path,$param){
 
-        $executionPath="./src/commands/execution/".$param['execution'].".php";
+        $executionPath="./lib/bin/commands/execution/".$param['execution'].".php";
         $dt = fopen($executionPath, "r");
         $content = fread($dt, filesize($executionPath));
         fclose($dt);

@@ -125,7 +125,7 @@ class project {
     public  function fileprocess(){
 
         //file process new instance
-        $fd=require ('./src/commands/lib/filedirprocess.php');
+        $fd=require ('./lib/bin/commands/lib/filedirprocess.php');
         return new filedirprocess();
 
     }
