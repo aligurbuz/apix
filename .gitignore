@@ -2,5 +2,5 @@ vendor
 .idea/
 node_modules
 env.php
-src/app/.*
+src/app/*
 !important src/app/index.html
