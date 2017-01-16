@@ -41,6 +41,10 @@ class project {
             $touchServiceBaseControllerParams['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/serviceBaseController.php',$touchServiceBaseControllerParams);
 
+            $touchServiceReadyControllerParams['execution']='serviceReadyController';
+            $touchServiceReadyControllerParams['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/serviceReadyController.php',$touchServiceReadyControllerParams);
+
             $serviceLogController['execution']='serviceLogController';
             $serviceLogController['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/serviceLogController.php',$serviceLogController);

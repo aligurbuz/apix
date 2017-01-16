@@ -5,6 +5,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
+use src\services\superservicecalls as superservicecalls;
 
 /**
  * Represents a app class.
@@ -18,6 +19,7 @@ class app {
     public $source;
     public $model;
     public $handle;
+    public $superservicecall;
 
     /**
      * example method.
@@ -28,6 +30,19 @@ class app {
         $this->source=\branch::source();
         $this->model=\branch::query();
         $this->handle=\branch::handle();
+        $this->superservicecall=new superservicecalls();
+
+    }
+
+    /**
+     * provider __call method.
+     *
+     * @param type dependency injection and function
+     */
+    public function __call($name=null,$args){
+        if($name!==null){
+            return $this->superservicecall->$name();
+        }
     }
 
 
