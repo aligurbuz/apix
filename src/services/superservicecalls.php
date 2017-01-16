@@ -19,15 +19,38 @@ namespace src\services;
 
 class superservicecalls {
 
+    /**
+     * superservice calls set data.
+     *
+     * @return super service class
+     */
+    public function __call($name,$args){
+       return $this->ready(true,$name);
+    }
 
     /**
      * superservice calls set data.
      *
      * @return super service class
      */
-    public function ready(){
+    public function ready($status=false,$method=null){
         //set return
-        return \app::resolve("\\src\\app\\".app."\\".version."\\serviceReadyController");
+        if($status){
+            $serviceReady=\app::resolve("\\src\\app\\".app."\\".version."\\serviceReadyController");
+            $handle=(object)$serviceReady->handle();
+            $handlemethod=explode("::",$handle->$method);
+            if(array_key_exists(1,$handlemethod)){
+                $handlemethodclass=$handlemethod[0];
+                $handlemethodclassmethod=$handlemethod[1];
+                return \app::resolve($handlemethodclass)->$handlemethodclassmethod();
+            }
+            else{
+                return \app::resolve($handle->$method);
+            }
+
+        }
+        return $this;
+
     }
 
 

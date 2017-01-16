@@ -10,18 +10,14 @@ namespace src\app\__projectName__\v1;
 
 class serviceReadyController
 {
-    public $source;
-    public $model;
-    public $handle;
-
     /**
-     * example method.
+     * handle method.
      *
-     * @param type dependency injection and function
+     * @param type dependency class and function
      */
-    public function __construct(){
-        $this->source=\branch::source();
-        $this->model=\branch::query();
-        $this->handle=\branch::handle();
+    public function handle(){
+        return [
+            //'alias'=>'namespace'
+        ];
     }
 }
