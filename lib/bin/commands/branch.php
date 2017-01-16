@@ -20,6 +20,10 @@ class branch {
     public function source ($data){
 
 
+        if(!file_exists('./env.php')){
+            return 'Commands execution only can be run for environment local';
+        }
+
         //usage : branch source project:service file:file request:get|post
 
         foreach ($this->getParams($data) as $key=>$value){
@@ -157,7 +161,8 @@ class branch {
     public  function fileprocess(){
 
         //file process new instance
-        $fd=require ('./lib/bin/commands/lib/filedirprocess.php');
+        $libconf=require("./lib/bin/commands/lib/conf.php");
+        $fd=require ($libconf['libFile']);
         return new filedirprocess();
 
     }

@@ -18,6 +18,10 @@ class package {
     //project create command
     public function auto ($data){
 
+        if(!file_exists('./env.php')){
+            return 'Commands execution only can be run for environment local';
+        }
+
         $list=[];
         if(!file_exists('./src/packages/auto/'.$this->getProjectName($data))){
 
@@ -90,7 +94,8 @@ class package {
     public  function fileprocess(){
 
         //file process new instance
-        $fd=require ('./lib/bin/commands/lib/filedirprocess.php');
+        $libconf=require("./lib/bin/commands/lib/conf.php");
+        $fd=require ($libconf['libFile']);
         return new filedirprocess();
 
     }

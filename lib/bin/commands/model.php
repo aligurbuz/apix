@@ -19,6 +19,10 @@ class model {
     //service create command
     public function create ($data){
 
+        if(!file_exists('./env.php')){
+            return 'Commands execution only can be run for environment local';
+        }
+
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
 
@@ -97,7 +101,8 @@ class model {
     public  function fileprocess(){
 
         //file process new instance
-        $fd=require ('./lib/bin/commands/lib/filedirprocess.php');
+        $libconf=require("./lib/bin/commands/lib/conf.php");
+        $fd=require ($libconf['libFile']);
         return new filedirprocess();
 
     }
