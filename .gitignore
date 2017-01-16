@@ -4,3 +4,4 @@ node_modules
 env.php
 src/app/*
 !important src/app/index.html
+src/access.log

@@ -1,7 +1,7 @@
 <?php
 /**
- * Service base controller
- * it is mainly service provider for service
+ * Service ready controller
+ * it is mainly service ready controller for service
  * service provider
  */
 
@@ -13,7 +13,7 @@ class serviceReadyController
     /**
      * handle method.
      *
-     * @param type dependency class and function
+     * @param type ready class and function
      */
     public function handle(){
         return [

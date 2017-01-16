@@ -7,12 +7,15 @@
 
 namespace src\app\__projectName__\v1;
 use src\services\httprequest as request;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler as StreamHandler;
 
 
 class serviceLogController
 {
     public $request;
     public $status=false;
+    public $logger;
 
     /**
      * Constructor.
@@ -23,6 +26,8 @@ class serviceLogController
 
         //get request info
         $this->request=$request;
+        $this->logger=new logger('log');
+        $this->logger->pushHandler(new StreamHandler(root.'/src/access.log', Logger::INFO));
     }
 
     /**
@@ -34,7 +39,7 @@ class serviceLogController
     public function handle($data=array()){
 
         //logging data
-        return true;
+        return $this->logger->info(json_encode($data));
     }
 
 
