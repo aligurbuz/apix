@@ -32,8 +32,12 @@ class version {
                 //$sourcepath=''.$app_path.''.$slashes.'Api'.$slashes.'Custom'.$slashes.''.ucfirst($this->argument("var1")).'';
                 //$destinationpath=''.$app_path.''.$slashes.'Api'.$slashes.'Custom'.$slashes.''.ucfirst($this->argument("var2")).'';
 
-
+                $fl=[];
                 foreach ($value as $project=>$service){
+
+                    $fl[]='./src/app/'.$project.'/'.$this->getParams($data)[2]['m'].'/serviceBaseController.php';
+                    $fl[]='./src/app/'.$project.'/'.$this->getParams($data)[2]['m'].'/serviceLogController.php';
+                    $fl[]='./src/app/'.$project.'/'.$this->getParams($data)[2]['m'].'/serviceReadyController.php';
 
                     $sourcepath='./src/app/'.$project.'/'.$this->getParams($data)[1]['d'].'';
                     $destinationpath='./src/app/'.$project.'/'.$this->getParams($data)[2]['m'].'';
@@ -72,11 +76,42 @@ class version {
 
                         }
 
-                        foreach ($list as $val)
+                        $reallist=[];
+                        foreach ($list as $lkey=>$lvalue){
+                            if(is_array($lvalue)){
+                                foreach($lvalue as $a=>$b){
+                                    if(is_array($b)){
+                                        foreach($b as $x=>$y){
+                                            $reallist[]=$y;
+                                        }
+                                    }
+                                    else{
+                                        $reallist[]=$b;
+                                    }
+                                }
+                            }
+                            else{
+                                $reallist[]=$lvalue;
+                            }
+                        }
+
+                        foreach($reallist as $rkey=>$rvalue){
+                            if(is_array($rvalue)){
+                                foreach($rvalue as $aa=>$bb){
+                                    $fl[]=$bb;
+                                }
+                            }
+                            else{
+                                $fl[]=$rvalue;
+                            }
+                        }
+
+
+                        foreach ($fl as $val)
                         {
                             $dosya =$val;
-                            $dt = fopen($dosya, "rb");
-                            $icerik = fread($dt, filesize($dosya));
+                            $dt = @fopen($dosya, "rb");
+                            $icerik =@fread($dt, filesize($dosya));
                             $icerik=preg_replace('@v(\d+)@',"".$this->getParams($data)[2]['m']."",$icerik);
 
                             $dt = fopen($dosya, 'w');
