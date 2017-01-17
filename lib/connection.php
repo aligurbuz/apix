@@ -579,7 +579,7 @@ class connection {
 
         if($provision->$provisionMethod()['success'] OR in_array(app.'/'.service.'',$provision->$provisionMethodExcept())){
 
-            $serviceprovision="\\src\\app\\".app."\\v1\\provisions\\index";
+            $serviceprovision="\\src\\app\\".app."\\".version."\\provisions\\index";
             $serviceprovision=$this->resolve->resolve($serviceprovision);
             $serviceprovisionMethod=''.request.'Provision';
             $serviceprovisionExcept=''.request.'Except';
@@ -588,11 +588,16 @@ class connection {
 
                 return call_user_func($callback);
             }
-
+            else{
+                $message=$serviceprovision->$serviceprovisionMethod()['message'];
+            }
 
         }
+        else{
+            $message=$provision->$provisionMethod()['message'];
+        }
 
-        return $this->responseOut([],$provision->$provisionMethod()['message']);
+        return $this->responseOut([],$message);
 
     }
 
