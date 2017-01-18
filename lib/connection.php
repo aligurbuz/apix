@@ -577,24 +577,26 @@ class connection {
         $provisionMethod=''.request.'Provision';
         $provisionMethodExcept=''.request.'Except';
 
-        if($provision->$provisionMethod()['success'] OR in_array(app.'/'.service.'',$provision->$provisionMethodExcept())){
+        $apl=$provision->$provisionMethod();
+        if($apl['success'] OR in_array(app.'/'.service.'',$provision->$provisionMethodExcept())){
 
             $serviceprovision="\\src\\app\\".app."\\".version."\\provisions\\index";
             $serviceprovision=$this->resolve->resolve($serviceprovision);
             $serviceprovisionMethod=''.request.'Provision';
             $serviceprovisionExcept=''.request.'Except';
 
-            if($serviceprovision->$serviceprovisionMethod()['success'] OR in_array(service,$serviceprovision->$serviceprovisionExcept())){
+            $spl=$serviceprovision->$serviceprovisionMethod();
+            if($spl['success'] OR in_array(service,$serviceprovision->$serviceprovisionExcept())){
 
                 return call_user_func($callback);
             }
             else{
-                $message=$serviceprovision->$serviceprovisionMethod()['message'];
+                $message=$spl['message'];
             }
 
         }
         else{
-            $message=$provision->$provisionMethod()['message'];
+            $message=$apl['message'];
         }
 
         return $this->responseOut([],$message);

@@ -132,4 +132,137 @@ class app {
     }
 
 
+    /**
+     * response check token.
+     *
+     * outputs token check.
+     *
+     * @param string
+     * @return response environment runner
+     */
+
+    public static function checkToken(){
+
+        //get token
+        $token="\\src\\provisions\\token";
+        $token=self::resolve($token);
+        $tokenhandle=$token->handle();
+        $tokenexcept=$token->except();
+
+        $queryParams=self::getQueryParamsFromRoute();
+
+        //token provision
+        if(array_key_exists("_token",$queryParams)){
+
+            if(in_array($queryParams['_token'],$tokenhandle['tokens'])){
+
+                if(!array_key_exists($queryParams['_token'],$tokenhandle['clientIp'])){
+                    return true;
+                }
+
+                if($tokenhandle['clientIp'][$queryParams['_token']]==$_SERVER['REMOTE_ADDR']){
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
+
+    }
+
+    /**
+     * get directory name.
+     *
+     * directory name
+     *
+     * @param string
+     * @return directory name runner
+     */
+
+    public static function getDirectoryName(){
+
+        $root=explode("/",root);
+        return end($root);
+    }
+
+
+    /**
+     * compare with root to request uri.
+     *
+     * compare request uri
+     *
+     * @param string
+     * @return request uri compare runner
+     */
+
+    public static function getServiceNameAndMethodFromRequestUri(){
+
+        $service=str_replace("/".self::getDirectoryName()."/service/","",self::requestUri());
+        return explode("/",$service);
+    }
+
+
+    /**
+     * get pure method from service
+     *
+     * pure method name
+     *
+     * @param string
+     * @return pure method runner
+     */
+
+    public static function getPureMethodNameFromService(){
+
+        $service=self::getServiceNameAndMethodFromRequestUri();
+        return preg_replace('@\?(.*)@is','',end($service));
+    }
+
+
+    /**
+     * get query params
+     *
+     * query params
+     *
+     * @param string
+     * @return query params runner
+     */
+
+    public static function getQueryParamsFromRoute(){
+
+        $service=self::getServiceNameAndMethodFromRequestUri();
+        $params=preg_replace('@'.self::getPureMethodNameFromService().'\?@is','',end($service));
+
+        if($params==self::getPureMethodNameFromService()) {
+            return [];
+        }
+        else {
+
+            $getParams=explode("&",$params);
+            $paramlist=[];
+            foreach ($getParams as $main){
+                $getParamsMain=explode("=",$main);
+                $paramlist[$getParamsMain[0]]=$getParamsMain[1];
+            }
+
+            return $paramlist;
+        }
+    }
+
+    /**
+     * get request uri.
+     *
+     * this checks request uri parameter.
+     *
+     * @param string
+     * @return request uri runner
+     */
+
+    public static function requestUri(){
+
+        return $_SERVER['REQUEST_URI'];
+    }
+
+
+
 }

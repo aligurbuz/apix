@@ -10,6 +10,7 @@
 
 namespace src\services\sudb;
 use \src\services\sudb\querySqlFormatter as querySqlFormatter;
+use src\services\httprequest as request;
 
 /**
  * Represents a index class.
@@ -22,14 +23,16 @@ class selectBuilderOperation {
 
 
     private $querySqlFormatter;
+    public $request;
 
     /**
      * getConstruct method is main method.
      *
      * @return array
      */
-    public function __construct(querySqlFormatter $querySqlFormatter){
+    public function __construct(querySqlFormatter $querySqlFormatter,request $request){
         $this->querySqlFormatter=$querySqlFormatter;
+        $this->request=$request;
     }
 
     /**
@@ -39,6 +42,7 @@ class selectBuilderOperation {
      */
     public function selectMainProcess($selectData,$model){
         $selectData=$this->getSelectHiddenFields($selectData,$model);
+        $selectData=$this->getSelectPermissions($selectData,$model);
         return $this->selectImplodeProcess($selectData);
     }
 
@@ -56,6 +60,124 @@ class selectBuilderOperation {
             return $this->getSelectDataValueList($columns['field'],$model);
         }
 
+    }
+
+
+    /**
+     * getSelect Permissions method is main method.
+     *
+     * @return array
+     */
+    private function getSelectPermissions($selectData,$model){
+        $reeldata=$selectData;
+        if(property_exists($model['model'],"selectPermissions")){
+            $selectPermissions=$model['model']->selectPermissions;
+            if($selectPermissions['status']){
+                $headers=$this->request->getHeaders();
+                if($selectPermissions['authorized']=="*"){
+                    if(array_key_exists("select",$headers) && \app::checkToken()){
+                        if($selectPermissions['tokens']=='*'){
+                            $selectData=explode($selectPermissions['seperator'],$headers['select'][0]);
+                            $list=[];
+                            foreach($selectData as $key=>$value){
+                                if(!in_array($value,$selectPermissions['forbidden'])){
+                                    $list[$key]=$value;
+                                }
+                            }
+                            $selectData=$list;
+                        }
+
+                        if(is_array($selectPermissions['tokens'])){
+                            if(in_array($this->request->getQueryString()['_token'],$selectPermissions['tokens'])){
+                                $selectData=explode($selectPermissions['seperator'],$headers['select'][0]);
+                                $list=[];
+                                foreach($selectData as $key=>$value){
+                                    if(!in_array($value,$selectPermissions['forbidden'])){
+                                        $list[$key]=$value;
+                                    }
+                                }
+                                $selectData=$list;
+                            }
+                        }
+
+                        $rlist=[];
+                        foreach($selectData as $lkey=>$lvalue){
+                            if(in_array($lvalue,$reeldata)){
+                                $rlist[$lkey]=$lvalue;
+                            }
+                        }
+
+                        if(count($rlist)){
+                            $selectData=$rlist;
+                        }
+                        else{
+                            $selectData=$reeldata;
+                        }
+
+                    }
+                }
+
+                if(is_array($selectPermissions['authorized'])){
+                    if(array_key_exists("select",$headers) && \app::checkToken()){
+                        if($selectPermissions['tokens']=='*'){
+                            $selectData=explode($selectPermissions['seperator'],$headers['select'][0]);
+                            $list=[];
+                            foreach($selectData as $key=>$value){
+                                if(in_array($value,$selectPermissions['authorized'])){
+                                    $list[$key]=$value;
+                                }
+                            }
+                            $listforbidden=[];
+                            foreach($list as $key=>$value){
+                                if(!in_array($value,$selectPermissions['forbidden'])){
+                                    $listforbidden[$key]=$value;
+                                }
+                            }
+                            $selectData=$listforbidden;
+                        }
+
+                        if(is_array($selectPermissions['tokens'])){
+                            if(in_array($this->request->getQueryString()['_token'],$selectPermissions['tokens'])){
+                                $selectData=explode($selectPermissions['seperator'],$headers['select'][0]);
+                                $list=[];
+                                foreach($selectData as $key=>$value){
+                                    if(in_array($value,$selectPermissions['authorized'])){
+                                        $list[$key]=$value;
+                                    }
+                                }
+                                $listforbidden=[];
+                                foreach($list as $key=>$value){
+                                    if(!in_array($value,$selectPermissions['forbidden'])){
+                                        $listforbidden[$key]=$value;
+                                    }
+                                }
+                                $selectData=$listforbidden;
+                            }
+
+                        }
+
+
+                        $rlist=[];
+                        foreach($selectData as $lkey=>$lvalue){
+                            if(in_array($lvalue,$reeldata)){
+                                $rlist[$lkey]=$lvalue;
+                            }
+                        }
+
+                        if(count($rlist)){
+                            $selectData=$rlist;
+                        }
+                        else{
+                            $selectData=$reeldata;
+                        }
+
+
+                    }
+                }
+            }
+        }
+
+        return $selectData;
     }
 
     /**
