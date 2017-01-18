@@ -91,9 +91,8 @@ class builder {
             $this->model=$model;
         }
 
-
         if(is_array($select) && $model!==null){
-            if(count($select[0])){
+            if(array_key_exists(0,$select) && count($select[0])){
                 $this->select=$select[0];
             }
 
@@ -332,13 +331,20 @@ class builder {
      * @return array
      */
     public function scope($data=null,$model=null){
-        if(is_array($data)){
-            if($this->model==null){
-                $this->model=$model;
-                $model=$this->model;
-            }
+        if($this->model==null){
+            $this->model=$model;
+        }
+        $model=$this->model;
+        if(is_array($data) && count($data)){
             $static=$model->subClassOf;
             $scopedata=(is_array($data[0])) ? $data[0] : $data;
+            foreach($scopedata as $value){
+                $static->modelScope($value,$model::initial([]));
+            }
+        }
+        else{
+            $static=$model->subClassOf;
+            $scopedata=[$data];
             foreach($scopedata as $value){
                 $static->modelScope($value,$model::initial([]));
             }

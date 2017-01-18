@@ -74,7 +74,7 @@ class querySqlFormatter {
                 'result'=>[
                     'error'=>true,
                     'code'=>$e->getCode(),
-                    'message'=>'sql syntax is not valid',
+                    'message'=>'sql logic error',
                     'trace'=>$e->getTrace()
                 ]
 
