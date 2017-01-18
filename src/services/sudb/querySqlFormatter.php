@@ -55,17 +55,32 @@ class querySqlFormatter {
      */
 
     public function getSqlPrepareFormatter($model){
-        $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
-        $prepare->execute($model['execute']);
-        $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
-        return [
-                'getCountAllTotal'=>$this->getCountAllProcessor($model)->getCountAllTotal,
+
+        try {
+            $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
+            $prepare->execute($model['execute']);
+            $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
+            return [
+                'getCountAllTotal'=>$this->getCountAllProcessor($model),
                 'paginator'=>$this->getModelOffsetPaginator($model),
                 'currentPage'=>$this->getPaginatorUrlPage(),
                 'result'=>$result,
                 'columns'=>$this->getModelTableShowColumns($model['model']->table),
                 'fields'=>$this->getResultFields($result)
-        ];
+            ];
+        }
+        catch(\Exception $e){
+            return [
+                'result'=>[
+                    'error'=>true,
+                    'code'=>$e->getCode(),
+                    'message'=>'sql syntax is not valid',
+                    'trace'=>$e->getTrace()
+                ]
+
+            ];
+        }
+
 
     }
 
@@ -77,10 +92,19 @@ class querySqlFormatter {
      */
 
     public function getCountAllProcessor($model){
+
+        //dd($this->sqlBuilderDefinition($model,1));
         $getCountAll=$this->db->prepare($this->sqlBuilderDefinition($model,1));
         $getCountAll->execute($model['execute']);
-        $getCountAll=$getCountAll->fetch(\PDO::FETCH_OBJ);
-        return $getCountAll;
+        if($model['groupBy']!==null){
+            $getCountAll=$getCountAll->rowCount(\PDO::FETCH_OBJ);
+            return $getCountAll;
+        }
+        else{
+            $getCountAll=$getCountAll->fetch(\PDO::FETCH_OBJ);
+            return $getCountAll->getCountAllTotal;
+        }
+
     }
 
     /**
@@ -98,8 +122,12 @@ class querySqlFormatter {
         else{
             $getPaginateProcessor=$this->getPaginateProcessor($model);
         }
+
+        if($model['groupBy']!==null){
+            $model['select']=''.$model['groupBy'].',count(*) as groupBy'.$model['groupBy'].'Total';
+        }
         //return select definition
-        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
+        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
     }
 
     /**
@@ -118,6 +146,24 @@ class querySqlFormatter {
         }
 
         return $page;
+    }
+
+
+    /**
+     * Represents a group by processor class.
+     *
+     * main call
+     * return type array
+     */
+
+    public function getGroupByProcessor($model){
+        $groupBy='';
+
+        if($model['groupBy']!==null){
+            $groupBy.='GROUP BY '.$model['groupBy'].' ';
+        }
+
+        return $groupBy;
     }
 
 

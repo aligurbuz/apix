@@ -38,6 +38,16 @@ class __className__ extends \src\services\sudb\model {
      * @param $query
      */
     public function modelScope($data,$query){
+
+        //get id
+        if($data=="id"){
+            $query->where(function($model){
+                if(\app::checkUrlParam("id")){
+                    $model->where("id","=",\app::getUrlParam("id"));
+                }
+            });
+        }
+
         //scopes
         if($data=="active"){
             $query->where("status","=",1);

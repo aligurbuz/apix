@@ -105,7 +105,10 @@ class app {
      * @return response environment runner
      */
 
-    public static function checkUrlParam($param){
+    public static function checkUrlParam($param=null){
+        if($param==null){
+            return false;
+        }
         $border=new self;
         if(array_key_exists($param,$border->request->getQueryString())){
             return true;
@@ -122,7 +125,10 @@ class app {
      * @return response environment runner
      */
 
-    public static function getUrlParam($param){
+    public static function getUrlParam($param=null){
+        if($param==null){
+            return null;
+        }
         $border=new self;
         $string=$border->request->getQueryString();
         if(array_key_exists($param,$string)){

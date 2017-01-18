@@ -29,6 +29,7 @@ class builder {
     private $where=[];
     private $page=0;
     private $order=null;
+    private $groupBy=null;
     private $execute=[];
     private $querySqlFormatter;
     private $selectBuilderOperation;
@@ -85,11 +86,24 @@ class builder {
      *
      * @return array
      */
-    public function select($select=null,$model){
-        $this->model=$model;
-        if(is_array($select) && array_key_exists(0,$select)){
-            $this->select=$select[0];
+    public function select($select=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
         }
+
+
+        if(is_array($select) && $model!==null){
+            if(count($select[0])){
+                $this->select=$select[0];
+            }
+
+        }
+        else{
+            if(count($select)){
+                $this->select=$select;
+            }
+        }
+
         return $this;
     }
 
@@ -136,7 +150,9 @@ class builder {
             $this->model=$model;
         }
 
+
         if($key!==null && is_array($key)){
+            $this->model=$order;
 
             $this->order=['key'=>$key[0],'order'=>$key[1]];
         }
@@ -148,13 +164,43 @@ class builder {
     }
 
     /**
+     * query group by.
+     *
+     * @return pdo class
+     */
+    public function groupBy($key=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if(is_array($key)){
+            $this->groupBy=$key[0];
+        }
+        else{
+            $this->groupBy=$key;
+        }
+
+
+        return $this;
+
+    }
+
+    /**
      * paginate method is main method.
      *
      * @return array
      */
-    public function paginate($paginate=null){
-        if(is_numeric($paginate[0])){
+    public function paginate($paginate=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if(is_array($paginate)){
             $this->page=$paginate[0];
+        }
+        else{
+            $this->page=$paginate;
         }
 
         return $this;
@@ -173,7 +219,7 @@ class builder {
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
 
-            if($result['paginator']>0){
+            if(array_key_exists("paginator",$result) && $result['paginator']>0){
                 $lastpage=(int)$result['getCountAllTotal']/(int)$result['paginator'];
                 return [
                     'CountAllData'=>(int)$result['getCountAllTotal'],
@@ -207,21 +253,29 @@ class builder {
      */
     private function getColumnsType($data,$types,$fields){
         $list=[];
-        if($fields!==null){
+        if($fields!==null && $data!==false){
             foreach ($fields as $key=>$value) {
                 foreach($data as $dkey=>$dvalue){
-                    if(preg_match('@int@is',$types['type'][$key])){
-                        $list[$dkey][$key]=(int)$dvalue->$key;
-                    }
-                    elseif(preg_match('@float@is',$types['type'][$key])){
-                        $list[$dkey][$key]=(float)$dvalue->$key;
-                    }
-                    elseif(preg_match('@bool@is',$types['type'][$key])){
-                        $list[$dkey][$key]=(bool)$dvalue->$key;
+                    if(array_key_exists($key,$types['type'])){
+                        if(preg_match('@int@is',$types['type'][$key])){
+                            $list[$dkey][$key]=(int)$dvalue->$key;
+                        }
+                        elseif(preg_match('@float@is',$types['type'][$key])){
+                            $list[$dkey][$key]=(float)$dvalue->$key;
+                        }
+                        elseif(preg_match('@bool@is',$types['type'][$key])){
+                            $list[$dkey][$key]=(bool)$dvalue->$key;
+                        }
+                        else{
+                            $list[$dkey][$key]=$dvalue->$key;
+                        }
                     }
                     else{
-                        $list[$dkey][$key]=$dvalue->$key;
+                        if(preg_match('@groupBy.*Total@is',$key)){
+                            $list[$dkey][$key]=(int)$dvalue->$key;
+                        }
                     }
+
                 }
             }
         }
@@ -253,7 +307,8 @@ class builder {
             'where'=>$this->where,
             'execute'=>$this->execute,
             'paginate'=>$this->page,
-            'orderBy'=>$this->order
+            'orderBy'=>$this->order,
+            'groupBy'=>$this->groupBy
         ];
     }
 
