@@ -42,11 +42,28 @@ class whereBuilderOperation {
         $list['execute']=[];
         if(count($whereData)){
             foreach ($whereData['field'] as $key=>$value){
-                $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
-                $list['execute'][':'.$value.'']=$whereData['value'][$key];
+                if($whereData['operator'][$key]=="LIKE"){
+                    $list['where'][]=''.$value.' '.$whereData['operator'][$key].' :'.$value.'';
+                    $list['execute'][':'.$value.'']='%'.$whereData['value'][$key].'%';
+                }
+                else{
+                    if(preg_match('@between_@is',$value)){
+                        $value=str_replace("between_","",$value);
+                        $list['where'][]=''.$value.' BETWEEN :'.$value.'_'.md5($whereData['operator'][$key]).' AND :'.$value.'_'.md5($whereData['value'][$key]).'';
+                        $list['execute'][':'.$value.'_'.md5($whereData['operator'][$key]).'']=$whereData['operator'][$key];
+                        $list['execute'][':'.$value.'_'.md5($whereData['value'][$key]).'']=$whereData['value'][$key];
+                    }
+                    else{
+                        $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
+                        $list['execute'][':'.$value.'']=$whereData['value'][$key];
+                    }
+
+                }
+
             }
 
             $list['where']='WHERE '.implode(" AND ",$list['where']);
+
 
         }
 

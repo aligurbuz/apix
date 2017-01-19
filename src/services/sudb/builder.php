@@ -139,6 +139,40 @@ class builder {
 
 
     /**
+     * where between method is main method.
+     *
+     * @return array
+     */
+    public function whereBetween($field=null,$operator=null,$value=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$operator;
+        }
+
+        if($field!==null && is_array($field)){
+
+            if(array_key_exists(0,$field) && array_key_exists(1,$field) && array_key_exists(2,$field)){
+                $this->where['field'][]='between_'.$field[0];
+                $this->where['operator'][]=$field[1];
+                $this->where['value'][]=$field[2];
+            }
+
+        }
+        else{
+
+            if($field!==null && $operator!==null && $value!==null){
+                $this->where['field'][]='between_'.$field;
+                $this->where['operator'][]=$operator;
+                $this->where['value'][]=$value;
+            }
+
+        }
+
+        return $this;
+    }
+
+
+    /**
      * query order by.
      *
      * @return pdo class
@@ -149,14 +183,19 @@ class builder {
             $this->model=$model;
         }
 
-
         if($key!==null && is_array($key)){
             $this->model=$order;
 
-            $this->order=['key'=>$key[0],'order'=>$key[1]];
+            if(count($key)){
+                $this->order=['key'=>$key[0],'order'=>$key[1]];
+            }
+
         }
         else{
-            $this->order=['key'=>$key,'order'=>$order];
+            if($key!==null && $order!==null){
+                $this->order=['key'=>$key,'order'=>$order];
+            }
+
         }
         return $this;
 
