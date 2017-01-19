@@ -68,7 +68,10 @@ class whereBuilderOperation {
 
             }
 
-            $list['where']='WHERE '.implode(" AND ",$list['where']);
+            if(is_array($list['where'])){
+                $list['where']='WHERE '.implode(" AND ",$list['where']);
+            }
+
 
 
         }
