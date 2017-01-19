@@ -45,7 +45,13 @@ class model {
         if($name=="where"){
             if(array_key_exists(0,$args)){
                 if(!is_callable($args[0])){
-                    return $model->where($args[0],$args[1],$args[2],$model);
+                    if(array_key_exists(1,$args) && array_key_exists(2,$args)){
+                        return $model->where($args[0],$args[1],$args[2],$model);
+                    }
+                    else{
+                        return $model->where(null,null,null,$model);
+                    }
+
                 }
                 else{
                     return $model->where($args[0],$model);

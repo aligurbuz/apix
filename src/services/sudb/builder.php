@@ -132,6 +132,7 @@ class builder {
                 $this->where['value'][]=$value;
             }
 
+
         }
 
         return $this;
@@ -153,6 +154,40 @@ class builder {
 
             if(array_key_exists(0,$field) && array_key_exists(1,$field) && array_key_exists(2,$field)){
                 $this->where['field'][]='between_'.$field[0];
+                $this->where['operator'][]=$field[1];
+                $this->where['value'][]=$field[2];
+            }
+
+        }
+        else{
+
+            if($field!==null && $operator!==null && $value!==null){
+                $this->where['field'][]='between_'.$field;
+                $this->where['operator'][]=$operator;
+                $this->where['value'][]=$value;
+            }
+
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * where between method is main method.
+     *
+     * @return array
+     */
+    public function whereNotBetween($field=null,$operator=null,$value=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$operator;
+        }
+
+        if($field!==null && is_array($field)){
+
+            if(array_key_exists(0,$field) && array_key_exists(1,$field) && array_key_exists(2,$field)){
+                $this->where['field'][]='notbetween_'.$field[0];
                 $this->where['operator'][]=$field[1];
                 $this->where['value'][]=$field[2];
             }
@@ -255,13 +290,52 @@ class builder {
         }
 
         if(is_array($paginate)){
-            $this->page=$paginate[0];
+            if(array_key_exists(0,$paginate)){
+                $this->page=$paginate[0];
+            }
+
         }
         else{
             $this->page=$paginate;
         }
 
         return $this;
+    }
+
+
+    /**
+     * where find method.
+     *
+     * @return array
+     */
+    public function find($value=null,$select=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$select;
+        }
+
+        if(is_array($value)){
+            if(count($value) && array_key_exists(0,$value)){
+                if(property_exists($this->model->subClassOf,"primaryKey")){
+                    $this->where['field'][]=$this->model->subClassOf->primaryKey;
+                }
+                else{
+                    $this->where['field'][]='id';
+                }
+
+                $this->where['operator'][]='=';
+                $this->where['value'][]=$value[0];
+            }
+
+        }
+        else{
+            $this->where['field'][]='id';
+            $this->where['operator'][]='=';
+            $this->where['value'][]=$value;
+        }
+
+
+        return $this->get();
     }
 
     /**

@@ -47,13 +47,19 @@ class whereBuilderOperation {
                     $list['execute'][':'.$value.'']='%'.$whereData['value'][$key].'%';
                 }
                 else{
-                    if(preg_match('@between_@is',$value)){
+                    if(preg_match('@^between_@is',$value)){
                         $value=str_replace("between_","",$value);
                         $list['where'][]=''.$value.' BETWEEN :'.$value.'_'.md5($whereData['operator'][$key]).' AND :'.$value.'_'.md5($whereData['value'][$key]).'';
                         $list['execute'][':'.$value.'_'.md5($whereData['operator'][$key]).'']=$whereData['operator'][$key];
                         $list['execute'][':'.$value.'_'.md5($whereData['value'][$key]).'']=$whereData['value'][$key];
                     }
-                    if($value=="today"){
+                    elseif(preg_match('@^notbetween_@is',$value)){
+                        $value=str_replace("notbetween_","",$value);
+                        $list['where'][]=''.$value.'<:'.$value.'_'.md5($whereData['operator'][$key]).' OR '.$value.'>:'.$value.'_'.md5($whereData['value'][$key]).'';
+                        $list['execute'][':'.$value.'_'.md5($whereData['operator'][$key]).'']=$whereData['operator'][$key];
+                        $list['execute'][':'.$value.'_'.md5($whereData['value'][$key]).'']=$whereData['value'][$key];
+                    }
+                    elseif($value=="today"){
                         if(property_exists($model['model'],"createdAndUpdatedFields") && array_key_exists("created_at",$model['model']->createdAndUpdatedFields)){
                             $list['where'][]='FROM_UNIXTIME('.$model['model']->createdAndUpdatedFields['created_at'].',"%Y-%m-%d")="'.date("Y-m-d").'"';
                         }

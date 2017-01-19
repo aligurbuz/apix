@@ -6,6 +6,9 @@ class __className__ extends \src\services\sudb\model {
     //tablename
     public $table='__tableName__';
 
+    //primary key
+    public $primaryKey='id';
+
     //this value is run for auto paginator
     public $paginator=['auto'=>10];
 
