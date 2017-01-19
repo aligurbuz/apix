@@ -172,6 +172,26 @@ class builder {
     }
 
 
+
+    /**
+     * where today createdAt method is main method.
+     *
+     * @return array
+     */
+    public function today($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        $this->where['field'][]='today';
+        $this->where['operator'][]=null;
+        $this->where['value'][]=null;
+
+        return $this;
+    }
+
+
     /**
      * query order by.
      *

@@ -53,6 +53,12 @@ class whereBuilderOperation {
                         $list['execute'][':'.$value.'_'.md5($whereData['operator'][$key]).'']=$whereData['operator'][$key];
                         $list['execute'][':'.$value.'_'.md5($whereData['value'][$key]).'']=$whereData['value'][$key];
                     }
+                    if($value=="today"){
+                        if(property_exists($model['model'],"createdAndUpdatedFields") && array_key_exists("created_at",$model['model']->createdAndUpdatedFields)){
+                            $list['where'][]='FROM_UNIXTIME('.$model['model']->createdAndUpdatedFields['created_at'].',"%Y-%m-%d")="'.date("Y-m-d").'"';
+                        }
+
+                    }
                     else{
                         $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
                         $list['execute'][':'.$value.'']=$whereData['value'][$key];
@@ -69,5 +75,6 @@ class whereBuilderOperation {
 
         return (object)$list;
     }
+
 
 }
