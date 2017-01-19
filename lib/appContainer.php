@@ -17,20 +17,19 @@ class appContainer {
             $inAppContainer=$inApp->container();
 
             $inAppContainerList=[];
+            $appContainer=\src\config\app::getContainer();
             foreach ($inAppContainer as $inkey=>$invalue){
-                if(!array_key_exists($inkey,\src\config\app::getContainer())){
-
+                if(!array_key_exists($inkey,$appContainer)){
                     $inAppContainerList[$inkey]=$invalue;
                 }
             }
 
-            $lastContainer=\src\config\app::getContainer()+$inAppContainerList;
+            $lastContainer=$appContainer+$inAppContainerList;
 
             //check container class alias
             if(array_key_exists($containeralias,$lastContainer)){
                 $class=$lastContainer[$class];
                 return $container->get($class);
-
             }
 
             //return pure container
