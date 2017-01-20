@@ -24,14 +24,12 @@ class connection {
      * @return connectin runner
      */
     public static function run() {
-
         //this fake
         if(self::$_instance==null){
             self::$_instance=new self;
             $border=self::$_instance;
 
         }
-
         //get service and file method from request uri
         $service=$border->getServiceNameAndMethodFromRequestUri();
 
@@ -47,13 +45,9 @@ class connection {
         //assign version number
         $getVersion=(array_key_exists("version",$queryParams)) ? $queryParams['version'] : $defaultVersionCheck;
 
-        //get preloader class
-        //$border->getPreLoaderClass();
-
         if(strlen($service[0])==0){
             return $border->responseOut([],'project path invalid : path/service/app/servicename/method');
         }
-
         if(!file_exists(root . '/'.src.'/'.$service[0].'')){
             return $border->responseOut([],'project has not been created');
         }
@@ -67,7 +61,6 @@ class connection {
 
         //get preloader classes
         $border->getPreLoaderClasses();
-
 
         //get before middleware
         $border->middleware("before");
@@ -105,7 +98,6 @@ class connection {
                 $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
 
                 $requestServiceMethod=$serviceMethod;
-
                 if(method_exists($apix,$requestServiceMethod)){
                     if(property_exists($apix,"forbidden") && \app::environment()=="production"){
                         if($apix->forbidden){
@@ -117,10 +109,8 @@ class connection {
                     return $border->logging($requestServiceMethodReal,function() use ($border,$requestServiceMethodReal){
                         return $border->responseOut($requestServiceMethodReal);
                     });
-
                 }
                 else{
-
                     return $border->responseOut([],'service is invalid');
                 }
             });
@@ -140,7 +130,6 @@ class connection {
      */
 
     private function requestUri(){
-
         return $_SERVER['REQUEST_URI'];
     }
 
@@ -155,18 +144,14 @@ class connection {
      */
 
     private function logging($data,$callback){
-
         //this fake
         $border=self::$_instance;
-
-
         if(array_key_exists("token",$this->getQueryParamsFromRoute())){
             $token=$this->getQueryParamsFromRoute()['token'];
         }
         else{
             $token=null;
         }
-
         $logdata=[
             'project'=>app,
             'version'=>version,
@@ -176,7 +161,6 @@ class connection {
             'token'=>$token,
             'data'=>$data
         ];
-
         $log="\\src\\app\\".app."\\".version."\\serviceLogController";
         $log=$border->resolve->resolve($log);
         if(property_exists($log,"status") && !$log->status){
@@ -186,7 +170,6 @@ class connection {
             if($log->handle($logdata)){
                 return call_user_func($callback);
             }
-
             return $border->responseOut([],'logging false');
         }
 
@@ -200,9 +183,7 @@ class connection {
      * @param string
      * @return directory name runner
      */
-
     private function getDirectoryName(){
-
         $root=explode("/",root);
         return end($root);
     }
@@ -216,9 +197,7 @@ class connection {
      * @param string
      * @return request uri compare runner
      */
-
     private function getServiceNameAndMethodFromRequestUri(){
-
         $service=str_replace("/".$this->getDirectoryName()."/service/","",$this->requestUri());
         return explode("/",$service);
     }
@@ -232,9 +211,7 @@ class connection {
      * @param string
      * @return pure method runner
      */
-
     private function getPureMethodNameFromService(){
-
         $service=$this->getServiceNameAndMethodFromRequestUri();
         return preg_replace('@\?(.*)@is','',end($service));
     }
@@ -253,19 +230,16 @@ class connection {
 
         $service=$this->getServiceNameAndMethodFromRequestUri();
         $params=preg_replace('@'.$this->getPureMethodNameFromService().'\?@is','',end($service));
-
         if($params==$this->getPureMethodNameFromService()) {
             return [];
         }
         else {
-
             $getParams=explode("&",$params);
             $paramlist=[];
             foreach ($getParams as $main){
                 $getParamsMain=explode("=",$main);
                 $paramlist[$getParamsMain[0]]=$getParamsMain[1];
             }
-
             return $paramlist;
         }
     }
@@ -279,7 +253,6 @@ class connection {
      * @param string
      * @return get config version runner
      */
-
     private function getConfigVersionNumber(array $data){
         if(file_exists(root.'/src/app/'.$data['serviceName'].'/version.php')){
             $version=require_once(root.'/src/app/'.$data['serviceName'].'/version.php');
@@ -288,7 +261,6 @@ class connection {
             }
             return 'v1';
         }
-
     }
 
     /**
@@ -301,7 +273,6 @@ class connection {
      */
 
     private function responseOut($data,$msg=null){
-
         $queryError=[];
         if(!is_array($data)){
             $data=[$data];
@@ -315,9 +286,7 @@ class connection {
         }
         header('Content-Type: application/json');
         if(is_array($data) && count($data)){
-
             if(\config::get("objectloader")!==null && \config::get("objectloader")){
-
                 //object loader
                 $data=['success'=>(bool)true]+['data'=>$data+self::objectLoaderMethodCall()];
             }
@@ -325,11 +294,9 @@ class connection {
                 //default
                 $data=['success'=>(bool)true]+['data'=>$data];
             }
-
         }
         else{
             $msg=($msg!==null) ? $msg : 'data is not array';
-
             $data=['success'=>(bool)false]+['message'=>$msg];
         }
 
@@ -356,13 +323,9 @@ class connection {
         $Middleware=new $Middleware([]);
 
         $app=''.app.'/'.service.'/'.method;
-
         if(!in_array($app,$Middleware->except())){
             return $Middleware->handle();
         }
-
-
-
     }
 
 
@@ -394,7 +357,6 @@ class connection {
             $objectMethodicCall=[];
         }
 
-
         $serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
         $serviceobjectLoader=$border->resolve->resolve($serviceobjectLoader);
         $serviceobjectLoaderMethod=request.'ObjectLoader';
@@ -407,15 +369,10 @@ class connection {
             $servicemethodicCall=[];
         }
 
-
         //individual method like getStk()
         $s_serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
         $s_serviceobjectLoader=$border->resolve->resolve($s_serviceobjectLoader);
         $s_serviceobjectLoaderMethod=strtolower(request).''.ucfirst(service);
-
-
-
-
 
         $s_serviceobjectLoaderMethodcall=[];
         if(method_exists($s_serviceobjectLoader,$s_serviceobjectLoaderMethod)){
@@ -436,7 +393,6 @@ class connection {
      */
 
     private function checkPackageAuto($service){
-
         if(file_exists(root."/src/packages/auto/".$service[1]."/".$service[1].".php")){
             return [
                 'status'=>true,
@@ -462,15 +418,12 @@ class connection {
     private function checkPackageDev($service){
 
         $servicePackageDev=require(root.'/src/app/'.app.'/'.version.'/servicePackageDevController.php');
-
         if(is_array($servicePackageDev))
         {
             if(!in_array($service[1],$servicePackageDev['packageDevSource']['package'])){
                 $service[1]=null;
             }
-
         }
-
         if(file_exists(root."/src/packages/dev/".$service[1]."/".request."Service.php")){
             $definitions=(array_key_exists($service[1],$servicePackageDev['packageDevSource']['packageDefinition'])) ? $servicePackageDev['packageDevSource']['packageDefinition'][$service[1]] : null;
             return [
@@ -480,7 +433,6 @@ class connection {
                 'service'=>$service[1]
             ];
         }
-
         return [
             'status'=>false
         ];
@@ -510,25 +462,20 @@ class connection {
         $tokenexcept=$token->except();
 
         if(!$tokenhandle['status']){
-
             //return token provision
             return call_user_func($callback);
         }
-
         $queryParams=$this->getQueryParamsFromRoute();
 
         //token provision
         if(array_key_exists("_token",$queryParams)){
 
             if(in_array($queryParams['_token'],$tokenhandle['tokens'])){
-
                 if(!array_key_exists($queryParams['_token'],$tokenhandle['clientIp'])){
                     //return token provision
                     return call_user_func($callback);
                 }
-
                 if($tokenhandle['clientIp'][$queryParams['_token']]==$_SERVER['REMOTE_ADDR']){
-
                     //return token provision
                     return call_user_func($callback);
                 }
