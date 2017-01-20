@@ -16,7 +16,7 @@ cd folderName
 
 ```
 
-#### Please update it for your composer to use vendor system because of that the apix system uses composer for it to managing dependency packages
+#### Please update it for your composer to use vendor system because of that the apix system utilizes Composer to manage its dependencies.
 
 ```
 composer update
