@@ -17,7 +17,7 @@ class serviceReadyController
      */
     public function handle(){
         return [
-            //'alias'=>'namespace'
+            'base'=>'\src\app\__projectName__\v1\serviceBaseController'
         ];
     }
 }

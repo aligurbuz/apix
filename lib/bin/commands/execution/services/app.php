@@ -24,6 +24,7 @@ class app {
     public $model;
     public $handle;
     private $superservicecall;
+    protected $ready;
 
     /**
      * Constructor.
@@ -37,6 +38,7 @@ class app {
         $this->model=\branch::query();
         $this->handle=\branch::handle();
         $this->superservicecall=new superservicecalls();
+        $this->ready=$this->superservicecall->ready();
     }
 
     /**
