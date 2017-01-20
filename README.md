@@ -3,7 +3,7 @@ Comprehensive Restfull Api Service for php development
 * - Main Developer : Ali Gurbuz
 
 > System allows you to design easily restfull services.Creating api services is very easy any more.
-> Keep track following instructions.
+> For creating easily your api,please Keep track following instructions.
 
 
 
