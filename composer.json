@@ -11,7 +11,6 @@
     "require": {
         "php-di/php-di": "^5.4",
         "ocramius/proxy-manager": "~1.0|~2.0",
-        "doctrine/orm": "2.4.*",
         "symfony/yaml": "2.*",
         "sinergi/browser-detector": "^6.1",
         "nesbot/carbon": "^1.21",
@@ -20,7 +19,10 @@
         "predis/predis": "^1.0",
         "symfony/var-dumper": "*",
         "monolog/monolog": "^1.22",
-        "robmorgan/phinx": "^0.6.5"
+        "robmorgan/phinx": "^0.6.5",
+        "symfony/console": "^3.2",
+        "symfony/debug": "^3.2",
+        "vlucas/phpdotenv": "^2.4"
     },
     "autoload": {
         "files": ["src/helpers.php"]

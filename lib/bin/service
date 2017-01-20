@@ -29,41 +29,6 @@ if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
 }
 else{
 
-    define('root',str_replace("/lib/bin","",dirname(__FILE__)));
-
-    // Use default autoload implementation
-    spl_autoload_register(function($class) {
-        $class=root.'/'.$class.'.php';
-        $class=str_replace("\\","/",$class);
-        require($class);
-
-    });
-
-    class_alias("\\src\\config\\app","app");
-
-    $new='\\src\\commands\\'.$argv[1];
-    $command=\app::resolve($new);
-
-    $list=[];
-    foreach ($argv as $key=>$value){
-        if($key>1){
-
-            if(preg_match('@:@is',$value))
-            {
-                $value=explode(":",$value);
-                $list[$value[0]]=$value[1];
-            }
-            else
-            {
-                $list[$value]=$value;
-            }
-
-        }
-    }
-
-    echo $command->handle($list);
-    echo '
-';
 
 }
 
