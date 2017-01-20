@@ -52,14 +52,21 @@ api project create myapp
 
 ```diff
 + with running api project create myapp
++ it creates myapp project in src/app
 + as output : project has been created
 ```
 
-## create your first service in your project
+## Now,create your first service in your project
 
 ```
 api service create myapp:ghost
 
+```
+
+```diff
++ with running api service create myapp:ghost
++ it creates service named ghost in src/app/myapp/v1/__call on your myapp project
++ as output : service has been created
 ```
 
 ## see on browser your project
