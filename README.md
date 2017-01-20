@@ -29,10 +29,11 @@ composer update
 ```
 
 
-## bin command shortcut on terminal
+#### Run following commands on terminal to use system requirements with creating project,service and database migrations
 
 ```
-alias api='php /path/lib/bin/service'
+alias api='php /path/to/foldername/lib/bin/service'
+alias migration='php /path/to/foldername/vendor/bin/phinx'
 
 ```
 
