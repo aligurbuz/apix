@@ -1,5 +1,5 @@
 # Apix Restfull Service
-Comprehensive Restfull Api Service for php development
+Comprehensive restfull api service for php development
 * - Main Developer : Ali Gurbuz
 
 > Package allows you to design easily restfull services.Creating api services is very easy any more.
@@ -16,7 +16,7 @@ cd folderName
 
 ```
 
-## composer install
+#### Please update for your composer to use vendor system because of that the apix system uses composer for it to managing dependency packages
 
 ```
 composer update
