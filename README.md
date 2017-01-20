@@ -2,12 +2,12 @@
 Comprehensive Restfull Api Service for php development
 * - Main Developer : Ali Gurbuz
 
-> System allows you to design easily restfull services.Creating api services is very easy any more.
+> Package allows you to design easily restfull services.Creating api services is very easy any more.
 > For creating easily your api,please Keep track following instructions.
 
 
 
-## clone url
+## clone to local repository package
 
 ```
 git clone https://github.com/aligurbuz/apix.git folderName
