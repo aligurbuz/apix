@@ -72,6 +72,7 @@ api service create myapp:ghost
 ## see on browser your project
 
 ```
-http://ip/foldername/service/myapp/gost/index (called getService class in __call directory)
+GET / http://ip/foldername/service/myapp/gost/index (called getService class in __call directory)
+POST / http://ip/foldername/service/myapp/gost/index (called postService class in __call directory)
 
 ```
