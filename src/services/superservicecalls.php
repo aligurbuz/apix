@@ -39,13 +39,23 @@ class superservicecalls {
             $serviceReady=\app::resolve("\\src\\app\\".app."\\".version."\\serviceReadyController");
             $handle=(object)$serviceReady->handle();
             $handlemethod=explode("::",$handle->$method);
+            $srcapp="%src%app%".app."";
             if(array_key_exists(1,$handlemethod)){
                 $handlemethodclass=$handlemethod[0];
                 $handlemethodclassmethod=$handlemethod[1];
-                return \app::resolve($handlemethodclass)->$handlemethodclassmethod();
+                $replacehandlemethodclass=str_replace("\\","%",$handlemethodclass);
+                if(preg_match('@'.$srcapp.'@is',$replacehandlemethodclass)){
+                    return \app::resolve($handlemethodclass)->$handlemethodclassmethod();
+                }
+                return [];
+
             }
             else{
-                return \app::resolve($handle->$method);
+                $replacehandlemethodclass=str_replace("\\","%",$handle->$method);
+                if(preg_match('@'.$srcapp.'@is',$replacehandlemethodclass)){
+                    return \app::resolve($handle->$method);
+                }
+                return [];
             }
 
         }
