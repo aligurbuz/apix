@@ -7,7 +7,7 @@ Comprehensive Restfull Api Service for php development
 
 
 
-## Clone to local repository package
+## Clone with writing following command on terminal to local repository the package on github
 
 ```
 git clone https://github.com/aligurbuz/apix.git folderName
