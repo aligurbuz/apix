@@ -37,7 +37,7 @@ alias migration='php /path/to/foldername/vendor/bin/phinx'
 
 ```
 
-## create your project
+#### Everyting is okey to create our project now.Create first project with running the following command on terminal
 
 ```
 api project create myapp
