@@ -37,8 +37,10 @@ alias migration='php /path/to/foldername/vendor/bin/phinx'
 
 ```
 
-> Foldername is your system general name or company name.
-> Every service is called from on route foldername like http://ip/foldername/service/project/servicename/index
+```diff
+-Foldername is your system general name or company name.
+-Every service is called from on route foldername like http://ip/foldername/service/project/servicename/index
+```
 
 #### Everyting is okey to create our project now.Create first project with running the following command on terminal
 
