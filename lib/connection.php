@@ -101,9 +101,6 @@ class connection {
                 //service main file extends this file
                 require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
 
-                //service main file
-                //require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/index.php');
-
                 //apix resolve
                 $apix=$border->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
 
@@ -579,21 +576,17 @@ class connection {
 
         $apl=$provision->$provisionMethod();
         if($apl['success'] OR in_array(app.'/'.service.'',$provision->$provisionMethodExcept())){
-
             $serviceprovision="\\src\\app\\".app."\\".version."\\provisions\\index";
             $serviceprovision=$this->resolve->resolve($serviceprovision);
             $serviceprovisionMethod=''.request.'Provision';
             $serviceprovisionExcept=''.request.'Except';
-
             $spl=$serviceprovision->$serviceprovisionMethod();
             if($spl['success'] OR in_array(service,$serviceprovision->$serviceprovisionExcept())){
-
                 return call_user_func($callback);
             }
             else{
                 $message=$spl['message'];
             }
-
         }
         else{
             $message=$apl['message'];
@@ -614,13 +607,8 @@ class connection {
      */
 
     private function getPreLoaderClasses(){
-
-        class_alias("\\src\\services\\session","session");
-        class_alias("\\src\\config\\app","app");
-        class_alias("\\src\\config\\config","config");
-        class_alias("\\src\\services\\branches","branch");
-        class_alias("\\lib\\appContainer","container");
-
+        //get pre loader classes
+        require(root.'/lib/appClassAlias.php');
         return;
 
     }

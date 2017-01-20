@@ -18,16 +18,12 @@ class app {
         $this->request=new request();
     }
 
-    public static function getClassAlias(){
-
-        return [
-
-            //'request' =>'\\src\\services\\request'
-        ];
-
-    }
-
-
+    /**
+     * get container.
+     *
+     * @param type dependency injection and function
+     * @return array
+     */
     public static function getContainer(){
 
         return [
