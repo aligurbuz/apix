@@ -37,9 +37,9 @@ alias migration='php /path/to/foldername/vendor/bin/phinx'
 
 ```
 
-# What is Foldername
+# What is foldername
 ```diff
--Foldername is your system general name or company name.
+-Foldername is your system general name or company name (directory cloned github repository).
 -Every service is called from on route foldername like http://ip/foldername/service/project/servicename/index
 ```
 
