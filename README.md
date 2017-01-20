@@ -8,7 +8,7 @@ Comprehensive restfull api service for php development
 # System requirements
 * php >5.6.*
 * nginx or apache (for http)
-* docker or vagrant container
+* docker or vagrant container to manage terminal commands
 
 
 
