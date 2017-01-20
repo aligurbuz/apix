@@ -1,7 +1,7 @@
 # apix
 Comprehensive Restfull Api Service for php development
 
-System allows you to desing easily restfull services
+System allows you to design easily restfull services
 
 Main Developer : Ali Gurbuz
 
