@@ -43,14 +43,19 @@ alias migration='php /path/to/foldername/vendor/bin/phinx'
 -Every service is called from on route foldername like http://ip/foldername/service/project/servicename/index
 ```
 
-#### Everyting is okey to create our project now.Create first project with running the following command on terminal
+#### Everyting is okey to create your project now.Create first project with running the following command on terminal
 
 ```
 api project create myapp
 
 ```
 
-## create service in your project
+```diff
++ with running api project create myapp
++ as output : project has been created
+```
+
+## create your first service in your project
 
 ```
 api service create myapp:ghost
