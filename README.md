@@ -82,15 +82,15 @@ POST / http://ip/foldername/service/myapp/gost/index (called postService class i
 ```
 <?php
 /*
- * This file is app class extended of the mobi service.
+ * This file is app class extended of the myapp service.
  *
  * every service is extends app class as default
- * service name : mobi
- * namespace : src\app\mobi\v1\__call\stk
- * app class namespace : \src\app\mobi\v1\__call\stk\app
+ * service name : myapp
+ * namespace : src\app\myapp\v1\__call\ghost
+ * app class namespace : \src\app\myapp\v1\__call\ghost\app
  */
 
-namespace src\app\mobi\v1\__call\stk;
+namespace src\app\myapp\v1\__call\ghost;
 use src\services\httprequest as request;
 
 /**
@@ -100,7 +100,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class getService extends \src\app\mobi\v1\__call\stk\app {
+class getService extends \src\app\myapp\v1\__call\ghost\app {
 
     public $request;
     public $forbidden=false;
