@@ -76,3 +76,63 @@ GET / http://ip/foldername/service/myapp/gost/index (called getService class in 
 POST / http://ip/foldername/service/myapp/gost/index (called postService class in __call directory)
 
 ```
+
+## getService
+
+```
+<?php
+/*
+ * This file is app class extended of the mobi service.
+ *
+ * every service is extends app class as default
+ * service name : mobi
+ * namespace : src\app\mobi\v1\__call\stk
+ * app class namespace : \src\app\mobi\v1\__call\stk\app
+ */
+
+namespace src\app\mobi\v1\__call\stk;
+use src\services\httprequest as request;
+
+/**
+ * Represents a getService class.
+ *
+ * main call
+ * return type array
+ */
+
+class getService extends \src\app\mobi\v1\__call\stk\app {
+
+    public $request;
+    public $forbidden=false;
+
+    /**
+     * Constructor.
+     *
+     * @param type dependency injection and app class
+     * request method : symfony component
+     * main loader as construct method
+     */
+    public function __construct(request $request){
+
+        //get request info
+        parent::__construct();
+        $this->request=$request;
+    }
+
+    /**
+     * index method is main method.
+     *
+     * @return array
+     */
+    public function index(){
+
+        //return index
+        return [
+            'environment'=>\app::environment(),
+            'clientIp'=>$this->request->getClientIp(),
+            'isMobile'=>\container::device()->isMobile()
+        ];
+    }
+}
+
+```
