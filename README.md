@@ -29,7 +29,7 @@ composer update
 ```
 
 
-#### Run following commands on terminal to use system requirements with creating project,service and database migrations.path is path/to (network directory path)
+#### Run following commands on terminal to use system requirements with creating project,service and database migrations.Path is path/to (network directory path)
 
 ```
 alias api='php /path/to/foldername/lib/bin/service'
