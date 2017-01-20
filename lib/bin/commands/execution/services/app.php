@@ -1,7 +1,11 @@
 <?php
-/**
- * service app.
- * main file extends this file
+/*
+ * This file is app class extended of the __projectName__ service.
+ *
+ * every service is extends app class as default
+ * service name : __projectName__
+ * namespace : src\app\__projectName__\v1\__call\__serviceName__
+ * app class namespace : \src\app\__projectName__\v1\__call\__serviceName__\app
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
@@ -19,25 +23,28 @@ class app {
     public $source;
     public $model;
     public $handle;
-    public $superservicecall;
+    private $superservicecall;
 
     /**
-     * example method.
+     * Constructor.
      *
-     * @param type dependency injection and function
+     * @param type dependency injection and app class
+     * request method : symfony component
+     * main loader as construct method
      */
     public function __construct(){
         $this->source=\branch::source();
         $this->model=\branch::query();
         $this->handle=\branch::handle();
         $this->superservicecall=new superservicecalls();
-
     }
 
     /**
      * provider __call method.
      *
-     * @param type dependency injection and function
+     * @param prepared functions and objects
+     * request method : super service call
+     * main overloading method as superservicecall
      */
     public function __call($name=null,$args){
         if($name!==null){

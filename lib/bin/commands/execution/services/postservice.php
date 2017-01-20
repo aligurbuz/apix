@@ -3,22 +3,21 @@
  * This file is main part of the __projectName__ service.
  *
  * every request is called index method as default
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * service name : __projectName__
+ * namespace : src\app\__projectName__\v1\__call\__serviceName__
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
 use src\services\httprequest as request;
 
 /**
- * Represents a index class.
+ * Represents a post service class.
  *
  * main call
  * return type array
  */
 
-class postService extends app {
+class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
 
     public $request;
     public $forbidden=false;
@@ -26,7 +25,9 @@ class postService extends app {
     /**
      * Constructor.
      *
-     * @param type dependency injection and function
+     * @param type dependency injection and app class
+     * request method : symfony component
+     * main loader as construct method
      */
     public function __construct(request $request){
 

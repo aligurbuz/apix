@@ -1,11 +1,8 @@
 <?php
 /*
  * This file is main part of the __projectName__ service.
- *
  * every request is called index method as default
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * developer : aligurbuz [sde]
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
