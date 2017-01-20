@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main class of the __projectName__ service.
+ * This file is main class of the  service named __serviceName__ on  __projectName__ project .
  * METHOD : POST
  * every service is called with index method as default
  * service name : __projectName__
@@ -12,13 +12,13 @@ namespace src\app\__projectName__\v1\__call\__serviceName__;
 use src\services\httprequest as request;
 
 /**
- * Represents a post service class.
+ * Represents a getService class.
  *
  * main call
  * return type array
  */
 
-class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class getService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
 
     public $request;
     public $forbidden=false;
@@ -46,7 +46,9 @@ class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app
 
         //return index
         return [
-            'post'=>true
+            'environment'=>\app::environment(),
+            'clientIp'=>$this->request->getClientIp(),
+            'isMobile'=>\container::device()->isMobile()
         ];
     }
 }

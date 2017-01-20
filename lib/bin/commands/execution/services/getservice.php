@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is main class of the __projectName__ service.
+ * This file is main class of the  service named __serviceName__ on  __projectName__ project .
  * METHOD : GET
  * every service is called with index method as default
  * service name : __projectName__
