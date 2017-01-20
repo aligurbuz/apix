@@ -69,7 +69,7 @@ api service create myapp:ghost
 + as output : service has been created
 ```
 
-## see on browser your project
+## You can see on browser your project
 
 ```
 GET / http://ip/foldername/service/myapp/gost/index (called getService class in __call directory)
