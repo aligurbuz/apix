@@ -1,8 +1,8 @@
 <?php
 /*
- * This file is app class extended of the __projectName__ service.
- *
- * every service is extends app class as default
+ * This file is main class of the __projectName__ service.
+ * METHOD : GET
+ * every service is called with index method as default
  * service name : __projectName__
  * namespace : src\app\__projectName__\v1\__call\__serviceName__
  * app class namespace : \src\app\__projectName__\v1\__call\__serviceName__\app

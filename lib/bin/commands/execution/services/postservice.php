@@ -1,10 +1,11 @@
 <?php
 /*
- * This file is main part of the __projectName__ service.
- *
- * every request is called index method as default
+ * This file is main class of the __projectName__ service.
+ * METHOD : POST
+ * every service is called with index method as default
  * service name : __projectName__
  * namespace : src\app\__projectName__\v1\__call\__serviceName__
+ * app class namespace : \src\app\__projectName__\v1\__call\__serviceName__\app
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;

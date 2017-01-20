@@ -78,13 +78,12 @@ POST / http://ip/foldername/service/myapp/gost/index (called postService class i
 ```
 
 ## getService
-
 ```
 <?php
 /*
- * This file is app class extended of the myapp service.
- *
- * every service is extends app class as default
+ * This file is main class of the myapp service.
+ * METHOD : GET
+ * every service is called with index method as default
  * service name : myapp
  * namespace : src\app\myapp\v1\__call\ghost
  * app class namespace : \src\app\myapp\v1\__call\ghost\app
