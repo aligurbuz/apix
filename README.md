@@ -2,6 +2,11 @@
 Comprehensive restfull api service for php development
 * - Main Developer : Ali Gurbuz
 
+# System requirements
+* php >5.6.*
+* nginx or apache (for http)
+* docker or vagrant container
+
 > Package allows you to design easily restfull services.Creating api services is very easy any more.
 > For creating easily your api,please keep track of following instructions.
 
