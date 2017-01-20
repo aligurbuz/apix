@@ -81,15 +81,15 @@ POST / http://ip/foldername/service/myapp/gost/index (called postService class i
 ```
 <?php
 /*
- * This file is main class of the  service named gost on  myapp project .
+ * This file is main class of the  service named ghost on  myapp project .
  * METHOD : GET
  * every service is called with index method as default
  * service name : myapp
- * namespace : src\app\myapp\v1\__call\gost
- * app class namespace : \src\app\myapp\v1\__call\gost\app
+ * namespace : src\app\myapp\v1\__call\ghost
+ * app class namespace : \src\app\myapp\v1\__call\ghost\app
  */
 
-namespace src\app\myapp\v1\__call\gost;
+namespace src\app\myapp\v1\__call\ghost;
 use src\services\httprequest as request;
 
 /**
@@ -99,7 +99,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class getService extends \src\app\myapp\v1\__call\gost\app {
+class getService extends \src\app\myapp\v1\__call\ghost\app {
 
     public $request;
     public $forbidden=false;
@@ -107,7 +107,7 @@ class getService extends \src\app\myapp\v1\__call\gost\app {
     /**
      * Constructor.
      *
-     * @param type dependency injection and app class
+     * @param type dependency injection and ghost class
      * request method : symfony component
      * main loader as construct method
      */

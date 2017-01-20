@@ -26,7 +26,7 @@ class getService extends \src\app\__projectName__\v1\__call\__serviceName__\app 
     /**
      * Constructor.
      *
-     * @param type dependency injection and app class
+     * @param type dependency injection and __serviceName__ class
      * request method : symfony component
      * main loader as construct method
      */
