@@ -12,6 +12,6 @@ if (!function_exists('env')) {
     function env($localdata,$proddata)
     {
         $localdata=getenv($localdata);
-        return ($localdata!==false) ? $localdata : $proddata;
+        return ($localdata===false) ? $proddata : $localdata;
     }
 }
