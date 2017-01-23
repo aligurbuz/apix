@@ -42,9 +42,40 @@ class querySqlFormatter {
         $this->password=$configdb['password'];
 
         /** @var TYPE_NAME $this */
-        $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
-        $this->db->exec("SET NAMES utf8");
-        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        try {
+            $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
+            $this->db->exec("SET NAMES utf8");
+            $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        }
+        catch (\PDOException $e) {
+            if(\app::environment()=="local"){
+                $connectionError=[
+                    'status'=>false,
+                    'result'=>[
+                        'error'=>true,
+                        'code'=>$e->getCode(),
+                        'message'=>'Database Connection Error',
+                        'trace'=>$e->getTrace()
+                    ]
+
+                ];
+                echo json_encode($connectionError);
+            }
+            else{
+                $connectionError=[
+                    'status'=>false,
+                    'result'=>[
+                        'error'=>true,
+                        'message'=>'Error occured'
+                    ]
+
+                ];
+                echo json_encode($connectionError);
+            }
+
+            exit();
+        }
+
     }
 
     /**
