@@ -25,11 +25,8 @@ class connection {
      */
     public static function run() {
         //this fake
-        if(self::$_instance==null){
-            self::$_instance=new self;
-            $border=self::$_instance;
+        $border=self::getInstance();
 
-        }
         //get service and file method from request uri
         $service=$border->getServiceNameAndMethodFromRequestUri();
 
@@ -52,11 +49,24 @@ class connection {
             return $border->responseOut([],'project has not been created');
         }
 
+        //define project
         define("app",$service[0]);
-        if(array_key_exists(1,$service)){ define("service",$service[1]);} else{ $service[1]=null;}
 
+        if(array_key_exists(1,$service)){
+            //define service Name
+            define("service",$service[1]);
+        }
+        else{
+            $service[1]=null;
+        }
+
+        //define version
         define("version",$getVersion);
+
+        //define method
         define("method",$serviceMethod);
+
+        //define request get|post
         define("request",$_SERVER['REQUEST_METHOD']);
 
         //get preloader classes
@@ -66,7 +76,6 @@ class connection {
             $dotenv = new \Dotenv\Dotenv(root);
             $dotenv->load();
         }
-
 
         //get before middleware
         $border->middleware("before");
@@ -563,6 +572,24 @@ class connection {
         //get pre loader classes
         require(root.'/lib/appClassAlias.php');
         return;
+
+    }
+
+    /**
+     * get instance classes.
+     *
+     * outputs get instance.
+     *
+     * @param string
+     * @return response instance runner
+     */
+
+    private static function getInstance(){
+        if(self::$_instance==null){
+            self::$_instance=new self;
+        }
+
+        return self::$_instance;
 
     }
 
