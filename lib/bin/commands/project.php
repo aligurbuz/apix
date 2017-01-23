@@ -12,15 +12,12 @@ class project {
 
     public function __construct(){
         $this->fileprocess=$this->fileprocess();
+        require("./lib/bin/commands/lib/getenv.php");
     }
 
 
     //project create command
     public function create ($data){
-
-        if(!file_exists('./.env')){
-            return 'Commands execution only can be run for environment local';
-        }
 
         $list=[];
         if($this->mkdir($this->getProjectName($data))){

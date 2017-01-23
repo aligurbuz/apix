@@ -13,16 +13,12 @@ class branch {
 
     public function __construct(){
         $this->fileprocess=$this->fileprocess();
+        require("./lib/bin/commands/lib/getenv.php");
     }
 
 
     //service create command
     public function source ($data){
-
-
-        if(!file_exists('./.env')){
-            return 'Commands execution only can be run for environment local';
-        }
 
         //usage : branch source project:service file:file request:get|post
 

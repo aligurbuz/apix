@@ -13,6 +13,7 @@ class version {
 
     public function __construct(){
         $this->fileprocess=$this->fileprocess();
+        require("./lib/bin/commands/lib/getenv.php");
     }
 
 
@@ -20,10 +21,6 @@ class version {
     public function move ($data){
 
         //usage : api move create project d:v1 m:v2
-
-        if(!file_exists('./.env')){
-            return 'Commands execution only can be run for environment local';
-        }
 
 
         foreach ($this->getParams($data) as $key=>$value){

@@ -13,15 +13,12 @@ class model {
 
     public function __construct(){
         $this->fileprocess=$this->fileprocess();
+        require("./lib/bin/commands/lib/getenv.php");
     }
 
 
     //service create command
     public function create ($data){
-
-        if(!file_exists('./.env')){
-            return 'Commands execution only can be run for environment local';
-        }
 
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
