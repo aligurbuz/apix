@@ -21,7 +21,7 @@ class version {
 
         //usage : api move create project d:v1 m:v2
 
-        if(!file_exists('./env.php')){
+        if(!file_exists('./.env')){
             return 'Commands execution only can be run for environment local';
         }
 

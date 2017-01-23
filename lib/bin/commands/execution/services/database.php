@@ -25,26 +25,11 @@ class database
         $connection='mysql';
 
         //local settings
-        if(\app::environment()=="local"){
-
-            $db['mysql']['driver']='mysql';
-            $db['mysql']['host']='localhost';
-            $db['mysql']['database']='database';
-            $db['mysql']['user']='user';
-            $db['mysql']['password']='password';
-
-        }
-
-        //production settings
-        if(\app::environment()=="production"){
-
-            $db['mysql']['driver']='mysql';
-            $db['mysql']['host']='localhost';
-            $db['mysql']['database']='database';
-            $db['mysql']['user']='user';
-            $db['mysql']['password']='password';
-
-        }
+        $db['mysql']['driver']=env('driver','mysql');
+        $db['mysql']['host']=env('host','localhost');
+        $db['mysql']['database']=env('database','database');
+        $db['mysql']['user']=env('user','user');
+        $db['mysql']['password']=env('password','password');
 
         //return db
         return $db[$connection];

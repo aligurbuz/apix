@@ -62,6 +62,12 @@ class connection {
         //get preloader classes
         $border->getPreLoaderClasses();
 
+        if(\app::environment()=="local"){
+            $dotenv = new \Dotenv\Dotenv(root);
+            $dotenv->load();
+        }
+
+
         //get before middleware
         $border->middleware("before");
 

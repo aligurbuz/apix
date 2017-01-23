@@ -45,7 +45,7 @@ class app {
 
     public static function environment(){
 
-        $envpath=root.'/env.php';
+        $envpath=root.'/.env';
 
         if(file_exists($envpath)){
             return 'local';

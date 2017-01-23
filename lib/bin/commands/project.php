@@ -18,7 +18,7 @@ class project {
     //project create command
     public function create ($data){
 
-        if(!file_exists('./env.php')){
+        if(!file_exists('./.env')){
             return 'Commands execution only can be run for environment local';
         }
 
