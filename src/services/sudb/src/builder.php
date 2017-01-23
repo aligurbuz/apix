@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace src\services\sudb;
-use \src\services\sudb\querySqlFormatter as querySqlFormatter;
-use \src\services\sudb\selectBuilderOperation as selectBuilderOperation;
-use \src\services\sudb\whereBuilderOperation as whereBuilderOperation;
+namespace src\services\sudb\src;
+use \src\services\sudb\src\querySqlFormatter as querySqlFormatter;
+use \src\services\sudb\src\selectBuilderOperation as selectBuilderOperation;
+use \src\services\sudb\src\whereBuilderOperation as whereBuilderOperation;
 
 /**
  * Represents a index class.

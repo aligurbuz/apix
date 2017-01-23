@@ -1,7 +1,7 @@
 <?php
 namespace src\app\__projectName__\v1\model;
 
-class __className__ extends \src\services\sudb\model {
+class __className__ extends \src\services\sudb\src\model {
 
     //tablename
     public $table='__tableName__';

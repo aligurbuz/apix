@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\services\sudb;
+namespace src\services\sudb\src;
 use src\services\httprequest as request;
 
 /**

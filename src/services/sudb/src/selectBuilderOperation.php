@@ -8,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-namespace src\services\sudb;
-use \src\services\sudb\querySqlFormatter as querySqlFormatter;
+namespace src\services\sudb\src;
+use \src\services\sudb\src\querySqlFormatter as querySqlFormatter;
 use src\services\httprequest as request;
 
 /**
