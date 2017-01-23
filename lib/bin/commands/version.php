@@ -20,8 +20,7 @@ class version {
     //service create command
     public function move ($data){
 
-        //usage : api move create project d:v1 m:v2
-
+        //usage : api version move project d:v1 m:v2
 
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){

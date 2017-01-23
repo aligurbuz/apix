@@ -537,7 +537,13 @@ class connection {
         $provisionMethodExcept=''.request.'Except';
 
         $apl=$provision->$provisionMethod();
+
+
         if($apl['success'] OR in_array(app.'/'.service.'',$provision->$provisionMethodExcept())){
+
+            if(!file_exists("./src/app/".app."/".version."/provisions/index.php")){
+                return $this->responseOut([],"project or versioning is not valid");
+            }
             $serviceprovision="\\src\\app\\".app."\\".version."\\provisions\\index";
             $serviceprovision=$this->resolve->resolve($serviceprovision);
             $serviceprovisionMethod=''.request.'Provision';
