@@ -1,0 +1,11 @@
+{
+    "name": "aligurbuz/sudb-orm",
+    "description": "Php orm similaring eloquent orm",
+    "authors": [
+        {
+            "name": "aligurbuz",
+            "email": "galiant781@gmail.com"
+        }
+    ],
+    "require": {}
+}

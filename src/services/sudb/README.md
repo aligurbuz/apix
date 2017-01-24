@@ -1,2 +1,6 @@
 # Sudb-Orm
-Sudb Database Orm
+```
+composer require aligurbuz/sudb-orm
+
+```
+
