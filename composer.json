@@ -22,7 +22,8 @@
         "robmorgan/phinx": "^0.6.5",
         "symfony/console": "^3.2",
         "symfony/debug": "^3.2",
-        "vlucas/phpdotenv": "^2.4"
+        "vlucas/phpdotenv": "^2.4",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {
         "files": ["src/helpers.php"]

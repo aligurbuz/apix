@@ -267,16 +267,17 @@ class BaseDefinitor  {
         if(is_array($data) && count($data)){
             if(\config::get("objectloader")!==null && \config::get("objectloader")){
                 //object loader
-                $data=['success'=>(bool)true]+['data'=>$data+self::objectLoaderMethodCall()];
+                $data=['success'=>(bool)true,'statusCode'=>200,
+                        'responseTime'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall()];
             }
             else{
                 //default
-                $data=['success'=>(bool)true]+['data'=>$data];
+                $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>date("Y-m-d H:i:s")]+['data'=>$data];
             }
         }
         else{
-            $msg=($msg!==null) ? $msg : 'data is not array';
-            $data=['success'=>(bool)false]+['message'=>$msg];
+            $msg=($msg!==null) ? $msg : 'data is empty';
+            $data=['success'=>(bool)false,'statusCode'=>204,'responseTime'=>date("Y-m-d H:i:s")]+['message'=>$msg];
         }
 
         if(count($queryError)){
