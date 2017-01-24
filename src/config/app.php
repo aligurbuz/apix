@@ -29,7 +29,8 @@ class app {
         return [
 
             'device'    =>'\\src\\services\\mobileDetect',
-            'redis'     =>'\\src\\services\\redis'
+            'redis'     =>'\\src\\services\\redis',
+            'guzzle'    =>'\\src\\services\\guzzle'
         ];
 
     }

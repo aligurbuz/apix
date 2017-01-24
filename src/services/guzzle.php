@@ -39,9 +39,9 @@ class guzzle {
      *
      * @return redis class
      */
-    public function request($method=null,$url=null,$responseObject=null){
+    public function get($url=null,$responseObject=null){
         //get response guzzle
-        $response = $this->client->request($method,$url,[]);
+        $response = $this->client->request("GET",$url,[]);
         if($responseObject==null){
             return json_decode($response->getBody()->getContents(),1);
         }
