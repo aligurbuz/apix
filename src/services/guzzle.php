@@ -23,9 +23,9 @@ class guzzle {
     public $client;
 
     /**
-     * redis configuration.
+     * guzzle class.
      *
-     * @return redis class
+     * @return guzzle class
      */
     public function __construct(){
 
@@ -35,9 +35,9 @@ class guzzle {
 
 
     /**
-     * redis set data.
+     * guzzle http request get data.
      *
-     * @return redis class
+     * @return guzzle class
      */
     public function get($url=null,$responseObject=null){
         //get response guzzle
@@ -46,5 +46,23 @@ class guzzle {
             return json_decode($response->getBody()->getContents(),1);
         }
     }
+
+    /**
+     * guzzle http request post data.
+     *
+     * @return guzzle class
+     */
+    public function post($url=null,$postdata=array(),$responseObject=null){
+        //get response guzzle
+        $response = $this->client->request("POST",$url,[
+            'form_params'=>$postdata
+        ]);
+        if($responseObject==null){
+            return json_decode($response->getBody()->getContents(),1);
+        }
+    }
+
+
+
 
 }
