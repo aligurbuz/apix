@@ -505,4 +505,18 @@ class BaseDefinitor  {
         return $this->responseOut([],$message);
 
     }
+
+    /**
+     * get file fix log params.
+     *
+     * outputs get file.
+     *
+     * @param string
+     * @return response fix log params runner
+     */
+
+    protected function getFixLog($data){
+        $fixLog=$this->getFileClassRequire(root.'/lib/fixlogparams.php');
+        return $fixLog[$data];
+    }
 }

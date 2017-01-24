@@ -39,67 +39,66 @@ class connection extends Definitor {
         //get instance
         $instance=self::getInstance();
 
-        if(strlen(self::$service[0])==0){
-            return $instance->responseOut([],'project path invalid : path/service/app/servicename/method');
-        }
-        if(!file_exists(root . '/'.src.'/'.self::$service[0].'')){
-            return $instance->responseOut([],'project has not been created');
-        }
+        return $instance->checkServiceUrlParamArray(function() use ($instance) {
 
-        //get auto loads from services
-        $instance->getAutoLoadsFromServices();
+            //get auto loads from services
+            $instance->getAutoLoadsFromServices();
 
-        //token run
-        $service=self::$service;
-        $serviceMethod=self::$serviceMethod;
-        $getVersion=self::$getVersion;
-        return $instance->token(function() use ($service,$serviceMethod,$getVersion,$instance) {
+            //token run
+            $service=self::$service;
+            $serviceMethod=self::$serviceMethod;
+            $getVersion=self::$getVersion;
 
-            //provision run
-            return $instance->provision(function() use ($service,$serviceMethod,$getVersion,$instance) {
-                //check package auto service and method
-                if($instance->checkPackageAuto($service)['status']){
-                    $packageAuto=$instance->resolve->resolve($instance->checkPackageAuto($service)['class']);
-                    return $instance->responseOut($packageAuto->$serviceMethod());
-                }
+            //get token control
+            return $instance->token(function() use ($service,$serviceMethod,$getVersion,$instance) {
 
-                //check package dev service and method
-                if($instance->checkPackageDev($service)['status']){
-                    $packageDev=$instance->resolve->resolve($instance->checkPackageDev($service)['class']);
-                    define("devPackage",true);
-                    return $instance->responseOut($packageDev->$serviceMethod($instance->checkPackageDev($service)['definitions']));
-                }
-
-                if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
-                    return $instance->responseOut([],'service has not been created');
-                }
-
-                if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
-                    return $instance->responseOut([],'service has not been created');
-                }
-
-                //service main file extends this file
-                require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
-
-                //apix resolve
-                $apix=$instance->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
-
-                $requestServiceMethod=$serviceMethod;
-                if(method_exists($apix,$requestServiceMethod)){
-                    if(property_exists($apix,"forbidden") && \app::environment()=="production"){
-                        if($apix->forbidden){
-                            return $instance->responseOut([],'you dont have the access right to this service');
-                        }
+                //provision run
+                return $instance->provision(function() use ($service,$serviceMethod,$getVersion,$instance) {
+                    //check package auto service and method
+                    if($instance->checkPackageAuto($service)['status']){
+                        $packageAuto=$instance->resolve->resolve($instance->checkPackageAuto($service)['class']);
+                        return $instance->responseOut($packageAuto->$serviceMethod());
                     }
-                    //call service
-                    $requestServiceMethodReal=$apix->$requestServiceMethod();
-                    return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
-                        return $instance->responseOut($requestServiceMethodReal);
-                    });
-                }
-                else{
-                    return $instance->responseOut([],'service is invalid');
-                }
+
+                    //check package dev service and method
+                    if($instance->checkPackageDev($service)['status']){
+                        $packageDev=$instance->resolve->resolve($instance->checkPackageDev($service)['class']);
+                        define("devPackage",true);
+                        return $instance->responseOut($packageDev->$serviceMethod($instance->checkPackageDev($service)['definitions']));
+                    }
+
+                    $serviceNo=$instance->getFixLog('serviceNo');
+                    if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'')){
+                        return $instance->responseOut([],$serviceNo);
+                    }
+
+                    if(!file_exists(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php')){
+                        return $instance->responseOut([],$serviceNo);
+                    }
+
+                    //service main file extends this file
+                    require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
+
+                    //apix resolve
+                    $apix=$instance->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
+
+                    $requestServiceMethod=$serviceMethod;
+                    if(method_exists($apix,$requestServiceMethod)){
+                        if(property_exists($apix,"forbidden") && \app::environment()=="production"){
+                            if($apix->forbidden){
+                                return $instance->responseOut([],$instance->getFixLog('noaccessright'));
+                            }
+                        }
+                        //call service
+                        $requestServiceMethodReal=$apix->$requestServiceMethod();
+                        return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
+                            return $instance->responseOut($requestServiceMethodReal);
+                        });
+                    }
+                    else{
+                        return $instance->responseOut([],$instance->getFixLog('invalidservice'));
+                    }
+                });
             });
         });
     }
@@ -165,6 +164,25 @@ class connection extends Definitor {
         define("method",self::$serviceMethod);
         define("request",$_SERVER['REQUEST_METHOD']);
 
+    }
+
+
+    /**
+     * get instance classes.
+     *
+     * outputs get instance.
+     *
+     * @param string
+     * @return response instance runner
+     */
+    private function checkServiceUrlParamArray($callback){
+        if(strlen(self::$service[0])==0){
+            return $this->responseOut([],$this->getFixLog('projectPathError'));
+        }
+        if(!file_exists(root . '/'.src.'/'.self::$service[0].'')){
+            return $this->responseOut([],$this->getFixLog('projectNo'));
+        }
+        return call_user_func($callback);
     }
 
 
