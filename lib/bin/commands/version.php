@@ -118,6 +118,121 @@ class version {
 
                         return "version has been created";
                     }
+
+                    return 'version is already available';
+                }
+            }
+        }
+
+    }
+
+
+
+    //dev create command
+    public function dev ($data){
+
+        //usage : api version dev development s:serviceName
+
+
+        foreach ($this->getParams($data) as $key=>$value){
+            if($key>0){
+
+                //$sourcepath=''.$app_path.''.$slashes.'Api'.$slashes.'Custom'.$slashes.''.ucfirst($this->argument("var1")).'';
+                //$destinationpath=''.$app_path.''.$slashes.'Api'.$slashes.'Custom'.$slashes.''.ucfirst($this->argument("var2")).'';
+
+                $fl=[];
+                foreach ($value as $project=>$service){
+
+                    $sourcepath='./src/app/development/v1/__call/'.$this->getParams($data)[1]['service'].'';
+                    $destinationpath='./src/packages/dev/'.$this->getParams($data)[1]['service'].'';
+
+
+                    if(!file_exists($destinationpath))
+                    {
+                        mkdir($destinationpath,0777,true);
+                        chmod($destinationpath,0777);
+                        $this->xcopy($sourcepath,$destinationpath);
+
+                        $list=[];
+                        $return=$this->listFolderFiles($destinationpath,"/");
+
+
+                        foreach ($return as $key=>$value)
+                        {
+                            if(is_array($return[$key]))
+                            {
+                                foreach ($return[$key] as $a=>$b)
+                                {
+                                    if(is_array($b))
+                                    {
+                                        foreach ($b as $x)
+                                        {
+                                            $list[]=$x;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $list[]=$b;
+                                    }
+                                }
+                            }
+                            else{
+
+                                $list[]=$value;
+                            }
+
+
+                        }
+
+
+                        $reallist=[];
+                        foreach ($list as $lkey=>$lvalue){
+                            if(is_array($lvalue)){
+                                foreach($lvalue as $a=>$b){
+                                    if(is_array($b)){
+                                        foreach($b as $x=>$y){
+                                            $reallist[]=$y;
+                                        }
+                                    }
+                                    else{
+                                        $reallist[]=$b;
+                                    }
+                                }
+                            }
+                            else{
+                                $reallist[]=$lvalue;
+                            }
+                        }
+
+                        foreach($reallist as $rkey=>$rvalue){
+                            if(is_array($rvalue)){
+                                foreach($rvalue as $aa=>$bb){
+                                    $fl[]=$bb;
+                                }
+                            }
+                            else{
+                                $fl[]=$rvalue;
+                            }
+                        }
+
+
+                        foreach ($fl as $val)
+                        {
+                            $dosya =$val;
+                            $dt = @fopen($dosya, "rb");
+                            $icerik =@fread($dt, filesize($dosya));
+                            $icerik=preg_replace('@app\\\\development\\\\v1\\\\__call@',"packages\\dev",$icerik);
+
+                            $dt = fopen($dosya, 'w');
+
+                            fwrite($dt,$icerik);
+                            fclose($dt);
+                        }
+
+                        return "package development has been created";
+                    }
+
+                    return 'package development is already available';
                 }
             }
         }
