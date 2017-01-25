@@ -23,7 +23,7 @@ class app
 
         return [
 
-            //'base' =>'\\src\\app\\__projectName__\\v1\\serviceBaseController'
+            'base' =>'\\src\\app\\__projectName__\\v1\\serviceBaseController'
         ];
 
     }
