@@ -32,6 +32,7 @@ class mobileDetect {
         //get client request info
         require_once(root.'/vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php');
         $this->mobile=new \Mobile_Detect;
+
     }
 
     /**

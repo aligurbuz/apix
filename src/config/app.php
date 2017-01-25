@@ -57,6 +57,31 @@ class app {
     }
 
     /**
+     * response device token.
+     *
+     * outputs device token.
+     *
+     * @param string
+     * @return response generate device token runner
+     */
+
+    public static function deviceToken($data=array(),$status=false){
+        $devicetoken=$_SERVER['HTTP_USER_AGENT'];
+        if(!$status){
+            if(count($data)){
+                foreach($data as $value){
+                    $devicetoken.='__'.$value.'__';
+                }
+            }
+
+            return md5($devicetoken);
+        }
+
+
+        return $devicetoken;
+    }
+
+    /**
      * response environment.
      *
      * outputs environment.
