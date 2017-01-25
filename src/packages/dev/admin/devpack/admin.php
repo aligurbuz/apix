@@ -33,7 +33,7 @@ class admin extends \src\services\sudb\src\model {
     //public $selectHidden=['id'];
 
     //this scope is automatically run
-    //public $scope=['auto'=>'active'];
+    public $scope=['auto'=>'active'];
 
     //scope query
     /**
