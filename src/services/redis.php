@@ -39,10 +39,19 @@ class redis {
      *
      * @return redis class
      */
-    public function set($data){
+    public function set($data,$expire=null){
 
         //set return
-        return $this->client->set($data[0],$data[1]);
+        if($this->client->set($data[0],$data[1])){
+            if($expire!==null && is_numeric($expire)){
+                $this->expire($data[0],$expire);
+                return true;
+            }
+            return true;
+        }
+
+        return false;
+
     }
 
 
@@ -51,10 +60,15 @@ class redis {
      *
      * @return redis class
      */
-    public function get($key){
+    public function get($key=null){
 
         //get return
-        return $this->client->get($key);
+        if($key!==null){
+            return $this->client->get($key);
+        }
+
+        return null;
+
     }
 
     /**

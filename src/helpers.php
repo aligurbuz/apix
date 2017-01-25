@@ -15,3 +15,14 @@ if (!function_exists('env')) {
         return ($localdata===false) ? $proddata : $localdata;
     }
 }
+
+if (!function_exists('app')) {
+    function app($class=null)
+    {
+        if($class!==null){
+            return \Container::$class();
+        }
+
+        return false;
+    }
+}
