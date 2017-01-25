@@ -73,11 +73,8 @@ class app {
                     $devicetoken.='__'.$value.'__';
                 }
             }
-
             return md5($devicetoken);
         }
-
-
         return $devicetoken;
     }
 
