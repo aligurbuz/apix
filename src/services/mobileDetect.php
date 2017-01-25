@@ -45,5 +45,35 @@ class mobileDetect {
         return $this->mobile->isMobile();
     }
 
+    /**
+     * get isTable.
+     *
+     * @return bool true|false
+     */
+    public function isTable(){
+
+        return $this->mobile->isTablet();
+    }
+
+    /**
+     * get isIphone.
+     *
+     * @return bool true|false
+     */
+    public function isIphone(){
+
+        return $this->mobile->isIphone();
+    }
+
+    /**
+     * get isAndroid.
+     *
+     * @return bool true|false
+     */
+    public function isAndroid(){
+
+        return $this->mobile->isAndroid();
+    }
+
 
 }
