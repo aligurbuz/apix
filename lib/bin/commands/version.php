@@ -222,6 +222,7 @@ class version {
                             $dt = @fopen($dosya, "rb");
                             $icerik =@fread($dt, filesize($dosya));
                             $icerik=preg_replace('@app\\\\development\\\\v1\\\\__call@',"packages\\dev",$icerik);
+                            $icerik=preg_replace('@app\\\\development\\\\v1\\\\model@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack",$icerik);
 
                             $dt = fopen($dosya, 'w');
 
