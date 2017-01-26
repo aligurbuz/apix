@@ -402,13 +402,14 @@ class querySqlFormatter {
                     $data[$key]=$value;
                 }
             }
+        }
 
-            //queue createdAt AND updatedAt fields
-            if(property_exists($model,"createdAndUpdatedFields") && count($model->createdAndUpdatedFields)) {
-                $time=time();
-                foreach ($model->createdAndUpdatedFields as $key=>$value) {
-                    $data[$value]=$time;
-                }
+
+        //queue createdAt AND updatedAt fields
+        if(property_exists($model,"createdAndUpdatedFields") && count($model->createdAndUpdatedFields)) {
+            $time=time();
+            foreach ($model->createdAndUpdatedFields as $key=>$value) {
+                $data[$value]=$time;
             }
         }
 
@@ -517,48 +518,66 @@ class querySqlFormatter {
                 }
             }
 
-            //queue createdAt AND updatedAt fields
-            if(property_exists($model['model'],"createdAndUpdatedFields") && count($model['model']->createdAndUpdatedFields)) {
-                $time=time();
-                foreach ($model->createdAndUpdatedFields as $key=>$value) {
+
+        }
+
+
+        //queue createdAt AND updatedAt fields
+        if(property_exists($model['model'],"createdAndUpdatedFields") && count($model['model']->createdAndUpdatedFields)) {
+            $time=time();
+            foreach ($model['model']->createdAndUpdatedFields as $key=>$value) {
+                if($key!=="created_at"){
                     $data[$value]=$time;
+                }
+
+            }
+        }
+
+
+
+        $set=[];
+        if(count($data)){
+            foreach($data as $key=>$value){
+                if($key!=="id"){
+                    $set[]=''.$key.'=:'.$key.'';
+                    $model['execute'][':'.$key]=$value;
+                }
+
+            }
+
+
+            try {
+                $query=$this->db->prepare("UPDATE ".$model['model']->table." SET  ".implode(",",$set)." ".$model['where']."");
+                if($query->execute($model['execute'])){
+                    return ['post'=>['status'=>true]];
+                }
+            }
+            catch(\Exception $e){
+                if(\app::environment()=="local"){
+                    return [
+                        'error'=>true,
+                        'code'=>$e->getCode(),
+                        'message'=>$e->getMessage(),
+                        'trace'=>$e->getTrace()
+                    ];
+                }
+                else{
+                    return [
+                        'error'=>true,
+                        'code'=>$e->getCode(),
+                        'message'=>'error occured'
+                    ];
                 }
             }
         }
 
+        return [
+            'error'=>true,
+            'message'=>'there is no postdata for update process'
+        ];
 
-        $set=[];
-        foreach($data as $key=>$value){
-            if($key!=="id"){
-                $set[]=''.$key.'=:'.$key.'';
-                $model['execute'][':'.$key]=$value;
-            }
 
-        }
 
-        try {
-            $query=$this->db->prepare("UPDATE ".$model['model']->table." SET  ".implode(",",$set)." ".$model['where']."");
-            if($query->execute($model['execute'])){
-                return ['post'=>['status'=>true]];
-            }
-        }
-        catch(\Exception $e){
-            if(\app::environment()=="local"){
-                return [
-                    'error'=>true,
-                    'code'=>$e->getCode(),
-                    'message'=>$e->getMessage(),
-                    'trace'=>$e->getTrace()
-                ];
-            }
-            else{
-                return [
-                    'error'=>true,
-                    'code'=>$e->getCode(),
-                    'message'=>'error occured'
-                ];
-            }
-        }
 
 
 
