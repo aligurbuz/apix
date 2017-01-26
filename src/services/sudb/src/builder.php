@@ -399,11 +399,10 @@ class builder {
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
 
+            error_reporting(0);
             if(array_key_exists(0,$result['result'])){
                 return $result['result'][0];
             }
-
-            error_reporting(0);
             return (object)[];
 
 
