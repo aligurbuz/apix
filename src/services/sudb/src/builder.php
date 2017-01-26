@@ -126,10 +126,26 @@ class builder {
             }
 
             if($field!==null && $operator!==null && $value!==null){
-
                 $this->where['field'][]=$field;
                 $this->where['operator'][]=$operator;
-                $this->where['value'][]=$value;
+                if(is_callable($value)){
+                    $value=call_user_func($value);
+                    $jsonValCheck=json_decode(json_encode($value),1);
+                    if(is_array($jsonValCheck)){
+                        $this->where['value'][]=null;
+                    }
+                    else{
+                        $this->where['value'][]=$value;
+                    }
+
+                }
+                elseif(is_array($value)){
+                    $this->where['value']=''.$value[0]::where($value[1][0],"=",$value[1][1])->data()->$value[2];
+                }
+                else{
+                    $this->where['value'][]=$value;
+                }
+
             }
 
 
@@ -364,6 +380,32 @@ class builder {
             else{
                 return $result['result'];
             }
+
+        });
+
+    }
+
+
+    /**
+     * data method is main method.
+     *
+     * @return string
+     */
+    public function data($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+        return $this->allMethodProcess(function(){
+            $result=$this->queryFormatter();
+
+            if(array_key_exists(0,$result['result'])){
+                return $result['result'][0];
+            }
+
+            error_reporting(0);
+            return (object)[];
+
 
         });
 
