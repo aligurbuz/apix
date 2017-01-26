@@ -549,7 +549,7 @@ class builder {
     }
 
     /**
-     * select method is main method.
+     * create method is main method.
      *
      * @return array
      */
@@ -563,6 +563,32 @@ class builder {
         return [
             'error'=>true,
             'message'=>'You have to use post method for insert',
+        ];
+
+    }
+
+    /**
+     * update method is main method.
+     *
+     * @return array
+     */
+    public function update($data,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+        if(request=="POST"){
+            if(is_array($data)){
+                $data=(array_key_exists(0,$data)) ? $data[0] : $data;
+                return $this->allMethodProcess(function() use($data){
+                    return $this->querySqlFormatter->getUpdateQueryFormatter($data,['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
+                });
+
+            }
+        }
+
+        return [
+            'error'=>true,
+            'message'=>'You have to use post method for update',
         ];
 
     }

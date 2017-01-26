@@ -67,6 +67,15 @@ class __className__ extends \src\services\sudb\src\model {
         'queueFields'=>[]
     ];
 
+    //update conditions
+    public $updateConditions=[
+        'status'=>false,
+        'wantedFields'=>[],
+        'exceptFields'=>[],
+        'obligatoryFields'=>[],
+        'queueFields'=>[]
+    ];
+
     //select permissions for client
     //header select id::username
     public $selectPermissions=[
