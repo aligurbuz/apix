@@ -526,8 +526,11 @@ class builder {
      *
      * @return array
      */
-    private function allMethodProcess($callback){
-        $this->autoScope=$this->getAutoScope();
+    private function allMethodProcess($callback,$clean=null){
+        if($clean!=="no--autoscope"){
+            $this->autoScope=$this->getAutoScope();
+        }
+
         $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
         $whereOperation=$this->whereBuilderOperation->whereMainProcess($this->where,$this->SqlPrepareFormatterHandleObject());
         $this->where=$whereOperation->where;
@@ -617,7 +620,7 @@ class builder {
                 $data=(array_key_exists(0,$data)) ? $data[0] : $data;
                 return $this->allMethodProcess(function() use($data){
                     return $this->querySqlFormatter->getUpdateQueryFormatter($data,['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
-                });
+                },"no--autoscope");
 
             }
         }
@@ -625,6 +628,30 @@ class builder {
         return [
             'error'=>true,
             'message'=>'You have to use post method for update',
+        ];
+
+    }
+
+
+    /**
+     * delete method is main method.
+     *
+     * @return array
+     */
+    public function delete($data=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if(request=="GET"){
+            return $this->allMethodProcess(function() use($data){
+                return $this->querySqlFormatter->getDeleteQueryFormatter([],['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
+            },"no--autoscope");
+        }
+
+        return [
+            'error'=>true,
+            'message'=>'You have to use post method for delete',
         ];
 
     }
