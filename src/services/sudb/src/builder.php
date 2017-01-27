@@ -243,6 +243,24 @@ class builder {
     }
 
     /**
+     * where weekly createdAt method is main method.
+     *
+     * @return array
+     */
+    public function weekly($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        $this->where['field'][]='weekly';
+        $this->where['operator'][]=null;
+        $this->where['value'][]=null;
+
+        return $this;
+    }
+
+    /**
      * where yesterday createdAt method is main method.
      *
      * @return array

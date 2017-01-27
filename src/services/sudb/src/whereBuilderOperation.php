@@ -76,6 +76,17 @@ class whereBuilderOperation {
                         }
 
                     }
+                    elseif($value=="weekly"){
+                        if(property_exists($model['model'],"createdAndUpdatedFields") && array_key_exists("created_at",$model['model']->createdAndUpdatedFields)){
+                            $today=strtotime(date("Y-m-d"));
+                            $weeklyProcess=60*60*24*7;
+                            $weekly=$today-$weeklyProcess;
+                            $weekly=date("Y-m-d",$weekly);
+
+                            $list['where'][]='FROM_UNIXTIME('.$model['model']->createdAndUpdatedFields['created_at'].',"%Y-%m-%d")<="'.date("Y-m-d").'" AND FROM_UNIXTIME('.$model['model']->createdAndUpdatedFields['created_at'].',"%Y-%m-%d")>="'.$weekly.'"';
+                        }
+
+                    }
                     else{
                         $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
                         $list['execute'][':'.$value.'']=$whereData['value'][$key];
