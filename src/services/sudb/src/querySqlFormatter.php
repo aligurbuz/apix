@@ -416,12 +416,33 @@ class querySqlFormatter {
 
         //last data
         foreach($data as $key=>$value){
+            if(strlen(trim($value))==0){
+                if(\app::environment()=="local"){
+                    return [
+                        'error'=>true,
+                        'message'=>'empty data would not been sent'
+                    ];
+                }
+                else{
+                    return [
+                        'error'=>true,
+                        'message'=>'error occured'
+                    ];
+                }
+            }
             if($key!=="id"){
                 $dataKeyValues[]=$key;
             }
 
             $dataPrepareValues[]='?';
-            $dataExecuteValues[]=$value;
+            $fieldMethod='field'.ucfirst($key);
+            if(method_exists($model,$fieldMethod)){
+                $dataExecuteValues[]=$model->$fieldMethod();
+            }
+            else{
+                $dataExecuteValues[]=$value;
+            }
+
         }
 
 
@@ -592,63 +613,6 @@ class querySqlFormatter {
      */
 
     public function getDeleteQueryFormatter($data,$model){
-
-        if(count($data)==0){
-            $input=$this->request->input();
-            $data=(count($input)) ? $input : $data;
-        }
-
-
-        if(array_key_exists("_token",$data)){
-            $data=\app::arrayDelete($data,['_token']);
-        }
-
-        //update condition according to model
-        if(property_exists($model['model'],"updateConditions") && $model['model']->updateConditions['status']){
-            foreach($data as $key=>$value){
-                //wanted fields
-                if(count($model['model']->updateConditions['wantedFields']) && !in_array($key,$model['model']->updateConditions['wantedFields'])){
-                    return [
-                        'error'=>true,
-                        'code'=>203,
-                        'message'=>'there is forbidden data in post sent'
-                    ];
-                }
-                //except fields
-                if(count($model['model']->updateConditions['exceptFields']) && in_array($key,$model['model']->updateConditions['exceptFields'])){
-                    return [
-                        'error'=>true,
-                        'code'=>203,
-                        'message'=>'there is forbidden data in post sent'
-                    ];
-                }
-            }
-
-            //except fields
-            $obligatoryFields=$model['model']->updateConditions['obligatoryFields'];
-            if(count($obligatoryFields)){
-                foreach($obligatoryFields as $value){
-                    if(!array_key_exists($value,$data)){
-                        return [
-                            'error'=>true,
-                            'code'=>203,
-                            'message'=>'there is no obligatory data in post sent'
-                        ];
-                    }
-                }
-            }
-
-            //queue fields
-            $queueFields=$model['model']->updateConditions['queueFields'];
-            if(count($queueFields)) {
-                foreach ($queueFields as $key=>$value) {
-                    $data[$key]=$value;
-                }
-            }
-
-
-        }
-
 
         try {
             $query=$this->db->prepare("DELETE FROM ".$model['model']->table." ".$model['where']."");

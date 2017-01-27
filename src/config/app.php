@@ -57,6 +57,25 @@ class app {
     }
 
     /**
+     * post environment.
+     *
+     * outputs environment.
+     *
+     * @param string
+     * @return response post runner
+     */
+
+    public static function post($data){
+        $border=new self;
+        $request=$border->request->input();
+        if(array_key_exists($data,$request)){
+            return $request[$data];
+        }
+        return null;
+
+    }
+
+    /**
      * response device token.
      *
      * outputs device token.

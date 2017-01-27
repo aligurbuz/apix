@@ -32,32 +32,6 @@ class __className__ extends \src\services\sudb\src\model {
     //this value hiddens  to select field
     //public $selectHidden=['id'];
 
-    //this scope is automatically run
-    //public $scope=['auto'=>'active'];
-
-    //scope query
-    /**
-     * @param $data
-     * @param $query
-     */
-    public function modelScope($data,$query){
-
-        //get id
-        if($data=="id"){
-            $query->where(function($model){
-                if(\app::checkUrlParam("id")){
-                    $model->where("id","=",\app::getUrlParam("id"));
-                }
-            });
-        }
-
-        //scopes
-        if($data=="active"){
-            $query->where("status","=",1);
-        }
-
-    }
-
     //insert conditions
     public $insertConditions=[
         'status'=>false,
@@ -85,4 +59,40 @@ class __className__ extends \src\services\sudb\src\model {
         'tokens'=>'*',
         'seperator'=>'::'
     ];
+
+    //this scope is automatically run
+    //public $scope=['auto'=>'active'];
+
+    //scope query
+    /**
+     * @param $data
+     * @param $query
+     */
+    public function modelScope($data,$query){
+
+        //get id
+        if($data=="id"){
+            $query->where(function($model){
+                if(\app::checkUrlParam("id")){
+                    $model->where("id","=",\app::getUrlParam("id"));
+                }
+            });
+        }
+
+        //scopes
+        if($data=="active"){
+            $query->where("status","=",1);
+        }
+
+    }
+
+    /**
+     * @param field query
+     * @param $string
+     */
+    /*public function fieldPassword(){
+        return md5(\app::post("password"));
+    }*/
+
+
 }

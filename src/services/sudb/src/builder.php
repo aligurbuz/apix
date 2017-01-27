@@ -592,10 +592,13 @@ class builder {
      *
      * @return array
      */
-    public function create($data){
+    public function create($data,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
         if(request=="POST"){
             if(is_array($data) && count($data)){
-                return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->subClassOf);
+                return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->model->subClassOf);
             }
         }
 
