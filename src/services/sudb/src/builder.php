@@ -643,7 +643,7 @@ class builder {
             $this->model=$model;
         }
 
-        if(request=="GET"){
+        if(request=="POST"){
             return $this->allMethodProcess(function() use($data){
                 return $this->querySqlFormatter->getDeleteQueryFormatter([],['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
             },"no--autoscope");
