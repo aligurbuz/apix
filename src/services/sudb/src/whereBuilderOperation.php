@@ -65,6 +65,17 @@ class whereBuilderOperation {
                         }
 
                     }
+                    elseif($value=="yesterday"){
+                        if(property_exists($model['model'],"createdAndUpdatedFields") && array_key_exists("created_at",$model['model']->createdAndUpdatedFields)){
+                            $today=strtotime(date("Y-m-d"));
+                            $yesterdayProcess=60*60*24;
+                            $yesterday=$today-$yesterdayProcess;
+                            $yesterday=date("Y-m-d",$yesterday);
+
+                            $list['where'][]='FROM_UNIXTIME('.$model['model']->createdAndUpdatedFields['created_at'].',"%Y-%m-%d")="'.$yesterday.'"';
+                        }
+
+                    }
                     else{
                         $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
                         $list['execute'][':'.$value.'']=$whereData['value'][$key];
