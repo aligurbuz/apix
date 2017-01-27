@@ -596,16 +596,9 @@ class builder {
         if($this->model==null){
             $this->model=$model;
         }
-        if(request=="POST"){
-            if(is_array($data) && count($data)){
-                return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->model->subClassOf);
-            }
+        if(is_array($data) && count($data)){
+            return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->model->subClassOf);
         }
-
-        return [
-            'error'=>true,
-            'message'=>'You have to use post method for insert',
-        ];
 
     }
 
@@ -618,20 +611,13 @@ class builder {
         if($this->model==null){
             $this->model=$model;
         }
-        if(request=="POST"){
-            if(is_array($data)){
-                $data=(array_key_exists(0,$data)) ? $data[0] : $data;
-                return $this->allMethodProcess(function() use($data){
-                    return $this->querySqlFormatter->getUpdateQueryFormatter($data,['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
-                },"no--autoscope");
+        if(is_array($data)){
+            $data=(array_key_exists(0,$data)) ? $data[0] : $data;
+            return $this->allMethodProcess(function() use($data){
+                return $this->querySqlFormatter->getUpdateQueryFormatter($data,['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
+            },"no--autoscope");
 
-            }
         }
-
-        return [
-            'error'=>true,
-            'message'=>'You have to use post method for update',
-        ];
 
     }
 
@@ -646,16 +632,9 @@ class builder {
             $this->model=$model;
         }
 
-        if(request=="POST"){
-            return $this->allMethodProcess(function() use($data){
-                return $this->querySqlFormatter->getDeleteQueryFormatter([],['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
-            },"no--autoscope");
-        }
-
-        return [
-            'error'=>true,
-            'message'=>'You have to use post method for delete',
-        ];
+        return $this->allMethodProcess(function() use($data){
+            return $this->querySqlFormatter->getDeleteQueryFormatter([],['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
+        },"no--autoscope");
 
     }
 
