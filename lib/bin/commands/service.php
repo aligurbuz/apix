@@ -65,6 +65,9 @@ class service {
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/index.html',null);
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/handle');
 
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);
+
                        $touchHandleParams['execution']='services/handle';
                        $touchHandleParams['params']['projectName']=$project;
                        $touchHandleParams['params']['serviceName']=$service;
