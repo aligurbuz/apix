@@ -129,7 +129,76 @@ class service {
 
     }
 
+    //usage : api service publish project:service names:method1/method2 http:get|post
 
+    //service publish
+    public function publish($data){
+        foreach ($this->getParams($data) as $key=>$value) {
+            if($key==0){
+                foreach($value as $project=>$service){
+                    $versionPath='./src/app/'.$project.'/version.php';
+                    $version=require($versionPath);
+                    if(is_array($version) && array_key_exists("version",$version)){
+                        $versionNumber=$version['version'];
+                    }
+                    else{
+                        $versionNumber='v1';
+                    }
+
+                    $servicePath='\\\\src\\\\app\\\\'.$project.'\\\\'.$versionNumber.'\\\\__call\\\\'.$service.'\\\\'.$this->getParams($data)[2]['http'].'Service';
+                    $names=explode("/",$this->getParams($data)[1]['names']);
+                    $list=[];
+                    foreach($names as $name){
+                        $list[]=''.$servicePath.'::'.$name.'';
+                    }
+
+                    $publishPath='./src/app/'.$project.'/publish.php';
+                    $publish=require($publishPath);
+
+
+
+                    $publishedRoutes=[];
+                    foreach($list as $key=>$val){
+                        if(array_key_exists("service",$publish)){
+                            $valpro=str_replace("\\\\","\\",$val);
+                            if(!in_array($valpro,$publish['service']['name'])){
+                                $publishedRoutes[]='$publishes["service"]["name"][]="'.$val.'";';;
+                            }
+
+                        }
+                        else{
+                            $publishedRoutes[]='$publishes["service"]["name"][]="'.$val.'";';
+                        }
+
+                    }
+
+                    if(count($publishedRoutes)){
+                        $dt = fopen($publishPath, "r");
+                        $content = fread($dt, filesize($publishPath));
+                        fclose($dt);
+
+
+
+                        $dt = fopen($publishPath, "w");
+$content=str_replace("//publishes","//publishes
+".implode("
+",$publishedRoutes)."",$content);
+
+                        fwrite($dt, $content);
+                        fclose($dt);
+
+                        return 'service publish ok';
+                    }
+                    else{
+                        return 'service available';
+                    }
+
+
+
+                }
+            }
+        }
+    }
 
     //get bin params
     public function getParams($data){
