@@ -68,8 +68,11 @@ class service {
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);
 
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/dummies');
-                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/dummies/index.html',null);
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/interfaceObjects');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/interfaceObjects/index.html',null);
+
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/cache');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/cache/index.html',null);
 
                        $touchHandleParams['execution']='services/handle';
                        $touchHandleParams['params']['projectName']=$project;
