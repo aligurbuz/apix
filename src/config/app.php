@@ -325,16 +325,39 @@ class app {
 
             //default lang
             $default=root.'/src/storage/languages/'.$langname.'/default.yaml';
+            if(!file_exists($default)){
+                $default=root.'/src/storage/languages/tr/default.yaml';
+            }
+
             $defaultlang=Yaml::parse(file_get_contents($default));
+
+            if($defaultlang==null){
+                $defaultlang=[];
+            }
 
             //user lang
             $langstorage=root.'/src/storage/languages/'.$langname.'/'.$dataparse[0].'.yaml';
-            $lang=Yaml::parse(file_get_contents($langstorage));
+            if(!file_exists($langstorage)){
+                $lang=[];
+            }
+            else{
+                $lang=Yaml::parse(file_get_contents($langstorage));
+            }
+
 
             //reel data
-            $words=array_merge($defaultlang,$lang);
+            if($defaultlang==null OR $lang==null){
+                $words=[];
+            }
+            else{
+                $words=array_merge($defaultlang,$lang);
+            }
 
-            return $words[$dataparse[1]];
+
+            if(array_key_exists($dataparse[1],$words)){
+                return $words[$dataparse[1]];
+            }
+
         }
         return null;
 

@@ -10,5 +10,6 @@ namespace src\app\__projectName__\v1;
 
 class serviceBaseController
 {
-
+    //default lang name
+    public $lang='tr';
 }

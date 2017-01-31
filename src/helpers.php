@@ -28,10 +28,11 @@ if (!function_exists('app')) {
 }
 
 if (!function_exists('trans')) {
-    function trans($data=null,$langname='tr')
+    function trans($data=null,$langname=null)
     {
         if($data!==null){
-            return \app::getLangOperation($data,$langname);
+            $getbase=\app::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
+            return \app::getLangOperation($data,$getbase->lang);
         }
         return null;
     }
