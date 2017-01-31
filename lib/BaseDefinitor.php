@@ -268,16 +268,17 @@ class BaseDefinitor  {
             if(\config::get("objectloader")!==null && \config::get("objectloader")){
                 //object loader
                 $data=['success'=>(bool)true,'statusCode'=>200,
-                        'responseTime'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall()];
+                        'responseTime'=>microtime(true)-time_start,
+                        'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall()];
             }
             else{
                 //default
-                $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>date("Y-m-d H:i:s")]+['data'=>$data];
+                $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>microtime(true)-time_start,'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data];
             }
         }
         else{
             $msg=($msg!==null) ? $msg : 'data is empty';
-            $data=['success'=>(bool)false,'statusCode'=>204,'responseTime'=>date("Y-m-d H:i:s")]+['message'=>$msg];
+            $data=['success'=>(bool)false,'statusCode'=>204,'responseTime'=>microtime(true)-time_start,'requestDate'=>date("Y-m-d H:i:s")]+['message'=>$msg];
         }
 
         if(count($queryError)){
