@@ -324,9 +324,9 @@ class app {
             $dataparse=explode(".",$data);
 
             //default lang
-            $default=root.'/src/storage/languages/'.app.'/'.$langname.'/default.yaml';
+            $default=root.'/src/app/'.app.'/storage/'.$langname.'/default.yaml';
             if(!file_exists($default)){
-                $default=root.'/src/storage/languages/'.app.'/tr/default.yaml';
+                $default=root.'/src/app/'.app.'/storage/tr/default.yaml';
             }
 
             $defaultlang=null;
@@ -340,7 +340,7 @@ class app {
             }
 
             //user lang
-            $langstorage=root.'/src/storage/languages/'.app.'/'.$langname.'/'.$dataparse[0].'.yaml';
+            $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.$dataparse[0].'.yaml';
             if(!file_exists($langstorage)){
                 $lang=[];
             }

@@ -34,6 +34,9 @@ class project {
             $touchServicePublishMe['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/publish.php',$touchServicePublishMe);
 
+            $list[]=$this->mkdir($this->getProjectName($data).'/storage');
+            $list[]=$this->touch($this->getProjectName($data).'/storage/index.html',null);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/docs');
             $list[]=$this->touch($this->getProjectName($data).'/docs/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
