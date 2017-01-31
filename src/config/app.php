@@ -324,19 +324,23 @@ class app {
             $dataparse=explode(".",$data);
 
             //default lang
-            $default=root.'/src/storage/languages/'.$langname.'/default.yaml';
+            $default=root.'/src/storage/languages/'.app.'/'.$langname.'/default.yaml';
             if(!file_exists($default)){
-                $default=root.'/src/storage/languages/tr/default.yaml';
+                $default=root.'/src/storage/languages/'.app.'/tr/default.yaml';
             }
 
-            $defaultlang=Yaml::parse(file_get_contents($default));
+            $defaultlang=null;
+            if(file_exists($default)){
+                $defaultlang=Yaml::parse(file_get_contents($default));
+            }
+
 
             if($defaultlang==null){
                 $defaultlang=[];
             }
 
             //user lang
-            $langstorage=root.'/src/storage/languages/'.$langname.'/'.$dataparse[0].'.yaml';
+            $langstorage=root.'/src/storage/languages/'.app.'/'.$langname.'/'.$dataparse[0].'.yaml';
             if(!file_exists($langstorage)){
                 $lang=[];
             }
