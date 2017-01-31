@@ -351,6 +351,7 @@ class app {
                 }
             }
 
+            $lang=null;
             if($storagestatus){
                 $lang=Yaml::parse(file_get_contents($langstorage));
             }
