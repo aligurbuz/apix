@@ -321,6 +321,8 @@ class app {
     public static function getLangOperation($data=null,$langname=null){
 
         if($data!==null && $langname!==null){
+
+            //data parse
             $dataparse=explode(".",$data);
 
             //default lang
@@ -334,30 +336,30 @@ class app {
                 $defaultlang=Yaml::parse(file_get_contents($default));
             }
 
-
             if($defaultlang==null){
                 $defaultlang=[];
             }
 
-            //user lang
-            $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.$dataparse[0].'.yaml';
+            //service yaml lang
+            $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.service.'_'.$dataparse[0].'.yaml';
+            $storagestatus=true;
             if(!file_exists($langstorage)){
-                $lang=[];
+                //normal yaml
+                $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.$dataparse[0].'.yaml';
+                if(!file_exists($langstorage)){
+                    $storagestatus=false;
+                }
             }
-            else{
+
+            if($storagestatus){
                 $lang=Yaml::parse(file_get_contents($langstorage));
             }
 
 
             //reel data
-            if($defaultlang==null OR $lang==null){
-                $words=[];
-            }
-            else{
-                $words=array_merge($defaultlang,$lang);
-            }
+            $words=(count($defaultlang)==0 OR $lang==null) ? [] : array_merge($defaultlang,$lang);
 
-
+            //if there is key : output
             if(array_key_exists($dataparse[1],$words)){
                 return $words[$dataparse[1]];
             }
