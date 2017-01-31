@@ -266,7 +266,11 @@ class BaseDefinitor  {
         header('Content-Type: application/json');
         $developer=[];
         if(defined("app") && defined("version") && defined("service")){
-            $developer=require(root.'/src/app/'.app.'/'.version.'/__call/'.service.'/developer.php');
+            $developerfile=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/developer.php';
+            if(file_exists($developerfile)){
+                $developer=require($developerfile);
+            }
+
         }
 
         $developInfo=null;
