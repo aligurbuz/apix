@@ -2,6 +2,7 @@
 
 namespace src\config;
 use src\services\httprequest as request;
+use Symfony\Component\Yaml\Yaml;
 
 class app {
 
@@ -305,6 +306,38 @@ class app {
     public static function requestUri(){
 
         return $_SERVER['REQUEST_URI'];
+    }
+
+
+    /**
+     * get lang operation.
+     *
+     * this lang request uri parameter.
+     *
+     * @param string
+     * @return request lang operation runner
+     */
+
+    public static function getLangOperation($data=null,$langname=null){
+
+        if($data!==null && $langname!==null){
+            $dataparse=explode(".",$data);
+
+            //default lang
+            $default=root.'/src/storage/languages/'.$langname.'/default.yaml';
+            $defaultlang=Yaml::parse(file_get_contents($default));
+
+            //user lang
+            $langstorage=root.'/src/storage/languages/'.$langname.'/'.$dataparse[0].'.yaml';
+            $lang=Yaml::parse(file_get_contents($langstorage));
+
+            //reel data
+            $words=array_merge($defaultlang,$lang);
+
+            return $words[$dataparse[1]];
+        }
+        return null;
+
     }
 
 

@@ -26,3 +26,13 @@ if (!function_exists('app')) {
         return false;
     }
 }
+
+if (!function_exists('trans')) {
+    function trans($data=null,$langname='tr')
+    {
+        if($data!==null){
+            return \app::getLangOperation($data,$langname);
+        }
+        return null;
+    }
+}
