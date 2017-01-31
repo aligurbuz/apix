@@ -90,10 +90,20 @@ class connection extends Definitor {
                             }
                         }
                         //call service
-                        $requestServiceMethodReal=$apix->$requestServiceMethod();
-                        return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
-                            return $instance->responseOut($requestServiceMethodReal);
-                        });
+                        $restrictions=$apix->restrictions();
+                        $restrictionsStatus=true;
+                        if(is_array($restrictions) && array_key_exists($requestServiceMethod,$restrictions)){
+                            $restrictionsStatus=$restrictions[$requestServiceMethod];
+                        }
+                        if($restrictionsStatus){
+                            $requestServiceMethodReal=$apix->$requestServiceMethod();
+                            return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
+                                return $instance->responseOut($requestServiceMethodReal);
+                            });
+                        }
+
+                        return $instance->responseOut([],$instance->getFixLog('serviceRestrictions'));
+
                     }
                     else{
                         return $instance->responseOut([],$instance->getFixLog('invalidservice'));

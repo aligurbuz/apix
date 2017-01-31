@@ -54,5 +54,18 @@ class app {
         }
     }
 
+    /**
+     * service restrictions method.
+     *
+     * @param prepared functions and objects
+     * request method : super service call
+     * main overloading method as restrictions
+     * @return array
+     */
+    public function restrictions(){
+        $list=[];
+        return $list;
+    }
+
 
 }
