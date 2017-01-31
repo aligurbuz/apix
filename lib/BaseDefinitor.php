@@ -264,9 +264,13 @@ class BaseDefinitor  {
             }
         }
         header('Content-Type: application/json');
-        $developer=require(root.'/src/app/'.app.'/'.version.'/__call/'.service.'/developer.php');
+        $developer=[];
+        if(defined("app") && defined("version") && defined("service")){
+            $developer=require(root.'/src/app/'.app.'/'.version.'/__call/'.service.'/developer.php');
+        }
+
         $developInfo=null;
-        if(is_array($developer)){
+        if(is_array($developer) && count($developer)){
             $developInfo=$developer;
         }
         if(is_array($data) && count($data)){
