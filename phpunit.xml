@@ -11,6 +11,7 @@
             <directory>
                 ./tests/
             </directory>
+            <include>tests/apixTest.php</include>
         </testsuite>
     </testsuites>
 </phpunit>
