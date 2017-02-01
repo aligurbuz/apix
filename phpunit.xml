@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./vendor/autoload.php"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+        >
+
+    <testsuites>
+        <testsuite name="Apix Unit Test">
+            <directory>
+                ./src/unittest/
+            </directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>

@@ -5,3 +5,5 @@ node_modules
 src/app/*
 !important src/app/index.html
 src/access.log
+tests/*
+!important tests/index.html
