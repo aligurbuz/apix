@@ -58,6 +58,20 @@ class BaseDefinitor  {
      */
 
     protected function getPreLoaderClasses(){
+        $serviceConfig="\\src\\app\\".app."\\".version."\\config\\app";
+        $serviceConfig=new $serviceConfig();
+        $staticProvider=$serviceConfig->staticProvider();
+        foreach($staticProvider as $key=>$value){
+            $namespace="\\src\\app\\".app."\\".version."\\staticProvider\\".$key."";
+            if($value=="all"){
+                class_alias($namespace,$key);
+            }
+            else{
+                if(in_array(service,$value)){
+                    class_alias($namespace,$key);
+                }
+            }
+        }
         return $this->getFileClassRequire(root.'/lib/appClassAlias.php');
 
     }
