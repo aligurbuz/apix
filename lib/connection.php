@@ -2,6 +2,7 @@
 
 namespace lib;
 use lib\BaseDefinitor as Definitor;
+use Symfony\Component\Yaml\Yaml;
 
 class connection extends Definitor {
 
@@ -97,6 +98,8 @@ class connection extends Definitor {
                         }
                         if($restrictionsStatus){
                             $requestServiceMethodReal=$apix->$requestServiceMethod();
+                            $yaml = Yaml::dump($requestServiceMethodReal);
+                            file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/'.service.'_'.$requestServiceMethod.'.yaml', $yaml);
                             return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
                                 return $instance->responseOut($requestServiceMethodReal);
                             });

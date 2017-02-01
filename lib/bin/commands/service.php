@@ -144,6 +144,7 @@ class service {
     public function publish($data){
         foreach ($this->getParams($data) as $key=>$value) {
             if($key==0){
+
                 foreach($value as $project=>$service){
                     $versionPath='./src/app/'.$project.'/version.php';
                     $version=require($versionPath);
@@ -158,8 +159,10 @@ class service {
                     $names=explode("/",$this->getParams($data)[1]['names']);
                     $list=[];
                     foreach($names as $name){
+
                         $list[]=''.$servicePath.'::'.$name.'';
                     }
+
 
                     $publishPath='./src/app/'.$project.'/publish.php';
                     $publish=require($publishPath);
@@ -199,6 +202,7 @@ $content=str_replace("//publishes","//publishes
                         return 'service publish ok';
                     }
                     else{
+
                         return 'service available';
                     }
 
