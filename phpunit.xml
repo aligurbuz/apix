@@ -9,7 +9,7 @@
     <testsuites>
         <testsuite name="Apix Unit Test">
             <directory>
-                ./src/unittest/
+                ./tests/
             </directory>
         </testsuite>
     </testsuites>
