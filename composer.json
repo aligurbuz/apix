@@ -24,7 +24,8 @@
         "symfony/debug": "^3.2",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/finder": "^3.2"
+        "symfony/finder": "^3.2",
+        "react/react": "^0.4.2"
     },
     "autoload": {
         "files": ["src/helpers.php"]
