@@ -83,6 +83,10 @@ class project {
             $database['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/database.php',$database);
 
+            $database['execution']='services/rabbitMQ';
+            $database['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/config/rabbitMQ.php',$database);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');
             $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');

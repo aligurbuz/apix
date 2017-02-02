@@ -42,7 +42,8 @@ class app {
 
             'device'        =>'\\src\\services\\mobileDetect',
             'redis'         =>'\\src\\services\\redis',
-            'guzzle'        =>'\\src\\services\\guzzle'
+            'guzzle'        =>'\\src\\services\\guzzle',
+            'rmq'           =>'\\src\\services\\rabbitMQ'
         ];
 
     }
