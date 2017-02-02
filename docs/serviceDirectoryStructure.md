@@ -19,9 +19,8 @@
 > Every version name can be created only once
 
 ```diff
-+ this directory structures is created the following command
++ project and version directory structures is created the following command
 ```
-
 
 ```
 api project create project_name
