@@ -29,17 +29,23 @@ api project create project_name
 
 
 # Service Directory Structure
-* the __call directory in that version is directory including all services
-* the config directory in that version includes configuration files (such as config,database vs)
-* the migrations directory in that version includes database seed and migration files
-* the provisions directory in that version contains object loader and general service provisions
-* the staticProvider directory in that version includes autoload static classes for all services
-*
+* the directories in that __call directory are service names
+* every service is created with itself structures
+* the branches directory is branching for development (see branching development capter)
+* app class is extended by every service.
+* ready(for service) component and restrictions methoding is in app class
+* developer file is an array file
+* developer array is shown on service output
+* getService file is file requested as http get
+* every get request calls this file
+* postService file is file requested as http post
+* every post request calls this file
+* serviceConf file is file what developer need anything (accessing as \Config::service("key"))
 
-> Every version name can be created only once
+> Every service name can be created only once
 
 ```diff
-+ project and version directory structures is created with following command
++ service directory structures is created with following command
 ```
 
 ```
