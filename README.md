@@ -5,8 +5,8 @@ Comprehensive restfull api service for php development
 > Package allows you to design easily restfull services.Creating api services is very easy any more.
 > For creating easily your api,please keep track of following instructions.
 
-# Installation Link
-[a link](https://github.com/aligurbuz/apix/docs/installation.md)
+# Documentation :
+[Installation and system requirements : ](https://github.com/aligurbuz/apix/docs/installation.md)
 
 #### Everyting is okey to create your project now.Create first project with running the following command on terminal
 
