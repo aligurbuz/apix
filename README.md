@@ -6,7 +6,7 @@ Comprehensive restfull api service for php development
 > For creating easily your api,please keep track of following instructions.
 
 # Documentation :
-[Installation and system requirements](https://github.com/aligurbuz/apix/docs/installation.md)
+[Installation and system requirements](https://github.com/aligurbuz/apix/blob/master/docs/installation.md)
 
 #### Everyting is okey to create your project now.Create first project with running the following command on terminal
 
