@@ -16,6 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 class app {
 
     public $request;
+    private static $servicePath='\\src\\services\\';
 
     /**
      * Constructor.
@@ -40,10 +41,10 @@ class app {
 
         return [
 
-            'device'        =>'\\src\\services\\mobileDetect',
-            'redis'         =>'\\src\\services\\redis',
-            'guzzle'        =>'\\src\\services\\guzzle',
-            'rmq'           =>'\\src\\services\\rabbitMQ'
+            'device'        =>self::$servicePath.'mobileDetect',
+            'redis'         =>self::$servicePath.'redis',
+            'guzzle'        =>self::$servicePath.'guzzle',
+            'rmq'           =>self::$servicePath.'rabbitMQ'
         ];
 
     }
@@ -61,9 +62,8 @@ class app {
         $envpath=root.'/.env';
         if(file_exists($envpath)){
             return 'local';
-        }else{
-            return 'production';
         }
+        return 'production';
     }
 
     /**
