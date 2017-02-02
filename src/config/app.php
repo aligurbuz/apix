@@ -190,13 +190,13 @@ class app {
 
     /**
      * response check token.
-     *
+     * definition : it checks token on url
+     * provision token rule
      * outputs token check.
      *
      * @param string
-     * @return response environment runner
+     * @return response token runner
      */
-
     public static function checkToken(){
 
         //get token
@@ -235,7 +235,6 @@ class app {
      * @param string
      * @return directory name runner
      */
-
     public static function getDirectoryName(){
 
         $root=explode("/",root);
@@ -251,7 +250,6 @@ class app {
      * @param string
      * @return request uri compare runner
      */
-
     public static function getServiceNameAndMethodFromRequestUri(){
 
         $service=str_replace("/".self::getDirectoryName()."/service/","",self::requestUri());
@@ -267,7 +265,6 @@ class app {
      * @param string
      * @return pure method runner
      */
-
     public static function getPureMethodNameFromService(){
 
         $service=self::getServiceNameAndMethodFromRequestUri();
@@ -283,7 +280,6 @@ class app {
      * @param string
      * @return query params runner
      */
-
     public static function getQueryParamsFromRoute(){
 
         $service=self::getServiceNameAndMethodFromRequestUri();
@@ -313,7 +309,6 @@ class app {
      * @param string
      * @return request uri runner
      */
-
     public static function requestUri(){
 
         return $_SERVER['REQUEST_URI'];
@@ -328,7 +323,6 @@ class app {
      * @param string
      * @return request lang operation runner
      */
-
     public static function getLangOperation($data=null,$langname=null){
 
         if($data!==null && $langname!==null){
