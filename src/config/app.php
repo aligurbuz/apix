@@ -56,7 +56,6 @@ class app {
      * @param string
      * @return response environment runner
      */
-
     public static function environment(){
         $envpath=root.'/.env';
         if(file_exists($envpath)){
@@ -75,7 +74,6 @@ class app {
      * @param string
      * @return response post runner
      */
-
     public static function post($data){
         $border=new self;
         $request=$border->request->input();
@@ -88,13 +86,14 @@ class app {
 
     /**
      * response device token.
-     *
+     * definition : it generates device token for login
+     * used http_user_agent as server variable
+     * result md5 data
      * outputs device token.
      *
      * @param string
      * @return response generate device token runner
      */
-
     public static function deviceToken($data=array(),$status=false){
         $devicetoken=$_SERVER['HTTP_USER_AGENT'];
         if(!$status){
@@ -109,14 +108,13 @@ class app {
     }
 
     /**
-     * response environment.
-     *
-     * outputs environment.
+     * response resolve class.
+     * definition : reflector class for dependency injection
+     * outputs constructor parameters.
      *
      * @param string
-     * @return response environment runner
+     * @return response resolve runner
      */
-
     public static function resolve($class){
 
         $container = \DI\ContainerBuilder::buildDevContainer();
@@ -126,13 +124,12 @@ class app {
 
     /**
      * response arraydelete.
-     *
-     * outputs environment.
+     * definition collection usefull
+     * outputs array delete as key .
      *
      * @param string
-     * @return response environment runner
+     * @return response array delete runner
      */
-
     public static function arrayDelete($data,$delete){
 
         $list=[];
