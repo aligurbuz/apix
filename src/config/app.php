@@ -91,6 +91,8 @@ class app {
      * used http_user_agent as server variable
      * result md5 data
      * outputs device token.
+     * device token is shown if status true
+     * device token as hash is shown if status false
      *
      * @param string
      * @return response generate device token runner
@@ -145,18 +147,19 @@ class app {
 
     /**
      * response checkUrlParam.
+     * definition : it checks query on url with the given param value
+     * it returns boolean value (true|false) as result
+     * outputs checkUrlParam.
      *
-     * outputs environment.
-     *
-     * @param string
-     * @return response environment runner
+     * @param boolean
+     * @return response checkUrlParam runner
      */
-
     public static function checkUrlParam($param=null){
+
+        $border=new self;
         if($param==null){
             return false;
         }
-        $border=new self;
         if(array_key_exists($param,$border->request->getQueryString())){
             return true;
         }
@@ -165,13 +168,13 @@ class app {
 
     /**
      * response getUrlParam.
+     * definition : it returns query value on url with the given param value
+     * it returns null or string data as result
+     * outputs getUrlParam.
      *
-     * outputs environment.
-     *
-     * @param string
-     * @return response environment runner
+     * @param string|null
+     * @return response getUrlParam runner
      */
-
     public static function getUrlParam($param=null){
         if($param==null){
             return null;
