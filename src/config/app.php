@@ -352,7 +352,10 @@ class app {
                 //normal yaml
                 $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.$dataparse[0].'.yaml';
                 if(!file_exists($langstorage)){
-                    $storagestatus=false;
+                    $langstorage=root.'/src/app/'.app.'/storage/tr/'.$dataparse[0].'.yaml';
+                    if(!file_exists($langstorage)){
+                        $storagestatus=false;
+                    }
                 }
             }
 
@@ -360,7 +363,6 @@ class app {
             if($storagestatus){
                 $lang=Yaml::parse(file_get_contents($langstorage));
             }
-
 
             //reel data
             $words=(count($defaultlang)==0 OR $lang==null) ? [] : array_merge($defaultlang,$lang);
