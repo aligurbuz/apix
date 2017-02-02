@@ -19,11 +19,31 @@
 > Every version name can be created only once
 
 ```diff
-+ project and version directory structures is created the following command
++ project and version directory structures is created with following command
 ```
 
 ```
 api project create project_name
+
+```
+
+
+# Service Directory Structure
+* the __call directory in that version is directory including all services
+* the config directory in that version includes configuration files (such as config,database vs)
+* the migrations directory in that version includes database seed and migration files
+* the provisions directory in that version contains object loader and general service provisions
+* the staticProvider directory in that version includes autoload static classes for all services
+*
+
+> Every version name can be created only once
+
+```diff
++ project and version directory structures is created with following command
+```
+
+```
+api service create project_name:service_name
 
 ```
 
