@@ -1,4 +1,13 @@
 <?php
+/*
+ * This file is general access configuration of the every service.
+ *
+ * config app returns boolean,array,string vs
+ * access : \app::environment()
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace src\config;
 use src\services\httprequest as request;
@@ -10,7 +19,8 @@ class app {
 
     /**
      * Constructor.
-     *
+     * definition : class preloader with default
+     * symfony component request class
      * @param type dependency injection and function
      */
     public function __construct(){
@@ -21,7 +31,8 @@ class app {
 
     /**
      * get container.
-     *
+     * definition:classess is defined in a container
+     * and it is called as app("device")->method()
      * @param type dependency injection and function
      * @return array
      */
@@ -38,28 +49,27 @@ class app {
 
     /**
      * response environment.
-     *
+     * definition : project environment situation
+     * local,production and stage
      * outputs environment.
-     *
+     * access : \app::environment()
      * @param string
      * @return response environment runner
      */
 
     public static function environment(){
-
         $envpath=root.'/.env';
-
         if(file_exists($envpath)){
             return 'local';
         }else{
             return 'production';
         }
-
     }
 
     /**
-     * post environment.
-     *
+     * post method for services.
+     * definition : it tells value of key coming with post
+     * access : \app::post(key);
      * outputs environment.
      *
      * @param string
