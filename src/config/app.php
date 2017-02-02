@@ -24,10 +24,10 @@ class app {
      * symfony component request class
      * @param type dependency injection and function
      */
-    public function __construct(){
+    public function __construct(request $request){
 
         //get request info
-        $this->request=new request();
+        $this->request=$request;
     }
 
     /**
