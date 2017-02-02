@@ -8,4 +8,4 @@ Comprehensive restfull api service for php development
 # Documentation :
 * [Installation and system requirements](https://github.com/aligurbuz/apix/blob/master/docs/installation.md).
 * [Create Project and Service](https://github.com/aligurbuz/apix/blob/master/docs/projectSetUp.md)
-* [Service Directory Structure](https://github.com/aligurbuz/apix/blob/master/docs/serviceDirectoryStructure.md)
+* [Project And Service Directory Structure](https://github.com/aligurbuz/apix/blob/master/docs/serviceDirectoryStructure.md)
