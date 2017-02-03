@@ -40,7 +40,7 @@ class __platformfile__ extends \src\app\__projectName__\v1\__call\__serviceName_
      *
      * @return array
      */
-    public function get(){
+    public function get($data=array()){
 
         //return source
         return "__projectName__ source __serviceName__ platform __platformdir__ __platformfile__";

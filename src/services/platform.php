@@ -108,7 +108,7 @@ class platform {
                 $classplatform=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/platform/'.$this->platform.'/'.$this->filename.'.php';
                 if(file_exists($classplatform)){
                     $platformname='\\src\\app\\'.app.'\\'.version.'\\__call\\'.service.'\\platform\\'.$this->platform.'\\'.$this->filename;
-                    return \app::resolve($platformname)->$method();
+                    return \app::resolve($platformname)->$method(call_user_func($callback));
                 }
                 if(is_callable($callback)){
                     return call_user_func($callback);
