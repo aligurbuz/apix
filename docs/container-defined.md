@@ -16,7 +16,7 @@ public function () {
 
 ```
 
-#### app helper method usage
+#### App helper method usage
 
 ```
 public function () {
