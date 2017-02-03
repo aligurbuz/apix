@@ -31,11 +31,13 @@ if (!function_exists('trans')) {
     function trans($data=null,$langname=null)
     {
         if($data!==null){
+
+            $getbase=\app::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
+
             if($langname==null){
-                $getbase=\app::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
-                return \app::getLangOperation($data,$getbase->lang);
+                return \app::getLangOperation($data,$getbase->lang,$getbase->lang);
             }
-            return \app::getLangOperation($data,$langname);
+            return \app::getLangOperation($data,$langname,$getbase->lang);
 
         }
         return null;

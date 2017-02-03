@@ -324,17 +324,16 @@ class app {
      * @param string
      * @return request lang operation runner
      */
-    public static function getLangOperation($data=null,$langname=null){
+    public static function getLangOperation($data=null,$langname=null,$def=null){
 
         if($data!==null && $langname!==null){
-
             //data parse
             $dataparse=explode(".",$data);
 
             //default lang
             $default=root.'/src/app/'.app.'/storage/'.$langname.'/default.yaml';
             if(!file_exists($default)){
-                $default=root.'/src/app/'.app.'/storage/tr/default.yaml';
+                $default=root.'/src/app/'.app.'/storage/'.$def.'/default.yaml';
             }
 
             $defaultlang=null;
@@ -353,7 +352,7 @@ class app {
                 //normal yaml
                 $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.$dataparse[0].'.yaml';
                 if(!file_exists($langstorage)){
-                    $langstorage=root.'/src/app/'.app.'/storage/tr/'.$dataparse[0].'.yaml';
+                    $langstorage=root.'/src/app/'.app.'/storage/'.$def.'/'.$dataparse[0].'.yaml';
                     if(!file_exists($langstorage)){
                         $storagestatus=false;
                     }
