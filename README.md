@@ -15,5 +15,7 @@ Comprehensive restfull api service for php development
 #### Pre-Defined Methods :
 * [Container Procedure](https://github.com/aligurbuz/apix/blob/master/docs/container-defined.md).
 * [Create Project and Service](https://github.com/aligurbuz/apix/blob/master/docs/projectSetUp.md)
-* [Project And Service Directory Structure](https://github.com/aligurbuz/apix/blob/master/docs/serviceDirectoryStructure.md)
-* [Service Classes as Development Form](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
+* [App static class](https://github.com/aligurbuz/apix/blob/master/docs/serviceDirectoryStructure.md)
+* [Configuration component](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
+* [Branch static class](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
+* [Session managing](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)

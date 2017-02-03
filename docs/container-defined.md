@@ -1,6 +1,6 @@
 # Container Procedure
-* Container means easy access to classes that in system.Container is defined for 'app' helper function and \container static class
-* \container static class contains getContainer method in src/app/config.php and config/app.php that in specific config of the every project
+* Container means easy access to classes that in system.Container is defined for 'app' helper function and 'container' static class
+* container static class contains getContainer method in src/app/config.php and config/app.php that in specific config of the every project
 * Both of them is joined and only one container is obtained
 * app helper function can access namespace and container classes
 
