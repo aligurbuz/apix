@@ -44,7 +44,8 @@ class app {
             'device'        =>self::$servicePath.'mobileDetect',
             'redis'         =>self::$servicePath.'redis',
             'guzzle'        =>self::$servicePath.'guzzle',
-            'rmq'           =>self::$servicePath.'rabbitMQ'
+            'rmq'           =>self::$servicePath.'rabbitMQ',
+            'platform'      =>self::$servicePath.'platform',
         ];
 
     }
