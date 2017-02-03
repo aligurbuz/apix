@@ -60,7 +60,22 @@ class platform {
     public function get($method=null,$callback=null){
 
         if(defined("devPackage")){
-            if($method!==null){
+
+            $config='\\src\\packages\\dev\\'.service.'\\platform\\config';
+            $status=false;
+            $instance=true;
+            $configMethodMain=''.$this->platform;
+            $configMethod=''.$this->platform.'_'.$this->filename;
+            if(method_exists($config,$configMethod)){
+                $status=\app::resolve($config)->$configMethod();
+                $instance=false;
+            }
+
+            if($instance && method_exists($config,$configMethodMain)){
+                $status=\app::resolve($config)->$configMethodMain();
+            }
+
+            if($method!==null && $status){
                 $classplatform=root.'/src/packages/dev/'.service.'/platform/'.$this->platform.'/'.$this->filename.'.php';
                 if(file_exists($classplatform)){
                     $platformname='\\src\\packages\\dev\\'.service.'\\platform\\'.$this->platform.'\\'.$this->filename;
@@ -75,7 +90,21 @@ class platform {
             }
         }
         else{
-            if($method!==null){
+            $config='\\src\\app\\'.app.'\\'.version.'\\__call\\'.service.'\\platform\\config';
+            $status=false;
+            $instance=true;
+            $configMethodMain=''.$this->platform;
+            $configMethod=''.$this->platform.'_'.$this->filename;
+            if(method_exists($config,$configMethod)){
+                $status=\app::resolve($config)->$configMethod();
+                $instance=false;
+            }
+
+            if($instance && method_exists($config,$configMethodMain)){
+                $status=\app::resolve($config)->$configMethodMain();
+            }
+
+            if($method!==null && $status){
                 $classplatform=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/platform/'.$this->platform.'/'.$this->filename.'.php';
                 if(file_exists($classplatform)){
                     $platformname='\\src\\app\\'.app.'\\'.version.'\\__call\\'.service.'\\platform\\'.$this->platform.'\\'.$this->filename;
@@ -89,10 +118,13 @@ class platform {
 
             }
 
+            if(is_callable($callback)){
+                return call_user_func($callback);
+            }
+            return false;
+
         }
 
-        $container = \DI\ContainerBuilder::buildDevContainer();
-        return $container->get($sourcename)->$method();
     }
 
 

@@ -68,6 +68,11 @@ class service {
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/platform');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/platform/index.html',null);
 
+                       $platformServiceConfParams['execution']='services/platform_config';
+                       $platformServiceConfParams['params']['projectName']=$project;
+                       $platformServiceConfParams['params']['serviceName']=$service;
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/platform/config.php',$platformServiceConfParams);
+
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);
 

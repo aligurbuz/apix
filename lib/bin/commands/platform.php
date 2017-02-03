@@ -41,6 +41,8 @@ class platform {
                     $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/platform/'.$platformdir.'/'.$platformfile.'.php',$platformServiceGetParams);
 
 
+
+
                     return $this->fileProcessResult($list,function(){
                         return 'platform file has been created';
                     });
