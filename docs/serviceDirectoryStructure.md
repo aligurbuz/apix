@@ -32,6 +32,7 @@ api project create project_name
 * the directories in that __call directory are service names
 * every service is created with itself structures
 * the branches directory is branching for development (see branching development capter)
+* the platform directory is changing service output according to platform for development (see platform development capter)
 * app class is extended by every service.
 * ready(for service) component and restrictions methoding is in app class
 * developer file is an array file
