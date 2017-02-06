@@ -6,11 +6,12 @@
  */
 
 namespace src\app\__projectName__\__version__\staticProvider;
+use src\services\httprequest as request;
 
 
 class __file__
 {
-
+    private $request;
     /**
      * Constructor.
      *
@@ -19,7 +20,7 @@ class __file__
      * main loader as construct method
      */
     public function __construct(){
-
+        $this->request=new request();
     }
 
     /**

@@ -42,6 +42,7 @@ class objectloader {
 
         //get object
         $list=[];
+        $list['dummy']['foo']='bar';
 
         //return
         return $list;
