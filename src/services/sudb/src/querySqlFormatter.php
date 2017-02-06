@@ -506,6 +506,14 @@ class querySqlFormatter {
 
     public function getUpdateQueryFormatter($data,$model){
 
+        if($model['bool']===false){
+            return [
+                'error'=>true,
+                'code'=>203,
+                'message'=>'bool criteria is false'
+            ];
+        }
+
         if(count($data)==0){
             $input=$this->request->input();
             $data=(count($input)) ? $input : $data;

@@ -187,12 +187,18 @@ class selectBuilderOperation {
      */
     public function getSelectDataValueList($data,$model){
         $selectDataValueList=[];
+        $selectDataValueBool=false;
+        if(property_exists($model['model'],"selectHidden")){
+            $selectDataValueBool=($data==$model['model']->selectHidden);
+        }
         foreach($data as $selectDataValue){
             if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
                 $selectDataValueList[]=$selectDataValue;
             }
         }
-        if(count($selectDataValueList)>=0){
+
+
+        if(count($selectDataValueList) OR $selectDataValueBool===true){
             return $selectDataValueList;
         }
         return $data;
