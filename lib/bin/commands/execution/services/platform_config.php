@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\platform;
+namespace src\app\__projectName__\v1\platform;
 use src\services\httprequest as request;
 
 /**
@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * return type array
  */
 
-class config extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class config {
 
     public $request;
 
@@ -30,7 +30,6 @@ class config extends \src\app\__projectName__\v1\__call\__serviceName__\app {
     public function __construct(request $request){
 
         //get request info
-        parent::__construct();
         $this->request=$request;
 
     }

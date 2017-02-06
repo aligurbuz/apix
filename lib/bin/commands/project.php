@@ -83,6 +83,14 @@ class project {
             $database['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/database.php',$database);
 
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/platform');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/platform/index.html',null);
+
+            $platformServiceConfParams['execution']='services/platform_config';
+            $platformServiceConfParams['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/platform/config.php',$platformServiceConfParams);
+
             $database['execution']='services/rabbitMQ';
             $database['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/rabbitMQ.php',$database);

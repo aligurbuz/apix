@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\platform\__platformdir__;
+namespace src\app\__projectName__\v1\platform\__platformdir__\__serviceName__;
 use src\services\httprequest as request;
 
 /**

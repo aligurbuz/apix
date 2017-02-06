@@ -23,6 +23,7 @@ class platform {
     public $method=null;
     public $filename=null;
     public $instance=null;
+    public $service=null;
 
 
     /**
@@ -40,8 +41,14 @@ class platform {
        else{
            if($this->instance==1){
                if($name!==null){
-                   $this->filename=$name;
+                   $this->service=$name;
                    $this->instance=2;
+               }
+           }
+           else{
+               if($name!==null){
+                   $this->filename=$name;
+                   $this->instance=3;
                }
            }
 
@@ -65,7 +72,7 @@ class platform {
             $status=false;
             $instance=true;
             $configMethodMain=''.$this->platform;
-            $configMethod=''.$this->platform.'_'.$this->filename;
+            $configMethod=''.$this->platform.'_'.$this->service.'_'.$this->filename;
             if(method_exists($config,$configMethod)){
                 $status=\app::resolve($config)->$configMethod();
                 $instance=false;
@@ -76,9 +83,9 @@ class platform {
             }
 
             if($method!==null && $status){
-                $classplatform=root.'/src/packages/dev/'.service.'/platform/'.$this->platform.'/'.$this->filename.'.php';
+                $classplatform=root.'/src/packages/dev/'.service.'/platform/'.$this->platform.'/'.$this->service.'/'.$this->filename.'.php';
                 if(file_exists($classplatform)){
-                    $platformname='\\src\\packages\\dev\\'.service.'\\platform\\'.$this->platform.'\\'.$this->filename;
+                    $platformname='\\src\\packages\\dev\\'.service.'\\platform\\'.$this->platform.'\\'.$this->service.'\\'.$this->filename;
                     return \app::resolve($platformname)->$method();
                 }
                 if(is_callable($callback)){
@@ -90,11 +97,11 @@ class platform {
             }
         }
         else{
-            $config='\\src\\app\\'.app.'\\'.version.'\\__call\\'.service.'\\platform\\config';
+            $config='\\src\\app\\'.app.'\\'.version.'\\platform\\config';
             $status=false;
             $instance=true;
             $configMethodMain=''.$this->platform;
-            $configMethod=''.$this->platform.'_'.$this->filename;
+            $configMethod=''.$this->platform.'_'.$this->service.'_'.$this->filename;
             if(method_exists($config,$configMethod)){
                 $status=\app::resolve($config)->$configMethod();
                 $instance=false;
@@ -104,10 +111,11 @@ class platform {
                 $status=\app::resolve($config)->$configMethodMain();
             }
 
+
             if($method!==null && $status){
-                $classplatform=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/platform/'.$this->platform.'/'.$this->filename.'.php';
+                $classplatform=root.'/src/app/'.app.'/'.version.'/platform/'.$this->platform.'/'.$this->service.'/'.$this->filename.'.php';
                 if(file_exists($classplatform)){
-                    $platformname='\\src\\app\\'.app.'\\'.version.'\\__call\\'.service.'\\platform\\'.$this->platform.'\\'.$this->filename;
+                    $platformname='\\src\\app\\'.app.'\\'.version.'\\platform\\'.$this->platform.'\\'.$this->service.'\\'.$this->filename;
                     return \app::resolve($platformname)->$method(call_user_func($callback));
                 }
                 if(is_callable($callback)){

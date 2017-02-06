@@ -38,7 +38,7 @@ class platform {
                     $platformServiceGetParams['params']['serviceName']=$service;
                     $platformServiceGetParams['params']['platformdir']=$platformdir;
                     $platformServiceGetParams['params']['platformfile']=$platformfile;
-                    $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/platform/'.$platformdir.'/'.$platformfile.'.php',$platformServiceGetParams);
+                    $list[]=$this->touch($project.'/'.$version.'/platform/'.$platformdir.'/'.$service.'/'.$platformfile.'.php',$platformServiceGetParams);
 
 
 
