@@ -190,13 +190,15 @@ class selectBuilderOperation {
         $selectDataValueBool=false;
         if(property_exists($model['model'],"selectHidden")){
             $selectDataValueBool=($data==$model['model']->selectHidden);
+            if(count($model['model']->selectHidden)>count($data)){
+                $selectDataValueBool=true;
+            }
         }
         foreach($data as $selectDataValue){
             if(property_exists($model['model'],"selectHidden") && !in_array($selectDataValue,$model['model']->selectHidden)){
                 $selectDataValueList[]=$selectDataValue;
             }
         }
-
 
         if(count($selectDataValueList) OR $selectDataValueBool===true){
             return $selectDataValueList;
