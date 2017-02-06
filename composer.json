@@ -26,7 +26,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "symfony/finder": "^3.2",
         "react/react": "^0.4.2",
-        "php-amqplib/php-amqplib": "2.6.*"
+        "php-amqplib/php-amqplib": "2.6.*",
+        "tightenco/collect": "^5.4"
     },
     "autoload": {
         "files": ["src/helpers.php"]

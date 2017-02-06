@@ -46,6 +46,7 @@ class app {
             'guzzle'        =>self::$servicePath.'guzzle',
             'rmq'           =>self::$servicePath.'rabbitMQ',
             'platform'      =>self::$servicePath.'platform',
+            'collection'      =>self::$servicePath.'appcollection',
         ];
 
     }
