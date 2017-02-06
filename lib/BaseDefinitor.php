@@ -91,6 +91,29 @@ class BaseDefinitor  {
 
     }
 
+
+    /**
+     * get definition classes.
+     *
+     * outputs class definition.
+     *
+     * @param string
+     * @return response definition runner
+     */
+
+    protected function getAppDefinitionLoader(){
+        $appDefinition=\src\config\app::getAppDefinition();
+        $userappDefinitionClass="\\src\\app\\".app."\\".version."\\config\\app";
+        $userappDefinition=$userappDefinitionClass::getAppDefinition();
+        $appDefinition=$appDefinition+$userappDefinition;
+        if(count($appDefinition)){
+            foreach($appDefinition as $key=>$value){
+                define($key,$value);
+            }
+        }
+
+    }
+
     /**
      * get directory name.
      *
