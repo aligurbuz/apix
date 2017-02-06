@@ -176,6 +176,15 @@ class connection extends Definitor {
         define("version",self::$getVersion);
         define("method",self::$serviceMethod);
         define("request",$_SERVER['REQUEST_METHOD']);
+        $appDefinition=\src\config\app::getAppDefinition();
+        $userappDefinitionClass="\\src\\app\\".app."\\".version."\\config\\app";
+        $userappDefinition=$userappDefinitionClass::getAppDefinition();
+        $appDefinition=$appDefinition+$userappDefinition;
+        if(count($appDefinition)){
+            foreach($appDefinition as $key=>$value){
+                define($key,$value);
+            }
+        }
 
     }
 
