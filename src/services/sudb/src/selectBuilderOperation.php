@@ -192,7 +192,7 @@ class selectBuilderOperation {
                 $selectDataValueList[]=$selectDataValue;
             }
         }
-        if(count($selectDataValueList)){
+        if(count($selectDataValueList)>=0){
             return $selectDataValueList;
         }
         return $data;

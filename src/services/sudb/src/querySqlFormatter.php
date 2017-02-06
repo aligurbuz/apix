@@ -87,6 +87,17 @@ class querySqlFormatter {
 
     public function getSqlPrepareFormatter($model){
 
+        if($model['bool']===false){
+            return [
+                'getCountAllTotal'=>0,
+                'paginator'=>$this->getModelOffsetPaginator($model),
+                'currentPage'=>$this->getPaginatorUrlPage(),
+                'result'=>[],
+                'columns'=>$this->getModelTableShowColumns($model['model']->table),
+                'fields'=>$this->getResultFields([])
+            ];
+        }
+
         try {
 
             $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
@@ -346,6 +357,15 @@ class querySqlFormatter {
      */
 
     public function getInsertQueryFormatter($data,$model){
+        $bool=$model['bool'];
+        $model=$model['model'];
+        if($bool===false){
+            return [
+                'error'=>true,
+                'code'=>203,
+                'message'=>'bool criteria is false'
+            ];
+        }
         $dataKeyValues=[];
         $dataPrepareValues=[];
         $dataExecuteValues=[];

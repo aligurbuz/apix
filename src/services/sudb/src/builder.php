@@ -36,6 +36,7 @@ class builder {
     private $whereBuilderOperation;
     private $subClassOf=null;
     private $autoScope=null;
+    private $bool=true;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -76,6 +77,24 @@ class builder {
     public function initial($data=null,$model=null){
         if($this->model==null){
             $this->model=$model;
+        }
+        return $this;
+    }
+
+    /**
+     * bool method applies according to boolean value is true.
+     *
+     * @return array
+     */
+    public function bool($data=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+        if(is_array($data)){
+            $this->bool=(bool)$data[0];
+        }
+        else{
+            $this->bool=(bool)$data;
         }
         return $this;
     }
@@ -517,7 +536,8 @@ class builder {
             'execute'=>$this->execute,
             'paginate'=>$this->page,
             'orderBy'=>$this->order,
-            'groupBy'=>$this->groupBy
+            'groupBy'=>$this->groupBy,
+            'bool'=>$this->bool
         ];
     }
 
@@ -597,7 +617,8 @@ class builder {
             $this->model=$model;
         }
         if(is_array($data) && count($data)){
-            return $this->querySqlFormatter->getInsertQueryFormatter($data[0],$this->model->subClassOf);
+            $data=(array_key_exists(0,$data)) ? $data[0] : $data;
+            return $this->querySqlFormatter->getInsertQueryFormatter($data,['model'=>$this->model->subClassOf,'bool'=>$this->bool]);
         }
 
     }
