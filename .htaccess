@@ -6,7 +6,7 @@
 
     RewriteEngine On
 
-    RewriteRule ^(vendor/|src/|lib/) - [F,L,NC]
+    RewriteRule ^(vendor/|src/|lib/|docs/|tests/) - [F,L,NC]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
