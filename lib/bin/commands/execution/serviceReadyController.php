@@ -14,6 +14,7 @@ class serviceReadyController
      * handle method.
      *
      * @param type ready class and function
+     * @return array
      */
     public function handle(){
         return [
