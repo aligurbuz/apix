@@ -41,13 +41,13 @@ class platform {
        else{
            if($this->instance==1){
                if($name!==null){
-                   $this->service=$name;
+                   $this->service=service;
                    $this->instance=2;
                }
            }
            else{
                if($name!==null){
-                   $this->filename=$name;
+                   $this->filename=method;
                    $this->instance=3;
                }
            }
@@ -64,7 +64,12 @@ class platform {
      *
      * @return array
      */
-    public function get($method=null,$callback=null){
+    public function take($method=null,$callback=null){
+
+        if($this->service==null && $this->filename==null){
+            $this->service=service;
+            $this->filename=method;
+        }
 
         if(defined("devPackage")){
 
@@ -97,6 +102,7 @@ class platform {
             }
         }
         else{
+
             $config='\\src\\app\\'.app.'\\'.version.'\\platform\\config';
             $status=false;
             $instance=true;

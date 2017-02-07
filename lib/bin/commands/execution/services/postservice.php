@@ -13,11 +13,11 @@ use src\services\httprequest as request;
 
 /**
  * Represents a getService class.
- *
- * main call
+ * http method : post
+ * every method that on this service is called with post method on browser
+ * every service extends app class
  * return type array
  */
-
 class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
 
     public $request;
@@ -39,7 +39,8 @@ class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app
 
     /**
      * index method is main method.
-     *
+     * it is default method without needed implemantation
+     * method can produce ouput as string or array
      * @return array
      */
     public function index(){
