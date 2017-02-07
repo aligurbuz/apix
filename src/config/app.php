@@ -37,9 +37,9 @@ class app {
      * @param type dependency injection and function
      * @return array
      */
-    public static function getContainer(){
+    public static function getContainer($container=null){
 
-        return [
+        $containers= [
 
             'device'        =>self::$servicePath.'mobileDetect',
             'redis'         =>self::$servicePath.'redis',
@@ -48,6 +48,10 @@ class app {
             'platform'      =>self::$servicePath.'platform',
             'collection'    =>self::$servicePath.'appCollection',
         ];
+
+        //if container is null,all containers are evaluated
+        //if container is not null,only selected container is evaluated
+        return ($container==null) ? $containers : $containers[$container];
 
     }
 
@@ -60,7 +64,17 @@ class app {
      */
     public static function getAppDefinition(){
 
-        return [];
+        //get device class
+        $deviceClass=self::getContainer("device");
+        $device=self::resolve($deviceClass);
+
+        //defines
+        return [
+            'MOBILE'=>$device->isMobile(),
+            'IOS'=>$device->isIphone(),
+            'ANDROID'=>$device->isAndroid(),
+            'TABLET'=>$device->isTablet()
+        ];
 
     }
 

@@ -50,7 +50,7 @@ class mobileDetect {
      *
      * @return bool true|false
      */
-    public function isTable(){
+    public function isTablet(){
 
         return $this->mobile->isTablet();
     }
