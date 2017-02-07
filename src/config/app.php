@@ -88,13 +88,13 @@ class app {
      * @return response environment runner
      */
     public static function environment(){
-        $envpath=root.'/.env';
-        if(file_exists($envpath)){
+        $envPath=root.'/.env';
+        if(file_exists($envPath)){
             return 'local';
         }
         else{
-            $otherenvpath=self::resolve("\\src\\env");
-            $environment=$otherenvpath->environmentSetUp();
+            $otherEnvPath=self::resolve("\\src\\env");
+            $environment=$otherEnvPath->environmentSetUp();
             if($environment!==null){
                 return $environment;
             }
