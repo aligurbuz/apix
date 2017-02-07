@@ -68,6 +68,9 @@ class service {
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);
 
+                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml/expected');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/expected/index.html',null);
+
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/interfaceObjects');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/interfaceObjects/index.html',null);
 

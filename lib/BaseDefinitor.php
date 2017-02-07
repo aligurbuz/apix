@@ -9,6 +9,7 @@
  */
 
 namespace lib;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Represents a getService class.
@@ -88,6 +89,37 @@ class BaseDefinitor  {
     protected function getClassDependencyResolver(){
         $resolve=$this->getFileClassRequire(root.'/lib/resolver.php');
         return new \classresolver();
+
+    }
+
+
+
+    /**
+     * get resolve classes.
+     *
+     * outputs class resolver.
+     *
+     * @param string
+     * @return response resolve runner
+     */
+    protected function serviceDump($requestServiceMethodReal,$requestServiceMethod){
+        $serviceConfFile=root."/src/app/".app."/".version."/__call/".service."/serviceConf.php";
+        $serviceConf=require($serviceConfFile);
+        if(is_array($serviceConf) && array_key_exists("expected",$serviceConf) && $serviceConf['expected']){
+            $yamllist=[];
+            foreach($requestServiceMethodReal as $key=>$value){
+                if(is_array($value)){
+                    foreach($value as $v1=>$v2){
+                        $yamllist[$v1]=gettype($v2);
+                    }
+                }
+                else{
+                    $yamllist[$key]=gettype($value);
+                }
+            }
+            $yaml = Yaml::dump($yamllist);
+            file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.$requestServiceMethod.'.yaml', $yaml);
+        }
 
     }
 
