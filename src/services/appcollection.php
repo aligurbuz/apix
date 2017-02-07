@@ -169,5 +169,39 @@ class appCollection {
         return null;
     }
 
+    /**
+     * collection except get data.
+     * The except method returns all items in the collection except for those with the specified keys
+     * @return collection class
+     */
+    public function except($data=array(),$exceptArray=array())
+    {
+        if(count($data)){
+            $collect=collect($data)->except($diffKeysArray);
+            return $collect->all();
+        }
+        return null;
+    }
+
+    /**
+     * collection filter get data.
+     * The filter method filters the collection using the given callback, keeping only those items that pass a given truth test:
+     * @return collection class
+     */
+    public function filter($data=array(),$callback)
+    {
+        if(count($data)){
+            if(is_callable($callback)){
+                $collect=collect($data)->filter($callback);
+            }
+            else{
+                $collect=collect($data)->filter();
+            }
+
+            return $collect->all();
+        }
+        return null;
+    }
+
 
 }
