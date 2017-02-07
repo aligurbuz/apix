@@ -1,0 +1,10 @@
+app_env=stage
+driver=mysql
+host=localhost
+database=database
+user=user
+password=password
+rabbitMQ_host=localhost
+rabbitMQ_port=port
+rabbitMQ_user=user
+rabbitMQ_password=password

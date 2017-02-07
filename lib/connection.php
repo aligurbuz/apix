@@ -152,6 +152,14 @@ class connection extends Definitor {
             $dotenv = new \Dotenv\Dotenv(root);
             $dotenv->load();
         }
+        else{
+            $otherenvpath=\app::resolve("\\src\\env");
+            $environment=$otherenvpath->environmentSetUp();
+            if($environment!==null){
+                $dotenv = new \Dotenv\Dotenv(root.'/src','.'.$environment);
+                $dotenv->load();
+            }
+        }
 
         //get before middleware
         $this->middleware("before");
