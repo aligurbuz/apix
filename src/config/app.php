@@ -92,6 +92,13 @@ class app {
         if(file_exists($envpath)){
             return 'local';
         }
+        else{
+            $otherenvpath=self::resolve("\\src\\env");
+            $environment=$otherenvpath->environmentSetUp();
+            if($environment!==null){
+                return $environment;
+            }
+        }
         return 'production';
     }
 
