@@ -95,60 +95,20 @@ class BaseDefinitor  {
 
 
     /**
-     * get resolve classes.
+     * get serviceDump classes.
      *
-     * outputs class resolver.
+     * it dumps service objects and service requirements.
      *
-     * @param string
-     * @return response resolve runner
+     * @param serviceDump
+     * @return response serviceDump runner
      */
     protected function serviceDump($requestServiceMethodReal=null,$requestServiceMethod=null,$other=array()){
-
         return $this->serviceConf(function() use ($requestServiceMethodReal,$requestServiceMethod,$other){
-            $yamllist=[];
-            $info=[];
-            if($requestServiceMethodReal!==null && $requestServiceMethod!==null){
-                foreach($requestServiceMethodReal as $key=>$value){
-                    if(is_array($value)){
-                        foreach($value as $v1=>$v2){
-                            $yamllist[$v1]=gettype($v2);
-                            $info[$v1]=null;
-                        }
-                    }
-                    else{
-                        $yamllist[$key]=gettype($value);
-                        $info[$key]=null;
-                    }
-                }
-
-                //service yaml file
-                $serviceYamlFile='./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml';
-
-                //values
-                $value = Yaml::parse(file_get_contents($serviceYamlFile));
-                $yaml = Yaml::dump(['http'=>strtolower(request),
-                                    'servicePath'=>''.app.'/'.service.'/'.method.''
-                                    ]+
-                                    ['data'=>$yamllist]
-                                    +$value+['info'=>$info]
-                                    );
-                //file put yaml variables
-                file_put_contents($serviceYamlFile, $yaml);
-
-            }
-
-            //token for yaml
-            if(array_key_exists("token",$other)){
-                $yaml = Yaml::dump(['tokenRequest'=>['status'=>$other['token'],'getParam'=>['_token'=>'string']]]);
-                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml', $yaml);
-            }
-
-
+            return new \lib\serviceDump($requestServiceMethodReal,$requestServiceMethod,$other);
         });
 
 
     }
-
 
     /**
      * get serviceconf classes.
@@ -156,17 +116,16 @@ class BaseDefinitor  {
      * outputs class resolver.
      *
      * @param string
-     * @return response resolve runner
+     * @return response serviceConf runner
      */
     protected function serviceConf($callback=null){
-        $serviceConfFile=root."/src/app/".app."/".version."/__call/".service."/serviceConf.php";
+        $serviceConfFile=root."/".src."/".app."/".version."/__call/".service."/serviceConf.php";
         $serviceConf=require($serviceConfFile);
         if($callback==null){
             return $serviceConf;
         }
 
         if(is_callable($callback)){
-
             if(is_array($serviceConf) && array_key_exists("dataDump",$serviceConf) && $serviceConf['dataDump']){
                 return call_user_func($callback);
             }
