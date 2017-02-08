@@ -121,12 +121,23 @@ class BaseDefinitor  {
                     }
                 }
 
-                $value = Yaml::parse(file_get_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml'));
-                $yaml = Yaml::dump(['http'=>strtolower(request),'servicePath'=>''.app.'/'.service.'/'.method.'']+['data'=>$yamllist]+$value+['info'=>$info]);
-                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml', $yaml);
+                //service yaml file
+                $serviceYamlFile='./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml';
+
+                //values
+                $value = Yaml::parse(file_get_contents($serviceYamlFile));
+                $yaml = Yaml::dump(['http'=>strtolower(request),
+                                    'servicePath'=>''.app.'/'.service.'/'.method.''
+                                    ]+
+                                    ['data'=>$yamllist]
+                                    +$value+['info'=>$info]
+                                    );
+                //file put yaml variables
+                file_put_contents($serviceYamlFile, $yaml);
 
             }
 
+            //token for yaml
             if(array_key_exists("token",$other)){
                 $yaml = Yaml::dump(['tokenRequest'=>['status'=>$other['token'],'getParam'=>['_token'=>'string']]]);
                 file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml', $yaml);
