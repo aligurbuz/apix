@@ -106,27 +106,30 @@ class BaseDefinitor  {
 
         return $this->serviceConf(function() use ($requestServiceMethodReal,$requestServiceMethod,$other){
             $yamllist=[];
+            $info=[];
             if($requestServiceMethodReal!==null && $requestServiceMethod!==null){
                 foreach($requestServiceMethodReal as $key=>$value){
                     if(is_array($value)){
                         foreach($value as $v1=>$v2){
                             $yamllist[$v1]=gettype($v2);
+                            $info[$v1]=null;
                         }
                     }
                     else{
                         $yamllist[$key]=gettype($value);
+                        $info[$key]=null;
                     }
                 }
 
-                $value = Yaml::parse(file_get_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.method.'.yaml'));
-                $yaml = Yaml::dump(['data'=>$yamllist]+$value);
-                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.method.'.yaml', $yaml);
+                $value = Yaml::parse(file_get_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml'));
+                $yaml = Yaml::dump(['http'=>strtolower(request),'servicePath'=>''.app.'/'.service.'/'.method.'']+['data'=>$yamllist]+$value+['info'=>$info]);
+                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml', $yaml);
 
             }
 
             if(array_key_exists("token",$other)){
                 $yaml = Yaml::dump(['tokenRequest'=>['status'=>$other['token'],'getParam'=>['_token'=>'string']]]);
-                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.method.'.yaml', $yaml);
+                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml', $yaml);
             }
 
 
