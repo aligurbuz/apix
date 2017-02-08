@@ -3,7 +3,7 @@
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
 
-class serviceDump {
+class serviceDumpObjects {
 
     private $requestServiceMethodReal;
     private $requestServiceMethod;

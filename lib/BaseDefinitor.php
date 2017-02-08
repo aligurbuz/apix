@@ -104,7 +104,7 @@ class BaseDefinitor  {
      */
     protected function serviceDump($requestServiceMethodReal=null,$requestServiceMethod=null,$other=array()){
         return $this->serviceConf(function() use ($requestServiceMethodReal,$requestServiceMethod,$other){
-            return new \lib\serviceDump($requestServiceMethodReal,$requestServiceMethod,$other);
+            return new \lib\serviceDumpObjects($requestServiceMethodReal,$requestServiceMethod,$other);
         });
 
 
