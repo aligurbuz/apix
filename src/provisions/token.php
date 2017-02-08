@@ -38,12 +38,12 @@ class token {
      *
      * @return array
      */
-    public function handle(){
+    public function handle($environment=null){
 
         //status check
         //false status : access without token
         //tru status : access with token
-        $status=(\app::environment()=="local") ? false : false;
+        $status=($environment=="local") ? true : false;
 
         //token status false|true
         $token['status']=$status;

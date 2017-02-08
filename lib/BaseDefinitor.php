@@ -102,24 +102,63 @@ class BaseDefinitor  {
      * @param string
      * @return response resolve runner
      */
-    protected function serviceDump($requestServiceMethodReal,$requestServiceMethod){
-        $serviceConfFile=root."/src/app/".app."/".version."/__call/".service."/serviceConf.php";
-        $serviceConf=require($serviceConfFile);
-        if(is_array($serviceConf) && array_key_exists("expected",$serviceConf) && $serviceConf['expected']){
+    protected function serviceDump($requestServiceMethodReal=null,$requestServiceMethod=null,$other=array()){
+
+        return $this->serviceConf(function() use ($requestServiceMethodReal,$requestServiceMethod,$other){
             $yamllist=[];
-            foreach($requestServiceMethodReal as $key=>$value){
-                if(is_array($value)){
-                    foreach($value as $v1=>$v2){
-                        $yamllist[$v1]=gettype($v2);
+            if($requestServiceMethodReal!==null && $requestServiceMethod!==null){
+                foreach($requestServiceMethodReal as $key=>$value){
+                    if(is_array($value)){
+                        foreach($value as $v1=>$v2){
+                            $yamllist[$v1]=gettype($v2);
+                        }
+                    }
+                    else{
+                        $yamllist[$key]=gettype($value);
                     }
                 }
-                else{
-                    $yamllist[$key]=gettype($value);
-                }
+
+                $value = Yaml::parse(file_get_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.method.'.yaml'));
+                $yaml = Yaml::dump(['data'=>$yamllist]+$value);
+                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.method.'.yaml', $yaml);
+
             }
-            $yaml = Yaml::dump($yamllist);
-            file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.$requestServiceMethod.'.yaml', $yaml);
+
+            if(array_key_exists("token",$other)){
+                $yaml = Yaml::dump(['tokenRequest'=>['status'=>$other['token'],'getParam'=>['_token'=>'string']]]);
+                file_put_contents('./src/app/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.method.'.yaml', $yaml);
+            }
+
+
+        });
+
+
+    }
+
+
+    /**
+     * get serviceconf classes.
+     *
+     * outputs class resolver.
+     *
+     * @param string
+     * @return response resolve runner
+     */
+    protected function serviceConf($callback=null){
+        $serviceConfFile=root."/src/app/".app."/".version."/__call/".service."/serviceConf.php";
+        $serviceConf=require($serviceConfFile);
+        if($callback==null){
+            return $serviceConf;
         }
+
+        if(is_callable($callback)){
+
+            if(is_array($serviceConf) && array_key_exists("dataDump",$serviceConf) && $serviceConf['dataDump']){
+                return call_user_func($callback);
+            }
+        }
+
+        return [];
 
     }
 
@@ -221,7 +260,11 @@ class BaseDefinitor  {
             $paramlist=[];
             foreach ($getParams as $main){
                 $getParamsMain=explode("=",$main);
-                $paramlist[$getParamsMain[0]]=$getParamsMain[1];
+                if(count($getParamsMain)>0 && array_key_exists(1,$getParamsMain))
+                {
+                    $paramlist[$getParamsMain[0]]=$getParamsMain[1];
+                }
+
             }
             return $paramlist;
         }
@@ -497,16 +540,33 @@ class BaseDefinitor  {
      */
 
     protected function token($callback){
-
         //get token
         $token="\\src\\provisions\\token";
         $token=$this->resolve->resolve($token);
-        $tokenhandle=$token->handle();
+
+        $prodDumpStatus=false;
+        if(is_callable($callback)){
+            $tokenhandle=$token->handle(\app::environment());
+        }
+        else{
+            $tokenhandle=$token->handle("production");
+            $this->serviceDump(null,null,['token'=>$tokenhandle['status']]);
+            $prodDumpStatus=true;
+        }
+
+        //return token provision false
+        if(false===$prodDumpStatus){
+            $this->token("production");
+        }
+
         $tokenexcept=$token->except();
 
         if(!$tokenhandle['status']){
             //return token provision
-            return call_user_func($callback);
+            if(is_callable($callback)){
+                return call_user_func($callback);
+            }
+
         }
         $queryParams=$this->getQueryParamsFromRoute();
 
@@ -516,11 +576,16 @@ class BaseDefinitor  {
             if(in_array($queryParams['_token'],$tokenhandle['tokens'])){
                 if(!array_key_exists($queryParams['_token'],$tokenhandle['clientIp'])){
                     //return token provision
-                    return call_user_func($callback);
+                    if(is_callable($callback)){
+                        return call_user_func($callback);
+                    }
+
                 }
-                if($tokenhandle['clientIp'][$queryParams['_token']]==$_SERVER['REMOTE_ADDR']){
+                if(array_key_exists($queryParams['_token'],$tokenhandle['clientIp']) && $tokenhandle['clientIp'][$queryParams['_token']]==$_SERVER['REMOTE_ADDR']){
                     //return token provision
-                    return call_user_func($callback);
+                    if(is_callable($callback)){
+                        return call_user_func($callback);
+                    }
                 }
 
             }
@@ -529,18 +594,21 @@ class BaseDefinitor  {
         //except provision
         if(in_array(app.'/'.service.'/'.method.'',$tokenexcept) OR in_array(app.'/'.service.'',$tokenexcept)){
             //return token provision
-            return call_user_func($callback);
+            if(is_callable($callback)){
+                return call_user_func($callback);
+            }
         }
 
         //except provision clientIp
         if(array_key_exists($_SERVER['REMOTE_ADDR'],$tokenexcept['clientIp'])){
             if(in_array(app.'/'.service.'/'.method.'',$tokenexcept['clientIp'][$_SERVER['REMOTE_ADDR']]) OR in_array(app.'/'.service.'',$tokenexcept['clientIp'][$_SERVER['REMOTE_ADDR']])){
                 //return token provision
-                return call_user_func($callback);
+                if(is_callable($callback)){
+                    return call_user_func($callback);
+                }
             }
         }
 
-        //return token provision false
         return $this->responseOut([],'token provision error');
 
 
