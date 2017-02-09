@@ -4,6 +4,8 @@ namespace lib;
 
 class environment {
 
+    private static $local='local';
+    private static $production='production';
 
     /**
      * service environment constructs.
@@ -12,9 +14,7 @@ class environment {
      *
      * @internal param $string
      */
-    public function __construct(){
-
-    }
+    public function __construct(){}
 
     /**
      * service environment runner method.
@@ -25,19 +25,18 @@ class environment {
      * @return response service environment runner
      */
     public static function get(){
+        return self::defaultEnvironment(function(){
+            return self::applicationEnvironment(function(){
+                $otherEnvPath=\src\config\app::resolve("\\src\\env\\env");
+                $environment=$otherEnvPath->environmentSetUp();
+                if($environment!==null){
+                    return $environment;
+                }
 
-        $envPath=root.'/.env';
-        if(file_exists($envPath)){
-            return 'local';
-        }
-        else{
-            $otherEnvPath=\src\config\app::resolve("\\src\\env\\env");
-            $environment=$otherEnvPath->environmentSetUp();
-            if($environment!==null){
-                return $environment;
-            }
-        }
-        return 'production';
+                return self::$production;
+
+            });
+        });
     }
 
 
@@ -52,8 +51,11 @@ class environment {
     public static function config(){
 
         //check environment
-        if(self::get()=="local"){
-            $dotenv = new \Dotenv\Dotenv(root);
+        if(self::get()==self::$local){
+            $appEnvPath=root.'/.'.app.'env';
+            $dotenv=(file_exists($appEnvPath))
+                    ? new \Dotenv\Dotenv(root,'.'.app.'env')
+                    : new \Dotenv\Dotenv(root);
             $dotenv->load();
         }
         else{
@@ -65,6 +67,49 @@ class environment {
             }
         }
 
+    }
+
+
+    /**
+     * service environment application method.
+     *
+     * outputs get file.
+     *
+     * @param string
+     * @return response service environment application runner
+     */
+    public static function applicationEnvironment($callback){
+
+        $appEnvPath=root.'/.'.app.'env';
+        if(file_exists($appEnvPath)){
+            return self::$local;
+        }
+        else{
+            if(is_callable($callback)){
+                return call_user_func($callback);
+            }
+        }
+    }
+
+    /**
+     * service environment default method.
+     *
+     * outputs get file.
+     *
+     * @param string
+     * @return response service environment default runner
+     */
+    public static function defaultEnvironment($callback){
+
+        $envPath=root.'/.env';
+        if(file_exists($envPath)){
+            return self::$local;
+        }
+        else{
+            if(is_callable($callback)){
+                return call_user_func($callback);
+            }
+        }
     }
 
 }
