@@ -63,6 +63,11 @@ class environment {
             $environment=$otherenvpath->environmentSetUp();
             if($environment!==null){
                 $dotenv = new \Dotenv\Dotenv(root.'/src/env','.'.$environment);
+
+                $environmentInProjectPath=root.'/'.src.'/'.app.'/storage/env/.'.$environment;
+                if(file_exists($environmentInProjectPath)){
+                    $dotenv = new \Dotenv\Dotenv(root.'/'.src.'/'.app.'/storage/env','.'.$environment);
+                }
                 $dotenv->load();
             }
         }
