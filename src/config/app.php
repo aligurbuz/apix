@@ -47,6 +47,7 @@ class app {
             'rmq'           =>self::$servicePath.'rabbitMQ',
             'platform'      =>self::$servicePath.'platform',
             'collection'    =>self::$servicePath.'appCollection',
+            'session'       =>self::$servicePath.'httpSession',
         ];
 
         //if container is null,all containers are evaluated
