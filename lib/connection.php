@@ -85,7 +85,7 @@ class connection extends Definitor {
 
                     $requestServiceMethod=$serviceMethod;
                     if(method_exists($apix,$requestServiceMethod)){
-                        if(property_exists($apix,"forbidden") && \app::environment()=="production"){
+                        if(property_exists($apix,"forbidden") && \lib\environment::get()=="production"){
                             if($apix->forbidden){
                                 return $instance->responseOut([],$instance->getFixLog('noaccessright'));
                             }
@@ -148,7 +148,7 @@ class connection extends Definitor {
         $this->getPreLoaderClasses();
 
         //check environment
-        if(\app::environment()=="local"){
+        if(\lib\environment::get()=="local"){
             $dotenv = new \Dotenv\Dotenv(root);
             $dotenv->load();
         }

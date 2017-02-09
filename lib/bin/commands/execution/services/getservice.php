@@ -47,7 +47,7 @@ class getService extends \src\app\__projectName__\v1\__call\__serviceName__\app 
 
         //return
         return [
-            'environment'=>\app::environment(),
+            'environment'=>environment(),
             'clientIp'=>$this->request->getClientIp(),
             'isMobile'=>app("device")->isMobile()
         ];

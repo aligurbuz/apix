@@ -27,6 +27,14 @@ if (!function_exists('app')) {
     }
 }
 
+
+if (!function_exists('environment')) {
+    function environment()
+    {
+        return \lib\environment::get();
+    }
+}
+
 if (!function_exists('trans')) {
     function trans($data=null,$langname=null)
     {

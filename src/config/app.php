@@ -78,29 +78,7 @@ class app {
 
     }
 
-    /**
-     * response environment.
-     * definition : project environment situation
-     * local,production and stage
-     * outputs environment.
-     * access : \app::environment()
-     * @param string
-     * @return response environment runner
-     */
-    public static function environment(){
-        $envPath=root.'/.env';
-        if(file_exists($envPath)){
-            return 'local';
-        }
-        else{
-            $otherEnvPath=self::resolve("\\src\\env");
-            $environment=$otherEnvPath->environmentSetUp();
-            if($environment!==null){
-                return $environment;
-            }
-        }
-        return 'production';
-    }
+
 
     /**
      * post method for services.

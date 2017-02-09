@@ -519,7 +519,7 @@ class BaseDefinitor  {
 
         $prodDumpStatus=false;
         if(is_callable($callback)){
-            $tokenhandle=$token->handle(\app::environment());
+            $tokenhandle=$token->handle(\lib\environment::get());
         }
         else{
             $tokenhandle=$token->handle("production");
