@@ -11,7 +11,6 @@
 
 namespace src\config;
 use src\services\httprequest as request;
-use Symfony\Component\Yaml\Yaml;
 
 class app {
 
@@ -306,68 +305,6 @@ class app {
     public static function requestUri(){
 
         return $_SERVER['REQUEST_URI'];
-    }
-
-
-    /**
-     * get lang operation.
-     *
-     * this lang request uri parameter.
-     *
-     * @param string
-     * @return request lang operation runner
-     */
-    public static function getLangOperation($data=null,$langname=null,$def=null){
-
-        if($data!==null && $langname!==null){
-            //data parse
-            $dataparse=explode(".",$data);
-
-            //default lang
-            $default=root.'/src/app/'.app.'/storage/'.$langname.'/default.yaml';
-            if(!file_exists($default)){
-                $default=root.'/src/app/'.app.'/storage/'.$def.'/default.yaml';
-            }
-
-            $defaultlang=null;
-            if(file_exists($default)){
-                $defaultlang=Yaml::parse(file_get_contents($default));
-            }
-
-            if($defaultlang==null){
-                $defaultlang=[];
-            }
-
-            //service yaml lang
-            $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.service.'_'.$dataparse[0].'.yaml';
-            $storagestatus=true;
-            if(!file_exists($langstorage)){
-                //normal yaml
-                $langstorage=root.'/src/app/'.app.'/storage/'.$langname.'/'.$dataparse[0].'.yaml';
-                if(!file_exists($langstorage)){
-                    $langstorage=root.'/src/app/'.app.'/storage/'.$def.'/'.$dataparse[0].'.yaml';
-                    if(!file_exists($langstorage)){
-                        $storagestatus=false;
-                    }
-                }
-            }
-
-            $lang=null;
-            if($storagestatus){
-                $lang=Yaml::parse(file_get_contents($langstorage));
-            }
-
-            //reel data
-            $words=(count($defaultlang)==0 OR $lang==null) ? [] : array_merge($defaultlang,$lang);
-
-            //if there is key : output
-            if(array_key_exists($dataparse[1],$words)){
-                return $words[$dataparse[1]];
-            }
-
-        }
-        return null;
-
     }
 
 
