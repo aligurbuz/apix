@@ -41,7 +41,7 @@ class env {
      */
     public function environmentSetUp(){
 
-        return 'stage';
+        return null;
         //example
         /*if($this->request->getClientIp()='x.x.x.'){
             return 'stage';
