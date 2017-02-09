@@ -140,26 +140,6 @@ class app {
     }
 
     /**
-     * response arraydelete.
-     * definition collection usefull
-     * outputs array delete as key .
-     *
-     * @param string
-     * @return response array delete runner
-     */
-    public static function arrayDelete($data,$delete){
-
-        $list=[];
-        foreach($data as $key=>$value){
-            if(!in_array($key,$delete)){
-                $list[$key]=$value;
-            }
-        }
-
-        return $list;
-    }
-
-    /**
      * response checkUrlParam.
      * definition : it checks query on url with the given param value
      * it returns boolean value (true|false) as result

@@ -377,7 +377,7 @@ class querySqlFormatter {
 
 
         if(array_key_exists("_token",$data)){
-            $data=\app::arrayDelete($data,['_token']);
+            $data=self::arrayDelete($data,['_token']);
         }
 
         //insert condition according to model
@@ -521,7 +521,7 @@ class querySqlFormatter {
 
 
         if(array_key_exists("_token",$data)){
-            $data=\app::arrayDelete($data,['_token']);
+            $data=self::arrayDelete($data,['_token']);
         }
 
         //update condition according to model
@@ -681,6 +681,27 @@ class querySqlFormatter {
         foreach($data as $key=>$value){
             return json_decode(json_encode($data[$key]),1);
         }
+    }
+
+
+    /**
+     * response arraydelete.
+     * definition collection usefull
+     * outputs array delete as key .
+     *
+     * @param string
+     * @return response array delete runner
+     */
+    private static function arrayDelete($data,$delete){
+
+        $list=[];
+        foreach($data as $key=>$value){
+            if(!in_array($key,$delete)){
+                $list[$key]=$value;
+            }
+        }
+
+        return $list;
     }
 
 }
