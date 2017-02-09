@@ -58,7 +58,7 @@ class index {
         $success=true;
 
         //need token for production
-        if(\app::environment()!=="local"){
+        if(environment()!=="local"){
             $input=$this->request->input();
             $success=(\src\services\csrf::checkTokenForPostMethod($input)) ? true : false;
         }

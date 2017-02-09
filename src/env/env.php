@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src;
+namespace src\env;
 use src\services\httprequest as request;
 
 /**

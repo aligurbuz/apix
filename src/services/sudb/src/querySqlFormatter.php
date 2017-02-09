@@ -48,7 +48,7 @@ class querySqlFormatter {
             $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
         catch (\PDOException $e) {
-            if(\app::environment()=="local"){
+            if(environment()=="local"){
                 $connectionError=[
                     'status'=>false,
                     'result'=>[
@@ -437,7 +437,7 @@ class querySqlFormatter {
         //last data
         foreach($data as $key=>$value){
             if(strlen(trim($value))==0){
-                if(\app::environment()=="local"){
+                if(environment()=="local"){
                     return [
                         'error'=>true,
                         'message'=>'empty data would not been sent'
@@ -473,7 +473,7 @@ class querySqlFormatter {
             }
         }
         catch(\Exception $e){
-            if(\app::environment()=="local"){
+            if(environment()=="local"){
                 return [
                     'error'=>true,
                     'code'=>$e->getCode(),
@@ -602,7 +602,7 @@ class querySqlFormatter {
                 }
             }
             catch(\Exception $e){
-                if(\app::environment()=="local"){
+                if(environment()=="local"){
                     return [
                         'error'=>true,
                         'code'=>$e->getCode(),
@@ -649,7 +649,7 @@ class querySqlFormatter {
             }
         }
         catch(\Exception $e){
-            if(\app::environment()=="local"){
+            if(environment()=="local"){
                 return [
                     'error'=>true,
                     'code'=>$e->getCode(),

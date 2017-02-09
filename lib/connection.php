@@ -148,18 +148,7 @@ class connection extends Definitor {
         $this->getPreLoaderClasses();
 
         //check environment
-        if(\lib\environment::get()=="local"){
-            $dotenv = new \Dotenv\Dotenv(root);
-            $dotenv->load();
-        }
-        else{
-            $otherenvpath=\app::resolve("\\src\\env");
-            $environment=$otherenvpath->environmentSetUp();
-            if($environment!==null){
-                $dotenv = new \Dotenv\Dotenv(root.'/src','.'.$environment);
-                $dotenv->load();
-            }
-        }
+        \lib\environment::config();
 
         //get before middleware
         $this->middleware("before");
