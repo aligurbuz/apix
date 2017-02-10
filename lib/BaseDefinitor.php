@@ -120,17 +120,18 @@ class BaseDefinitor  {
      */
     protected function serviceConf($callback=null){
         $serviceConfFile=root."/".src."/".app."/".version."/__call/".service."/serviceConf.php";
-        $serviceConf=require($serviceConfFile);
-        if($callback==null){
-            return $serviceConf;
-        }
+        if(file_exists($serviceConfFile)){
+            $serviceConf=require($serviceConfFile);
+            if($callback==null){
+                return $serviceConf;
+            }
 
-        if(is_callable($callback)){
-            if(is_array($serviceConf) && array_key_exists("dataDump",$serviceConf) && $serviceConf['dataDump']){
-                return call_user_func($callback);
+            if(is_callable($callback)){
+                if(is_array($serviceConf) && array_key_exists("dataDump",$serviceConf) && $serviceConf['dataDump']){
+                    return call_user_func($callback);
+                }
             }
         }
-
         return [];
 
     }
