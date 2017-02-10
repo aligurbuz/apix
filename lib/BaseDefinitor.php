@@ -646,4 +646,41 @@ class BaseDefinitor  {
         $fixLog=$this->getFileClassRequire(root.'/lib/fixlogparams.php');
         return $fixLog[$data];
     }
+
+
+    /**
+     * get file boot params.
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+
+    protected function bootServiceLoader($serviceMethod){
+        $bootFile="\\src\\app\\".app."\\".version."\\serviceBaseController";
+        $bootFileResolve=\src\config\app::resolve($bootFile);
+
+        if($bootFileResolve->boot===true){
+            $boot=$bootFileResolve->webServiceBoot();
+            if(array_key_exists(service,$boot)){
+                $bootList=[];
+                if(array_key_exists('all',$boot[service])){
+                    $bootList[]=$boot[service]['all'];
+                }
+
+                if(array_key_exists($serviceMethod,$boot[service])){
+                    $bootList[]=$boot[service][$serviceMethod];
+                }
+            }
+
+            return $bootList;
+        }
+
+        return [];
+
+
+    }
+
+
 }

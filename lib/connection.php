@@ -97,7 +97,8 @@ class connection extends Definitor {
                             $restrictionsStatus=$restrictions[$requestServiceMethod];
                         }
                         if($restrictionsStatus){
-                            $requestServiceMethodReal=$apix->$requestServiceMethod();
+                            $boot=$instance->bootServiceLoader($requestServiceMethod);
+                            $requestServiceMethodReal=$apix->$requestServiceMethod($boot);
                             $instance->serviceDump($requestServiceMethodReal,$requestServiceMethod);
                             return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
                                 return $instance->responseOut($requestServiceMethodReal);
