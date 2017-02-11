@@ -23,7 +23,8 @@ if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
     }
 
 
-    echo $commandFile->$argv[2]($list);
+    $method=$argv[2];
+    echo $commandFile->$method($list);
     echo '
 ';
 }
