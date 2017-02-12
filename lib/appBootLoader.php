@@ -1,5 +1,13 @@
 <?php
-
+/*
+ * This file is bindigs to data as method parameter in method for every service
+ * default : bindings empty data array
+ * managed as webServiceBoot method in serviceBaseController 
+ * configuration : it is boot object in serviceBaseController
+ * it is boolean @true @false
+ * appBootLoader
+ * return @array
+ */
 namespace lib;
 
 class appBootLoader {
