@@ -14,7 +14,7 @@ use src\services\httprequest as request;
 /**
  * Represents a getService class.
  * http method : get
- * every method that on this service is called with get method on browser
+ * every method that on this service is called with get method as http method on browser
  * every service extends app class
  * return type array
  */
@@ -39,13 +39,16 @@ class getService extends \src\app\__projectName__\v1\__call\__serviceName__\app 
 
     /**
      * index method is main method.
-     * it is default method without needed implemantation
+     * it is default method without needed interface implemantation
+	 * because method name is called on the url
      * method can produce ouput as string or array
-     * @return array
+	 * converted to array everytime as output
+	 * produced json output as result
+     * @return array @method
      */
     public function index(){
 
-        //return
+        //result
         return [
             'environment'=>environment(),
             'clientIp'=>$this->request->getClientIp(),

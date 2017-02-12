@@ -12,10 +12,11 @@ namespace src\app\__projectName__\v1\__call\__serviceName__;
 use src\services\httprequest as request;
 
 /**
- * Represents a getService class.
+ * Represents a postService class.
  * http method : post
- * every method that on this service is called with post method on browser
+ * every method that on this service is called with post method as http method on browser
  * every service extends app class
+ * attention:provision condition can be needed for post method
  * return type array
  */
 class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
@@ -32,16 +33,18 @@ class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app
      */
     public function __construct(request $request){
 
-        //get request info
         parent::__construct();
         $this->request=$request;
     }
 
     /**
      * index method is main method.
-     * it is default method without needed implemantation
+     * it is default method without needed interface implemantation
+	 * because method name is called on the url
      * method can produce ouput as string or array
-     * @return array
+	 * converted to array everytime as output
+	 * produced json output as result
+     * @return array @method
      */
     public function index(){
 
