@@ -7,3 +7,4 @@ src/app/*
 src/access.log
 tests/*
 !important tests/index.html
+.DS_Store
