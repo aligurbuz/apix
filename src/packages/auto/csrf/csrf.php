@@ -18,7 +18,8 @@ class csrf {
      */
     public function index(){
 
-        return ['csrf_token'=>\src\services\csrf::getToken()];
+        $csrf=new \src\services\httpCsrfToken();
+        return ['csrf_token'=>$csrf->GenerateToken()];
     }
 
 }
