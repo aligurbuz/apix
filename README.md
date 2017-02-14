@@ -22,7 +22,7 @@ Comprehensive restfull api service for php development
 
 #### Database Process :
 * [Creating a model file](https://github.com/aligurbuz/apix/blob/master/docs/model-file.md).
-* [Explaining model file](https://github.com/aligurbuz/apix/blob/master/docs/projectSetUp.md)
+* [Model file content](https://github.com/aligurbuz/apix/blob/master/docs/model-content.md)
 * [Basic Query](https://github.com/aligurbuz/apix/blob/master/docs/serviceDirectoryStructure.md)
 * [Query Methods](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Query Caching](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
