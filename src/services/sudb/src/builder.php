@@ -431,23 +431,38 @@ class builder {
 
         if(is_array($value)){
             if(count($value) && array_key_exists(0,$value)){
-                if(property_exists($this->model->subClassOf,"primaryKey")){
-                    $this->where['field'][]=$this->model->subClassOf->primaryKey;
-                }
-                else{
-                    $this->where['field'][]='id';
+
+                if(array_key_exists(1,$value)){
+                    $this->select($value[1]);
                 }
 
-                $this->where['operator'][]='=';
-                $this->where['value'][]=$value[0];
+                if(property_exists($this->model->subClassOf,"primaryKey")){
+                    $primaryKey=$this->model->subClassOf->primaryKey;
+                }
+                else{
+                    $primaryKey='id';
+                }
+
+                if(is_array($value[0])){
+                    $this->whereIn($primaryKey,$value[0]);
+                }
+                else{
+
+                    if(property_exists($this->model->subClassOf,"primaryKey")){
+                        $this->where['field'][]=$this->model->subClassOf->primaryKey;
+                    }
+                    else{
+                        $this->where['field'][]='id';
+                    }
+
+                    $this->where['operator'][]='=';
+                    $this->where['value'][]=$value[0];
+                }
+
             }
 
         }
-        else{
-            $this->where['field'][]='id';
-            $this->where['operator'][]='=';
-            $this->where['value'][]=$value;
-        }
+
 
 
         return $this->get();
