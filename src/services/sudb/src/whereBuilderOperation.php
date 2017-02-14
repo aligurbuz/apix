@@ -96,12 +96,25 @@ class whereBuilderOperation {
 
             }
 
-            if(is_array($list['where'])){
-                $list['where']='WHERE '.implode(" AND ",$list['where']);
+
+        }
+
+
+        if(count($model['whereIn'])){
+            $valueEx=explode(",",$model['whereIn']['value']);
+            $paramValueEx=[];
+            foreach ($valueEx as $v=>$vv) {
+                $paramValueEx[]=':'.md5($vv).'';
+                $list['execute'][':'.md5($vv).'']=$vv;
             }
 
+            $list['where'][]=''.$model['whereIn']['field'].' IN ('.implode(",",$paramValueEx).')';
 
 
+        }
+
+        if(is_array($list['where'])){
+            $list['where']='WHERE '.implode(" AND ",$list['where']);
         }
 
         return (object)$list;
