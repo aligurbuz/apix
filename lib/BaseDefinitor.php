@@ -338,6 +338,7 @@ class BaseDefinitor  {
      */
 
     protected function responseOut($data,$msg=null){
+        header('Content-Type: application/json');
         $queryError=[];
         if(!is_array($data)){
             $data=[$data];
@@ -349,7 +350,6 @@ class BaseDefinitor  {
                 }
             }
         }
-        header('Content-Type: application/json');
         $developer=[];
         if(defined("app") && defined("version") && defined("service")){
             $developerfile=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/developer.php';

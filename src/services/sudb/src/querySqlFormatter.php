@@ -87,7 +87,7 @@ class querySqlFormatter {
 
     public function getSqlPrepareFormatter($model){
 
-        if($model['bool']===false){
+        if(in_array(false,$model['bool'])){
             return [
                 'getCountAllTotal'=>0,
                 'paginator'=>$this->getModelOffsetPaginator($model),

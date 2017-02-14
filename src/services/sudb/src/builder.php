@@ -36,7 +36,7 @@ class builder {
     private $whereBuilderOperation;
     private $subClassOf=null;
     private $autoScope=null;
-    private $bool=true;
+    private $bool=[];
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -90,11 +90,20 @@ class builder {
         if($this->model==null){
             $this->model=$model;
         }
-        if(is_array($data)){
-            $this->bool=(bool)$data[0];
+
+        if(is_array($data) && count($data)){
+            if(is_array($data[0])){
+                foreach($data[0] as $key=>$value){
+                    $this->bool[]=(bool)$value;
+                }
+            }
+            else{
+                $this->bool[]=(bool)$data[0];
+            }
+
         }
         else{
-            $this->bool=(bool)$data;
+            $this->bool[]=(bool)true;
         }
         return $this;
     }
