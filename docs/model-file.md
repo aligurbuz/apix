@@ -15,5 +15,5 @@ api model create project_name file:model_name table:database_table
 
 # Auto table properties
 ```diff
-Model file comes with auto table name after creating model file on the terminal
++Model file comes with auto table name after creating model file on the terminal
 ```
