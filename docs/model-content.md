@@ -73,7 +73,7 @@ class user extends \src\services\sudb\src\model {
      */
     public function modelScope($data,$query){
 
-        //get id
+        //id scope
         if($data=="id"){
             $query->where(function($model){
                 if(\app::checkUrlParam("id")){
@@ -82,7 +82,7 @@ class user extends \src\services\sudb\src\model {
             });
         }
 
-        //scopes
+        //active scope
         if($data=="active"){
             $query->where("status","=",1);
         }
