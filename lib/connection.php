@@ -176,6 +176,7 @@ class connection extends Definitor {
         define("service",self::$service[1]);
         define("version",self::$getVersion);
         define("method",self::$serviceMethod);
+        define("application",root.'/'.src.'/'.app.'');
         define("request",$_SERVER['REQUEST_METHOD']);
         $this->getAppDefinitionLoader();
 

@@ -27,7 +27,7 @@ class serviceLogController
         //get request info
         $this->request=$request;
         $this->logger=new logger('log');
-        $this->logger->pushHandler(new StreamHandler(root.'/src/app/'.app.'/storage/logs/access.log', Logger::INFO));
+        $this->logger->pushHandler(new StreamHandler(application.'/storage/logs/access.log', Logger::INFO));
     }
 
     /**
