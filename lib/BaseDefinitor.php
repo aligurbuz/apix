@@ -1,11 +1,8 @@
 <?php
 /*
- * This file is main class of the  service named stk on  mobi project .
- * METHOD : GET
- * every service is called with index method as default
- * service name : mobi
- * namespace : src\app\mobi\v1\__call\stk
- * app class namespace : \src\app\mobi\v1\__call\stk\app
+ * This file is base definitor for connection  .
+ * this is reference to connection run class
+ * system main file
  */
 
 namespace lib;
