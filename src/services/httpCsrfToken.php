@@ -5,6 +5,7 @@
 
 namespace src\services;
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
+use src\services\httpSession as Session;
 
 
 class httpCsrfToken {
@@ -40,6 +41,14 @@ class httpCsrfToken {
     {
         return $this->generator->generateToken();
 
+    }
+    public function checkTokenForPostMethod($data){
+        $session=new Session();
+        $token=$session->get("postToken");
+        if($data==$token){
+            return true;
+        }
+        return false;
     }
 
 }

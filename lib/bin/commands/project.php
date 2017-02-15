@@ -40,6 +40,12 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/lang');
             $list[]=$this->touch($this->getProjectName($data).'/storage/lang/index.html',null);
 
+            $list[]=$this->mkdir($this->getProjectName($data).'/storage/session');
+            $list[]=$this->touch($this->getProjectName($data).'/storage/session/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/storage/logs');
+            $list[]=$this->touch($this->getProjectName($data).'/storage/logs/index.html',null);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/env');
             $list[]=$this->touch($this->getProjectName($data).'/storage/env/index.html',null);
 

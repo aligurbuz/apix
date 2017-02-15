@@ -18,8 +18,12 @@ class csrf {
      */
     public function index(){
 
-        $csrf=new \src\services\httpCsrfToken();
-        return ['csrf_token'=>$csrf->GenerateToken()];
+        $session=new \src\services\httpSession();
+        $token=new \src\services\httpCsrfToken();
+        if($session->has("postToken")===false){
+            $tokenSet=$session->set("postToken",$token->GenerateToken());
+        }
+        return ['postToken'=>$session->get("postToken")];
     }
 
 }

@@ -1,6 +1,8 @@
 <?php
 namespace src\services;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 
 class httpSession
 {
@@ -11,8 +13,8 @@ class httpSession
      */
     public function __construct()
     {
-        $this->session = new Session();
-        $this->session->start();
+        $storage = new NativeSessionStorage(array("sessions"), new NativeFileSessionHandler(root.'/src/storage/session'));
+        $this->session = new Session($storage);
     }
 
     /**
@@ -21,7 +23,7 @@ class httpSession
     public function set($key=null,$value=null)
     {
         if($key!==null && $value!==null){
-            $this->session->set($key,$value);
+            return $this->session->set($key,$value);
         }
         return false;
     }
