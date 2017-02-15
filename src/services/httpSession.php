@@ -1,4 +1,9 @@
 <?php
+/*
+ * The Symfony HttpFoundation component has a very powerful and
+ * flexible session subsystem which is designed to provide session management
+ * through a simple object-oriented interface using a variety of session storage drivers.
+ */
 namespace src\services;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -10,6 +15,11 @@ class httpSession
 
     /**
      * Constructor.
+     * Make sure your PHP session isn't already started before using the Session class.
+     * If you have a legacy session system that starts your session
+     * Symfony sessions are designed to replace several native PHP functions.
+     * Applications should avoid using session_start(), session_regenerate_id(), session_id(),
+     * session_name(), and session_destroy() and instead use the APIs in the following section.
      */
     public function __construct()
     {
@@ -19,6 +29,7 @@ class httpSession
 
     /**
      * {@set} .
+     * Sets an attribute by key.
      */
     public function set($key=null,$value=null)
     {
@@ -31,6 +42,7 @@ class httpSession
 
     /**
      * {@get} .
+     * Gets an attribute by key.
      */
     public function get($key=null)
     {
@@ -42,6 +54,7 @@ class httpSession
 
     /**
      * {@has}
+     * Returns true if the attribute exists.
      */
     public function has($name=null)
     {
@@ -53,6 +66,7 @@ class httpSession
 
     /**
      * {@all}
+     * Gets all attributes as an array of key => value.
      */
     public function all()
     {
@@ -61,6 +75,7 @@ class httpSession
 
     /**
      * {@remove}
+     * Deletes an attribute by key.
      */
     public function remove($name=null)
     {
@@ -73,6 +88,7 @@ class httpSession
 
     /**
      * {@clear}
+     * Clear all attributes.
      */
     public function clear()
     {
