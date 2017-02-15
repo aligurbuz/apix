@@ -58,8 +58,8 @@ class index {
         $success=true;
 
         //need token for production
-        //$token=new \src\services\httpCsrfToken();
-        //$success=($token->checkTokenForPostMethod(\app::post("_token"))) ? true : false;
+        $token=new \src\services\httpCsrfToken();
+        $success=($token->checkTokenForPostMethod(\app::post("_token"))) ? true : false;
 
         //post provision
         return [

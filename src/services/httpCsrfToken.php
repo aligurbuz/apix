@@ -43,11 +43,13 @@ class httpCsrfToken {
 
     }
     public function checkTokenForPostMethod($data){
-        $session=new Session();
-        $token=$session->get("postToken");
-        if($data==$token){
-            return true;
+        if(app("session")->has("postToken")){
+            $token=app("session")->get("postToken");
+            if($data==$token){
+                return true;
+            }
         }
+
         return false;
     }
 

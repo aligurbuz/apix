@@ -13,7 +13,7 @@ class httpSession
      */
     public function __construct()
     {
-        $storage = new NativeSessionStorage(array("sessions"), new NativeFileSessionHandler(root.'/src/storage/session'));
+        $storage = new NativeSessionStorage(array(), new NativeFileSessionHandler(root.'/src/app/'.app.'/storage/session'));
         $this->session = new Session($storage);
     }
 
