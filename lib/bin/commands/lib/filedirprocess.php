@@ -70,6 +70,34 @@ class filedirprocess {
 
     }
 
+    //command touch command
+    public function command($filename=null,$param=null){
+
+        if($filename!==null){
+
+            $path='./src/commands/'.$filename;
+
+            if($param!==null AND is_array($param)){
+
+                if(!file_exists($path)){
+                    touch($path);
+                }
+
+                return $this->fopenprocess($path,$param);
+
+            }else{
+
+                if(!file_exists($path)){
+                    return touch($path);
+                }
+            }
+
+
+            return false;
+        }
+
+    }
+
 
     //touch command
     public function touch_path($filename=null,$param=null){

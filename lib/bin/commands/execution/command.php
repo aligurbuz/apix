@@ -1,25 +1,26 @@
 <?php
 /*
- * This file is main class of the  service named stk on  mobi project .
- * METHOD : GET
+ * This file is console command .
+ * console command
+ * __class__
  */
 
 namespace src\commands;
 
 /**
  * Represents a console command example class.
- * access : api example
+ * access : api __class__
  * every method that on this command is called with console method as string on console
  * return type string
  */
-class example {
+class __class__ {
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    public $createSignature = 'api example create service:method';
+    public $createSignature = 'api __class__ create key:value';
 
     /**
      * The name and signature of the console command.
@@ -30,11 +31,11 @@ class example {
 
     /**
      * Represents a create method.
-     * api example create --
+     * api __class__ create --
      * return type string
      */
     public function create($arguments){
-        return $arguments->service;
+        //make somethings
     }
 
 }
