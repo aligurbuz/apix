@@ -30,7 +30,21 @@ if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
 }
 else{
 
+    require_once './vendor/autoload.php';
 
+    // Use default autoload implementation
+    spl_autoload_register(function($class) {
+        $class='./'.$class.'.php';
+        $class=str_replace("\\","/",$class);
+        require($class);
+
+    });
+
+    //get connection
+    $consoleCommandApplication=new \lib\bin\custom();
+    echo $consoleCommandApplication->execute($argv);
+    echo '
+';
 }
 
 
