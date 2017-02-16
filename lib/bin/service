@@ -32,6 +32,9 @@ else{
 
     require_once './vendor/autoload.php';
 
+    $root=str_replace('/lib/bin','',dirname(__FILE__));
+    define('root',$root);
+
     // Use default autoload implementation
     spl_autoload_register(function($class) {
         $class='./'.$class.'.php';
@@ -40,11 +43,20 @@ else{
 
     });
 
-    //get connection
-    $consoleCommandApplication=new \lib\bin\custom();
-    echo $consoleCommandApplication->execute($argv);
-    echo '
+    if(environment()=="local"){
+        //get connection
+        $consoleCommandApplication=new \lib\bin\custom();
+        echo $consoleCommandApplication->execute($argv);
+        echo '
 ';
+    }
+    else {
+        echo 'Console command except local would not work';
+        echo '
+        ================================';
+    }
+
+
 }
 
 
