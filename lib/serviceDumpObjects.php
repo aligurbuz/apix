@@ -3,6 +3,7 @@
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
 use src\services\httprequest as request;
+use src\services\httpSession;
 
 class serviceDumpObjects {
 
@@ -113,33 +114,96 @@ class serviceDumpObjects {
      */
     private function yamlProcess(){
         //values
-        if(request=="GET"){
-            $inputList=[];
-            foreach($this->request->getQueryString() as $key=>$value){
-                $inputList[$key]=gettype($value);
-            }
-            $querydata=['getData'=>$inputList];
-        }
-        else{
-            $inputList=[];
-            foreach($this->request->input() as $key=>$value){
-                $inputList[$key]=gettype($value);
-            }
+        $session=new httpSession();
 
-            $getList=[];
-            foreach($this->request->getQueryString() as $gkey=>$gvalue){
-                $getList[$gkey]=gettype($gvalue);
-            }
-            $querydata=['postData'=>$inputList,'getData'=>$getList];
-        }
+        $querydata=$this->requestGetMethodCallback($session,function() use ($session){
+            return $this->requestPostProcess($session);
+        });
+
         $value = Yaml::parse(file_get_contents($this->serviceYamlFile));
         $yaml = Yaml::dump(['http'=>strtolower(request),
-                'servicePath'=>''.app.'/'.service.'/'.method.''
-            ]+
-            ['data'=>$this->yObjects,'headers'=>$this->request->getClientHeaders()]+$querydata
-            +$value+['info'=>$this->yInfo]
+                'servicePath'=>''.app.'/'.service.'/'.method.'',
+                'data'=>$this->yObjects,
+                'headers'=>$this->request->getClientHeaders()
+            ]+$querydata +$value+['info'=>$this->yInfo]
         );
 
         return $yaml;
+    }
+
+
+
+    /**
+     * get requestGetMethodCallback method.
+     *
+     * outputs requestGetMethodCallback method.
+     *
+     * @param string
+     * @return response requestGetMethodCallback runner
+     */
+    private function requestGetMethodCallback($session,$callback){
+        if(request=="GET"){
+            return $this->requestGetProcess($session);
+        }
+        else{
+
+            if(is_callable($callback)){
+                return call_user_func($callback);
+            }
+        }
+    }
+
+
+
+    /**
+     * get requestPostProcess method.
+     *
+     * outputs requestPostProcess method.
+     *
+     * @param string
+     * @return response requestPostProcess runner
+     */
+    private function requestPostProcess($session){
+        $inputList=[];
+        foreach($this->request->input() as $key=>$value){
+            $inputList[$key]=gettype($value);
+        }
+
+        $getList=[];
+        foreach($this->request->getQueryString() as $gkey=>$gvalue){
+            $getList[$gkey]=gettype($gvalue);
+        }
+        return ['postData'=>$inputList,'getData'=>$getList];
+    }
+
+    /**
+     * get requestGetProcess method.
+     *
+     * outputs requestGetProcess method.
+     *
+     * @param string
+     * @return response requestGetProcess runner
+     */
+    private function requestGetProcess($session){
+        $inputList=[];
+
+        $hashData=md5(implode(",",$this->requestServiceMethodReal));
+        if(!$session->has("serviceDumpHashData")){
+            $session->set("serviceDumpHashData",$hashData);
+            foreach($this->request->getQueryString() as $key=>$value){
+                $inputList[$key]=gettype($value);
+            }
+            $session->set("serviceDumpHashDataTypes",md5(implode(",",$inputList)));
+        }
+        else{
+            if($hashData!==$session->get("serviceDumpHashData")){
+                foreach($this->request->getQueryString() as $key=>$value){
+                    $inputList[$key]=gettype($value);
+                }
+            }
+
+        }
+
+        return ['getData'=>$inputList];
     }
 }
