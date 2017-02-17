@@ -3,7 +3,7 @@
  * This file is general access configuration of the every service.
  *
  * config app returns boolean,array,string vs
- * access : \app::environment()
+ * access : for example \app::environment()
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
