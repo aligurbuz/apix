@@ -20,11 +20,15 @@ class command {
     public function create ($data){
 
 
+        foreach ($data as $key=>$value){
+            $file=$key;
+        }
+
         //usage api command create file:file
         $list=[];
         $touchServiceCommandMe['execution']='command';
-        $touchServiceCommandMe['params']['class']=$data['file'];
-        $list[]=$this->touch(''.$data['file'].'.php',$touchServiceCommandMe);
+        $touchServiceCommandMe['params']['class']=$file;
+        $list[]=$this->touch(''.$file.'.php',$touchServiceCommandMe);
 
 
         return $this->fileProcessResult($list,function(){

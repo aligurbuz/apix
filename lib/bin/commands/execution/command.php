@@ -34,8 +34,9 @@ class __class__ {
      * api __class__ create --
      * return type string
      */
-    public function create($arguments){
+    public function handle($arguments){
         //make somethings
+        return '__class__ command';
     }
 
 }

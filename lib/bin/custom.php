@@ -42,7 +42,7 @@ class custom {
 
         $list=[];
         foreach($data as $key=>$value){
-            if($key>2){
+            if($key>1){
                 $dataEx=explode(":",$value);
                 if(strlen($dataEx[1])>0){
                     $list[$dataEx[0]]=$dataEx[1];
@@ -54,8 +54,7 @@ class custom {
             }
         }
 
-        $appMethod=$data[2];
-        return $app->$appMethod((object)$list);
+        return $app->handle((object)$list);
         $application->run();
     }
 
