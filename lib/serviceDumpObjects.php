@@ -2,6 +2,7 @@
 
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
+use src\services\httprequest as request;
 
 class serviceDumpObjects {
 
@@ -11,6 +12,7 @@ class serviceDumpObjects {
     private $serviceYamlFile;
     private $yInfo=array();
     private $yObjects=array();
+    private $request;
 
     /**
      * service dump constructs.
@@ -27,6 +29,7 @@ class serviceDumpObjects {
         $this->requestServiceMethod=$requestServiceMethod;
         $this->other=$other;
         $this->serviceYamlFile='./'.src.'/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml';
+        $this->request=new request();
         $this->dump();
     }
 
@@ -110,11 +113,30 @@ class serviceDumpObjects {
      */
     private function yamlProcess(){
         //values
+        if(request=="GET"){
+            $inputList=[];
+            foreach($this->request->getQueryString() as $key=>$value){
+                $inputList[$key]=gettype($value);
+            }
+            $querydata=['getData'=>$inputList];
+        }
+        else{
+            $inputList=[];
+            foreach($this->request->input() as $key=>$value){
+                $inputList[$key]=gettype($value);
+            }
+
+            $getList=[];
+            foreach($this->request->getQueryString() as $gkey=>$gvalue){
+                $getList[$gkey]=gettype($gvalue);
+            }
+            $querydata=['postData'=>$inputList,'getData'=>$getList];
+        }
         $value = Yaml::parse(file_get_contents($this->serviceYamlFile));
         $yaml = Yaml::dump(['http'=>strtolower(request),
                 'servicePath'=>''.app.'/'.service.'/'.method.''
             ]+
-            ['data'=>$this->yObjects]
+            ['data'=>$this->yObjects,'headers'=>$this->request->getClientHeaders()]+$querydata
             +$value+['info'=>$this->yInfo]
         );
 

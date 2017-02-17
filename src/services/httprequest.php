@@ -54,6 +54,26 @@ class httprequest {
     }
 
     /**
+     * get client header key.
+     *
+     * @return object
+     */
+    public function getHeader($data){
+
+        return $this->request->headers->get($data);
+    }
+
+    /**
+     * get add headers.
+     *
+     * @return array
+     */
+    public function addHeader($header=array()){
+
+        return $this->request->headers->add($header);
+    }
+
+    /**
      * get full url.
      *
      * @return object
@@ -100,5 +120,26 @@ class httprequest {
         }
 
         return $list;
+    }
+
+    /**
+     * get only client header.
+     *
+     * @return string
+     */
+    public function getClientHeaders(){
+
+        $headers=$this->getHeaders();
+        $httpHeaders=['host','connection','cache-control','accept','upgrade-insecure-requests','user-agent',
+                     'accept-encoding','accept-language','cookie','postman-token','content-length','origin','content-type'];
+        $list=[];
+        foreach ($headers as $key=>$value) {
+            if(!in_array($key,$httpHeaders)){
+                $list[$key]=$value;
+            }
+        }
+        return $list;
+
+
     }
 }
