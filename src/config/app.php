@@ -11,7 +11,6 @@
 
 namespace src\config;
 use src\services\httprequest as request;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class app {
 
