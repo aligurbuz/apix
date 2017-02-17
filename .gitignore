@@ -3,7 +3,7 @@ vendor
 node_modules
 .env
 src/app/*
-!important src/app/dev
+!important src/app/dev/
 !important src/app/index.html
 src/commands/*
 !important src/commands/index.html
