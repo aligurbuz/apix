@@ -143,7 +143,7 @@ class version {
                 $fl=[];
                 foreach ($value as $project=>$service){
 
-                    $sourcepath='./src/app/development/v1/__call/'.$this->getParams($data)[1]['service'].'';
+                    $sourcepath='./src/app/dev/v1/__call/'.$this->getParams($data)[1]['service'].'';
                     $destinationpath='./src/packages/dev/'.$this->getParams($data)[1]['service'].'';
 
 
@@ -221,8 +221,8 @@ class version {
                             $dosya =$val;
                             $dt = @fopen($dosya, "rb");
                             $icerik =@fread($dt, filesize($dosya));
-                            $icerik=preg_replace('@app\\\\development\\\\v1\\\\__call@',"packages\\dev",$icerik);
-                            $icerik=preg_replace('@app\\\\development\\\\v1\\\\model@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack",$icerik);
+                            $icerik=preg_replace('@app\\\\dev\\\\v1\\\\__call@',"packages\\dev",$icerik);
+                            $icerik=preg_replace('@app\\\\dev\\\\v1\\\\model@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack",$icerik);
 
                             $dt = fopen($dosya, 'w');
 
