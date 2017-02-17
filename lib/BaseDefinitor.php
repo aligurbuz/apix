@@ -124,7 +124,7 @@ class BaseDefinitor  {
             }
 
             if(is_callable($callback)){
-                if(is_array($serviceConf) && array_key_exists("dataDump",$serviceConf) && $serviceConf['dataDump']){
+                if(is_array($serviceConf) && array_key_exists("dataDump",$serviceConf) && $serviceConf['dataDump'] && environment()=="local"){
                     return call_user_func($callback);
                 }
             }
