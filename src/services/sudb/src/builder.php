@@ -587,7 +587,7 @@ class builder {
         return $this->allMethodProcess(function() use ($args,$model){
             error_reporting(0);
             $result=$this->queryFormatter();
-            return $result['getCountAllTotal'];
+            return ['CountAllData'=>$result['getCountAllTotal']];
 
 
         });
