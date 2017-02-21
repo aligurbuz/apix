@@ -38,6 +38,8 @@ class builder {
     private $subClassOf=null;
     private $autoScope=null;
     private $bool=[];
+    private $saveNew=null;
+    private $saveOld=null;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -517,10 +519,10 @@ class builder {
             error_reporting(0);
             if(array_key_exists(0,$result['result'])){
                 $result['result'][0]->count=$result['getCountAllTotal'];
-
                 if(is_callable($args[0])){
                     $callBackData=call_user_func_array($args[0],[$result['result'][0]]);
-                    return $result['result'][0];
+                    $this->saveNew=$result['result'][0];
+                    return $this;
                 }
                 else{
                     return $result['result'][0];
@@ -531,6 +533,32 @@ class builder {
 
 
         });
+
+    }
+
+    /**
+     * save method is main method.
+     *
+     * @return string
+     */
+    public function save(){
+        if($this->saveNew===null){
+            return null;
+        }
+        $result=json_decode(json_encode($this->saveNew),1);
+        $list=[];
+        foreach ($result as $key=>$value ){
+            if($this->model->subClassOf->primaryKey!==$key && $key!=="count"){
+                if($this->model->subClassOf->createdAndUpdatedFields['updated_at']==$key){
+                    $list[$key]=time();
+                }
+                else{
+                    $list[$key]=$value;
+                }
+
+            }
+        }
+        return $this->where($this->model->subClassOf->primaryKey,"=",$result[$this->model->subClassOf->primaryKey])->update($list);
 
     }
 
