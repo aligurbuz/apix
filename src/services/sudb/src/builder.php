@@ -513,14 +513,21 @@ class builder {
             $this->model=$model;
         }
 
+
+        $model=$this->model;
         return $this->allMethodProcess(function() use ($args,$model){
             $result=$this->queryFormatter();
 
             error_reporting(0);
             if(array_key_exists(0,$result['result'])){
                 $result['result'][0]->count=$result['getCountAllTotal'];
-                if(is_callable($args[0])){
+                if(array_key_exists(0,$args) && is_callable($args[0])){
                     $callBackData=call_user_func_array($args[0],[$result['result'][0]]);
+                    $this->saveNew=$result['result'][0];
+                    return $this;
+                }
+                elseif(is_callable($args)){
+                    call_user_func_array($args,[$result['result'][0]]);
                     $this->saveNew=$result['result'][0];
                     return $this;
                 }
@@ -546,6 +553,7 @@ class builder {
             return null;
         }
         $result=json_decode(json_encode($this->saveNew),1);
+
         $list=[];
         foreach ($result as $key=>$value ){
             if($this->model->subClassOf->primaryKey!==$key && $key!=="count"){
@@ -558,7 +566,9 @@ class builder {
 
             }
         }
-        return $this->where($this->model->subClassOf->primaryKey,"=",$result[$this->model->subClassOf->primaryKey])->update($list);
+
+        $model=$this->model->subClassOf;
+        return $model::where($this->model->subClassOf->primaryKey,"=",$result[$this->model->subClassOf->primaryKey])->update($list);
 
     }
 
