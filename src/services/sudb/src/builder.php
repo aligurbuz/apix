@@ -525,6 +525,31 @@ class builder {
 
     }
 
+
+    /**
+     * first method is main method.
+     *
+     * @return string
+     */
+    public function first($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+        return $this->allMethodProcess(function(){
+            $result=$this->queryFormatter();
+
+            error_reporting(0);
+            if(array_key_exists(0,$result['result'])){
+                return (object)['data'=>$result['result'][0]];
+            }
+            return (object)[];
+
+
+        });
+
+    }
+
     /**
      * get method is main method.
      *
