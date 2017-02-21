@@ -510,13 +510,22 @@ class builder {
         if($this->model==null){
             $this->model=$model;
         }
-        return $this->allMethodProcess(function(){
+
+        return $this->allMethodProcess(function() use ($args,$model){
             $result=$this->queryFormatter();
 
             error_reporting(0);
             if(array_key_exists(0,$result['result'])){
                 $result['result'][0]->count=$result['getCountAllTotal'];
-                return $result['result'][0];
+
+                if(is_callable($args[0])){
+                    $callBackData=call_user_func_array($args[0],[$result['result'][0]]);
+                    return $result['result'][0];
+                }
+                else{
+                    return $result['result'][0];
+                }
+
             }
             return (object)[];
 
