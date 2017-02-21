@@ -536,6 +536,28 @@ class builder {
 
 
     /**
+     * count method is main method.
+     *
+     * @return string
+     */
+    public function count($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        return $this->allMethodProcess(function() use ($args,$model){
+            error_reporting(0);
+            $result=$this->queryFormatter();
+            return $result['getCountAllTotal'];
+
+
+        });
+
+    }
+
+
+    /**
      * first method is main method.
      *
      * @return string
