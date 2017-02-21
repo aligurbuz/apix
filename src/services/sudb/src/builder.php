@@ -515,6 +515,7 @@ class builder {
 
             error_reporting(0);
             if(array_key_exists(0,$result['result'])){
+                $result['result'][0]->count=$result['getCountAllTotal'];
                 return $result['result'][0];
             }
             return (object)[];
