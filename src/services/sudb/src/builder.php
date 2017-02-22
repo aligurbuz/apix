@@ -40,6 +40,7 @@ class builder {
     private $bool=[];
     private $saveNew=null;
     private $saveOld=null;
+    private $transaction=false;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -773,7 +774,7 @@ class builder {
         }
         if(is_array($data) && count($data)){
             $data=(array_key_exists(0,$data)) ? $data[0] : $data;
-            return $this->querySqlFormatter->getInsertQueryFormatter($data,['model'=>$this->model->subClassOf,'bool'=>$this->bool]);
+            return $this->querySqlFormatter->getInsertQueryFormatter($data,['model'=>$this->model->subClassOf,'bool'=>$this->bool,'transaction'=>$this->transaction]);
         }
 
     }
@@ -812,6 +813,24 @@ class builder {
             return $this->querySqlFormatter->getDeleteQueryFormatter([],['where'=>$this->where,'execute'=>$this->execute,'model'=>$this->subClassOf]);
         },"no--autoscope");
 
+    }
+
+    /**
+     * save method is main method.
+     *
+     * @return string
+     */
+    public function transaction($callback=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if(array_key_exists(0,$callback) && is_callable($callback[0])){
+            $queries=call_user_func($callback[0]);
+            return $this->querySqlFormatter->getTransactionProcess($queries);
+        }
+        $this->transaction=true;
+        return $this;
     }
 
 

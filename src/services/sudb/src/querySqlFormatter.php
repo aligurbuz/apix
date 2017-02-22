@@ -46,6 +46,7 @@ class querySqlFormatter {
             $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
             $this->db->exec("SET NAMES utf8");
             $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES,false);
         }
         catch (\PDOException $e) {
             if(environment()=="local"){
@@ -358,6 +359,7 @@ class querySqlFormatter {
 
     public function getInsertQueryFormatter($data,$model){
         $bool=$model['bool'];
+        $transaction=$model['transaction'];
         $model=$model['model'];
         if($bool===false){
             return [
@@ -465,6 +467,15 @@ class querySqlFormatter {
 
         }
 
+        if($transaction){
+            $transactionList['create']['table'][]=$model->table;
+            $transactionList['create']['field'][]=implode(",",$dataKeyValues);
+            $transactionList['create']['value'][]=implode(",",$dataPrepareValues);
+            $transactionList['create']['execute'][]=$dataExecuteValues;
+
+            return $transactionList;
+
+        }
 
         try {
             $query=$this->db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
@@ -703,5 +714,52 @@ class querySqlFormatter {
 
         return $list;
     }
+
+
+
+    /**
+     * response transaction.
+     * definition transaction database
+     * outputs queries transaction as bool .
+     *
+     * @param string
+     * @return response transaction database runner
+     */
+    public function getTransactionProcess($queries=null){
+        $this->db->beginTransaction();
+        try {
+
+            foreach($queries as $key=>$value){
+                foreach($queries[$key]['create']['table'] as $t=>$tt){
+                    $query=$this->db->prepare("INSERT INTO ".$tt." (".$queries[$key]['create']['field'][$t].") VALUES (".$queries[$key]['create']['value'][$t].")");
+                    $query->execute($queries[$key]['create']['execute'][$t]);
+                }
+            }
+
+            $this->db->commit();
+            return true;
+        }
+        catch(\Exception $e){
+            $this->db->rollBack();
+            if(environment()=="local"){
+                return [
+                    'error'=>true,
+                    'code'=>$e->getCode(),
+                    'message'=>$e->getMessage(),
+                    'trace'=>$e->getTrace()
+                ];
+            }
+            else{
+                return [
+                    'error'=>true,
+                    'code'=>$e->getCode(),
+                    'message'=>'error occured'
+                ];
+            }
+        }
+    }
+
+
+
 
 }
