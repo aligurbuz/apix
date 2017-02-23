@@ -28,6 +28,13 @@ class model {
                     $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                     $list=[];
 
+
+                    $modelParamsBuilder['execution']='services/modelBuilder';
+                    $modelParamsBuilder['params']['projectName']=$project;
+                    $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
+                    //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
+                    $list[]=$this->touch($project.'/'.$version.'/model/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
+
                     $modelParams['execution']='services/model';
                     $modelParams['params']['projectName']=$project;
                     $modelParams['params']['className']=$this->getParams($data)[1]['file'];

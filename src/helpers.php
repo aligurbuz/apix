@@ -36,6 +36,7 @@ if (!function_exists('environment')) {
     }
 }
 
+
 if (!function_exists('trans')) {
     function trans($data=null,$langname=null)
     {

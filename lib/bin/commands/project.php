@@ -116,6 +116,9 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
             $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
 
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/builder');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/builder/index.html',null);
+
             return $this->fileProcessResult($list,function(){
                 return 'project has been created';
             });
