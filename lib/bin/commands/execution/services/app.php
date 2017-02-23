@@ -36,7 +36,6 @@ class app {
     public function __construct(){
         $this->source=\branch::source();
         $this->model=\branch::query();
-        $this->handle=\branch::handle();
         $this->superservicecall=new superservicecalls();
         $this->ready=$this->superservicecall->ready();
     }

@@ -144,7 +144,7 @@ class branches {
             $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
         }
         else{
-            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\source\\bundle\\'.$file.'\\index';
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
@@ -180,32 +180,6 @@ class branches {
     }
 
 
-    /**
-     * get branch handle.
-     *
-     * @return array
-     */
-    public function branchHandle(){
-
-        //get method
-        $method=$this->getMethod();
-
-        //get file name
-        $file=$this->getFile();
-
-        //get service name
-        $service=$this->getService();
-
-        if(defined("devPackage")){
-            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\handle\\'.$file;
-        }
-        else{
-            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\branches\\handle\\'.$file;
-        }
-
-        $container = \DI\ContainerBuilder::buildDevContainer();
-        return $container->get($sourcename)->$method();
-    }
 
 
     /**
@@ -238,6 +212,8 @@ class branches {
 
         return ($this->servicename!==null) ? $this->servicename : service;
     }
+
+
 
 
 
