@@ -63,7 +63,6 @@ class service {
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/index.html',null);
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/handle');
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);
@@ -76,38 +75,6 @@ class service {
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/cache');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/cache/index.html',null);
-
-                       $touchHandleParams['execution']='services/handle';
-                       $touchHandleParams['params']['projectName']=$project;
-                       $touchHandleParams['params']['serviceName']=$service;
-                       $touchHandleParams['params']['handleName']='index';
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/handle/index.php',$touchHandleParams);
-
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query');
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query/get');
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/query/post');
-
-                       $touchQueryParams['execution']='services/query';
-                       $touchQueryParams['params']['projectName']=$project;
-                       $touchQueryParams['params']['serviceName']=$service;
-                       $touchQueryParams['params']['queryName']='index';
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/index.php',$touchQueryParams);
-
-
-                       $touchModelParamsGet['execution']='services/query';
-                       $touchModelParamsGet['params']['projectName']=$project;
-                       $touchModelParamsGet['params']['serviceName']=$service;
-                       $touchModelParamsGet['params']['methodName']='get';
-                       $touchModelParamsGet['params']['queryName']='index';
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/get/index.php',$touchModelParamsGet);
-
-
-                       $touchModelParamsPost['execution']='services/query';
-                       $touchModelParamsPost['params']['projectName']=$project;
-                       $touchModelParamsPost['params']['serviceName']=$service;
-                       $touchModelParamsPost['params']['methodName']='post';
-                       $touchModelParamsPost['params']['queryName']='index';
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/branches/query/post/index.php',$touchModelParamsPost);
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source');
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/branches/source/get');
