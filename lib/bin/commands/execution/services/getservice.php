@@ -18,7 +18,7 @@ use src\services\httprequest as request;
  * every service extends app class
  * return type array
  */
-class getService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class getService extends app {
 
     public $request;
     public $forbidden=false;

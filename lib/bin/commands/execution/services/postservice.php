@@ -19,7 +19,7 @@ use src\services\httprequest as request;
  * attention:provision condition can be needed for post method
  * return type array
  */
-class postService extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class postService extends app {
 
     public $request;
     public $forbidden=false;
