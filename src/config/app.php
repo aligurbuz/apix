@@ -16,7 +16,6 @@ class app {
 
     public $request;
     private static $servicePath='\\src\\services\\';
-    private static $packagePath='\\src\\packages\\providers\\';
 
     /**
      * Constructor.
