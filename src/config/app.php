@@ -16,6 +16,7 @@ class app {
 
     public $request;
     private static $servicePath='\\src\\services\\';
+    private static $packagePath='\\src\\packages\\providers\\';
 
     /**
      * Constructor.
@@ -48,6 +49,7 @@ class app {
             'collection'    =>self::$servicePath.'appCollection',
             'session'       =>self::$servicePath.'httpSession',
             'file'          =>self::$servicePath.'fileProcess',
+            'search'        =>self::$servicePath.'search',
         ];
 
         //if container is null,all containers are evaluated

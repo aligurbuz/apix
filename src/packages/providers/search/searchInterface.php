@@ -1,7 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: erol
- * Date: 24/02/17
- * Time: 14:59
- */
+namespace src\packages\providers\search;
+
+// Declare the interface 'search engine'
+interface searchInterface
+{
+
+}
