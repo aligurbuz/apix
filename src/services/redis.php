@@ -97,6 +97,41 @@ class redis {
         $this->client->expire($key,$ttl);
     }
 
+    /**
+     * delete all keys.
+     *
+     * @return redis class
+     */
+    public function flushdb(){
+
+        //get flushdb
+        $this->client->flushdb();
+    }
+
+    /**
+     * delete specified keys.
+     *
+     * @return redis class
+     */
+    public function delete($keys=array()){
+
+        //get delete
+        if(is_array($keys) && count($keys)){
+            return $this->client->del($keys);
+        }
+    }
+
+    /**
+     * get all keys.
+     *
+     * @return redis class
+     */
+    public function getAllKeys($pattern="*"){
+
+        //get keys
+        return $this->client->keys($pattern);
+    }
+
 
 
 }

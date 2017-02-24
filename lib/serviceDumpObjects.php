@@ -188,6 +188,7 @@ class serviceDumpObjects {
         $inputList=[];
 
         $hashData=md5(implode(",",$this->requestServiceMethodReal));
+
         if(!$session->has("serviceDumpHashData")){
             $session->set("serviceDumpHashData",$hashData);
             foreach($this->request->getQueryString() as $key=>$value){
