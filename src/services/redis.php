@@ -240,6 +240,106 @@ class redis {
         return $this->client->randomkey();
     }
 
+    /**
+     * Sets field in the hash stored at key to value. If key does not exist,
+     * a new key holding a hash is created. If field already exists in the hash, it is overwritten.
+     *
+     * @return redis @data
+     */
+    public function hset($key=null,$field=null,$value=null){
+
+        //get h set
+        if($key!==null && $field!==null && $value!==null){
+            return $this->client->hset($key,$field,$value);
+        }
+        return null;
+
+    }
+
+    /**
+     * Returns the value associated with field in the hash stored at key.
+     *
+     * @return redis @data
+     */
+    public function hget($key=null,$field=null){
+
+        //get h get
+        if($key!==null && $field!==null){
+            return $this->client->hget($key,$field);
+        }
+        return null;
+
+    }
+
+    /**
+     * Returns all fields and values of the hash stored at key. In the returned value,
+     * every field name is followed by its value, so the length of the reply is twice the size of the hash.
+     *
+     * @return redis @data
+     */
+    public function hgetall($key=null){
+
+        //get h get all
+        if($key!==null){
+            return $this->client->hgetall($key);
+        }
+        return null;
+
+    }
+
+    /**
+     * Returns all field names in the hash stored at key.
+     *
+     * @return redis @data
+     */
+    public function hkeys($key=null){
+
+        //get h keys
+        if($key!==null){
+            return $this->client->hkeys($key);
+        }
+        return null;
+
+    }
+
+    /**
+     * Returns if field is an existing field in the hash stored at key.
+     *
+     * @return redis @data
+     */
+    public function hexists($key=null,$field=null){
+
+        //get h keys
+        if($key!==null && $field!==null){
+            if($this->client->hexists($key,$field)===0){
+                return false;
+            }
+            return true;
+        }
+        return null;
+
+    }
+
+
+    /**
+     * Removes the specified fields from the hash stored at key. Specified fields that do not exist within this hash are ignored.
+     * If key does not exist, it is treated as an empty hash and this command returns 0.
+     *
+     * @return redis @data
+     */
+    public function hdel($key=null,$field=null){
+
+        //get h keys
+        if($key!==null && $field!==null){
+            if($this->client->hdel($key,$field)===0){
+                return false;
+            }
+            return true;
+        }
+        return null;
+
+    }
+
 
 
 }
