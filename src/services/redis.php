@@ -1,11 +1,8 @@
 <?php
 /*
- * This file is client and browser info of the fussy service.
- *
- * client and browser info
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Redis is not a plain key-value store, actually it is a data structures server, supporting different kind of values.
+ * What this means is that, while in traditional key-value stores you associated string keys to string values,
+ * in Redis the value is not limited to a simple string, but can also hold more complex data structures.
  */
 
 namespace src\services;
