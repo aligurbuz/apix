@@ -16,6 +16,9 @@ class serviceBaseController
     //default lang name
     public $boot=false;
 
+    //default search driver
+    public $search='elasticSearch';
+
     /**
      * webserviceBoot is to use guzzle method for http.
      * it is related method for every service

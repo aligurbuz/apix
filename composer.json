@@ -29,7 +29,8 @@
         "php-amqplib/php-amqplib": "2.6.*",
         "tightenco/collect": "^5.4",
         "symfony/security-csrf": "^3.2",
-        "symfony/filesystem": "^3.2"
+        "symfony/filesystem": "^3.2",
+        "elasticsearch/elasticsearch": "~5.0"
     },
     "autoload": {
         "files": ["src/helpers.php"]
