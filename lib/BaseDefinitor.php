@@ -20,31 +20,6 @@ class BaseDefinitor  {
     public $request;
     protected $projectPath='src/app';
 
-    /**
-     * get file classes.
-     *
-     * outputs get file.
-     *
-     * @param string
-     * @return response file runner
-     */
-
-    protected function getFileClassRequire($data){
-        return require($data);
-    }
-
-    /**
-     * get version classes.
-     *
-     * outputs get version.
-     *
-     * @param string
-     * @return response version runner
-     */
-
-    protected function getProjectVersioning($data){
-        return root.'/'.$this->projectPath.'/'.$data['serviceName'].'/version.php';
-    }
 
     /**
      * get preloader classes.
@@ -56,20 +31,7 @@ class BaseDefinitor  {
      */
 
     protected function getPreLoaderClasses(){
-        $serviceConfig="\\src\\app\\".app."\\".version."\\config\\app";
-        $serviceConfig=new $serviceConfig();
-        $staticProvider=$serviceConfig->staticProvider();
-        foreach($staticProvider as $key=>$value){
-            $namespace="\\src\\app\\".app."\\".version."\\staticProvider\\".$key."";
-            if($value=="all"){
-                class_alias($namespace,$key);
-            }
-            else{
-                if(in_array(service,$value)){
-                    class_alias($namespace,$key);
-                }
-            }
-        }
+        $this->getStaticProvider();
         return $this->getFileClassRequire(root.'/lib/appClassAlias.php');
 
     }
@@ -86,6 +48,32 @@ class BaseDefinitor  {
     protected function getClassDependencyResolver(){
         $resolve=$this->getFileClassRequire(root.'/lib/resolver.php');
         return new \classresolver();
+
+    }
+
+    /**
+     * get static provider classes.
+     * static provider is class alias for developer comfortable
+     *
+     * outputs class static provider.
+     *
+     * @param string
+     * @return response static provider runner
+     */
+
+    protected function getStaticProvider(){
+        $staticProvider=$this->getServiceConfig()->staticProvider();
+        foreach($staticProvider as $key=>$value){
+            $namespace=api."staticProvider\\".$key."";
+            if($value=="all"){
+                class_alias($namespace,$key);
+            }
+            else{
+                if(in_array(service,$value)){
+                    class_alias($namespace,$key);
+                }
+            }
+        }
 
     }
 
@@ -116,7 +104,7 @@ class BaseDefinitor  {
      * @return response serviceConf runner
      */
     protected function serviceConf($callback=null){
-        $serviceConfFile=root."/".src."/".app."/".version."/__call/".service."/serviceConf.php";
+        $serviceConfFile=apiPath."__call/".service."/serviceConf.php";
         if(file_exists($serviceConfFile)){
             $serviceConf=require($serviceConfFile);
             if($callback==null){
@@ -145,7 +133,7 @@ class BaseDefinitor  {
 
     protected function getAppDefinitionLoader(){
         $appDefinition=\src\config\app::getAppDefinition();
-        $userappDefinitionClass="\\src\\app\\".app."\\".version."\\config\\app";
+        $userappDefinitionClass=api."config\\app";
         $userappDefinition=$userappDefinitionClass::getAppDefinition();
         $appDefinition=$appDefinition+$userappDefinition;
         if(count($appDefinition)){
@@ -659,6 +647,48 @@ class BaseDefinitor  {
         $appBootLoader=new appBootLoader();
         return $appBootLoader->boot($serviceMethod);
     }
+
+    /**
+     * get file classes.
+     *
+     * outputs get file.
+     *
+     * @param string
+     * @return response file runner
+     */
+
+    protected function getFileClassRequire($data){
+        return require($data);
+    }
+
+    /**
+     * get version classes.
+     *
+     * outputs get version.
+     *
+     * @param string
+     * @return response version runner
+     */
+
+    protected function getProjectVersioning($data){
+        return root.'/'.$this->projectPath.'/'.$data['serviceName'].'/version.php';
+    }
+
+    /**
+     * get service config classes.
+     *
+     * outputs get config.
+     *
+     * @param string
+     * @return response service config runner
+     */
+
+    protected function getServiceConfig(){
+        $serviceConfig=api."config\\app";
+        $serviceConfig=new $serviceConfig();
+        return $serviceConfig;
+    }
+
 
 
 }
