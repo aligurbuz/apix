@@ -12,7 +12,6 @@ namespace lib;
 
 class appBootLoader {
 
-
     /**
      * get file boot params.
      *
@@ -21,8 +20,8 @@ class appBootLoader {
      * @param string
      * @return response boot params runner
      */
-    private static function boot($serviceMethod){
-        $bootFile=self::bootFileResolve();
+    public function boot($serviceMethod){
+        $bootFile=$this->bootFileResolve();
         if($bootFile->boot===true){
             $bootList=[];
             $boot=$bootFile->webServiceBoot();
@@ -36,7 +35,13 @@ class appBootLoader {
                 }
             }
 
-            return $bootList;
+            $bootListReal=[];
+            foreach($bootList as $key=>$value){
+                foreach ($value as $key1=>$value1){
+                    $bootListReal[$key1]=$value1;
+                }
+            }
+            return $bootListReal;
         }
 
         return [];

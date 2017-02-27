@@ -656,7 +656,8 @@ class BaseDefinitor  {
      */
 
     protected function bootServiceLoader($serviceMethod){
-        return new appBootLoader($serviceMethod);
+        $appBootLoader=new appBootLoader();
+        return $appBootLoader->boot($serviceMethod);
     }
 
 

@@ -98,9 +98,6 @@ class connection extends Definitor {
                         }
                         if($restrictionsStatus){
                             $boot=$instance->bootServiceLoader($requestServiceMethod);
-                            if(array_key_exists(0,$boot)){
-                                $boot=$boot[0];
-                            }
 
                             $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
                             $instance->serviceDump($requestServiceMethodReal,$requestServiceMethod);
