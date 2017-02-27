@@ -1,22 +1,24 @@
 <?php
 /*
- * This file is response method for every service
- * default : response data array
- * managed as webservice response method in main controller
- * return @array
+ * This file is data object loader of the every service.
+ *
+ * object loader returns array value
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 namespace lib;
 
 class objectLoader {
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get object loader params.
+     * extra data booting for service method
      *
-     * outputs get boot.
+     * outputs get object.
      *
      * @param string
-     * @return response boot params runner
+     * @return response boot object loader runner
      */
     public function boot(){
         $objectLoader="\\src\\provisions\\objectloader";

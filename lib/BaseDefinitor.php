@@ -130,6 +130,7 @@ class BaseDefinitor  {
      */
 
     protected function getAppDefinitionLoader(){
+
         $appDefinition=\src\config\app::getAppDefinition();
         $userappDefinitionClass=api."config\\app";
         $userappDefinition=$userappDefinitionClass::getAppDefinition();
@@ -237,6 +238,7 @@ class BaseDefinitor  {
      * @return get config version runner
      */
     protected function getConfigVersionNumber(array $data){
+
         $getVersionFile=$this->getProjectVersioning($data);
         if(file_exists($getVersionFile)){
             $version=$this->getFileClassRequire($getVersionFile);
