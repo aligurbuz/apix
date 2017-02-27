@@ -1,4 +1,5 @@
 <?php namespace src\packages\auto\csrf;
+use src\services\httpCsrfToken as csrfToken;
 
 /*
  * This file is csrf package for every service.
@@ -11,6 +12,17 @@
 
 class csrf {
 
+    private $session;
+
+    /**
+     * csrf route construct
+     * session initialize.
+     *
+     */
+    public function __construct(){
+        $this->session=app("session");
+    }
+
     /**
      * csrf route is main method.
      *
@@ -18,11 +30,12 @@ class csrf {
      */
     public function index(){
 
-        $token=new \src\services\httpCsrfToken();
-        if(app("session")->has("postToken")===false){
-            $tokenSet=app("session")->set("postToken",$token->GenerateToken());
+        //check session for postToken
+        if($this->session->has("postToken")===false){
+            $token=new csrfToken();
+            $tokenSet=$this->session->set("postToken",$token->GenerateToken());
         }
-        return ['postToken'=>app("session")->get("postToken")];
+        return ['postToken'=>$this->session->get("postToken")];
     }
 
 }
