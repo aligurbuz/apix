@@ -41,25 +41,27 @@ class responseManager {
 
         return $this->getQueryErrorLoad($data,function() use ($data,$msg){
             $developer=[];
-            if(defined("app") && defined("version") && defined("service")){
-                $developInfo=$this->getDeveloperInformationLoad();
-                return $this->getStatusDataEmpty($data,$msg,$developInfo,function() use($data,$msg,$developInfo){
-                    if(\config::get("objectloader")!==null && \config::get("objectloader")){
-                        //object loader
-                        $data=['success'=>(bool)true,'statusCode'=>200,
-                                'responseTime'=>microtime(true)-time_start,
-                                'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall(),'development'=>$developInfo];
-                    }
-                    else{
-                        //default
-                        $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>microtime(true)-time_start,
-                                'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data,'development'=>$developInfo,];
-                    }
-
-                    return json_encode($data);
-                });
-
+            $developInfo=null;
+            if(defined("app") && defined("version") && defined("service")) {
+                $developInfo = $this->getDeveloperInformationLoad();
             }
+
+            return $this->getStatusDataEmpty($data,$msg,$developInfo,function() use($data,$msg,$developInfo){
+                if(\config::get("objectloader")!==null && \config::get("objectloader")){
+                    //object loader
+                    $data=['success'=>(bool)true,'statusCode'=>200,
+                            'responseTime'=>microtime(true)-time_start,
+                            'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall(),'development'=>$developInfo];
+                }
+                else{
+                    //default
+                    $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>microtime(true)-time_start,
+                            'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data,'development'=>$developInfo,];
+                }
+
+                return json_encode($data);
+            });
+
         });
     }
 
