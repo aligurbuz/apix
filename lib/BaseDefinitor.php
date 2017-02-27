@@ -68,10 +68,8 @@ class BaseDefinitor  {
             if($value=="all"){
                 class_alias($namespace,$key);
             }
-            else{
-                if(in_array(service,$value) OR in_array(''.service.'@'.method,$value)){
-                    class_alias($namespace,$key);
-                }
+            if(is_array($value) && (in_array(service,$value) OR in_array(''.service.'@'.method,$value))){
+                class_alias($namespace,$key);
             }
         }
 
