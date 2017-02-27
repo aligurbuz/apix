@@ -40,24 +40,17 @@ class responseManager {
         }
 
         return $this->getQueryErrorLoad($data,function() use ($data,$msg){
-            $developer=[];
             $developInfo=null;
             if(defined("app") && defined("version") && defined("service")) {
                 $developInfo = $this->getDeveloperInformationLoad();
             }
 
             return $this->getStatusDataEmpty($data,$msg,$developInfo,function() use($data,$msg,$developInfo){
-                if(\config::get("objectloader")!==null && \config::get("objectloader")){
-                    //object loader
-                    $data=['success'=>(bool)true,'statusCode'=>200,
-                            'responseTime'=>microtime(true)-time_start,
-                            'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall(),'development'=>$developInfo];
-                }
-                else{
-                    //default
-                    $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>microtime(true)-time_start,
-                            'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data,'development'=>$developInfo,];
-                }
+
+                $objectLoader=new objectLoader();
+                $data=['success'=>(bool)true,'statusCode'=>200,
+                        'responseTime'=>microtime(true)-time_start,
+                        'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+$objectLoader->boot(),'development'=>$developInfo];
 
                 return json_encode($data);
             });
@@ -108,6 +101,7 @@ class responseManager {
      * @return response query getDeveloperInformationLoad runner
      */
     private function getDeveloperInformationLoad(){
+        $developer=[];
         $developInfo=null;
         $developerFile=apiPath.'__call/'.service.'/developer.php';
         if(file_exists($developerFile)){

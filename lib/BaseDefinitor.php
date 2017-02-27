@@ -276,7 +276,7 @@ class BaseDefinitor  {
             'data'=>$data
         ];
         $log="\\src\\app\\".app."\\".version."\\serviceLogController";
-        $log=$instance->resolve->resolve($log);
+        $log=\app::resolve($log);
         if(property_exists($log,"status") && !$log->status){
             return call_user_func($callback);
         }
@@ -335,47 +335,8 @@ class BaseDefinitor  {
      */
 
     protected function objectLoaderMethodCall(){
-
-        $instance=$this;
-
-        $objectLoader="\\src\\provisions\\objectloader";
-        $objectLoader=$instance->resolve->resolve($objectLoader);
-        $objectLoaderMethod=request.'ObjectLoader';
-
-        $objectLoaderExcept=strtolower(request).'Except';
-
-        $objectMethodicCall=$objectLoader->$objectLoaderMethod();
-
-        $exceptapp=app.'/'.service;
-
-        if(in_array($exceptapp,$objectLoader->$objectLoaderExcept())){
-
-            $objectMethodicCall=[];
-        }
-
-        $serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
-        $serviceobjectLoader=$instance->resolve->resolve($serviceobjectLoader);
-        $serviceobjectLoaderMethod=request.'ObjectLoader';
-
-        $servicemethodicCall=$serviceobjectLoader->$serviceobjectLoaderMethod();
-        $s_serviceobjectLoaderMethodExcept=strtolower(request).'Except';
-
-        if(in_array(service,$serviceobjectLoader->$s_serviceobjectLoaderMethodExcept())){
-
-            $servicemethodicCall=[];
-        }
-
-        //individual method like getStk()
-        $s_serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
-        $s_serviceobjectLoader=$instance->resolve->resolve($s_serviceobjectLoader);
-        $s_serviceobjectLoaderMethod=strtolower(request).''.ucfirst(service);
-
-        $s_serviceobjectLoaderMethodcall=[];
-        if(method_exists($s_serviceobjectLoader,$s_serviceobjectLoaderMethod)){
-            $s_serviceobjectLoaderMethodcall=$s_serviceobjectLoader->$s_serviceobjectLoaderMethod();
-        }
-
-        return array_merge_recursive($servicemethodicCall,$s_serviceobjectLoaderMethodcall,$objectMethodicCall);
+        $objectLoader=new objectLoader();
+        return $objectLoader->boot();
     }
 
 
