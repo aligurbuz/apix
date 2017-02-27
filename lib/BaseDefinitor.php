@@ -321,55 +321,8 @@ class BaseDefinitor  {
      */
 
     protected function responseOut($data,$msg=null){
-        header('Content-Type: application/json');
-        $queryError=[];
-        if(!is_array($data)){
-            $data=[$data];
-        }
-        if(array_key_exists("queryResult",$data)){
-            if(is_array($data['queryResult']) && array_key_exists("error",$data['queryResult'])){
-                if($data['queryResult']['error']){
-                    $queryError=['success'=>(bool)false]+['error'=>$data['queryResult']];
-                }
-            }
-        }
-        $developer=[];
-        if(defined("app") && defined("version") && defined("service")){
-            $developerfile=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/developer.php';
-            if(file_exists($developerfile)){
-                $developer=require($developerfile);
-            }
-
-        }
-
-        $developInfo=null;
-        if(is_array($developer) && count($developer)){
-            $developInfo=$developer;
-        }
-        if(is_array($data) && count($data)){
-            if(\config::get("objectloader")!==null && \config::get("objectloader")){
-                //object loader
-                $data=['success'=>(bool)true,'statusCode'=>200,
-                        'responseTime'=>microtime(true)-time_start,
-                        'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+self::objectLoaderMethodCall(),'development'=>$developInfo];
-            }
-            else{
-                //default
-                $data=['success'=>(bool)true,'statusCode'=>200,'responseTime'=>microtime(true)-time_start,
-                        'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data,'development'=>$developInfo,];
-            }
-        }
-        else{
-            $msg=($msg!==null) ? $msg : 'data is empty';
-            $data=['success'=>(bool)false,'statusCode'=>204,'responseTime'=>microtime(true)-time_start,
-                    'requestDate'=>date("Y-m-d H:i:s")]+['message'=>$msg,'development'=>$developInfo,];
-        }
-
-        if(count($queryError)){
-            return json_encode($queryError);
-        }
-        return json_encode($data);
-
+        $responseManager=new responseManager("json");
+        return $responseManager->responseManagerBoot($data,$msg);
     }
 
     /**
