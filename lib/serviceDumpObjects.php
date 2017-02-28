@@ -116,6 +116,7 @@ class serviceDumpObjects {
         //values
         $session=new httpSession();
 
+
         $querydata=$this->requestGetMethodCallback($session,function() use ($session){
             return $this->requestPostProcess($session);
         });
@@ -124,7 +125,7 @@ class serviceDumpObjects {
         $yaml = Yaml::dump(['http'=>strtolower(request),
                 'servicePath'=>''.app.'/'.service.'/'.method.'',
                 'data'=>$this->yObjects,
-                'headers'=>$this->request->getClientHeaders()
+                'headers'=>$this->getClientHeaders($session)
             ]+$querydata +$value+['info'=>$this->yInfo]
         );
 
@@ -151,6 +152,38 @@ class serviceDumpObjects {
                 return call_user_func($callback);
             }
         }
+    }
+
+
+    /**
+     * get requestGetMethodCallback method.
+     *
+     * outputs requestGetMethodCallback method.
+     *
+     * @param string
+     * @return response requestGetMethodCallback runner
+     */
+    private function getClientHeaders($session){
+        $hashData=md5(implode(",",$this->requestServiceMethodReal));
+        $headers=$this->request->getClientHeaders();
+        if($hashData!==$session->get("serviceDumpHashData")){
+            if(count($headers)){
+                $session->set("serviceDumpHashDataHeaders",$headers);
+                $listHeaders=[];
+                foreach($headers as $key=>$value){
+                    $listHeaders[$key]=gettype($value);
+                }
+                return $listHeaders;
+            }
+
+        }
+        if($session->has("serviceDumpHashDataHeaders")){
+            return $session->get("serviceDumpHashDataHeaders");
+        }
+        return null;
+
+
+
     }
 
 

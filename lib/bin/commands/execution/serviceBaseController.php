@@ -19,6 +19,9 @@ class serviceBaseController
     //default search driver
     public $search='elasticSearch';
 
+    //model pagination
+    public $pagination=10;
+
     /**
      * webserviceBoot is to use guzzle method for http.
      * it is related method for every service

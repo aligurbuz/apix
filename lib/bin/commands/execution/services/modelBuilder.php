@@ -18,9 +18,9 @@ class __className__Builder  {
      * model __className__ create method
      * @return array @method
      */
-    public function create(){
+    public function create($post=array()){
 
-        return __className__::create([]);
+        return __className__::create($post);
 
     }
 
@@ -28,9 +28,9 @@ class __className__Builder  {
      * model __className__ update method
      * @return array @method
      */
-    public function update(){
+    public function update($post=array()){
 
-        return __className__::update([]);
+        return __className__::update($post);
 
     }
 
@@ -38,9 +38,9 @@ class __className__Builder  {
      * model __className__ delete method
      * @return array @method
      */
-    public function delete(){
+    public function delete($post=array()){
 
-        return __className__::delete([]);
+        return __className__::delete($post);
 
     }
 }
