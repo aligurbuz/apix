@@ -124,14 +124,41 @@ class serviceDumpObjects {
         $value = Yaml::parse(file_get_contents($this->serviceYamlFile));
         $yaml = Yaml::dump(['http'=>strtolower(request),
                 'servicePath'=>''.app.'/'.service.'/'.method.'',
-                'data'=>$this->yObjects,
+                'data'=>$this->namedDataDumpList($session,$this->yObjects),
                 'headers'=>$this->getClientHeaders($session)
             ]+$querydata +$value+['info'=>$this->yInfo]
         );
 
+
         return $yaml;
     }
 
+
+    /**
+     * get requestGetMethodCallback method.
+     *
+     * outputs requestGetMethodCallback method.
+     *
+     * @param string
+     * @return response requestGetMethodCallback runner
+     */
+    private function namedDataDumpList($session,$data){
+        $list=[];
+        foreach ($this->getClientHeaders($session) as $key=>$value){
+           $list['header_'.$key]=$this->yObjects+[$key=>$value];
+        }
+        $standartList=[];
+        foreach($this->yObjects as $ykey=>$yvalue){
+            if(!array_key_exists('header_'.$ykey.'',$list)){
+                $standartList[$ykey]=$yvalue;
+            }
+
+        }
+        $list['standart']=$standartList;
+
+        return $list;
+
+    }
 
 
     /**
@@ -171,14 +198,18 @@ class serviceDumpObjects {
                 $session->set("serviceDumpHashDataHeaders",$headers);
                 $listHeaders=[];
                 foreach($headers as $key=>$value){
-                    $listHeaders[$key]=gettype($value);
+                    $listHeaders[$key]=gettype($value[0]);
                 }
                 return $listHeaders;
             }
 
         }
         if($session->has("serviceDumpHashDataHeaders")){
-            return $session->get("serviceDumpHashDataHeaders");
+            $listHeaders=[];
+            foreach($session->get("serviceDumpHashDataHeaders") as $key=>$value){
+                $listHeaders[$key]=gettype($value[0]);
+            }
+            return $listHeaders;
         }
         return null;
 
@@ -231,6 +262,7 @@ class serviceDumpObjects {
         }
         else{
             if($hashData!==$session->get("serviceDumpHashData")){
+                $session->set("serviceDumpHashData",$hashData);
                 foreach($this->request->getQueryString() as $key=>$value){
                     $inputList[$key]=gettype($value);
                 }
