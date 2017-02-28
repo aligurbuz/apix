@@ -26,6 +26,7 @@ class serviceDumpObjects {
      * @internal param $string
      */
     public function __construct($requestServiceMethodReal,$requestServiceMethod,$other){
+        error_reporting(0);
         $this->requestServiceMethodReal=$requestServiceMethodReal;
         $this->requestServiceMethod=$requestServiceMethod;
         $this->other=$other;
@@ -73,10 +74,28 @@ class serviceDumpObjects {
         $oInfo=[];
         foreach($requestServiceMethodReal as $key=>$value){
             if(is_array($value)){
-                foreach($value as $v1=>$v2){
-                    $oArr[$v1]=gettype($v2);
-                    $oInfo[$v1]=null;
+                if($key=="queryResult"){
+                    foreach($value as $v1=>$v2){
+                        if($v1=="data"){
+                            foreach($requestServiceMethodReal['queryResult']['data'][0] as $dkey=>$dvalue){
+                                $oArr['queryResult'][$v1][$dkey]=gettype($dvalue);
+                                $oInfo[$v1][$dkey]=null;
+                            }
+                        }
+                        else{
+                            $oArr['queryResult'][$v1]=gettype($v2);
+                            $oInfo[$v1]=null;
+                        }
+
+                    }
                 }
+                else{
+                    foreach($value as $v1=>$v2){
+                        $oArr[$v1]=gettype($v2);
+                        $oInfo[$v1]=null;
+                    }
+                }
+
             }
             else{
                 $oArr[$key]=gettype($value);
@@ -84,7 +103,10 @@ class serviceDumpObjects {
             }
         }
 
-        return ['yObjects'=>$oArr,'yInfo'=>$oInfo];
+        return [
+            'yObjects'=>$oArr,
+            'yInfo'=>$oInfo
+        ];
     }
 
 
@@ -129,6 +151,8 @@ class serviceDumpObjects {
             ]+$querydata +$value+['info'=>$this->yInfo]
         );
 
+        //$session->remove("serviceDumpHashData");
+        //$session->remove("serviceDumpHashDataHeaders");
 
         return $yaml;
     }
@@ -145,16 +169,20 @@ class serviceDumpObjects {
     private function namedDataDumpList($session,$data){
         $list=[];
         foreach ($this->getClientHeaders($session) as $key=>$value){
-           $list['header_'.$key]=$this->yObjects+[$key=>$value];
+           $list['header_'.$key]=$data;
         }
-        $standartList=[];
-        foreach($this->yObjects as $ykey=>$yvalue){
-            if(!array_key_exists('header_'.$ykey.'',$list)){
-                $standartList[$ykey]=$yvalue;
-            }
 
+        if(count($this->getClientHeaders($session))==0){
+            $session->set("standardDumpList",$data);
         }
-        $list['standart']=$standartList;
+
+        if($session->has("standardDumpList")){
+            $list['standard']=$session->get("standardDumpList");
+        }
+        else{
+            $list['standard']=$data;
+        }
+
 
         return $list;
 
@@ -250,7 +278,6 @@ class serviceDumpObjects {
      */
     private function requestGetProcess($session){
         $inputList=[];
-
         $hashData=md5(implode(",",$this->requestServiceMethodReal));
 
         if(!$session->has("serviceDumpHashData")){
@@ -262,7 +289,6 @@ class serviceDumpObjects {
         }
         else{
             if($hashData!==$session->get("serviceDumpHashData")){
-                $session->set("serviceDumpHashData",$hashData);
                 foreach($this->request->getQueryString() as $key=>$value){
                     $inputList[$key]=gettype($value);
                 }
