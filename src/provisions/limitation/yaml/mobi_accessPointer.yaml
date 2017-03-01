@@ -1,0 +1,2 @@
+all:
+    192.168.33.1: { throttle: '60:5', request: all, timeStart: 1488380752, timeUpdate: 1488380756, timeAllCounter: 6, timeServiceCounter: { stk: 6 }, allCount: 6, serviceCount: { stk: 6 } }
