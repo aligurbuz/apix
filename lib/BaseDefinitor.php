@@ -557,11 +557,11 @@ class BaseDefinitor  {
      */
 
     protected function rateLimiterQuery($callback){
-        $status=true;
-
-        if($status && is_callable($callback)){
+        $status=new rateLimitQuery();
+        if($status->handle() && is_callable($callback)){
             return call_user_func($callback);
         }
+        return $this->responseOut([],"you have request limiter in the described time,Please wait and try your request");
     }
 
 
