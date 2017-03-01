@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\provisions;
+namespace src\provisions\limitation;
 use src\services\httprequest as request;
 
 /**
