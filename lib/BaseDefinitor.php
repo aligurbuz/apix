@@ -547,6 +547,23 @@ class BaseDefinitor  {
         return $fixLog[$data];
     }
 
+    /**
+     * get file fix log params.
+     *
+     * outputs get file.
+     *
+     * @param string
+     * @return response fix log params runner
+     */
+
+    protected function rateLimiterQuery($callback){
+        $status=true;
+
+        if($status && is_callable($callback)){
+            return call_user_func($callback);
+        }
+    }
+
 
     /**
      * get file boot params.

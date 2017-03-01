@@ -21,19 +21,7 @@ use src\services\httprequest as request;
 
 class accessRules {
 
-    public $request;
-    public $status=false;
-
-    /**
-     * Represents a access rules construct class.
-     *
-     * $data main variables
-     * return type string
-     */
-    public function __construct(request $request){
-
-        $this->request=$request;
-    }
+    public static $status=false;
 
     /**
      * general limitations for every service.
@@ -41,7 +29,7 @@ class accessRules {
      *
      * @return array
      */
-    public function handle(){
+    public static function handle(){
 
         //access rules
         $rules=[];
