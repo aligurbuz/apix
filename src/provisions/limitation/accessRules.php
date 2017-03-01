@@ -40,7 +40,7 @@ class accessRules {
      *
      * @return boolean true|false
      */
-    public function projectNameHere(){
+    public function handle(){
 
         //access rules
         $rules=[];
