@@ -10,6 +10,7 @@
 
 namespace src\provisions;
 use src\services\httprequest as request;
+use src\services\httpCsrfToken as csrftoken;
 
 /**
  * Represents a provision class.
@@ -58,7 +59,7 @@ class index {
         $success=true;
 
         //need token for production
-        $token=new \src\services\httpCsrfToken();
+        $token=new csrftoken();
         $success=($token->checkTokenForPostMethod(\app::post("_token"))) ? true : false;
 
         //post provision
