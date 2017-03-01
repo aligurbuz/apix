@@ -36,9 +36,10 @@ class accessRules {
     }
 
     /**
-     * start with project method name.
+     * general limitations for every service.
+     * if it is true status,run handle
      *
-     * @return boolean true|false
+     * @return array
      */
     public function handle(){
 
