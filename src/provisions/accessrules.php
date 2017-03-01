@@ -19,7 +19,7 @@ use src\services\httprequest as request;
  * return type boolean
  */
 
-class accessrules {
+class accessRules {
 
     public $request;
     public $status=false;
