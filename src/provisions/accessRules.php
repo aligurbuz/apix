@@ -49,7 +49,6 @@ class accessRules {
         $rules['token']='all';
         $rules['ip']='all';
         $rules['throttle']='60:20/none';
-        $rules['request']='86400:100';
         $rules['requestType']='all'; //all|one
 
         return $rules;
