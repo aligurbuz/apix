@@ -548,12 +548,12 @@ class BaseDefinitor  {
     }
 
     /**
-     * get file fix log params.
+     * get file rateLimiterQuery params.
      *
-     * outputs get file.
+     * outputs get rateLimiterQuery.
      *
      * @param string
-     * @return response fix log params runner
+     * @return response rateLimiterQuery params runner
      */
 
     protected function rateLimiterQuery($callback){
