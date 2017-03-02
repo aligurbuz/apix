@@ -38,10 +38,13 @@ class rateLimitQuery {
      */
     public function handle(){
         $status=true;
-        if($this->getStatusRule()){
-            return $this->getAccessRuleProcess();
-        }
-        return $status;
+        return $this->checkForDeleteExistData(function() use ($status){
+            if($this->getStatusRule()){
+                return $this->getAccessRuleProcess();
+            }
+            return $status;
+        });
+
     }
 
     /**
@@ -76,6 +79,25 @@ class rateLimitQuery {
      */
     public function getAccessRuleProcess(){
 
+        $rule=$this->checkRuleExists();
+        return $this->getRuleCond($rule,function() use ($rule){
+            return $this->setAccessRuleYaml($rule);
+        });
+
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function checkRuleExists(){
+
         if($this->getProjectAccessRuleClass()===null){
             $rule=rule::handle();
         }
@@ -83,11 +105,72 @@ class rateLimitQuery {
             $projectClass='\\src\\provisions\\limitation\\'.app.'_accessRules';
             $rule=$projectClass::handle();
         }
+        return $rule;
 
-        if(array_key_exists("all",$rule) && array_key_exists("none",$rule['all'])){
-            return true;
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function checkValueArrayData(){
+        if(file_exists($this->getAccessRuleYaml())){
+            $value = Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
+            $value=$this->getCleanData($value);
+            $valueJsonHash=md5(json_encode($value));
+            $ruleJsonHash=md5(json_encode($this->checkRuleExists()));
+            if($valueJsonHash!==$ruleJsonHash){
+                return false;
+            }
         }
-        return $this->setAccessRuleYaml($rule);
+        return true;
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function checkForDeleteExistData($callback){
+        if(!$this->checkValueArrayData()){
+            unlink($this->getAccessRuleYaml());
+            return call_user_func($callback);
+        }
+        if(is_callable($callback)){
+            return call_user_func($callback);
+        }
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getRuleCond($rule,$callback){
+        $status=false;
+        if(array_key_exists("all",$rule) && (array_key_exists("none",$rule['all']) OR !array_key_exists($this->request->getClientIp(),$rule['all']))){
+            $status=true;
+        }
+
+        if(!$status){
+            return call_user_func($callback);
+        }
+        return true;
     }
 
     /**
@@ -314,6 +397,32 @@ class rateLimitQuery {
             }
         }
         return false;
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getCleanData($value){
+        $list=[];
+        foreach($value as $token=>$ip){
+            foreach($ip as $ipkey=>$vals){
+                foreach($vals as $key=>$val){
+                    if($key=="throttle" or $key=="request"){
+                        $list[$token][$ipkey][$key]=$val;
+                    }
+
+                }
+
+            }
+
+        }
+        return $list;
     }
 
 
