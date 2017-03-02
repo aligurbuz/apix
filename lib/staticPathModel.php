@@ -17,7 +17,7 @@ class staticPathModel {
      * it is boot resolve
      * for service base controller
      */
-    public static $accessLimitationYamlPath='src/provisions/limitation/yaml';
+    public static $accessLimitationYamlPath='src/provisions/limitation';
 
 
 

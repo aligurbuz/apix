@@ -54,7 +54,14 @@ class rateLimitQuery {
      * @return response boot params runner
      */
     public function getStatusRule(){
-        return rule::$status;
+        if($this->getProjectAccessRuleClass()===null){
+            return rule::$status;
+        }
+        else{
+            $projectClass='\\src\\provisions\\limitation\\'.app.'_accessRules';
+            return $projectClass::$status;
+        }
+
     }
 
 
@@ -68,14 +75,19 @@ class rateLimitQuery {
      * @return response boot params runner
      */
     public function getAccessRuleProcess(){
+
         if($this->getProjectAccessRuleClass()===null){
             $rule=rule::handle();
-            if(array_key_exists("all",$rule) && array_key_exists("none",$rule['all'])){
-                return true;
-            }
-            return $this->setAccessRuleYaml($rule);
         }
-        return false;
+        else{
+            $projectClass='\\src\\provisions\\limitation\\'.app.'_accessRules';
+            $rule=$projectClass::handle();
+        }
+
+        if(array_key_exists("all",$rule) && array_key_exists("none",$rule['all'])){
+            return true;
+        }
+        return $this->setAccessRuleYaml($rule);
     }
 
     /**
@@ -88,7 +100,9 @@ class rateLimitQuery {
      * @return response boot params runner
      */
     public function getProjectAccessRuleClass(){
-
+        if(file_exists($this->getProjectAccessRule())){
+            return $this->getProjectAccessRule();
+        }
         return null;
     }
 
@@ -232,7 +246,21 @@ class rateLimitQuery {
      */
     public function getAccessRuleYaml(){
 
-        return root.'/'.staticPathModel::$accessLimitationYamlPath.'/'.app.'_accessPointer.yaml';
+        return root.'/'.staticPathModel::$accessLimitationYamlPath.'/yaml/'.app.'_accessPointer.yaml';
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getProjectAccessRule(){
+
+        return root.'/'.staticPathModel::$accessLimitationYamlPath.'/'.app.'_accessRules.php';
     }
 
     /**
