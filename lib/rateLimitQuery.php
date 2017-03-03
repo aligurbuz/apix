@@ -14,6 +14,7 @@ use src\provisions\limitation\accessRules as rule;
 class rateLimitQuery {
 
     public $request;
+    public $time;
     /**
      * get response Out construct.
      * booting resolve
@@ -25,6 +26,7 @@ class rateLimitQuery {
     public function __construct(){
         //get client request info
         $this->request=new request();
+        $this->time=time();
     }
 
     /**
@@ -80,9 +82,7 @@ class rateLimitQuery {
     public function getAccessRuleProcess(){
 
         $rule=$this->checkRuleExists();
-        return $this->getRuleCond($rule,function() use ($rule){
-            return $this->setAccessRuleYaml($rule);
-        });
+        return $this->setAccessRuleYaml($rule);
 
 
     }
@@ -120,15 +120,6 @@ class rateLimitQuery {
      * @return response boot params runner
      */
     public function checkValueArrayData(){
-        if(file_exists($this->getAccessRuleYaml())){
-            $value = Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
-            $value=$this->getCleanData($value);
-            $valueJsonHash=md5(json_encode($value));
-            $ruleJsonHash=md5(json_encode($this->checkRuleExists()));
-            if($valueJsonHash!==$ruleJsonHash){
-                return false;
-            }
-        }
         return true;
 
     }
@@ -152,26 +143,7 @@ class rateLimitQuery {
         }
     }
 
-    /**
-     * get file boot params.
-     * booting for service method
-     *
-     * outputs get boot.
-     *
-     * @param string
-     * @return response boot params runner
-     */
-    public function getRuleCond($rule,$callback){
-        $status=false;
-        if(array_key_exists("all",$rule) && (array_key_exists("none",$rule['all']) OR !array_key_exists($this->request->getClientIp(),$rule['all']))){
-            $status=true;
-        }
 
-        if(!$status){
-            return call_user_func($callback);
-        }
-        return true;
-    }
 
     /**
      * get file boot params.
@@ -199,44 +171,66 @@ class rateLimitQuery {
      * @return response boot params runner
      */
     public function setAccessRuleYaml($rule){
-        if(file_exists($this->getAccessRuleYaml())){
-            $value = Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
 
-            $reelUpdatedYamlFile=$this->getUpdateYamlFile($value,$rule);
-            $updatedValueYaml=$reelUpdatedYamlFile['data'];
-            $throttle=explode(":",$updatedValueYaml[$reelUpdatedYamlFile['token']][$reelUpdatedYamlFile['ip']]['throttle']);
-
-            if($this->checkThrottleValue($updatedValueYaml,$reelUpdatedYamlFile['token'],$reelUpdatedYamlFile['ip'])===false){
-                $timeBlue=$updatedValueYaml[$reelUpdatedYamlFile['token']][$reelUpdatedYamlFile['ip']]['timeStart']+$throttle[0];
-                if(time()>$timeBlue){
-                    $updatedValueYaml[$reelUpdatedYamlFile['token']][$reelUpdatedYamlFile['ip']]['timeStart']=time();
-                    $updatedValueYaml[$reelUpdatedYamlFile['token']][$reelUpdatedYamlFile['ip']]['timeUpdate']=time();
-                    $updatedValueYaml[$reelUpdatedYamlFile['token']][$reelUpdatedYamlFile['ip']]['timeAllCounter']=1;
-                    $updatedValueYaml[$reelUpdatedYamlFile['token']][$reelUpdatedYamlFile['ip']]['timeServiceCounter'][service]=1;
-                    $yaml = Yaml::dump($updatedValueYaml);
-                    file_put_contents($this->getAccessRuleYaml(), $yaml);
-                    return true;
-                }
-                $yaml = Yaml::dump($updatedValueYaml);
-                file_put_contents($this->getAccessRuleYaml(), $yaml);
-                return false;
+        if($this->checkServiceExists()){
+            if(file_exists($this->getAccessRuleYaml())){
+                $dataRule=$this->getUpdateWrapList($this->yamlProcess());
+                return $this->yamlProcess("dump",$dataRule);
             }
-            $yaml = Yaml::dump($updatedValueYaml);
-            file_put_contents($this->getAccessRuleYaml(), $yaml);
-            return true;
-
-
-
-        }
-        else{
-            if($this->getThrottleValue($rule)){
-                $yaml = Yaml::dump($this->getServiceThrottleInformation($rule));
-                if(file_put_contents($this->getAccessRuleYaml(), $yaml)){
-                    return true;
+            else{
+                if($this->checkKeyControl($rule)){
+                    return $this->yamlProcess("dump",$this->getServiceThrottleInformation($rule));
                 }
+                return true;
+
+            }
+        }
+
+        return true;
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function checkKeyControl($rule){
+        if(array_key_exists('ip::'.$this->request->getClientIp(),$rule['restrictions'])){
+            return true;
+        }
+        return false;
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function yamlProcess($type="parse",$rule=null){
+
+        if($type=="parse"){
+            return Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
+        }
+
+        if($type=="dump"){
+            $yaml = Yaml::dump($rule);
+            if(file_put_contents($this->getAccessRuleYaml(), $yaml)){
+                return true;
             }
             return false;
         }
+
+
     }
 
     /**
@@ -248,43 +242,39 @@ class rateLimitQuery {
      * @param string
      * @return response boot params runner
      */
-    public function getUpdateYamlFile($value,$rule){
-        if(\app::checkToken()){
+    public function getUpdateWrapList($data){
+        foreach($data['data'] as $wrapkey=>$wrapwal){
 
-        }
-        return ['token'=>'all','ip'=>$this->request->getClientIp(),'data'=>$this->getIpUpdateYamlFile($value,$rule)];
-    }
+            if(array_key_exists(service,$data['data'][$wrapkey])){
+                foreach($data['data'][$wrapkey][service] as $key=>$val){
+                    if($key=="timeUpdate"){
+                        $data['data'][$wrapkey][service]['timeUpdate']=$this->time;
+                    }
+                    if($key=="timeAllCounter"){
+                        $data['data'][$wrapkey][service]['timeAllCounter']=$data['data'][$wrapkey][service]['timeAllCounter']+1;
+                    }
 
-
-    /**
-     * get file boot params.
-     * booting for service method
-     *
-     * outputs get boot.
-     *
-     * @param string
-     * @return response boot params runner
-     */
-    public function checkThrottleValue($data,$token,$ip){
-        $data=$data[$token][$ip];
-        $throttle=explode(":",$data['throttle']);
-        $timeDifference=time()-$data['timeStart'];
-        if($timeDifference<=$throttle[0]){
-            if($data['request']=="all"){
-                if($data['timeAllCounter']>$throttle[1]){
-                    return false;
+                    if($key=="allCount"){
+                        $data['data'][$wrapkey][service]['allCount']=$data['data'][$wrapkey][service]['allCount']+1;
+                    }
                 }
-                return true;
             }
             else{
-                if($data['timeServiceCounter'][service]>$throttle[1]){
-                    return false;
-                }
-                return true;
+                $data['data'][$wrapkey][service]['timeStart']=$this->time;
+                $data['data'][$wrapkey][service]['timeUpdate']=$this->time;
+                $data['data'][$wrapkey][service]['timeAllCounter']=1;
+                $data['data'][$wrapkey][service]['allCount']=1;
             }
+
+
+
+
+
         }
-        return false;
+        return $data;
+
     }
+
 
 
     /**
@@ -296,26 +286,13 @@ class rateLimitQuery {
      * @param string
      * @return response boot params runner
      */
-    public function getIpUpdateYamlFile($value,$rule){
-        $valueData=[];
-        if(array_key_exists("all",$value)){
-            $valueData=$value['all'][$this->request->getClientIp()];
-            $ruleData=$rule['all'][$this->request->getClientIp()];
-            if($valueData['throttle']==$ruleData['throttle'] && $valueData['request']==$ruleData['request']){
-                $value['all'][$this->request->getClientIp()]['timeUpdate']=time();
-                $value['all'][$this->request->getClientIp()]['timeAllCounter']=$valueData['timeAllCounter']+1;
-                $value['all'][$this->request->getClientIp()]['timeServiceCounter'][service]=$valueData['timeServiceCounter'][service]+1;
-                $value['all'][$this->request->getClientIp()]['allCount']=$valueData['allCount']+1;
-                $value['all'][$this->request->getClientIp()]['serviceCount'][service]=$valueData['serviceCount'][service]+1;
+    public function checkServiceExists(){
 
-            }
-
-
+        $path=root.'/src/app/'.app.'/'.version.'/__call/'.service.'/getService.php';
+        if(file_exists($path)){
+            return true;
         }
-
-        return $value;
-
-
+        return false;
     }
 
     /**
@@ -356,74 +333,66 @@ class rateLimitQuery {
      * @return response boot params runner
      */
     public function getServiceThrottleInformation($rule){
-        $time=time();
-        foreach($rule as $token=>$ip){
-            foreach($ip as $ip_key=>$ip_value){
-                foreach($ip_value as $key=>$value){
-                    $rule[$token][$ip_key]['timeStart']=$time;
-                    $rule[$token][$ip_key]['timeUpdate']=$time;
-                    $rule[$token][$ip_key]['timeAllCounter']=1;
-                    $rule[$token][$ip_key]['timeServiceCounter']=[service=>1];
-                    $rule[$token][$ip_key]['allCount']=1;
-                    $rule[$token][$ip_key]['serviceCount']=[service=>1];
-                }
-
-            }
-        }
-        return $rule;
-    }
-
-    /**
-     * get file boot params.
-     * booting for service method
-     *
-     * outputs get boot.
-     *
-     * @param string
-     * @return response boot params runner
-     */
-    public function getThrottleValue($rule){
-        foreach($rule as $token=>$ip){
-            foreach($ip as $key=>$value){
-                foreach($value as $throttle_key=>$throttle_value){
-                    if($throttle_key=="throttle"){
-                        if($throttle_value=="none"){
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-
-            }
-        }
-        return false;
-    }
-
-    /**
-     * get file boot params.
-     * booting for service method
-     *
-     * outputs get boot.
-     *
-     * @param string
-     * @return response boot params runner
-     */
-    public function getCleanData($value){
         $list=[];
-        foreach($value as $token=>$ip){
-            foreach($ip as $ipkey=>$vals){
-                foreach($vals as $key=>$val){
-                    if($key=="throttle" or $key=="request"){
-                        $list[$token][$ipkey][$key]=$val;
+        $list['data']=$this->getThrottleWrapList($rule);
+        $list['rule']['dateprocess']=$this->time;
+
+        return $list;
+    }
+
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getThrottleWrapList($rule,$type=null){
+        $list=[];
+        foreach($rule as $restrictions=>$data){
+            foreach($data as $datakey=>$datavalue){
+                foreach($data[$datakey] as $key=>$value){
+                    if($type===null){
+                        $list[$this->getCondForThrottle($datakey)][service]['timeStart']=$this->time;
+                        $list[$this->getCondForThrottle($datakey)][service]['timeUpdate']=$this->time;
+                        $list[$this->getCondForThrottle($datakey)][service]['timeAllCounter']=1;
+                        $list[$this->getCondForThrottle($datakey)][service]['allCount']=1;
+                        $list[$this->getCondForThrottle($datakey)]['wrap']=$this->getThrottleWrapList($rule,"rule");
+                    }
+
+                    if($type=="rule"){
+                        $list[$key]=$value;
                     }
 
                 }
 
             }
-
         }
         return $list;
     }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getCondForThrottle($cond){
+        $cond=explode("::",$cond);
+        if($cond[0]=="ip"){
+            return $this->request->getClientIp();
+        }
+        else{
+            return \app::getUrlParam("_token");
+        }
+    }
+
 
 
 
