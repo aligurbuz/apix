@@ -21,7 +21,7 @@ use src\services\httprequest as request;
 
 class accessRules {
 
-    public static $status=false;
+    public static $status=true;
 
     /**
      * general limitations for every service.

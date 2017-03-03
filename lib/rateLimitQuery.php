@@ -352,24 +352,25 @@ class rateLimitQuery {
      */
     public function getThrottleWrapList($rule,$type=null){
         $list=[];
-        foreach($rule as $restrictions=>$data){
-            foreach($data as $datakey=>$datavalue){
-                foreach($data[$datakey] as $key=>$value){
+        foreach($rule['restrictions'] as $datakey=>$datavalue){
+            foreach($rule['restrictions'][$datakey] as $key=>$value){
+                if($this->getCondForThrottle($datakey)!==null){
                     if($type===null){
                         $list[$this->getCondForThrottle($datakey)][service]['timeStart']=$this->time;
                         $list[$this->getCondForThrottle($datakey)][service]['timeUpdate']=$this->time;
                         $list[$this->getCondForThrottle($datakey)][service]['timeAllCounter']=1;
                         $list[$this->getCondForThrottle($datakey)][service]['allCount']=1;
-                        $list[$this->getCondForThrottle($datakey)]['wrap']=$this->getThrottleWrapList($rule,"rule");
+                        $list[$this->getCondForThrottle($datakey)]['wrap']=$rule['restrictions'][$datakey];
                     }
 
                     if($type=="rule"){
                         $list[$key]=$value;
                     }
-
                 }
 
+
             }
+
         }
         return $list;
     }
@@ -386,7 +387,10 @@ class rateLimitQuery {
     public function getCondForThrottle($cond){
         $cond=explode("::",$cond);
         if($cond[0]=="ip"){
-            return $this->request->getClientIp();
+            if($cond[1]==$this->request->getClientIp()){
+                return $cond[1];
+            }
+            return null;
         }
         else{
             return \app::getUrlParam("_token");
