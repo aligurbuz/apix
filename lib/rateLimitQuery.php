@@ -40,12 +40,10 @@ class rateLimitQuery {
      */
     public function handle(){
         $status=true;
-        return $this->checkForDeleteExistData(function() use ($status){
-            if($this->getStatusRule()){
-                return $this->getAccessRuleProcess();
-            }
-            return $status;
-        });
+        if($this->getStatusRule()){
+            return $this->getAccessRuleProcess();
+        }
+        return $status;
 
     }
 
@@ -82,10 +80,171 @@ class rateLimitQuery {
     public function getAccessRuleProcess(){
 
         $rule=$this->checkRuleExists();
-        return $this->setAccessRuleYaml($rule);
+        if($this->setAccessRuleYaml($rule)){
+            return $this->getLogicResult($rule);
+        }
+        return false;
 
 
     }
+
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getLogicResult($rule){
+        if($this->getRequest($rule)=="all"){
+            $throttle=$this->getThrottle($rule);
+            if(count($throttle)){
+                $expire=$throttle[0]+$this->getDateProcess($rule);
+                if(time()<$expire){
+                    $limiter=(int)$throttle[1];
+                    if($this->getAllTimeAllCounters($rule)>$limiter){
+                        return false;
+                    }
+                    return true;
+                }
+                else{
+                    return $this->getExpireTimeUpdate($rule);
+                }
+            }
+            return true;
+
+        }
+        else{
+
+            $throttle=$this->getThrottle($rule);
+            if(count($throttle)){
+                $expire=$throttle[0]+$this->getDateProcess($rule);
+                if(time()<$expire){
+                    $limiter=(int)$throttle[1];
+                    if($this->getAllTimeAllCounters($rule)>$limiter){
+                        return false;
+                    }
+                    return true;
+                }
+                else{
+                    return $this->getExpireTimeUpdate($rule);
+                }
+            }
+            return true;
+
+        }
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getExpireTimeUpdate($rule){
+
+        $keyTone=$this->yamlProcess();
+
+        if($this->getRequest($rule)=="all"){
+            foreach($keyTone['data'][$this->getKeyParam($rule)] as $service=>$val){
+
+                foreach($keyTone['data'][$this->getKeyParam($rule)][$service] as $key=>$val){
+                    if($key=="timeStart" || $key=="timeUpdate"){
+                        $keyTone['data'][$this->getKeyParam($rule)][$service][$key]=$this->time;
+                    }
+                    if($key=="timeAllCounter"){
+                        $keyTone['data'][$this->getKeyParam($rule)][$service][$key]=1;
+                    }
+                }
+                $keyTone['data'][$this->getKeyParam($rule)]['wrap']['dateprocess']=$this->time;
+
+
+            }
+        }
+        else{
+            foreach($keyTone['data'][$this->getKeyParam($rule)][service] as $key=>$val){
+                if($key=="timeStart" || $key=="timeUpdate"){
+                    $keyTone['data'][$this->getKeyParam($rule)][service][$key]=$this->time;
+                }
+                if($key=="timeAllCounter"){
+                    $keyTone['data'][$this->getKeyParam($rule)][service][$key]=1;
+                }
+            }
+            $keyTone['data'][$this->getKeyParam($rule)]['wrap']['dateprocess']=$this->time;
+        }
+
+        $keyTone['rule']['dateprocess']=$this->time;
+
+        if($this->setAccessRuleYaml($rule,$keyTone)){
+            return true;
+        }
+        return false;
+
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getAllTimeAllCounters($rule,$service=null){
+        $list=[];
+        $data=$this->yamlProcess();
+        if($this->getRequest($rule)=="all"){
+            foreach($data['data'][$this->getKeyParam($rule)] as $service=>$val){
+                foreach($data['data'][$this->getKeyParam($rule)][$service] as $key=>$val){
+                    if($key=="timeAllCounter"){
+                        $list[]=$val;
+                    }
+                }
+            }
+        }
+        else{
+            foreach($data['data'][$this->getKeyParam($rule)][service] as $key=>$val){
+                if($key=="timeAllCounter"){
+                    $list[]=$val;
+                }
+            }
+        }
+
+
+
+        return array_sum($list);
+    }
+
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getOneTimeAllCounters($rule){
+        $list=[];
+        $data=$this->yamlProcess();
+        foreach($data['data'][$this->getKeyParam($rule)][service] as $key=>$val){
+            if($key=="timeAllCounter"){
+                $list[]=$val;
+            }
+        }
+        return array_sum($list);
+    }
+
+
 
     /**
      * get file boot params.
@@ -119,8 +278,33 @@ class rateLimitQuery {
      * @param string
      * @return response boot params runner
      */
-    public function checkValueArrayData(){
-        return true;
+    public function getThrottle($rule){
+        $keyTune=$this->getKeyParam($rule);
+        $data=$this->yamlProcess();
+        if(array_key_exists($keyTune,$data['data'])){
+            return explode(":",$data['data'][$keyTune]['wrap']['throttle']);
+        }
+        return [];
+
+    }
+
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getRequest($rule){
+        $keyTune=$this->getKeyParam($rule);
+        $data=$this->yamlProcess();
+        if(array_key_exists($keyTune,$data['data'])){
+            return $data['data'][$keyTune]['wrap']['request'];
+        }
+        return 'all';
 
     }
 
@@ -133,15 +317,20 @@ class rateLimitQuery {
      * @param string
      * @return response boot params runner
      */
-    public function checkForDeleteExistData($callback){
-        if(!$this->checkValueArrayData()){
-            unlink($this->getAccessRuleYaml());
-            return call_user_func($callback);
+    public function getDateProcess($rule){
+        $keyTune=$this->getKeyParam($rule);
+        $data=$this->yamlProcess();
+        if(array_key_exists($keyTune,$data['data'])){
+            if($this->getRequest($rule)=="all"){
+                return $data['data'][$keyTune]['wrap']['dateprocess'];
+            }
+            return $data['data'][$keyTune][service]['timeStart'];
+
         }
-        if(is_callable($callback)){
-            return call_user_func($callback);
-        }
+        return null;
     }
+
+
 
 
 
@@ -170,11 +359,17 @@ class rateLimitQuery {
      * @param string
      * @return response boot params runner
      */
-    public function setAccessRuleYaml($rule){
-
+    public function setAccessRuleYaml($rule,$data=null){
+        
         if($this->checkServiceExists()){
             if(file_exists($this->getAccessRuleYaml())){
-                $dataRule=$this->getUpdateWrapList($this->yamlProcess());
+                if($data===null){
+                    $dataRule=$this->getUpdateWrapList($this->yamlProcess());
+                }
+                else{
+                    $dataRule=$data;
+                }
+
                 return $this->yamlProcess("dump",$dataRule);
             }
             else{
@@ -199,11 +394,19 @@ class rateLimitQuery {
      * @param string
      * @return response boot params runner
      */
-    public function checkKeyControl($rule){
+    public function checkKeyControl($rule,$type=false){
         if(array_key_exists('ip::'.$this->request->getClientIp(),$rule['restrictions'])){
-            return true;
+            if($type===false){
+                return true;
+            }
+            return 'ip';
+
         }
-        return false;
+        if($type===false){
+            return false;
+        }
+        return 'token';
+
 
     }
 
@@ -219,7 +422,11 @@ class rateLimitQuery {
     public function yamlProcess($type="parse",$rule=null){
 
         if($type=="parse"){
-            return Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
+            if(file_exists($this->getAccessRuleYaml())){
+                return Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
+            }
+            return true;
+
         }
 
         if($type=="dump"){
@@ -361,6 +568,7 @@ class rateLimitQuery {
                         $list[$this->getCondForThrottle($datakey)][service]['timeAllCounter']=1;
                         $list[$this->getCondForThrottle($datakey)][service]['allCount']=1;
                         $list[$this->getCondForThrottle($datakey)]['wrap']=$rule['restrictions'][$datakey];
+                        $list[$this->getCondForThrottle($datakey)]['wrap']['dateprocess']=$this->time;
                     }
 
                     if($type=="rule"){
@@ -391,6 +599,24 @@ class rateLimitQuery {
                 return $cond[1];
             }
             return null;
+        }
+        else{
+            return \app::getUrlParam("_token");
+        }
+    }
+
+    /**
+     * get file boot params.
+     * booting for service method
+     *
+     * outputs get boot.
+     *
+     * @param string
+     * @return response boot params runner
+     */
+    public function getKeyParam($rule){
+        if($this->checkKeyControl($rule,true)=="ip"){
+            return $this->request->getClientIp();
         }
         else{
             return \app::getUrlParam("_token");

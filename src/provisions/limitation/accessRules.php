@@ -21,7 +21,7 @@ use src\services\httprequest as request;
 
 class accessRules {
 
-    public static $status=false;
+    public static $status=true;
 
     /**
      * general limitations for every service.
@@ -36,8 +36,8 @@ class accessRules {
 
             'restrictions'=>[
                 'ip::192.168.33.1'=>[
-                    'throttle'=>'60:10',
-                    'request'=>'all'
+                    'throttle'=>'60:5',
+                    'request'=>'one'
                 ]
             ]
         ];
