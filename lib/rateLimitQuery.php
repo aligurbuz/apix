@@ -224,26 +224,6 @@ class rateLimitQuery {
     }
 
 
-    /**
-     * get file boot params.
-     * booting for service method
-     *
-     * outputs get boot.
-     *
-     * @param string
-     * @return response boot params runner
-     */
-    public function getOneTimeAllCounters($rule){
-        $list=[];
-        $data=$this->yamlProcess();
-        foreach($data['data'][$this->getKeyParam($rule)][service] as $key=>$val){
-            if($key=="timeAllCounter"){
-                $list[]=$val;
-            }
-        }
-        return array_sum($list);
-    }
-
 
 
     /**
