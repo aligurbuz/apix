@@ -1,6 +1,7 @@
 <?php
 /*
- * This file is response method for every service
+ * This file is rate limiter for every service
+ * rate limiter for service
  * default : response data array
  * managed as webservice response method in main controller
  * return @array
@@ -30,13 +31,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * rateLimitQuery for service method
      *
-     * outputs get boot.
+     * outputs get handle.
      *
      * @param string
-     * @return response boot params runner
+     * @return response rateLimitQuery params runner
      */
     public function handle(){
         $status=true;
@@ -48,13 +49,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get status rule rateLimitQuery params.
+     * rateLimitQuery for service method
      *
      * outputs get boot.
      *
      * @param string
-     * @return response boot params runner
+     * @return response rateLimitQuery status runner
      */
     public function getStatusRule(){
         if($this->getProjectAccessRuleClass()===null){
@@ -69,13 +70,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * access rule process for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response access rule process params runner
      */
     public function getAccessRuleProcess(){
 
@@ -90,13 +91,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * get logic result for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response boot logic result runner
      */
     public function getLogicResult($rule){
         if($this->getRequest($rule)=="all"){
@@ -140,13 +141,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * expire time update for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response expire time update params runner
      */
     public function getExpireTimeUpdate($rule){
 
@@ -190,13 +191,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * all time all counters for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response boot all time counters runner
      */
     public function getAllTimeAllCounters($rule,$service=null){
         $list=[];
@@ -227,13 +228,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * check rule exists for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response check rule exists params runner
      */
     public function checkRuleExists(){
 
@@ -250,13 +251,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * throttle for service method
      *
-     * outputs get boot.
+     * outputs get throttle.
      *
      * @param string
-     * @return response boot params runner
+     * @return response throttle params runner
      */
     public function getThrottle($rule){
         $keyTune=$this->getKeyParam($rule);
@@ -270,13 +271,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * request for service method
      *
-     * outputs get boot.
+     * outputs get request.
      *
      * @param string
-     * @return response boot params runner
+     * @return response request params runner
      */
     public function getRequest($rule){
         $keyTune=$this->getKeyParam($rule);
@@ -289,13 +290,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * date process for service method
      *
-     * outputs get boot.
+     * outputs get date process.
      *
      * @param string
-     * @return response boot params runner
+     * @return response date process params runner
      */
     public function getDateProcess($rule){
         $keyTune=$this->getKeyParam($rule);
@@ -315,13 +316,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * project rule access for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response project rule access params runner
      */
     public function getProjectAccessRuleClass(){
         if(file_exists($this->getProjectAccessRule())){
@@ -331,13 +332,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * access rule yaml for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response access rule yaml params runner
      */
     public function setAccessRuleYaml($rule,$data=null){
         
@@ -366,13 +367,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * check key control for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response check key control params runner
      */
     public function checkKeyControl($rule,$type=false){
         if(array_key_exists('ip::'.$this->request->getClientIp(),$rule['restrictions'])){
@@ -383,7 +384,7 @@ class rateLimitQuery {
 
         }
         if($type===false){
-            return false;
+            return $this->getKeyParam($rule);
         }
         return 'token';
 
@@ -391,13 +392,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * yaml process for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response yaml process params runner
      */
     public function yamlProcess($type="parse",$rule=null){
 
@@ -405,7 +406,7 @@ class rateLimitQuery {
             if(file_exists($this->getAccessRuleYaml())){
                 return Yaml::parse(file_get_contents($this->getAccessRuleYaml()));
             }
-            return true;
+            return ['data'=>[]];
 
         }
 
@@ -421,13 +422,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * wrap list for service method
      *
-     * outputs get boot.
+     * outputs get wrap list.
      *
      * @param string
-     * @return response boot params runner
+     * @return response wrap list params runner
      */
     public function getUpdateWrapList($data){
         foreach($data['data'] as $wrapkey=>$wrapwal){
@@ -465,13 +466,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * check service exists for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response check service exists params runner
      */
     public function checkServiceExists(){
 
@@ -483,13 +484,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file access rule yaml params.
+     * access rule yaml for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response access rule yaml params runner
      */
     public function getAccessRuleYaml(){
 
@@ -497,13 +498,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * project rule for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response rule params runner
      */
     public function getProjectAccessRule(){
 
@@ -511,13 +512,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * throttle information for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response throttle information params runner
      */
     public function getServiceThrottleInformation($rule){
         $list=[];
@@ -529,13 +530,13 @@ class rateLimitQuery {
 
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * throttle wrap list for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response throttle wrap list params runner
      */
     public function getThrottleWrapList($rule,$type=null){
         $list=[];
@@ -564,13 +565,13 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * cond for throttle for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response cond for throttle params runner
      */
     public function getCondForThrottle($cond){
         $cond=explode("::",$cond);
@@ -586,20 +587,24 @@ class rateLimitQuery {
     }
 
     /**
-     * get file boot params.
-     * booting for service method
+     * get file rateLimitQuery params.
+     * get key param for service method
      *
-     * outputs get boot.
+     * outputs get rateLimitQuery.
      *
      * @param string
-     * @return response boot params runner
+     * @return response get key param params runner
      */
     public function getKeyParam($rule){
         if($this->checkKeyControl($rule,true)=="ip"){
             return $this->request->getClientIp();
         }
         else{
-            return \app::getUrlParam("_token");
+            if(\app::checkToken()){
+                return \app::getUrlParam("_token");
+            }
+            return null;
+
         }
     }
 
