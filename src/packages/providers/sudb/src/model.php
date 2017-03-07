@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\services\sudb\src;
+namespace src\packages\providers\sudb\src;
 
 /**
  * Represents a index class.
@@ -40,7 +40,7 @@ class model {
      * @return array
      */
     public function getQuery($name,$args){
-        $model=\app::resolve("\\src\\services\\sudb\\src\\builder");
+        $model=\app::resolve("\\src\\packages\providers\\sudb\\src\\builder");
         $model->subClassOf($this->subClassOf);
         if($name=="where"){
             if(array_key_exists(0,$args)){

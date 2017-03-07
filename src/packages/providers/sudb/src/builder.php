@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace src\services\sudb\src;
-use \src\services\sudb\src\querySqlFormatter as querySqlFormatter;
-use \src\services\sudb\src\selectBuilderOperation as selectBuilderOperation;
-use \src\services\sudb\src\whereBuilderOperation as whereBuilderOperation;
+namespace src\packages\providers\sudb\src;
+use \src\packages\providers\sudb\src\querySqlFormatter as querySqlFormatter;
+use \src\packages\providers\sudb\src\selectBuilderOperation as selectBuilderOperation;
+use \src\packages\providers\sudb\src\whereBuilderOperation as whereBuilderOperation;
 
 /**
  * Represents a index class.
@@ -41,6 +41,7 @@ class builder {
     private $saveNew=null;
     private $saveOld=null;
     private $transaction=false;
+    private $transactionName=null;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -774,7 +775,7 @@ class builder {
         }
         if(is_array($data) && count($data)){
             $data=(array_key_exists(0,$data)) ? $data[0] : $data;
-            return $this->querySqlFormatter->getInsertQueryFormatter($data,['model'=>$this->model->subClassOf,'bool'=>$this->bool,'transaction'=>$this->transaction]);
+            return $this->querySqlFormatter->getInsertQueryFormatter($data,['model'=>$this->model->subClassOf,'bool'=>$this->bool,'transaction'=>$this->transaction,'transactionName'=>$this->transactionName]);
         }
 
     }
@@ -830,6 +831,7 @@ class builder {
             return $this->querySqlFormatter->getTransactionProcess($queries);
         }
         $this->transaction=true;
+        $this->transactionName=$callback[0];
         return $this;
     }
 

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\services\sudb\src;
+namespace src\packages\providers\sudb\src;
 use src\services\httprequest as request;
 
 /**
@@ -21,17 +21,18 @@ use src\services\httprequest as request;
 class querySqlFormatter {
 
 
+    private static $instance=null;
     private $driver;
     private $host;
     private $database;
     private $user;
     private $password;
-    private $db;
+    private $db=null;
     private $request;
 
-    public function __construct(request $request){
+    public function __construct(){
 
-        $this->request=$request;
+        $this->request=new request();
         $config="\\src\\app\\".app."\\".version."\\config\\database";
         $configdb=$config::dbsettings();
 
@@ -43,10 +44,14 @@ class querySqlFormatter {
 
         /** @var TYPE_NAME $this */
         try {
-            $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
-            $this->db->exec("SET NAMES utf8");
-            $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES,false);
+
+            if(self::$instance===null){
+                $this->db = new \PDO(''.$this->driver.':host='.$this->host.';dbname='.$this->database.'', $this->user,$this->password);
+                $this->db->exec("SET NAMES utf8");
+                $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES,false);
+                $this->db->setAttribute(\PDO::ATTR_PERSISTENT,true);
+            }
         }
         catch (\PDOException $e) {
             if(environment()=="local"){
@@ -78,6 +83,7 @@ class querySqlFormatter {
         }
 
     }
+
 
     /**
      * Represents a getSqlPrepareFormatter class.
@@ -360,6 +366,7 @@ class querySqlFormatter {
     public function getInsertQueryFormatter($data,$model){
         $bool=$model['bool'];
         $transaction=$model['transaction'];
+        $transactionName=$model['transactionName'];
         $model=$model['model'];
         if($bool===false){
             return [
@@ -468,6 +475,7 @@ class querySqlFormatter {
         }
 
         if($transaction){
+            $transactionList['create']['transactionName'][]=$transactionName;
             $transactionList['create']['table'][]=$model->table;
             $transactionList['create']['field'][]=implode(",",$dataKeyValues);
             $transactionList['create']['value'][]=implode(",",$dataPrepareValues);
@@ -480,7 +488,7 @@ class querySqlFormatter {
         try {
             $query=$this->db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
             if($query->execute($dataExecuteValues)){
-                return ['post'=>['status'=>true]];
+                return ['lastInsertId'=>$this->db->lastInsertId(),'status'=>true];
             }
         }
         catch(\Exception $e){
@@ -728,11 +736,18 @@ class querySqlFormatter {
     public function getTransactionProcess($queries=null){
         $this->db->beginTransaction();
         try {
-
+            $list=[];
             foreach($queries as $key=>$value){
                 foreach($queries[$key]['create']['table'] as $t=>$tt){
                     $query=$this->db->prepare("INSERT INTO ".$tt." (".$queries[$key]['create']['field'][$t].") VALUES (".$queries[$key]['create']['value'][$t].")");
+                    foreach ($queries[$key]['create']['execute'][$t] as $execute_key=>$execute_val){
+                        if(preg_match('@:id@is',$execute_val)){
+                            $exparam=explode(":",$execute_val);
+                            $queries[$key]['create']['execute'][$t][$execute_key]=$list[$exparam[0]]['id'];
+                        }
+                    }
                     $query->execute($queries[$key]['create']['execute'][$t]);
+                    $list[$queries[$key]['create']['transactionName'][$t]]['id']=$this->db->lastInsertId();
                 }
             }
 
