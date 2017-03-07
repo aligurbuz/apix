@@ -617,7 +617,7 @@ class querySqlFormatter {
             try {
                 $query=$this->db->prepare("UPDATE ".$model['model']->table." SET  ".implode(",",$set)." ".$model['where']."");
                 if($query->execute($model['execute'])){
-                    return ['post'=>['status'=>true]];
+                    return true;
                 }
             }
             catch(\Exception $e){
