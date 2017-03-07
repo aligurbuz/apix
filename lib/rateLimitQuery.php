@@ -345,13 +345,13 @@ class rateLimitQuery {
         if($this->checkServiceExists()){
             if(file_exists($this->getAccessRuleYaml())){
                 if($data===null){
-                    $dataRule=$this->getUpdateWrapList($this->yamlProcess());
+                    $dataRule=$this->getUpdateWrapList($this->yamlProcess(),$rule);
                 }
                 else{
                     $dataRule=$data;
                 }
 
-                return $this->yamlProcess("dump",$dataRule);
+                return $this->yamlProcess("dump",$this->dataRuleDump($dataRule,$rule));
             }
             else{
                 if($this->checkKeyControl($rule)){
@@ -365,6 +365,31 @@ class rateLimitQuery {
         return true;
 
     }
+
+
+    /**
+     * get file rateLimitQuery params.
+     * check key control for service method
+     *
+     * outputs get rateLimitQuery.
+     *
+     * @param string
+     * @return response check key control params runner
+     */
+    public function dataRuleDump($data,$rule){
+        $keyTune=$this->getKeyParam($rule);
+        if(!array_key_exists($keyTune,$data['data'])){
+            $data['data'][$keyTune][service]['timeStart']=$this->time;
+            $data['data'][$keyTune][service]['timeUpdate']=$this->time;
+            $data['data'][$keyTune][service]['timeAllCounter']=1;
+            $data['data'][$keyTune][service]['allCount']=1;
+            $data['data'][$keyTune]['wrap']=$rule['restrictions'][''.$this->checkKeyControl($rule,true).'::'.$this->getKeyParam($rule).''];
+            $data['data'][$keyTune]['wrap']['dateprocess']=$this->time;
+        }
+
+        return $data;
+    }
+
 
     /**
      * get file rateLimitQuery params.
@@ -430,35 +455,44 @@ class rateLimitQuery {
      * @param string
      * @return response wrap list params runner
      */
-    public function getUpdateWrapList($data){
-        foreach($data['data'] as $wrapkey=>$wrapwal){
+    public function getUpdateWrapList($data,$rule){
 
-            if(array_key_exists(service,$data['data'][$wrapkey])){
-                foreach($data['data'][$wrapkey][service] as $key=>$val){
+        if(array_key_exists($this->getKeyParam($rule),$data['data'])){
+            if(array_key_exists(service,$data['data'][$this->getKeyParam($rule)])){
+                foreach($data['data'][$this->getKeyParam($rule)][service] as $key=>$val){
                     if($key=="timeUpdate"){
-                        $data['data'][$wrapkey][service]['timeUpdate']=$this->time;
+                        $data['data'][$this->getKeyParam($rule)][service]['timeUpdate']=$this->time;
                     }
                     if($key=="timeAllCounter"){
-                        $data['data'][$wrapkey][service]['timeAllCounter']=$data['data'][$wrapkey][service]['timeAllCounter']+1;
+                        $data['data'][$this->getKeyParam($rule)][service]['timeAllCounter']=$data['data'][$this->getKeyParam($rule)][service]['timeAllCounter']+1;
                     }
 
                     if($key=="allCount"){
-                        $data['data'][$wrapkey][service]['allCount']=$data['data'][$wrapkey][service]['allCount']+1;
+                        $data['data'][$this->getKeyParam($rule)][service]['allCount']=$data['data'][$this->getKeyParam($rule)][service]['allCount']+1;
                     }
                 }
             }
             else{
-                $data['data'][$wrapkey][service]['timeStart']=$this->time;
-                $data['data'][$wrapkey][service]['timeUpdate']=$this->time;
-                $data['data'][$wrapkey][service]['timeAllCounter']=1;
-                $data['data'][$wrapkey][service]['allCount']=1;
+                $data['data'][$this->getKeyParam($rule)][service]['timeStart']=$this->time;
+                $data['data'][$this->getKeyParam($rule)][service]['timeUpdate']=$this->time;
+                $data['data'][$this->getKeyParam($rule)][service]['timeAllCounter']=1;
+                $data['data'][$this->getKeyParam($rule)][service]['allCount']=1;
+                $data['data'][$this->getKeyParam($rule)]['wrap']=$rule['restrictions'][''.$this->checkKeyControl($rule,true).'::'.$this->getKeyParam($rule).''];
+                $data['data'][$this->getKeyParam($rule)]['wrap']['dateprocess']=$this->time;
+
             }
-
-
-
-
-
         }
+        else{
+            $data['data'][$this->getKeyParam($rule)][service]['timeStart']=$this->time;
+            $data['data'][$this->getKeyParam($rule)][service]['timeUpdate']=$this->time;
+            $data['data'][$this->getKeyParam($rule)][service]['timeAllCounter']=1;
+            $data['data'][$this->getKeyParam($rule)][service]['allCount']=1;
+            $data['data'][$this->getKeyParam($rule)]['wrap']=$rule['restrictions'][''.$this->checkKeyControl($rule,true).'::'.$this->getKeyParam($rule).''];
+            $data['data'][$this->getKeyParam($rule)]['wrap']['dateprocess']=$this->time;
+        }
+
+
+
         return $data;
 
     }
