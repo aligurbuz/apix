@@ -1,15 +1,16 @@
 <?php
 /*
- * This file is provision of the every service.
+ * This file is token provision of the every service.
  *
  * provision returns boolean value (true|false)
+ * token provision
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace src\provisions;
-use src\services\httprequest as request;
+use Src\Services\Httprequest as request;
 
 /**
  * Represents a provision class.
@@ -23,7 +24,7 @@ class token {
     public $request;
 
     /**
-     * Represents a provision construct class.
+     * Represents a token provision construct class.
      *
      * $data main variables
      * return type string
@@ -34,7 +35,7 @@ class token {
     }
 
     /**
-     * provision for get method.
+     * token provision for get method.
      *
      * @return array
      */
