@@ -12,3 +12,4 @@ src/access.log
 tests/*
 !important tests/index.html
 .DS_Store
+/nbproject/private/
