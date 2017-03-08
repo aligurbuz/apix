@@ -40,10 +40,10 @@ class getService extends app {
     /**
      * index method is main method.
      * it is default method without needed interface implemantation
-	 * because method name is called on the url
+     * because method name is called on the url
      * method can produce ouput as string or array
-	 * converted to array everytime as output
-	 * produced json output as result
+     * converted to array everytime as output
+     * produced json output as result
      * @return array @method
      */
     public function index(){

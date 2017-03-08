@@ -31,7 +31,8 @@
         "symfony/security-csrf": "^3.2",
         "symfony/filesystem": "^3.2",
         "elasticsearch/elasticsearch": "~5.0",
-        "twig/twig": "~1.0"
+        "twig/twig": "~1.0",
+        "symfony/cache": "^3.2"
     },
     "autoload": {
         "files": ["src/helpers.php"]

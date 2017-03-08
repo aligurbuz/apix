@@ -49,6 +49,7 @@ class app {
             'session'       =>self::$servicePath.'httpSession',
             'file'          =>self::$servicePath.'fileProcess',
             'search'        =>self::$servicePath.'search',
+            'cache'         =>self::$servicePath.'cache',
         ];
 
         //if container is null,all containers are evaluated
