@@ -32,7 +32,9 @@
         "symfony/filesystem": "^3.2",
         "elasticsearch/elasticsearch": "~5.0",
         "twig/twig": "~1.0",
-        "symfony/cache": "^3.2"
+        "symfony/cache": "^3.2",
+        "respect/validation": "^1.1",
+        "egulias/email-validator": "^2.1"
     },
     "autoload": {
         "files": ["src/helpers.php"]
