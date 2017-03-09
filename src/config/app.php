@@ -40,16 +40,17 @@ class app {
 
         $containers= [
 
-            'device'        =>self::$servicePath.'mobileDetect',
-            'redis'         =>self::$servicePath.'redis',
-            'guzzle'        =>self::$servicePath.'guzzle',
-            'rmq'           =>self::$servicePath.'rabbitMQ',
-            'platform'      =>self::$servicePath.'platform',
-            'collection'    =>self::$servicePath.'appCollection',
-            'session'       =>self::$servicePath.'httpSession',
-            'file'          =>self::$servicePath.'fileProcess',
-            'search'        =>self::$servicePath.'search',
-            'cache'         =>self::$servicePath.'cache',
+            'device'                =>self::$servicePath.'mobileDetect',
+            'redis'                 =>self::$servicePath.'redis',
+            'guzzle'                =>self::$servicePath.'guzzle',
+            'rmq'                   =>self::$servicePath.'rabbitMQ',
+            'platform'              =>self::$servicePath.'platform',
+            'collection'            =>self::$servicePath.'appCollection',
+            'session'               =>self::$servicePath.'httpSession',
+            'file'                  =>self::$servicePath.'fileProcess',
+            'search'                =>self::$servicePath.'search',
+            'cache'                 =>self::$servicePath.'cache',
+            'pushNotification'      =>self::$servicePath.'pushNotifications',
         ];
 
         //if container is null,all containers are evaluated
