@@ -43,6 +43,7 @@ else{
 
     });
 
+
     if(environment()=="local"){
         //get connection
         $consoleCommandApplication=new \lib\bin\custom();

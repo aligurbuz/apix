@@ -2,27 +2,27 @@
 /*
  * This file is console command .
  * console command
- * __class__
+ * test
  */
 
-namespace src\commands;
+namespace lib\bin;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Represents a console command example class.
- * access : api __class__
+ * access : api test
  * every method that on this command is called with console method as string on console
  * return type string
  */
-class __class__ {
+class migration {
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    public $createSignature = 'api __class__ create key:value';
+    public $createSignature = 'api test create key:value';
 
     /**
      * The name and signature of the console command.
@@ -34,13 +34,38 @@ class __class__ {
 
     /**
      * Represents a create method.
-     * api __class__ create --
+     * api test create --
      * return type string
      */
     public function handle($arguments){
 
         //make somethings
-        return '__class__ command';
+        $arg=$this->getArg($arguments);
+        $migrationPath="\\src\\packages\\providers\\migrations\\manager";
+        $migration=new $migrationPath($arg);
+        return $migration->handle();
+    }
+
+
+    /**
+     * Symfony process handle.
+     * new process
+     * return type exec
+     */
+    private function getArg($arguments){
+        $list=[];
+        foreach($arguments as $key=>$value){
+            if($key=="pull" || $key=="push"){
+                $list['project']=$value;
+                $list['migration']=$key;
+            }
+            else{
+                $list[$key]=$value;
+            }
+        }
+
+        return $list;
+
     }
 
 

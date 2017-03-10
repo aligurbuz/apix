@@ -38,13 +38,18 @@ class custom {
         //result
         $application=new Application();
         $command='\\src\\commands\\'.$data[1];
+        if($data[1]=="migration"){
+            $command='\\lib\\bin\\'.$data[1];
+        }
+
+
         $app=new $command();
 
         $list=[];
         foreach($data as $key=>$value){
             if($key>1){
                 $dataEx=explode(":",$value);
-                if(strlen($dataEx[1])>0){
+                if(array_key_exists(1,$dataEx) && strlen($dataEx[1])>0){
                     $list[$dataEx[0]]=$dataEx[1];
                 }
                 else{
