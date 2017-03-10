@@ -113,6 +113,13 @@ class project {
 
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations');
             $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations/schemas');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/schemas/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/migrations/seeds');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/migrations/seeds/index.html',null);
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
             $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
 
