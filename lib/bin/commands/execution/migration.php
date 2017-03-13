@@ -16,7 +16,7 @@ class __classname__ {
      *
      * @return array
      */
-    public function up(){
+    public static function up(){
 
         return "//data";
     }

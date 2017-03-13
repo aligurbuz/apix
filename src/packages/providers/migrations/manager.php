@@ -132,7 +132,10 @@ class manager {
      * @return class object
      */
     public function handle(){
-       return $this->write($this->getShowColumns());
+
+        $migration=$this->migration;
+        $param=($migration=="push") ? [] : $this->getShowColumns();
+        return $this->$migration($param);
     }
 
     /**
@@ -158,7 +161,7 @@ class manager {
      *
      * @return class object
      */
-    public function write($listTables){
+    public function pull($listTables){
         $file=new file();
         $time=time();
         if(count($listTables)){
@@ -171,11 +174,85 @@ class manager {
                 $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
                 $this->fileProcess($key,[
 
-                        '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas',
+                        '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
                         '__classname__'=>$modelFile
                 ],$object);
             }
         }
+
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function push($listTables){
+        $schemasSql=$this->getUpSchemaHandle($this->getSchemas());
+        foreach($this->table as $table){
+            foreach($schemasSql[$table] as $key=>$value){
+
+                try {
+
+                    $query=$this->db->prepare($value);
+                    $query->execute();
+
+                    echo '
+                            ++++'.$table.' migration has been completed as push';
+                    echo '
+                    ';
+                }
+                catch(\Exception $e){
+
+                    echo '
+                            ++++'.$table.' :'.$e->getMessage();
+                    echo '
+                    ';
+                }
+
+
+            }
+        }
+
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getSchemas(){
+        $list=[];
+        foreach($this->table as $key=>$table){
+            $schemasTablePath=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'';
+            foreach (glob("".$schemasTablePath."/*.php") as $filename) {
+                $filename=explode("/",$filename);
+                $list[$table][]=end($filename);
+            }
+        }
+
+        return $list;
+
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getUpSchemaHandle($class){
+        $list=[];
+        foreach ($class as $table=>$data){
+            foreach($class[$table] as $key=>$value){
+                $schemaNameSpacePath="\\src\\app\\mobi\\v1\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+                $list[$table][]=$schemaNameSpacePath::up();
+            }
+        }
+
+        return $list;
+
 
     }
 
@@ -228,7 +305,7 @@ class manager {
             }
 
             if($object[$key]->Extra=="auto_increment"){
-                $extension='AUTO_INCREMENT';
+                $extension='AUTO_INCREMENT PRIMARY KEY';
             }
             else{
                 $extension='';
