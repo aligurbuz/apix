@@ -190,26 +190,58 @@ class manager {
      */
     public function push($listTables){
         $schemasSql=$this->getUpSchemaHandle($this->getSchemas());
+
         foreach($this->table as $table){
             foreach($schemasSql[$table] as $key=>$value){
 
-                try {
+                $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml';
+                if(file_exists($migrationYaml)){
+                    $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
+                }
+                else{
+                    $yaml = Yaml::dump(['migration'=>[]]);
 
-                    $query=$this->db->prepare($value);
-                    $query->execute();
+                    file_put_contents($migrationYaml, $yaml);
 
-                    echo '
+                    $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
+                }
+
+
+                if(!in_array($key,$yaml['migration'])){
+                    try {
+
+                        $query=$this->db->prepare($value);
+                        $query->execute();
+
+                        $yaml['migration'][]=$key;
+
+                        $yaml = Yaml::dump($yaml);
+
+                        file_put_contents($migrationYaml, $yaml);
+
+                        echo '
                             ++++'.$table.' migration has been completed as push';
-                    echo '
+                        echo '
                     ';
+                    }
+                    catch(\Exception $e){
+
+                        echo '
+                            ++++'.$table.' :'.$e->getMessage();
+                        echo '
+                    ';
+                    }
                 }
-                catch(\Exception $e){
+
+                else{
 
                     echo '
-                            ++++'.$table.' :'.$e->getMessage();
+                            !!!!'.$table.' ['.$key.'] : has once migration';
                     echo '
                     ';
                 }
+
+
 
 
             }
@@ -247,7 +279,7 @@ class manager {
         foreach ($class as $table=>$data){
             foreach($class[$table] as $key=>$value){
                 $schemaNameSpacePath="\\src\\app\\mobi\\v1\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
-                $list[$table][]=$schemaNameSpacePath::up();
+                $list[$table][$value]=$schemaNameSpacePath::up();
             }
         }
 
