@@ -1,6 +1,6 @@
 {
     "name": "aligurbuz/apix",
-    "description": "simple restfull api service with php",
+    "description": "Simple restful API service with php",
     "type": "json",
     "authors": [
         {
