@@ -204,17 +204,26 @@ class manager {
         if(count($listTables)){
             $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
             foreach($listTables as $key=>$object){
-                $this->writeInfo($key,$object);
                 if(!$file->exists($path.'/'.$key.'')){
                     $file->mkdir($path,$key);
                 }
-                $modelFile='__'.$time.'__'.$key.'';
-                $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
-                $this->fileProcess($key,[
+                if($this->writeInfo($key,$object)){
+                    $modelFile='__'.$time.'__'.$key.'';
+                    $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                    $this->fileProcess($key,[
 
                         '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
                         '__classname__'=>$modelFile
-                ],$object);
+                    ],$object);
+                }
+                else{
+                    echo '
+                    ---'.$key.' table does not have updating information
+                    ';
+                    echo '
+                    ';
+                }
+
             }
         }
 
@@ -227,8 +236,16 @@ class manager {
      * @return class object
      */
     public function writeInfo($table,$data){
-        $this->getInfoYaml($table);
-        return $this->setInfoYaml($table,[$table=>['fields'=>$this->getFieldsFromDb($data)]]);
+        $yaml=$this->getInfoYaml($table);
+        $hash=md5(implode(",",$this->getFieldsFromDb($data)));
+
+        if((array_key_exists($table,$yaml) AND array_key_exists('fields',$yaml[$table])) AND $yaml[$table]['fields']==$hash){
+            return false;
+        }
+        else{
+            return $this->setInfoYaml($table,[$table=>['fields'=>$hash]]);
+        }
+
     }
 
     /**
@@ -251,14 +268,14 @@ class manager {
      * @return class object
      */
     public function getInfoYaml($table){
-        $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml';
+        $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml';
         if(file_exists($migrationYaml)){
-            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml'));
+            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml'));
         }
         else{
             $yaml = Yaml::dump([]);
             file_put_contents($migrationYaml, $yaml);
-            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml'));
+            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml'));
         }
 
         return $yaml;
@@ -272,7 +289,7 @@ class manager {
     public function setInfoYaml($table,$dump){
 
         $yaml = Yaml::dump($dump);
-        return file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml', $yaml);
+        return file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml', $yaml);
     }
 
 
