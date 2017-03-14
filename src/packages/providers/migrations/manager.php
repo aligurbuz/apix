@@ -380,9 +380,9 @@ class manager {
                         file_put_contents($migrationYaml, $yaml);
 
                         echo '
-                            ++++'.$table.' migration has been completed as push';
+                        ++++'.$table.' migration has been completed as push';
                         echo '
-                    ';
+                        ';
                     }
                     catch(\Exception $e){
 
