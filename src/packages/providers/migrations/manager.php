@@ -207,7 +207,9 @@ class manager {
                 if(!$file->exists($path.'/'.$key.'')){
                     $file->mkdir($path,$key);
                 }
-                if($this->writeInfo($key,$object)){
+
+                $writeInfo=$this->writeInfo($key,$object);
+                if($writeInfo['status']=="first"){
                     $modelFile='__'.$time.'__'.$key.'';
                     $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
                     $this->fileProcess($key,[
@@ -216,12 +218,22 @@ class manager {
                         '__classname__'=>$modelFile
                     ],$object);
                 }
-                else{
+                if($writeInfo['status']=="noupdate"){
                     echo '
                     ---'.$key.' table does not have updating information
                     ';
                     echo '
                     ';
+                }
+
+                if($writeInfo['status']=="update"){
+                    $modelFile='__'.$time.'__'.$key.'';
+                    $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                    $this->fileProcessUpdate($key,[
+
+                        '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                        '__classname__'=>$modelFile
+                    ],$writeInfo['data']);
                 }
 
             }
@@ -237,13 +249,23 @@ class manager {
      */
     public function writeInfo($table,$data){
         $yaml=$this->getInfoYaml($table);
+
         $hash=md5(implode(",",$this->getFieldsFromDb($data)));
 
-        if((array_key_exists($table,$yaml) AND array_key_exists('fields',$yaml[$table])) AND $yaml[$table]['fields']==$hash){
-            return false;
+        if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']==$hash){
+            return ['status'=>'noupdate'];
         }
-        else{
-            return $this->setInfoYaml($table,[$table=>['fields'=>$hash]]);
+
+        if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']!==$hash){
+            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)]],$data);
+            if($update['yamlStatus']){
+                return ['status'=>'update','data'=>$update['data']];
+            }
+            return ['status'=>'noupdate'];
+        }
+
+        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)]])){
+            return ['status'=>'first'];
         }
 
     }
@@ -290,6 +312,34 @@ class manager {
 
         $yaml = Yaml::dump($dump);
         return file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml', $yaml);
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function updateInfoYaml($table,$dump,$data){
+        $yaml=$this->getInfoYaml($table);
+        $listVal=[];
+        foreach($dump[$table]['fields'] as $key=>$value){
+            if(!in_array($value,$yaml[$table]['fields'])){
+                foreach($data as $datakey=>$object){
+                    if($data[$datakey]->Field==$value){
+                        $beforeKey=$datakey-1;
+                        $listVal['beforeField']=$data[$beforeKey]->Field;
+                        $listVal['Field']=$data[$datakey]->Field;
+                        $listVal['Type']=$data[$datakey]->Type;
+                        $listVal['Null']=$data[$datakey]->Null;
+                        $listVal['Key']=$data[$datakey]->Key;
+                        $listVal['Default']=$data[$datakey]->Default;
+                        $listVal['Extra']=$data[$datakey]->Extra;
+                    }
+                }
+            }
+        }
+        $yaml = Yaml::dump($dump);
+        return ['yamlStatus'=>file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml', $yaml),'data'=>$listVal];
     }
 
 
@@ -435,6 +485,38 @@ class manager {
      *
      * @return class object
      */
+    public function fileProcessUpdate($table,$param=array(),$object){
+        $executionPath=root."/lib/bin/commands/execution/migration.php";
+        $dt = fopen($executionPath, "r");
+        $content = fread($dt, filesize($executionPath));
+        fclose($dt);
+
+        if(count($param)){
+            foreach ($param as $key=>$value){
+
+                $content=str_replace($key,$value,$content);
+            }
+        }
+
+        $content=str_replace('//data',$this->tableFormUpdate($object,$table),$content);
+
+        $dt = fopen(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/'.$param['__classname__'].'.php', "w");
+        fwrite($dt, $content);
+        fclose($dt);
+
+        echo '
+        +++migration named '.$table.' has been created';
+        echo '
+        ';
+    }
+
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
     public function tableForm($object,$table){
 
         $list=[];
@@ -476,6 +558,17 @@ class manager {
             '.$indexExtension.'
             ) ENGINE='.$statusLike[$table][0]->Engine.' DEFAULT COLLATE='.$statusLike[$table][0]->Collation.' AUTO_INCREMENT=1 ;';
         }
+    }
+
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function tableFormUpdate($object,$table){
+        return 'ALTER TABLE '.$table.' ADD '.$object['Field'].' '.$object['Type'].' AFTER '.$object['beforeField'];
     }
 
 }
