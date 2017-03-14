@@ -204,6 +204,7 @@ class manager {
         if(count($listTables)){
             $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
             foreach($listTables as $key=>$object){
+                $this->writeInfo($key,$object);
                 if(!$file->exists($path.'/'.$key.'')){
                     $file->mkdir($path,$key);
                 }
@@ -217,6 +218,61 @@ class manager {
             }
         }
 
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function writeInfo($table,$data){
+        $this->getInfoYaml($table);
+        return $this->setInfoYaml($table,[$table=>['fields'=>$this->getFieldsFromDb($data)]]);
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getFieldsFromDb($data){
+        $list=[];
+        foreach($data as $key=>$object){
+            $list[]=$data[$key]->Field;
+        }
+        return $list;
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getInfoYaml($table){
+        $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml';
+        if(file_exists($migrationYaml)){
+            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml'));
+        }
+        else{
+            $yaml = Yaml::dump([]);
+            file_put_contents($migrationYaml, $yaml);
+            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml'));
+        }
+
+        return $yaml;
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function setInfoYaml($table,$dump){
+
+        $yaml = Yaml::dump($dump);
+        return file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/'.$table.'_info.yaml', $yaml);
     }
 
 
