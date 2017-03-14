@@ -161,6 +161,43 @@ class manager {
      *
      * @return class object
      */
+    public function getShowStatusLike(){
+        $list=[];
+        if(count($this->table)){
+            foreach ($this->table as $key=>$table){
+                $query=$this->db->prepare("SHOW TABLE STATUS LIKE '".$table."'");
+                $query->execute();
+                $result=$query->fetchAll(\PDO::FETCH_OBJ);
+                $list[$table]=$result;
+            }
+        }
+        return $list;
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getShowIndexes(){
+        $list=[];
+        if(count($this->table)){
+            foreach ($this->table as $key=>$table){
+                $query=$this->db->prepare("SHOW INDEX FROM ".$table." WHERE Key_name!='PRIMARY'");
+                $query->execute();
+                $result=$query->fetchAll(\PDO::FETCH_OBJ);
+                $list[$table]=$result;
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
     public function pull($listTables){
         $file=new file();
         $time=time();
@@ -326,7 +363,19 @@ class manager {
      * @return class object
      */
     public function tableForm($object,$table){
+
         $list=[];
+        $statusLike=$this->getShowStatusLike();
+        $indexes=$this->getShowIndexes();
+
+        $index=[];
+        if(count($indexes[$table])){
+            foreach ($indexes[$table] as $key=>$val){
+                $index[]='KEY '.$indexes[$table][$key]->Key_name.' ('.$indexes[$table][$key]->Column_name.')';
+            }
+        }
+
+        $indexExtension=(count($index)) ? ','.implode(",",$index).'' : '';
 
         foreach ($object as $key=>$data){
             if($object[$key]->Null=="NO"){
@@ -351,7 +400,8 @@ class manager {
             return 'CREATE TABLE IF NOT EXISTS '.$table.' (
             '.implode(",
             ",$list).'
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;';
+            '.$indexExtension.'
+            ) ENGINE='.$statusLike[$table][0]->Engine.' DEFAULT COLLATE='.$statusLike[$table][0]->Collation.' AUTO_INCREMENT=1 ;';
         }
     }
 
