@@ -3,7 +3,7 @@
 ```
 <?php
 /*
- * This file is main class of the  service named stk on  mobi project .
+ * This file is the main class of the service named stk on  mobi project.
  * METHOD : GET
  * every service is called with index method as default
  * service name : mobi

@@ -1,9 +1,9 @@
-# Apix Restfull Service
-Comprehensive restfull api service for php development
+# Apix Restful Service
+Comprehensive restful API service for php development
 * - Developer : Ali Gurbuz
 
-> Package allows you to design easily restfull services.Creating api services is very easy any more.
-> For creating easily your api,please keep track of following instructions.
+> Package allows you to design restful services easily. Creating API services is very easy.
+> For creating your API easily, please keep track of following instructions.
 
 # Documentation :
 #### Structure And Building :

@@ -1,9 +1,9 @@
 # Project Directory Structure
-* all services is in src/app directory
-* first directory that in src/app is project name created by developer.Limitless project in directory can be created.
-* the docs directory that in project contains documentation for services
-* the storage directory that in project contains language files as yaml file for services
-* the v1 directory that in project is version number of project.(you can see in versioning capter to version moving)
+* all services are in the src/app directory
+* first directory in src/app is project name created by developer. Limitless project in directory can be created.
+* the docs directory in project contains documentation for services
+* the storage directory in project contains language files as yaml file for services
+* the v1 directory in project is version number of project. (you can see in versioning chapter prior to version moving)
 *
 
 > Every project name can be created only once
@@ -31,8 +31,8 @@ api project create project_name
 # Service Directory Structure
 * the directories in that __call directory are service names
 * every service is created with itself structures
-* the branches directory is branching for development (see branching development capter)
-* the platform directory is changing service output according to platform for development (see platform development capter)
+* the branches directory is branching for development (see branching development chapter)
+* the platform directory is changing service output according to platform for development (see platform development chapter)
 * app class is extended by every service.
 * ready(for service) component and restrictions methoding is in app class
 * developer file is an array file
@@ -46,7 +46,7 @@ api project create project_name
 > Every service name can be created only once
 
 ```diff
-+ service directory structures is created with following command
++ service directory structures are created with the following command
 ```
 
 ```
