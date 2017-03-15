@@ -227,13 +227,50 @@ class manager {
                 }
 
                 if($writeInfo['status']=="update"){
-                    $modelFile='__'.$time.'__'.$key.'';
-                    $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
-                    $this->fileProcessUpdate($key,[
 
-                        '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
-                        '__classname__'=>$modelFile
-                    ],$writeInfo['data']);
+                    if(array_key_exists("change",$writeInfo['data'])){
+
+                        $updateData=[];
+                        foreach ($writeInfo['data']['change']['beforeField'] as $okey=>$ovalue){
+                            $time=time()+$okey;
+                            $updateData['change']['beforeField']=$ovalue;
+                            $updateData['change']['Field']=$writeInfo['data']['change']['Field'][$okey];
+                            $updateData['change']['Type']=$writeInfo['data']['change']['Type'][$okey];
+                            $updateData['change']['Null']=$writeInfo['data']['change']['Null'][$okey];
+                            $updateData['change']['Key']=$writeInfo['data']['change']['Key'][$okey];
+                            $updateData['change']['Default']=$writeInfo['data']['change']['Default'][$okey];
+                            $updateData['change']['Extra']=$writeInfo['data']['change']['Extra'][$okey];
+                            $modelFile='__'.$time.'__'.$key.'';
+                            $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                            $this->fileProcessUpdate($key,[
+
+                                '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                                '__classname__'=>$modelFile
+                            ],$updateData);
+                        }
+
+                    }
+                    else{
+                        $updateData=[];
+                        foreach ($writeInfo['data']['diff']['beforeField'] as $okey=>$ovalue){
+                            $time=time()+$okey;
+                            $updateData['diff']['beforeField']=$ovalue;
+                            $updateData['diff']['Field']=$writeInfo['data']['diff']['Field'][$okey];
+                            $updateData['diff']['Type']=$writeInfo['data']['diff']['Type'][$okey];
+                            $updateData['diff']['Null']=$writeInfo['data']['diff']['Null'][$okey];
+                            $updateData['diff']['Key']=$writeInfo['data']['diff']['Key'][$okey];
+                            $updateData['diff']['Default']=$writeInfo['data']['diff']['Default'][$okey];
+                            $updateData['diff']['Extra']=$writeInfo['data']['diff']['Extra'][$okey];
+                            $modelFile='__'.$time.'__'.$key.'';
+                            $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                            $this->fileProcessUpdate($key,[
+
+                                '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                                '__classname__'=>$modelFile
+                            ],$updateData);
+                        }
+                    }
+
                 }
 
             }
@@ -250,7 +287,7 @@ class manager {
     public function writeInfo($table,$data){
         $yaml=$this->getInfoYaml($table);
 
-        $hash=md5(implode(",",$this->getFieldsFromDb($data)));
+        $hash=md5(json_encode($this->getFieldsFromDb($data)));
 
         if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']==$hash){
             return ['status'=>'noupdate'];
@@ -278,7 +315,12 @@ class manager {
     public function getFieldsFromDb($data){
         $list=[];
         foreach($data as $key=>$object){
-            $list[]=$data[$key]->Field;
+            $list['Field'][]=$data[$key]->Field;
+            $list['Type'][]=$data[$key]->Type;
+            $list['Null'][]=$data[$key]->Null;
+            $list['Key'][]=$data[$key]->Key;
+            $list['Default'][]=$data[$key]->Default;
+            $list['Extra'][]=$data[$key]->Extra;
         }
         return $list;
     }
@@ -322,21 +364,48 @@ class manager {
     public function updateInfoYaml($table,$dump,$data){
         $yaml=$this->getInfoYaml($table);
         $listVal=[];
-        foreach($dump[$table]['fields'] as $key=>$value){
-            if(!in_array($value,$yaml[$table]['fields'])){
+        foreach($dump[$table]['fields']['Field'] as $key=>$value){
+            if(!in_array($value,$yaml[$table]['fields']['Field'])){
                 foreach($data as $datakey=>$object){
                     if($data[$datakey]->Field==$value){
                         $beforeKey=$datakey-1;
-                        $listVal['beforeField']=$data[$beforeKey]->Field;
-                        $listVal['Field']=$data[$datakey]->Field;
-                        $listVal['Type']=$data[$datakey]->Type;
-                        $listVal['Null']=$data[$datakey]->Null;
-                        $listVal['Key']=$data[$datakey]->Key;
-                        $listVal['Default']=$data[$datakey]->Default;
-                        $listVal['Extra']=$data[$datakey]->Extra;
+                        $listVal['diff']['beforeField'][]=$data[$beforeKey]->Field;
+                        $listVal['diff']['Field'][]=$data[$datakey]->Field;
+                        $listVal['diff']['Type'][]=$data[$datakey]->Type;
+                        $listVal['diff']['Null'][]=$data[$datakey]->Null;
+                        $listVal['diff']['Key'][]=$data[$datakey]->Key;
+                        $listVal['diff']['Default'][]=$data[$datakey]->Default;
+                        $listVal['diff']['Extra'][]=$data[$datakey]->Extra;
                     }
                 }
             }
+            else {
+                if(
+                    $yaml[$table]['fields']['Type'][$key]!==$dump[$table]['fields']['Type'][$key] OR
+                    $yaml[$table]['fields']['Null'][$key]!==$dump[$table]['fields']['Null'][$key] OR
+                    $yaml[$table]['fields']['Key'][$key]!==$dump[$table]['fields']['Key'][$key] OR
+                    $yaml[$table]['fields']['Default'][$key]!==$dump[$table]['fields']['Default'][$key] OR
+                    $yaml[$table]['fields']['Extra'][$key]!==$dump[$table]['fields']['Extra'][$key]
+                ){
+
+                    foreach($data as $datakey=>$object){
+                        if($data[$datakey]->Field==$yaml[$table]['fields']['Field'][$key]){
+                            $beforeKey=$datakey-1;
+                            $listVal['change']['beforeField'][]=$data[$beforeKey]->Field;
+                            $listVal['change']['Field'][]=$data[$datakey]->Field;
+                            $listVal['change']['Type'][]=$data[$datakey]->Type;
+                            $listVal['change']['Null'][]=$data[$datakey]->Null;
+                            $listVal['change']['Key'][]=$data[$datakey]->Key;
+                            $listVal['change']['Default'][]=$data[$datakey]->Default;
+                            $listVal['change']['Extra'][]=$data[$datakey]->Extra;
+                        }
+
+                    }
+
+                }
+            }
+
+
         }
         $yaml = Yaml::dump($dump);
         return ['yamlStatus'=>file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml', $yaml),'data'=>$listVal];
@@ -537,7 +606,13 @@ class manager {
                 $null='NOT NULL';
             }
             else{
-                $null='NULL';
+                if($object[$key]->Default!==NULL){
+                    $null='DEFAULT '.$object[$key]->Default;
+                }
+                else{
+                    $null='NULL';
+                }
+
             }
 
             if($object[$key]->Extra=="auto_increment"){
@@ -568,7 +643,27 @@ class manager {
      * @return class object
      */
     public function tableFormUpdate($object,$table){
-        return 'ALTER TABLE '.$table.' ADD '.$object['Field'].' '.$object['Type'].' AFTER '.$object['beforeField'];
+        if(array_key_exists("diff",$object)){
+            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' AFTER '.$object['diff']['beforeField'];
+        }
+
+        if(array_key_exists("change",$object)){
+
+            if($object['change']['Null']=="NO"){
+                $null='NOT NULL';
+            }
+            else{
+                if($object['change']['Default']!==NULL){
+                    $null='DEFAULT '.$object['change']['Default'];
+                }
+                else{
+                    $null='NULL';
+                }
+
+            }
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.'  ';
+        }
+
     }
 
 }
