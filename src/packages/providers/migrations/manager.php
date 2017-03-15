@@ -685,7 +685,12 @@ class manager {
 
         foreach ($object as $key=>$data){
             if($object[$key]->Null=="NO"){
-                $null='NOT NULL';
+                if($object[$key]->Default!==NULL){
+                    $null='DEFAULT '.$object[$key]->Default;
+                }
+                else{
+                    $null='NOT NULL';
+                }
             }
             else{
                 if($object[$key]->Default!==NULL){
@@ -728,7 +733,12 @@ class manager {
         if(array_key_exists("diff",$object)){
 
             if($object['diff']['Null']=="NO"){
-                $null='NOT NULL';
+                if($object['diff']['Default']!==NULL){
+                    $null='DEFAULT '.$object['diff']['Default'];
+                }
+                else{
+                    $null='NOT NULL';
+                }
             }
             else{
                 if($object['diff']['Default']!==NULL){
@@ -749,7 +759,12 @@ class manager {
         if(array_key_exists("change",$object)){
 
             if($object['change']['Null']=="NO"){
-                $null='NOT NULL';
+                if($object['change']['Default']!==NULL){
+                    $null='DEFAULT '.$object['change']['Default'];
+                }
+                else{
+                    $null='NOT NULL';
+                }
             }
             else{
                 if($object['change']['Default']!==NULL){
