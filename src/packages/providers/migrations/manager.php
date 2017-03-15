@@ -263,6 +263,22 @@ class manager {
                                 '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
                                 '__classname__'=>$modelFile
                             ],$updateData);
+
+                            $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml';
+                            if(file_exists($migrationYaml)){
+                                $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
+                                $yaml['migration'][]=$modelFile.'.php';
+
+                                $yaml = Yaml::dump($yaml);
+
+                                file_put_contents($migrationYaml, $yaml);
+                            }
+                            else{
+                                $yaml = Yaml::dump(['migration'=>[''.$modelFile.'.php']]);
+
+                                file_put_contents($migrationYaml, $yaml);
+
+                            }
                         }
 
                     }
