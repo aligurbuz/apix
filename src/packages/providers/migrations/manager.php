@@ -251,11 +251,11 @@ class manager {
 
                     }
 
-                    elseif(array_key_exists("changeField",$writeInfo['data'])){
+                    if(array_key_exists("changeField",$writeInfo['data'])){
 
                         $updateData=[];
                         foreach ($writeInfo['data']['changeField']['Field']['old'] as $okey=>$ovalue){
-                            $time=time()+$okey;
+                            $time=time()+$okey+1;
                             $updateData['changeField']['old']=$ovalue;
                             $updateData['changeField']['new']=$writeInfo['data']['changeField']['Field']['new'][$okey];
                             $updateData['changeField']['Type']=$writeInfo['data']['changeField']['Type'][$okey];
@@ -274,10 +274,10 @@ class manager {
                         }
 
                     }
-                    elseif(array_key_exists("dropField",$writeInfo['data'])){
+                    if(array_key_exists("dropField",$writeInfo['data'])){
 
                         foreach($writeInfo['data']['dropField']['Field'] as $okey=>$oval){
-                            $time=time()+$okey;
+                            $time=time()+$okey+2;
                             $updateData['dropField']['Field']=$writeInfo['data']['dropField']['Field'][$okey];
 
                             $modelFile='__'.$time.'__'.$key.'';
@@ -306,10 +306,10 @@ class manager {
                         }
 
                     }
-                    else{
+                    if(array_key_exists("diff",$writeInfo['data'])){
                         $updateData=[];
                         foreach ($writeInfo['data']['diff']['beforeField'] as $okey=>$ovalue){
-                            $time=time()+$okey;
+                            $time=time()+$okey+3;
                             $updateData['diff']['beforeField']=$ovalue;
                             $updateData['diff']['Field']=$writeInfo['data']['diff']['Field'][$okey];
                             $updateData['diff']['Type']=$writeInfo['data']['diff']['Type'][$okey];
@@ -485,6 +485,7 @@ class manager {
 
             }
         }
+
         $yaml = Yaml::dump($dump);
         return ['yamlStatus'=>file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml', $yaml),'data'=>$listVal];
     }
