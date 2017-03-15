@@ -597,8 +597,7 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo '
-        +++migration named '.$table.' has been created';
+        echo '+++migration named '.$table.' has been created';
         echo '
         ';
     }
@@ -668,7 +667,20 @@ class manager {
      */
     public function tableFormUpdate($object,$table){
         if(array_key_exists("diff",$object)){
-            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' AFTER '.$object['diff']['beforeField'];
+
+            if($object['diff']['Null']=="NO"){
+                $null='NOT NULL';
+            }
+            else{
+                if($object['diff']['Default']!==NULL){
+                    $null='DEFAULT '.$object['diff']['Default'];
+                }
+                else{
+                    $null='NULL';
+                }
+
+            }
+            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'];
         }
 
         if(array_key_exists("dropField",$object)){
