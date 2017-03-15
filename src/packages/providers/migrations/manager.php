@@ -219,9 +219,9 @@ class manager {
                     ],$object);
                 }
                 if($writeInfo['status']=="noupdate"){
+                    echo '';
                     echo '
-                    ---'.$key.' table does not have updating information
-                    ';
+                    ---'.$key.' table does not have updating information';
                     echo '
                     ';
                 }
@@ -240,6 +240,30 @@ class manager {
                             $updateData['change']['Key']=$writeInfo['data']['change']['Key'][$okey];
                             $updateData['change']['Default']=$writeInfo['data']['change']['Default'][$okey];
                             $updateData['change']['Extra']=$writeInfo['data']['change']['Extra'][$okey];
+                            $modelFile='__'.$time.'__'.$key.'';
+                            $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                            $this->fileProcessUpdate($key,[
+
+                                '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                                '__classname__'=>$modelFile
+                            ],$updateData);
+                        }
+
+                    }
+
+                    elseif(array_key_exists("changeField",$writeInfo['data'])){
+
+                        $updateData=[];
+                        foreach ($writeInfo['data']['changeField']['Field']['old'] as $okey=>$ovalue){
+                            $time=time()+$okey;
+                            $updateData['changeField']['old']=$ovalue;
+                            $updateData['changeField']['new']=$writeInfo['data']['changeField']['Field']['new'][$okey];
+                            $updateData['changeField']['Type']=$writeInfo['data']['changeField']['Type'][$okey];
+                            $updateData['changeField']['Null']=$writeInfo['data']['changeField']['Null'][$okey];
+                            $updateData['changeField']['Key']=$writeInfo['data']['changeField']['Key'][$okey];
+                            $updateData['changeField']['Default']=$writeInfo['data']['changeField']['Default'][$okey];
+                            $updateData['changeField']['Extra']=$writeInfo['data']['changeField']['Extra'][$okey];
+
                             $modelFile='__'.$time.'__'.$key.'';
                             $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
                             $this->fileProcessUpdate($key,[
@@ -443,8 +467,22 @@ class manager {
 
         //drop field
         foreach($yaml[$table]['fields']['Field'] as $key=>$value) {
-            if (!in_array($value, $dump[$table]['fields']['Field'])) {
+            if (count($yaml[$table]['fields']['Field'])!==count($dump[$table]['fields']['Field']) AND !in_array($value, $dump[$table]['fields']['Field'])) {
                 $listVal['dropField']['Field'][]=$value;
+            }
+            else{
+
+                if($dump[$table]['fields']['Field'][$key]!==$value){
+
+                    $listVal['changeField']['Field']['old'][]=$value;
+                    $listVal['changeField']['Field']['new'][]=$dump[$table]['fields']['Field'][$key];
+                    $listVal['changeField']['Type'][]=$dump[$table]['fields']['Type'][$key];
+                    $listVal['changeField']['Null'][]=$dump[$table]['fields']['Null'][$key];
+                    $listVal['changeField']['Key'][]=$dump[$table]['fields']['Key'][$key];
+                    $listVal['changeField']['Default'][]=$dump[$table]['fields']['Default'][$key];
+                    $listVal['changeField']['Extra'][]=$dump[$table]['fields']['Extra'][$key];
+                }
+
             }
         }
         $yaml = Yaml::dump($dump);
@@ -489,23 +527,25 @@ class manager {
                         file_put_contents($migrationYaml, $yaml);
 
                         echo '
-                        ++++'.$table.' migration has been completed as push';
+                        ';
+                        echo '++++'.$table.' migration has been completed as push';
                         echo '
                         ';
                     }
                     catch(\Exception $e){
 
+                        echo '';
+                        echo '---'.$table.' :'.$e->getMessage();
                         echo '
-                            ++++'.$table.' :'.$e->getMessage();
-                        echo '
-                    ';
+                        ';
                     }
                 }
 
                 else{
 
                     echo '
-                            !!!!'.$table.' ['.$key.'] : has once migration';
+                    ';
+                    echo '!!!!'.$table.' ['.$key.'] : has once migration';
                     echo '
                     ';
                 }
@@ -582,6 +622,7 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
+        echo '';
         echo '
         +++migration named '.$table.' has been created';
         echo '
@@ -613,6 +654,8 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
+        echo '
+        ';
         echo '+++migration named '.$table.' has been created';
         echo '
         ';
@@ -718,6 +761,29 @@ class manager {
 
             }
             return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.'  ';
+        }
+
+
+        if(array_key_exists("changeField",$object)){
+
+            if($object['changeField']['Null']=="NO"){
+                if($object['changeField']['Default']!==NULL){
+                    $null='DEFAULT '.$object['changeField']['Default'];
+                }
+                else{
+                    $null='NOT NULL';
+                }
+            }
+            else{
+                if($object['changeField']['Default']!==NULL){
+                    $null='DEFAULT '.$object['changeField']['Default'];
+                }
+                else{
+                    $null='NULL';
+                }
+
+            }
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.'  ';
         }
 
     }
