@@ -250,6 +250,22 @@ class manager {
                         }
 
                     }
+                    elseif(array_key_exists("dropField",$writeInfo['data'])){
+
+                        foreach($writeInfo['data']['dropField']['Field'] as $okey=>$oval){
+                            $time=time()+$okey;
+                            $updateData['dropField']['Field']=$writeInfo['data']['dropField']['Field'][$okey];
+
+                            $modelFile='__'.$time.'__'.$key.'';
+                            $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                            $this->fileProcessUpdate($key,[
+
+                                '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                                '__classname__'=>$modelFile
+                            ],$updateData);
+                        }
+
+                    }
                     else{
                         $updateData=[];
                         foreach ($writeInfo['data']['diff']['beforeField'] as $okey=>$ovalue){
@@ -406,6 +422,14 @@ class manager {
             }
 
 
+        }
+
+
+        //drop field
+        foreach($yaml[$table]['fields']['Field'] as $key=>$value) {
+            if (!in_array($value, $dump[$table]['fields']['Field'])) {
+                $listVal['dropField']['Field'][]=$value;
+            }
         }
         $yaml = Yaml::dump($dump);
         return ['yamlStatus'=>file_put_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/info.yaml', $yaml),'data'=>$listVal];
@@ -645,6 +669,10 @@ class manager {
     public function tableFormUpdate($object,$table){
         if(array_key_exists("diff",$object)){
             return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' AFTER '.$object['diff']['beforeField'];
+        }
+
+        if(array_key_exists("dropField",$object)){
+            return 'ALTER TABLE '.$table.'  DROP  '.$object['dropField']['Field'].'';
         }
 
         if(array_key_exists("change",$object)){
