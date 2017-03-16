@@ -198,6 +198,22 @@ class manager {
      *
      * @return class object
      */
+    public function getMultipleUniqueKeys($table,$field){
+        $list=[];
+        $query=$this->db->prepare("SHOW INDEXES FROM ".$table." WHERE Key_name='".$field."'");
+        $query->execute();
+        $result=$query->fetchAll(\PDO::FETCH_OBJ);
+        foreach($result as $mul){
+            $list[]=$mul->Column_name;
+        }
+        return $list;
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
     public function pull($listTables){
         $file=new file();
         $time=time();
@@ -682,6 +698,7 @@ class manager {
             }
         }
 
+        $unique='';
         $indexExtension=(count($index)) ? ','.implode(",",$index).'' : '';
 
         foreach ($object as $key=>$data){
@@ -714,9 +731,13 @@ class manager {
                 $unique=',UNIQUE KEY '.$object[$key]->Field.' ('.$object[$key]->Field.')';
                 $indexExtension='';
             }
-            else{
-                $unique='';
+            if($object[$key]->Key=="MUL"){
+
+                $unique=',UNIQUE KEY '.$object[$key]->Field.' ('.implode(",",$this->getMultipleUniqueKeys($table,$object[$key]->Field)).')';
+                $indexExtension='';
             }
+
+
            $list[]=''.$object[$key]->Field.' '.$object[$key]->Type.' '.$null.' '.$extension.'' ;
         }
 
@@ -767,6 +788,11 @@ class manager {
             else{
                 $unique='';
             }
+
+            if($object['diff']['Key']=="MUL"){
+
+                $unique=',ADD UNIQUE '.$object['diff']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['diff']['Field'])).')';
+            }
             return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'].' '.$unique;
         }
 
@@ -800,6 +826,12 @@ class manager {
             else{
                 $unique='';
             }
+
+            if($object['change']['Key']=="MUL"){
+
+                $unique=',ADD UNIQUE '.$object['change']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['change']['Field'])).')';
+            }
+
             return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$unique.'  ';
         }
 
