@@ -709,6 +709,14 @@ class manager {
             else{
                 $extension='';
             }
+
+            if($object[$key]->Key=="UNI"){
+                $unique=',UNIQUE KEY '.$object[$key]->Field.' ('.$object[$key]->Field.')';
+                $indexExtension='';
+            }
+            else{
+                $unique='';
+            }
            $list[]=''.$object[$key]->Field.' '.$object[$key]->Type.' '.$null.' '.$extension.'' ;
         }
 
@@ -719,6 +727,7 @@ class manager {
             '.implode(",
             ",$list).'
             '.$indexExtension.'
+            '.$unique.'
             ) ENGINE='.$statusLike[$table][0]->Engine.' DEFAULT COLLATE='.$statusLike[$table][0]->Collation.' AUTO_INCREMENT=1 ;';
         }
     }
@@ -750,7 +759,15 @@ class manager {
                 }
 
             }
-            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'];
+
+
+            if($object['diff']['Key']=="UNI"){
+                $unique=',ADD UNIQUE ('.$object['diff']['Field'].')';
+            }
+            else{
+                $unique='';
+            }
+            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'].' '.$unique;
         }
 
         if(array_key_exists("dropField",$object)){
@@ -776,7 +793,14 @@ class manager {
                 }
 
             }
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.'  ';
+
+            if($object['change']['Key']=="UNI"){
+                $unique=',ADD UNIQUE ('.$object['change']['Field'].')';
+            }
+            else{
+                $unique='';
+            }
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$unique.'  ';
         }
 
 
