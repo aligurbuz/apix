@@ -32,6 +32,8 @@ class manager {
     private $password=null;
     private $table=array();
     private $migration=null;
+    private $seed=false;
+    private $seedValue=[];
     private static $instance=null;
     /**
      * get construct.
@@ -49,6 +51,13 @@ class manager {
             $version=require(root.'/src/app/'.$this->project.'/version.php');
             if(is_array($version)){
                 $this->version=$version['version'];
+            }
+        }
+
+        if(array_key_exists("--seed",$data)){
+            $this->seed=true;
+            if(is_array($data['--seed'])){
+                $this->seedValue=$data['--seed'];
             }
         }
 
@@ -214,7 +223,133 @@ class manager {
      *
      * @return class object
      */
+    public function getTables($listTables){
+        $list=[];
+        foreach($listTables as $key=>$data){
+            $list[]=$key;
+        }
+        return $list;
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getFields($table){
+        $list=[];
+        $query=$this->db->prepare("SHOW COLUMNS FROM ".$table."");
+        $query->execute();
+        $result=$query->fetchAll(\PDO::FETCH_OBJ);
+        foreach($result as $res){
+            $list[]=$res->Field;
+        }
+        return $list;
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function seedTableForm($table){
+        $list=[];
+        $query=$this->db->prepare("select * from ".$table."");
+        $query->execute();
+        $result=$query->fetchAll(\PDO::FETCH_OBJ);
+        if(count($result)){
+            foreach ($result as $tune=>$res){
+                foreach($this->getFields($table) as $key=>$value){
+                    $list['execute'][$tune][]=$res->$value;
+                    $list['prepare'][$tune][]='?';
+                }
+            }
+        }
+
+        return $list;
+
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function seedFileProcess($table,$param=array(),$object){
+
+        $executionPath=root."/lib/bin/commands/execution/migration_seed.php";
+        $dt = fopen($executionPath, "r");
+        $content = fread($dt, filesize($executionPath));
+        fclose($dt);
+
+        if(count($param)){
+            foreach ($param as $key=>$value){
+
+                $content=str_replace($key,$value,$content);
+            }
+        }
+
+        $resultData=$this->seedTableForm($table);
+
+        if(count($resultData)){
+
+            $prepareList=[];
+            foreach($resultData['prepare'] as $key=>$array){
+                $prepareList[$key]=implode("@@",$array);
+            }
+
+            $executeList=[];
+            foreach($resultData['execute'] as $key=>$array){
+                $executeList[$key]=implode("@@",$array);
+            }
+
+            $content=str_replace('//prepare',implode("//",$prepareList),$content);
+            $content=str_replace('//execute',implode("//",$executeList),$content);
+
+            $dt = fopen(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds//'.$table.'_seed.php', "w");
+            fwrite($dt, $content);
+            fclose($dt);
+
+            echo '';
+            echo '
+            +++seed named '.$table.' has been created';
+            echo '
+            ';
+        }
+
+
+
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function seedProcess($listTables){
+        if($this->seed){
+            foreach($this->getTables($listTables) as $key=>$table){
+                $this->seedFileProcess($table,[
+
+                    '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\seeds',
+                    '__classname__'=>$table.'_seed'
+                ],[]);
+            }
+        }
+
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
     public function pull($listTables){
+        $this->seedProcess($listTables);
         $file=new file();
         $time=time();
         if(count($listTables)){
@@ -513,6 +648,7 @@ class manager {
      * @return class object
      */
     public function push($listTables){
+
         $schemasSql=$this->getUpSchemaHandle($this->getSchemas());
 
         foreach($this->table as $table){
@@ -548,6 +684,34 @@ class manager {
                         echo '++++'.$table.' migration has been completed as push';
                         echo '
                         ';
+
+                        if($this->seed){
+                            $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
+                            if(file_exists($seedFile)){
+                                $seedNameSpace="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\seeds\\".$table."_seed";
+                                $result=$seedNameSpace::up();
+                                if($result['prepare']!=="//prepare"){
+                                    $prepareList=explode("//",$result['prepare']);
+                                    $executeList=explode("//",$result['execute']);
+
+                                    foreach($prepareList as $pkey=>$pvalue){
+                                        $resultPrepare=explode("@@",$pvalue);
+                                        $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
+                                        $resultExecute=explode("@@",$executeList[$pkey]);
+                                        if($query->execute($resultExecute)) {
+                                            echo '
+                                            ';
+                                            echo '+++' . $table . ' seed has beed completed as push';
+                                            echo '
+                                            ';
+                                        }
+                                    }
+
+                                }
+
+                            }
+                        }
+
                     }
                     catch(\Exception $e){
 
