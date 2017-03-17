@@ -876,12 +876,16 @@ class manager {
         $indexes=$this->getShowIndexes();
 
         $index=[];
+        $indexKeys=[];
         if(count($indexes[$table])){
             foreach ($indexes[$table] as $key=>$val){
                 if($indexes[$table][$key]->Non_unique>0){
-                    $index[]='KEY '.$indexes[$table][$key]->Key_name.' ('.$indexes[$table][$key]->Column_name.')';
+                    $indexKeys[$indexes[$table][$key]->Key_name][]=$indexes[$table][$key]->Column_name;
                 }
 
+            }
+            foreach ($indexKeys as $keyName=>$array){
+                $index[]='KEY '.$keyName.' ('.implode(",",$array).')';
             }
         }
 
@@ -1042,7 +1046,24 @@ class manager {
 
             if($object['change']['Key']=="MUL"){
 
-                $unique=',ADD UNIQUE '.$object['change']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['change']['Field'])).')';
+                $indexes=$this->getShowIndexes();
+                $indexList=[];
+                foreach ($indexes[$table] as $key=>$value){
+                    if($indexes[$table][$key]->Key_name==$object['change']['Field']){
+                        if($indexes[$table][$key]->Non_unique>0){
+                            $indexList[$object['change']['Field']][]=$indexes[$table][$key]->Column_name;
+                        }
+                    }
+                }
+
+                if(count($indexList)){
+                    $unique=',ADD INDEX '.$object['change']['Field'].' ('.implode(",",$indexList[$object['change']['Field']]).')';
+                }
+                else{
+                    $unique=',ADD UNIQUE '.$object['change']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['change']['Field'])).')';
+                }
+
+
             }
 
             return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$unique.'  ';
