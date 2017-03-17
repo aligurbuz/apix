@@ -1013,6 +1013,9 @@ class manager {
 
             }
             else{
+
+
+
                 $mul=$this->getAllUniqueKeys($table);
                 $mulList=[];
                 foreach($mul as $key_name=>$array){
@@ -1023,7 +1026,24 @@ class manager {
 
                 foreach($mulList as $key_name=>$array){
                     if($object['diff']['Field']==end($mulList[$key_name])){
-                        $unique=',ADD UNIQUE '.$key_name.' ('.implode(",",$mulList[$key_name]).')';
+
+                        $indexes=$this->getShowIndexes();
+                        $indexList=[];
+                        foreach ($indexes[$table] as $key=>$value){
+                            if($indexes[$table][$key]->Key_name==$key_name){
+                                if($indexes[$table][$key]->Non_unique>0){
+                                    $indexList[$key_name][]=$indexes[$table][$key]->Column_name;
+                                }
+                            }
+                        }
+
+                        if(count($indexList)){
+                            $unique=',ADD INDEX '.$key_name.' ('.implode(",",$indexList[$key_name]).')';
+                        }
+                        else{
+                            $unique=',ADD UNIQUE '.$key_name.' ('.implode(",",$mulList[$key_name]).')';
+                        }
+
                     }
 
                 }
