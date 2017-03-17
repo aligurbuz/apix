@@ -207,6 +207,25 @@ class manager {
      *
      * @return class object
      */
+    public function getIndexInfo($table){
+        $list=[];
+        $query=$this->db->prepare("SHOW INDEX FROM ".$table." WHERE Key_name!='PRIMARY'");
+        $query->execute();
+        $result=$query->fetchAll(\PDO::FETCH_OBJ);
+        foreach($result as $key=>$res){
+
+            $list[$table]['Key_name'][]=$res->Key_name;
+            $list[$table]['Column_name'][]=$res->Column_name;
+
+        }
+        return $list;
+    }
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
     public function getMultipleUniqueKeys($table,$field){
         $list=[];
         $query=$this->db->prepare("SHOW INDEXES FROM ".$table." WHERE Key_name='".$field."'");
@@ -360,12 +379,47 @@ class manager {
 
     }
 
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function checkIfThereIsIndexes($table){
+        $yaml=$this->getInfoYaml($table);
+        $index=$this->getIndexInfo($table);
+
+        if(array_key_exists("Key_name",$index[$table]) && array_key_exists("Key_name",$yaml[$table]['fields'][$table])){
+
+            foreach($yaml[$table]['fields'][$table]['Key_name'] as $uniqueVal){
+
+
+                if(!in_array($uniqueVal,$index[$table]['Key_name'])){
+
+                    $file=new file();
+                    $modelFile='__'.time().'__'.$table.'';
+                    $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
+                    $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                    $this->fileProcessIndex($table,[
+
+                        '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$table,
+                        '__classname__'=>$modelFile
+                    ],['deleteIndex'=>$uniqueVal]);
+                }
+            }
+        }
+
+
+
+    }
+
     /**
      * engine method is main method.
      *
      * @return class object
      */
     public function pull($listTables){
+
         $this->seedProcess($listTables);
         $file=new file();
         $time=time();
@@ -377,6 +431,7 @@ class manager {
                 }
 
                 $writeInfo=$this->writeInfo($key,$object);
+
 
                 if($writeInfo['status']=="first"){
                     $modelFile='__'.$time.'__'.$key.'';
@@ -528,7 +583,7 @@ class manager {
             return ['status'=>'noupdate'];
         }
 
-        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)]])){
+        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)+$this->getIndexInfo($table)]])){
             return ['status'=>'first'];
         }
 
@@ -863,6 +918,38 @@ class manager {
     }
 
 
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function fileProcessIndex($table,$param=array(),$object){
+        $executionPath=root."/lib/bin/commands/execution/migration.php";
+        $dt = fopen($executionPath, "r");
+        $content = fread($dt, filesize($executionPath));
+        fclose($dt);
+
+        if(count($param)){
+            foreach ($param as $key=>$value){
+
+                $content=str_replace($key,$value,$content);
+            }
+        }
+
+        $content=str_replace('//data',$this->tableFormDeleteIndex($object,$table),$content);
+
+        $dt = fopen(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/'.$param['__classname__'].'.php', "w");
+        fwrite($dt, $content);
+        fclose($dt);
+
+        echo '
+        ';
+        echo '+++migration named '.$table.' has been created';
+        echo '
+        ';
+    }
+
+
 
     /**
      * engine method is main method.
@@ -952,6 +1039,15 @@ class manager {
         }
     }
 
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function tableFormDeleteIndex($object,$table){
+        return 'ALTER TABLE '.$table.' DROP INDEX '.$object['deleteIndex'].'';
+    }
 
 
     /**
