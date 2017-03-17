@@ -218,6 +218,23 @@ class manager {
         return $list;
     }
 
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getAllUniqueKeys($table){
+        $list=[];
+        $query=$this->db->prepare("SHOW INDEXES FROM ".$table."");
+        $query->execute();
+        $result=$query->fetchAll(\PDO::FETCH_OBJ);
+        foreach($result as $mul){
+            $list[$mul->Key_name][]=$mul->Column_name;
+        }
+        return $list;
+    }
+
     /**
      * engine method is main method.
      *
@@ -380,11 +397,32 @@ class manager {
 
                 if($writeInfo['status']=="update"){
 
+                    if(array_key_exists("diff",$writeInfo['data'])){
+                        $updateData=[];
+                        foreach ($writeInfo['data']['diff']['beforeField'] as $okey=>$ovalue){
+                            $time=time()+$okey+1;
+                            $updateData['diff']['beforeField']=$ovalue;
+                            $updateData['diff']['Field']=$writeInfo['data']['diff']['Field'][$okey];
+                            $updateData['diff']['Type']=$writeInfo['data']['diff']['Type'][$okey];
+                            $updateData['diff']['Null']=$writeInfo['data']['diff']['Null'][$okey];
+                            $updateData['diff']['Key']=$writeInfo['data']['diff']['Key'][$okey];
+                            $updateData['diff']['Default']=$writeInfo['data']['diff']['Default'][$okey];
+                            $updateData['diff']['Extra']=$writeInfo['data']['diff']['Extra'][$okey];
+                            $modelFile='__'.$time.'__'.$key.'';
+                            $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                            $this->fileProcessUpdate($key,[
+
+                                '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                                '__classname__'=>$modelFile
+                            ],$updateData);
+                        }
+                    }
+
                     if(array_key_exists("change",$writeInfo['data'])){
 
                         $updateData=[];
                         foreach ($writeInfo['data']['change']['beforeField'] as $okey=>$ovalue){
-                            $time=time()+$okey;
+                            $time=time()+$okey+2;
                             $updateData['change']['beforeField']=$ovalue;
                             $updateData['change']['Field']=$writeInfo['data']['change']['Field'][$okey];
                             $updateData['change']['Type']=$writeInfo['data']['change']['Type'][$okey];
@@ -407,7 +445,7 @@ class manager {
 
                         $updateData=[];
                         foreach ($writeInfo['data']['changeField']['Field']['old'] as $okey=>$ovalue){
-                            $time=time()+$okey+1;
+                            $time=time()+$okey+3;
                             $updateData['changeField']['old']=$ovalue;
                             $updateData['changeField']['new']=$writeInfo['data']['changeField']['Field']['new'][$okey];
                             $updateData['changeField']['Type']=$writeInfo['data']['changeField']['Type'][$okey];
@@ -429,7 +467,7 @@ class manager {
                     if(array_key_exists("dropField",$writeInfo['data'])){
 
                         foreach($writeInfo['data']['dropField']['Field'] as $okey=>$oval){
-                            $time=time()+$okey+2;
+                            $time=time()+$okey+4;
                             $updateData['dropField']['Field']=$writeInfo['data']['dropField']['Field'][$okey];
 
                             $modelFile='__'.$time.'__'.$key.'';
@@ -458,26 +496,7 @@ class manager {
                         }
 
                     }
-                    if(array_key_exists("diff",$writeInfo['data'])){
-                        $updateData=[];
-                        foreach ($writeInfo['data']['diff']['beforeField'] as $okey=>$ovalue){
-                            $time=time()+$okey+3;
-                            $updateData['diff']['beforeField']=$ovalue;
-                            $updateData['diff']['Field']=$writeInfo['data']['diff']['Field'][$okey];
-                            $updateData['diff']['Type']=$writeInfo['data']['diff']['Type'][$okey];
-                            $updateData['diff']['Null']=$writeInfo['data']['diff']['Null'][$okey];
-                            $updateData['diff']['Key']=$writeInfo['data']['diff']['Key'][$okey];
-                            $updateData['diff']['Default']=$writeInfo['data']['diff']['Default'][$okey];
-                            $updateData['diff']['Extra']=$writeInfo['data']['diff']['Extra'][$okey];
-                            $modelFile='__'.$time.'__'.$key.'';
-                            $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
-                            $this->fileProcessUpdate($key,[
 
-                                '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
-                                '__classname__'=>$modelFile
-                            ],$updateData);
-                        }
-                    }
 
                 }
 
@@ -869,7 +888,7 @@ class manager {
         foreach ($object as $key=>$data){
             if($object[$key]->Null=="NO"){
                 if($object[$key]->Default!==NULL){
-                    $null='DEFAULT '.$object[$key]->Default;
+                    $null='DEFAULT \"'.$object[$key]->Default.'\"';
                 }
                 else{
                     $null='NOT NULL';
@@ -877,7 +896,7 @@ class manager {
             }
             else{
                 if($object[$key]->Default!==NULL){
-                    $null='DEFAULT '.$object[$key]->Default;
+                    $null='DEFAULT \"'.$object[$key]->Default.'\"';
                 }
                 else{
                     $null='NULL';
@@ -931,7 +950,7 @@ class manager {
 
             if($object['diff']['Null']=="NO"){
                 if($object['diff']['Default']!==NULL){
-                    $null='DEFAULT '.$object['diff']['Default'];
+                    $null='DEFAULT \"'.$object['diff']['Default'].'\"';
                 }
                 else{
                     $null='NOT NULL';
@@ -939,7 +958,7 @@ class manager {
             }
             else{
                 if($object['diff']['Default']!==NULL){
-                    $null='DEFAULT '.$object['diff']['Default'];
+                    $null='DEFAULT \"'.$object['diff']['Default'].'\"';
                 }
                 else{
                     $null='NULL';
@@ -955,10 +974,29 @@ class manager {
                 $unique='';
             }
 
-            if($object['diff']['Key']=="MUL"){
+            $mul=$this->getMultipleUniqueKeys($table,$object['diff']['Field']);
 
+            if($object['diff']['Field']==end($mul) && $object['diff']['Key']=="MUL"){
                 $unique=',ADD UNIQUE '.$object['diff']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['diff']['Field'])).')';
             }
+            else{
+                $mul=$this->getAllUniqueKeys($table);
+                $mulList=[];
+                foreach($mul as $key_name=>$array){
+                    if(in_array($object['diff']['Field'],$array) && $key_name!==$object['diff']['Field']){
+                        $mulList[$key_name]=$array;
+                    }
+                }
+
+                foreach($mulList as $key_name=>$array){
+                    if($object['diff']['Field']==end($mulList[$key_name])){
+                        $unique=',ADD UNIQUE '.$key_name.' ('.implode(",",$mulList[$key_name]).')';
+                    }
+
+                }
+            }
+
+
             return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'].' '.$unique;
         }
 
@@ -970,7 +1008,7 @@ class manager {
 
             if($object['change']['Null']=="NO"){
                 if($object['change']['Default']!==NULL){
-                    $null='DEFAULT '.$object['change']['Default'];
+                    $null='DEFAULT \"'.$object['change']['Default'].'\"';
                 }
                 else{
                     $null='NOT NULL';
@@ -978,7 +1016,7 @@ class manager {
             }
             else{
                 if($object['change']['Default']!==NULL){
-                    $null='DEFAULT '.$object['change']['Default'];
+                    $null='DEFAULT \"'.$object['change']['Default'].'\"';
                 }
                 else{
                     $null='NULL';
@@ -1006,7 +1044,7 @@ class manager {
 
             if($object['changeField']['Null']=="NO"){
                 if($object['changeField']['Default']!==NULL){
-                    $null='DEFAULT '.$object['changeField']['Default'];
+                    $null='DEFAULT \"'.$object['changeField']['Default'].'\"';
                 }
                 else{
                     $null='NOT NULL';
@@ -1014,14 +1052,26 @@ class manager {
             }
             else{
                 if($object['changeField']['Default']!==NULL){
-                    $null='DEFAULT '.$object['changeField']['Default'];
+                    $null='DEFAULT \"'.$object['changeField']['Default'].'\"';
                 }
                 else{
                     $null='NULL';
                 }
 
             }
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.'  ';
+
+            if($object['changeField']['Key']=="UNI"){
+                $unique=',ADD UNIQUE ('.$object['changeField']['Field'].')';
+            }
+            else{
+                $unique='';
+            }
+
+            if($object['changeField']['Key']=="MUL"){
+
+                $unique=',ADD UNIQUE '.$object['changeField']['new'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['changeField']['new'])).')';
+            }
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.' '.$unique.' ';
         }
 
     }
