@@ -360,6 +360,7 @@ class manager {
                 }
 
                 $writeInfo=$this->writeInfo($key,$object);
+
                 if($writeInfo['status']=="first"){
                     $modelFile='__'.$time.'__'.$key.'';
                     $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
@@ -572,7 +573,7 @@ class manager {
         $yaml=$this->getInfoYaml($table);
         $listVal=[];
         foreach($dump[$table]['fields']['Field'] as $key=>$value){
-            if(!in_array($value,$yaml[$table]['fields']['Field'])){
+            if(count($dump[$table]['fields']['Field'])!==count($yaml[$table]['fields']['Field']) && !in_array($value,$yaml[$table]['fields']['Field'])){
                 foreach($data as $datakey=>$object){
                     if($data[$datakey]->Field==$value){
                         $beforeKey=$datakey-1;
@@ -925,6 +926,7 @@ class manager {
      * @return class object
      */
     public function tableFormUpdate($object,$table){
+
         if(array_key_exists("diff",$object)){
 
             if($object['diff']['Null']=="NO"){
