@@ -877,10 +877,14 @@ class manager {
 
         $index=[];
         $indexKeys=[];
+        $uniqueKeys=[];
         if(count($indexes[$table])){
             foreach ($indexes[$table] as $key=>$val){
                 if($indexes[$table][$key]->Non_unique>0){
                     $indexKeys[$indexes[$table][$key]->Key_name][]=$indexes[$table][$key]->Column_name;
+                }
+                else{
+                    $uniqueKeys[$indexes[$table][$key]->Key_name][]=$indexes[$table][$key]->Column_name;
                 }
 
             }
@@ -927,11 +931,9 @@ class manager {
                 $indexExtension='';
             }
             if($object[$key]->Key=="MUL"){
-                if(count($indexExtension)===null){
-                    $unique=',UNIQUE KEY '.$object[$key]->Field.' ('.implode(",",$this->getMultipleUniqueKeys($table,$object[$key]->Field)).')';
-                    $indexExtension='';
+                if(array_key_exists($object[$key]->Field,$uniqueKeys) && count($uniqueKeys[$object[$key]->Field])){
+                    $unique=',UNIQUE KEY '.$object[$key]->Field.' ('.implode(",",$uniqueKeys[$object[$key]->Field]).')';
                 }
-
             }
 
 
