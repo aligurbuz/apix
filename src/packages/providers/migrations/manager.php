@@ -980,6 +980,8 @@ class manager {
             }
 
 
+
+
             if($object['diff']['Key']=="UNI"){
                 $unique=',ADD UNIQUE ('.$object['diff']['Field'].')';
             }
@@ -987,10 +989,28 @@ class manager {
                 $unique='';
             }
 
+
+            $indexes=$this->getShowIndexes();
+            $indexList=[];
+            foreach ($indexes[$table] as $key=>$value){
+                if($indexes[$table][$key]->Key_name==$object['diff']['Field']){
+                    if($indexes[$table][$key]->Non_unique>0){
+                        $indexList[$object['diff']['Field']][]=$indexes[$table][$key]->Column_name;
+                    }
+                }
+            }
+
             $mul=$this->getMultipleUniqueKeys($table,$object['diff']['Field']);
 
             if($object['diff']['Field']==end($mul) && $object['diff']['Key']=="MUL"){
-                $unique=',ADD UNIQUE '.$object['diff']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['diff']['Field'])).')';
+
+                if(count($indexList)){
+                    $unique=',ADD INDEX '.$object['diff']['Field'].' ('.implode(",",$indexList[$object['diff']['Field']]).')';
+                }
+                else{
+                    $unique=',ADD UNIQUE '.$object['diff']['Field'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['diff']['Field'])).')';
+                }
+
             }
             else{
                 $mul=$this->getAllUniqueKeys($table);
@@ -1099,7 +1119,23 @@ class manager {
 
             if($object['changeField']['Key']=="MUL"){
 
-                $unique=',ADD UNIQUE '.$object['changeField']['new'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['changeField']['new'])).')';
+                $indexes=$this->getShowIndexes();
+                $indexList=[];
+                foreach ($indexes[$table] as $key=>$value){
+                    if($indexes[$table][$key]->Key_name==$object['changeField']['new']){
+                        if($indexes[$table][$key]->Non_unique>0){
+                            $indexList[$object['changeField']['new']][]=$indexes[$table][$key]->Column_name;
+                        }
+                    }
+                }
+
+                if(count($indexList)){
+                    $unique=',ADD INDEX '.$object['changeField']['new'].' ('.implode(",",$indexList[$object['changeField']['new']]).')';
+                }
+                else{
+                    $unique=',ADD UNIQUE '.$object['changeField']['new'].' ('.implode(",",$this->getMultipleUniqueKeys($table,$object['changeField']['new'])).')';
+                }
+
             }
             return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.' '.$unique.' ';
         }
