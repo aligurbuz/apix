@@ -389,6 +389,10 @@ class manager {
         $yaml=$this->getInfoYaml($table);
         $index=$this->getIndexInfo($table);
 
+        if(count($index)==0){
+            $index[$table]['Key_name']=[];
+        }
+
 
         if(count($yaml)){
             if((array_key_exists($table,$index) && array_key_exists("Key_name",$index[$table]))
