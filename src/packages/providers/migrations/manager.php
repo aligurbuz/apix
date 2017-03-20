@@ -389,24 +389,29 @@ class manager {
         $yaml=$this->getInfoYaml($table);
         $index=$this->getIndexInfo($table);
 
-        if(array_key_exists("Key_name",$index[$table]) && array_key_exists("Key_name",$yaml[$table]['fields'][$table])){
 
-            foreach($yaml[$table]['fields'][$table]['Key_name'] as $uniqueVal){
+        if(count($yaml)){
+            if((array_key_exists($table,$index) && array_key_exists("Key_name",$index[$table]))
+                && (array_key_exists($table,$yaml[$table]['fields']) && array_key_exists("Key_name",$yaml[$table]['fields'][$table]))){
+
+                foreach($yaml[$table]['fields'][$table]['Key_name'] as $uniqueVal){
 
 
-                if(!in_array($uniqueVal,$index[$table]['Key_name'])){
+                    if(!in_array($uniqueVal,$index[$table]['Key_name'])){
 
-                    $file=new file();
-                    $modelFile='__'.time().'__'.$table.'';
-                    $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
-                    $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
-                    $this->fileProcessIndex($table,[
+                        $file=new file();
+                        $modelFile='__'.time().'__'.$table.'';
+                        $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
+                        $file->touch($path.'/'.$table.'/'.$modelFile.'.php');
+                        $this->fileProcessIndex($table,[
 
-                        '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$table,
-                        '__classname__'=>$modelFile
-                    ],['deleteIndex'=>$uniqueVal]);
+                            '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$table,
+                            '__classname__'=>$modelFile
+                        ],['deleteIndex'=>$uniqueVal]);
+                    }
                 }
             }
+
         }
 
 
@@ -430,6 +435,7 @@ class manager {
                     $file->mkdir($path,$key);
                 }
 
+                $this->checkIfThereIsIndexes($key);
                 $writeInfo=$this->writeInfo($key,$object);
 
 
