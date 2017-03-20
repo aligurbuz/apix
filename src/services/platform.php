@@ -64,7 +64,7 @@ class platform {
      *
      * @return array
      */
-    public function take($method=null,$callback=null){
+    public function take($callback=null){
 
         if($this->service==null && $this->filename==null){
             $this->service=service;
@@ -115,17 +115,17 @@ class platform {
                 $status=true;
             }
 
-            if($instance && method_exists($config,$configMethodMain)){
-                $status=\app::resolve($config)->$configMethodMain();
-            }
+            if($status){
 
-
-            if($method!==null && $status){
                 $classplatform=root.'/src/app/'.app.'/'.version.'/platform/'.$this->platform.'/'.$this->service.'/'.request.'Service.php';
                 if(file_exists($classplatform)){
                     $platformname='\\src\\app\\'.app.'\\'.version.'\\platform\\'.$this->platform.'\\'.$this->service.'\\'.request.'Service';
                     $method=method;
-                    return \app::resolve($platformname)->$method(call_user_func($callback));
+                    $appPlatform=\app::resolve($platformname);
+                    if(method_exists($appPlatform,$method)){
+                        return \app::resolve($platformname)->$method(call_user_func($callback));
+                    }
+
                 }
                 if(is_callable($callback)){
                     return call_user_func($callback);

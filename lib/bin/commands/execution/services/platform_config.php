@@ -39,7 +39,7 @@ class config {
      *
      * @return array
      */
-    public function dir(){
+    public function handle(){
 
         //return source
         return true;
