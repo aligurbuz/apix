@@ -22,6 +22,9 @@ class serviceBaseController
     //model pagination
     public $pagination=10;
 
+    //platform config
+    public $platform=false;
+
     /**
      * webserviceBoot is to use guzzle method for http.
      * it is related method for every service

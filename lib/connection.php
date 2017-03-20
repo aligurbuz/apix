@@ -102,7 +102,22 @@ class connection extends Definitor {
                             if($restrictionsStatus){
                                 $boot=$instance->bootServiceLoader($requestServiceMethod);
 
-                                $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
+                                $serviceBasePlatformStatus=\app::resolve(api."serviceBaseController")->platform;
+                                if($serviceBasePlatformStatus){
+                                    $servicePlatform=\app::resolve("\\src\\services\\platform");
+                                    $requestServiceMethodReal=$servicePlatform->take(function() use(&$requestServiceMethodReal,$apix,$requestServiceMethod,$boot){
+                                        $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
+                                    });
+
+                                    if($requestServiceMethodReal===null){
+                                        $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
+                                    }
+
+                                }
+                                else{
+                                    $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
+                                }
+
                                 $instance->serviceDump($requestServiceMethodReal,$requestServiceMethod);
                                 return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
                                     return $instance->responseOut($requestServiceMethodReal);
