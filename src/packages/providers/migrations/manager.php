@@ -586,7 +586,7 @@ class manager {
         }
 
         if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']!==$hash){
-            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)]],$data);
+            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)+$this->getIndexInfo($table)]],$data);
             if($update['yamlStatus']){
                 return ['status'=>'update','data'=>$update['data']];
             }

@@ -16,6 +16,7 @@ class serviceLogController
     public $request;
     public $status=false;
     public $logger;
+    public $logPath=null;
 
     /**
      * Constructor.
@@ -27,6 +28,7 @@ class serviceLogController
         //get request info
         $this->request=$request;
         $this->logger=new logger('log');
+        $this->logPath=application.'/storage/logs/access.log';
         $this->logger->pushHandler(new StreamHandler(application.'/storage/logs/access.log', Logger::INFO));
     }
 

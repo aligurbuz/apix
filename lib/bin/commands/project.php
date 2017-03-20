@@ -95,6 +95,10 @@ class project {
             $touchServiceApp['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/app.php',$touchServiceApp);
 
+            $touchServiceSocialize['execution']='services/socialize';
+            $touchServiceSocialize['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/config/socialize.php',$touchServiceSocialize);
+
             $database['execution']='services/database';
             $database['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/database.php',$database);
