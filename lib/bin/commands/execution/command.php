@@ -8,9 +8,7 @@
 namespace src\commands;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use lib\colors;
 
 /**
  * Represents a console command example class.
@@ -18,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * every method that on this command is called with console method as string on console
  * return type string
  */
-class __class__ {
+class __class__ extends  colors {
 
     /**
      * The name and signature of the console command.
@@ -43,7 +41,7 @@ class __class__ {
     public function handle($arguments){
 
         //make somethings
-        return '__class__ command';
+        return $this->info('__class__ command');
     }
 
 
