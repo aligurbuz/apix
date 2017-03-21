@@ -27,10 +27,54 @@ class cache {
     private $adapter='file';
     private $fileExpire=60;
     private $cache=null;
+    private $name=null;
 
-    public function __construct(){
-        $adapterMethod=$this->adapter.'CacheAdapter';
-        $this->$adapterMethod();
+
+    /**
+     * cache adapter data.
+     *
+     * @return cache adapter method
+     */
+    public function adapter($adapter=null)
+    {
+        //adapter set
+        if($adapter!==null){
+            $this->adapter=$adapter;
+            $adapterMethod=$this->adapter.'CacheAdapter';
+            $this->$adapterMethod();
+        }
+        return $this;
+    }
+
+
+
+    /**
+     * cache expire data.
+     *
+     * @return cache expire method
+     */
+    public function expire($expire=null)
+    {
+        //expire set
+        if($expire!==null){
+            $this->fileExpire=$expire;
+        }
+        return $this;
+    }
+
+
+    /**
+     * cache name data.
+     *
+     * @return cache name method
+     */
+    public function name($name=null)
+    {
+        //name set
+        if($name!==null){
+            $this->name=$name;
+        }
+        return $this;
     }
 
 
@@ -39,9 +83,21 @@ class cache {
      *
      * @return cache class
      */
-    public function get($name,$callback)
+    public function get($callback)
     {
+        //adapter set
+        $adapterMethod=$this->adapter.'CacheAdapter';
+        $this->$adapterMethod();
+
         //get Item
+        if($this->name===null){
+            $name="".request."_".service."_".method;
+        }
+        else{
+            $name=$this->name;
+        }
+
+
         $name='cache.'.$name.'';
         $nameSet=$this->cache->getItem($name);
 
