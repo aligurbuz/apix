@@ -15,10 +15,29 @@ cp .env.example .env
 
 ```
 
-#### Please update it for your composer to use vendor system because of that the apix system utilizes Composer to manage its dependencies.
+# How to identifying my environment except local.
+
+* Identifying my environment except local
+* It is in src/env as environment path
+* File named env.php that in src/env is fired and environmentSetUp method is run
+* returned value is environment name (example : return 'stage'; ) --- is .stage is file
+
+#### environmentSetUp method in src/env/env.php
 
 ```
-composer update
+ /**
+     * environmentSetUp for other platform method.
+     *
+     * @return array
+     */
+    public function environmentSetUp(){
+
+        return null;
+        //example
+        /*if($this->request->getClientIp()='x.x.x.'){
+            return 'stage';
+        }*/
+    }
 
 ```
 
