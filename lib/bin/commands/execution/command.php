@@ -8,7 +8,8 @@
 namespace src\commands;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use lib\colors;
+use Src\Services\FileProcess as File;
+use Lib\Colors;
 
 /**
  * Represents a console command example class.
