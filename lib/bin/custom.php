@@ -10,6 +10,8 @@
 
 namespace lib\bin;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Represents a getService class.
@@ -42,8 +44,7 @@ class custom {
             $command='\\lib\\bin\\'.$data[1];
         }
 
-
-        $app=new $command();
+        $app=\src\config\app::resolve($command);
 
         $list=[];
         foreach($data as $key=>$value){
