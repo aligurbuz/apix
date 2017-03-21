@@ -107,7 +107,7 @@ class cache {
             $data=call_user_func($callback);
             $nameSet->set($data);
             $this->cache->save($nameSet);
-            return call_user_func($callback);
+            return $data;
         }
         return $nameSet->get();
 
