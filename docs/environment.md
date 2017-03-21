@@ -26,7 +26,7 @@ cp .env.example .[projectName]env
 * Identifying my environment except local
 * It is in src/env as environment path
 * File named env.php that in src/env is fired and environmentSetUp method is run
-* returned value is environment name (example : return 'stage'; ) --- is src/env/.stage is file
+* the returned value is environment name (example : return 'stage'; ) --- is src/env/.stage is file
 
 #### environmentSetUp method in src/env/env.php
 
