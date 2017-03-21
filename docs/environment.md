@@ -4,9 +4,8 @@
 * Default .env.example you can copy it.
 * Local management in project : .env file is created
 
-# If there is no .env file in project
 ```diff
--Environment management is formed as production
+-If there is no .env file in project,Environment management is formed as production
 ```
 
 #### Environment file : .env file creating via console
