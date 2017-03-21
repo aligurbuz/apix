@@ -12,6 +12,7 @@ namespace src\packages\providers\migrations;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use src\services\fileProcess as file;
+use src\packages\providers\migrations\consoleColors;
 
 /**
  * Represents a search class.
@@ -35,11 +36,13 @@ class manager {
     private $seed=false;
     private $seedValue=[];
     private static $instance=null;
+    private $colors=null;
     /**
      * get construct.
      *
      */
     public function __construct($data){
+        $this->colors=new consoleColors();
         $this->project=$data['project'];
         if(array_key_exists("model",$data)){
             $this->model=$data['model'];
@@ -349,11 +352,7 @@ class manager {
             fwrite($dt, $content);
             fclose($dt);
 
-            echo '';
-            echo '
-            +++seed named '.$table.' has been created';
-            echo '
-            ';
+            echo $this->colors->done('+++seed named '.$table.' has been created');
         }
 
 
@@ -453,11 +452,7 @@ class manager {
                     ],$object);
                 }
                 if($writeInfo['status']=="noupdate"){
-                    echo '';
-                    echo '
-                    ---'.$key.' table does not have updating information';
-                    echo '
-                    ';
+                    echo $this->colors->warning(' !!! '.$key.' table does not have updating information');
                 }
 
                 if($writeInfo['status']=="update"){
@@ -764,11 +759,7 @@ class manager {
 
                         file_put_contents($migrationYaml, $yaml);
 
-                        echo '
-                        ';
-                        echo '++++'.$table.' migration has been completed as push';
-                        echo '
-                        ';
+                        echo $this->colors->done('++++'.$table.' migration has been completed as push');
 
                         if($this->seed){
                             $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
@@ -784,11 +775,8 @@ class manager {
                                         $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
                                         $resultExecute=explode("@@",$executeList[$pkey]);
                                         if($query->execute($resultExecute)) {
-                                            echo '
-                                            ';
-                                            echo '+++' . $table . ' seed has beed completed as push';
-                                            echo '
-                                            ';
+
+                                            echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
                                         }
                                     }
 
@@ -800,20 +788,13 @@ class manager {
                     }
                     catch(\Exception $e){
 
-                        echo '';
-                        echo '---'.$table.' :'.$e->getMessage();
-                        echo '
-                        ';
+                        echo $this->colors->error('---'.$table.' :'.$e->getMessage());
                     }
                 }
 
                 else{
 
-                    echo '
-                    ';
-                    echo '!!!!'.$table.' ['.$key.'] : has once migration';
-                    echo '
-                    ';
+                    echo $this->colors->warning('!!!!'.$table.' ['.$key.'] : has once migration');
                 }
 
 
@@ -888,11 +869,7 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo '';
-        echo '
-        +++migration named '.$table.' has been created';
-        echo '
-        ';
+        echo $this->colors->done('+++migration named '.$table.' has been created');
     }
 
 
@@ -920,11 +897,7 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo '
-        ';
-        echo '+++migration named '.$table.' has been created';
-        echo '
-        ';
+        echo $this->colors->done('+++migration named '.$table.' has been created');
     }
 
 
@@ -952,11 +925,7 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo '
-        ';
-        echo '+++migration named '.$table.' has been created';
-        echo '
-        ';
+        echo $this->colors->done('+++migration named '.$table.' has been created');
     }
 
 
