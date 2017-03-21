@@ -563,6 +563,8 @@ class manager {
             }
         }
 
+        return $this->colors->error("There is no project model ");
+
     }
 
 
