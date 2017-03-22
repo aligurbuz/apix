@@ -28,7 +28,7 @@ api migration push:project_name
 * Apix includes a simple method of seeding your database with test data using seed classes.
 * All seed classes are stored in the src/app/project_name/version/migrations/seeds directory.
 
-#### Pull your seeds via your models the tables existing on the database
+#### Pull your seeds via your models the tables existing in the database
 
 ```
 api migration pull:project_name --seed
