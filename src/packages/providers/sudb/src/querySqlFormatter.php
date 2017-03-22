@@ -486,6 +486,7 @@ class querySqlFormatter {
         }
 
         try {
+
             $query=$this->db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
             if($query->execute($dataExecuteValues)){
                 return ['lastInsertId'=>$this->db->lastInsertId(),'status'=>true];
