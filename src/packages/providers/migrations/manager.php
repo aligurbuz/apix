@@ -159,10 +159,16 @@ class manager {
         $list=[];
         if(count($this->table)){
             foreach ($this->table as $key=>$table){
-                $query=$this->db->prepare("SHOW COLUMNS FROM ".$table."");
-                $query->execute();
-                $result=$query->fetchAll(\PDO::FETCH_OBJ);
-                $list[$table]=$result;
+                try {
+                    $query=$this->db->prepare("SHOW COLUMNS FROM ".$table."");
+                    $query->execute();
+                    $result=$query->fetchAll(\PDO::FETCH_OBJ);
+                    $list[$table]=$result;
+                }
+                catch(\Exception $e){
+                   return $this->colors->error($e->getMessage());
+                }
+
             }
         }
         return $list;
@@ -464,6 +470,7 @@ class manager {
         $this->seedProcess($listTables);
         $file=new file();
         $time=time();
+
         if(count($listTables)){
             $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
             foreach($listTables as $key=>$object){
@@ -818,7 +825,8 @@ class manager {
 
                         if($this->seed){
                             $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
-                            if(file_exists($seedFile)){
+                            $seedFileSrc=root.'/src/migrations/seeds/'.$table.'_seed.php';
+                            if(file_exists($seedFile) && !file_exists($seedFileSrc)){
                                 $seedNameSpace="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\seeds\\".$table."_seed";
                                 $result=$seedNameSpace::up();
                                 if($result['prepare']!=="//prepare"){
@@ -836,6 +844,32 @@ class manager {
                                     }
 
                                 }
+
+                            }
+                            else{
+
+                                $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
+
+                                if(file_exists($seedFile)){
+                                    $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
+                                    $result=$seedNameSpace::up();
+                                    if($result['prepare']!=="//prepare"){
+                                        $prepareList=explode("//",$result['prepare']);
+                                        $executeList=explode("//",$result['execute']);
+
+                                        foreach($prepareList as $pkey=>$pvalue){
+                                            $resultPrepare=explode("@@",$pvalue);
+                                            $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
+                                            $resultExecute=explode("@@",$executeList[$pkey]);
+                                            if($query->execute($resultExecute)) {
+
+                                                echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
+                                            }
+                                        }
+
+                                    }
+                                }
+
 
                             }
                         }
