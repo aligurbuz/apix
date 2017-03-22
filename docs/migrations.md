@@ -18,7 +18,7 @@ api migration pull:project_name
 
 # Migration Rule For Any Changes
 ```diff
--You must pull command for any changes in the database
+-You must run pull command for any changes in the database
 ```
 
 #### Push in the specified database your migrations
