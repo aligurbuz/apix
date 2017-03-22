@@ -887,15 +887,58 @@ class manager {
      */
     public function getUpSchemaHandle($class){
         $list=[];
+        $getSrcMigrations=$this->getSrcMigrations();
+        if(count($getSrcMigrations)){
+            $class=$this->getSrcMigrations()+$class;
+        }
+
         foreach ($class as $table=>$data){
             foreach($class[$table] as $key=>$value){
-                $schemaNameSpacePath="\\src\\app\\mobi\\v1\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+                $filePath=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas/'.$table.'/'.$value.'';
+                if(file_exists($filePath)){
+                    $schemaNameSpacePath="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+                }
+                else{
+                    $schemaNameSpacePath="\\src\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+                }
+
                 $list[$table][$value]=$schemaNameSpacePath::up();
             }
         }
 
         return $list;
 
+
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getSrcMigrations(){
+        $dirs = array_filter(glob(root.'/src/migrations/schemas/*'), 'is_dir');
+        $list=[];
+        if(count($dirs)){
+            foreach ($dirs as $key=>$value){
+                $explode=explode("/",$value);
+                $table=end($explode);
+
+                if(!in_array($table,$this->table)){
+                    $this->table[]=$table;
+                }
+
+                foreach (glob($value."/*.php") as $filename) {
+                    $fileExplode=explode("/",$filename);
+                    $migration=end($fileExplode);
+                    $list[$table][]=$migration;
+                }
+            }
+        }
+
+
+        return $list;
 
     }
 
