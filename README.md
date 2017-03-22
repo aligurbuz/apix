@@ -28,4 +28,4 @@ Comprehensive restful API service for php development
 * [Query Methods](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Query Caching](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Query For Client](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
-* [Migrations](https://github.com/aligurbuz/apix/blob/master/docs/migrations.md)
+* [Database Migrations](https://github.com/aligurbuz/apix/blob/master/docs/migrations.md)
