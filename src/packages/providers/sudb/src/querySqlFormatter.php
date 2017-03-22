@@ -50,8 +50,12 @@ class querySqlFormatter {
                 $this->db->exec("SET NAMES utf8");
                 $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES,false);
-                $this->db->setAttribute(\PDO::ATTR_PERSISTENT,true);
+                //$this->db->setAttribute(\PDO::ATTR_PERSISTENT,true);
+
+                self::$instance=$this->db;
             }
+
+            $this->db=self::$instance;
         }
         catch (\PDOException $e) {
             if(environment()=="local"){
