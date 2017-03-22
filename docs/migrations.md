@@ -9,7 +9,7 @@
 -if you dont have any model for your project.You can't run pull and push command for your migrations
 ```
 
-#### Pull via your models the tables existing on the database
+#### Pull via your models the tables existing in the database
 
 ```
 api migration pull:project_name
