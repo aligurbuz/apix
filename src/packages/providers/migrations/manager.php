@@ -168,6 +168,39 @@ class manager {
         return $list;
     }
 
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getShowFullColumns(){
+        $list=[];
+        if(count($this->table)){
+            foreach ($this->table as $key=>$table){
+                $query=$this->db->prepare("SHOW FULL COLUMNS FROM ".$table."");
+                $query->execute();
+                $result=$query->fetchAll(\PDO::FETCH_OBJ);
+                $list[$table]=$result;
+            }
+        }
+        return $list;
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getFieldComment($data,$field){
+        foreach($data as $result){
+            if($result->Field==$field){
+                return $result->Comment;
+            }
+        }
+    }
+
     /**
      * engine method is main method.
      *
@@ -579,21 +612,21 @@ class manager {
     public function writeInfo($table,$data){
         $yaml=$this->getInfoYaml($table);
 
-        $hash=md5(json_encode($this->getFieldsFromDb($data)));
+        $hash=md5(json_encode($this->getFieldsFromDb($data,$table)));
 
         if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']==$hash){
             return ['status'=>'noupdate'];
         }
 
         if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']!==$hash){
-            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)+$this->getIndexInfo($table)]],$data);
+            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table)]],$data);
             if($update['yamlStatus']){
                 return ['status'=>'update','data'=>$update['data']];
             }
             return ['status'=>'noupdate'];
         }
 
-        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data)+$this->getIndexInfo($table)]])){
+        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table)]])){
             return ['status'=>'first'];
         }
 
@@ -604,15 +637,24 @@ class manager {
      *
      * @return class object
      */
-    public function getFieldsFromDb($data){
+    public function getFieldsFromDb($data,$table=null){
         $list=[];
+
         foreach($data as $key=>$object){
+
+            $comment=null;
+            if($table!==null){
+                $full=$this->getShowFullColumns();
+                $comment=$this->getFieldComment($full[$table],$data[$key]->Field);
+            }
+
             $list['Field'][]=$data[$key]->Field;
             $list['Type'][]=$data[$key]->Type;
             $list['Null'][]=$data[$key]->Null;
             $list['Key'][]=$data[$key]->Key;
             $list['Default'][]=$data[$key]->Default;
             $list['Extra'][]=$data[$key]->Extra;
+            $list['Comment'][]=$comment;
         }
         return $list;
     }
@@ -655,8 +697,11 @@ class manager {
      */
     public function updateInfoYaml($table,$dump,$data){
         $yaml=$this->getInfoYaml($table);
+        $full=$this->getShowFullColumns();
         $listVal=[];
         foreach($dump[$table]['fields']['Field'] as $key=>$value){
+            $comment=$this->getFieldComment($full[$table],$value);
+
             if(count($dump[$table]['fields']['Field'])!==count($yaml[$table]['fields']['Field']) && !in_array($value,$yaml[$table]['fields']['Field'])){
                 foreach($data as $datakey=>$object){
                     if($data[$datakey]->Field==$value){
@@ -668,16 +713,19 @@ class manager {
                         $listVal['diff']['Key'][]=$data[$datakey]->Key;
                         $listVal['diff']['Default'][]=$data[$datakey]->Default;
                         $listVal['diff']['Extra'][]=$data[$datakey]->Extra;
+                        $listVal['diff']['Comment'][]=$comment;
                     }
                 }
             }
             else {
+
                 if(
                     $yaml[$table]['fields']['Type'][$key]!==$dump[$table]['fields']['Type'][$key] OR
                     $yaml[$table]['fields']['Null'][$key]!==$dump[$table]['fields']['Null'][$key] OR
                     $yaml[$table]['fields']['Key'][$key]!==$dump[$table]['fields']['Key'][$key] OR
                     $yaml[$table]['fields']['Default'][$key]!==$dump[$table]['fields']['Default'][$key] OR
-                    $yaml[$table]['fields']['Extra'][$key]!==$dump[$table]['fields']['Extra'][$key]
+                    $yaml[$table]['fields']['Extra'][$key]!==$dump[$table]['fields']['Extra'][$key] OR
+                    $yaml[$table]['fields']['Comment'][$key]!==$comment
                 ){
 
                     foreach($data as $datakey=>$object){
@@ -690,6 +738,7 @@ class manager {
                             $listVal['change']['Key'][]=$data[$datakey]->Key;
                             $listVal['change']['Default'][]=$data[$datakey]->Default;
                             $listVal['change']['Extra'][]=$data[$datakey]->Extra;
+                            $listVal['change']['Comment'][]=$comment;
                         }
 
                     }
@@ -717,6 +766,7 @@ class manager {
                     $listVal['changeField']['Key'][]=$dump[$table]['fields']['Key'][$key];
                     $listVal['changeField']['Default'][]=$dump[$table]['fields']['Default'][$key];
                     $listVal['changeField']['Extra'][]=$dump[$table]['fields']['Extra'][$key];
+                    $listVal['changeField']['Comment'][]=$comment;
                 }
 
             }
@@ -945,6 +995,7 @@ class manager {
         $list=[];
         $statusLike=$this->getShowStatusLike();
         $indexes=$this->getShowIndexes();
+        $full=$this->getShowFullColumns();
 
         $index=[];
         $indexKeys=[];
@@ -1007,8 +1058,13 @@ class manager {
                 }
             }
 
+            $commentString='';
+            $comment=$this->getFieldComment($full[$table],$object[$key]->Field);
+            if(strlen(trim($comment))>0){
+                $commentString='COMMENT \''.$comment.'\'';
+            }
 
-           $list[]=''.$object[$key]->Field.' '.$object[$key]->Type.' '.$null.' '.$extension.'' ;
+           $list[]=''.$object[$key]->Field.' '.$object[$key]->Type.' '.$null.' '.$extension.' '.$commentString ;
         }
 
 
@@ -1040,6 +1096,8 @@ class manager {
      * @return class object
      */
     public function tableFormUpdate($object,$table){
+
+        $full=$this->getShowFullColumns();
 
         if(array_key_exists("diff",$object)){
 
@@ -1131,8 +1189,14 @@ class manager {
                 }
             }
 
+            $commentString='';
+            $comment=$this->getFieldComment($full[$table],$object['diff']['Field']);
+            if(strlen(trim($comment))>0){
+                $commentString='COMMENT \''.$comment.'\'';
+            }
 
-            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'].' '.$unique;
+
+            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'].' '.$unique.' '.$commentString;
         }
 
         if(array_key_exists("dropField",$object)){
@@ -1188,7 +1252,15 @@ class manager {
 
             }
 
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$unique.'  ';
+
+
+            $commentString='';
+            $comment=$this->getFieldComment($full[$table],$object['change']['Field']);
+            if(strlen(trim($comment))>0){
+                $commentString='COMMENT \''.$comment.'\'';
+            }
+
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$commentString.' '.$unique.'';
         }
 
 
@@ -1239,7 +1311,14 @@ class manager {
                 }
 
             }
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.' '.$unique.' ';
+
+            $commentString='';
+            $comment=$this->getFieldComment($full[$table],$object['changeField']['new']);
+            if(strlen(trim($comment))>0){
+                $commentString='COMMENT \''.$comment.'\'';
+            }
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.'
+             '.$unique.' '.$commentString;
         }
 
     }
