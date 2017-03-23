@@ -208,9 +208,12 @@ class manager {
         $query=$this->db->prepare("SHOW INDEX FROM ".$table." WHERE Key_name!='PRIMARY'");
         $query->execute();
         $result=$query->fetchAll(\PDO::FETCH_OBJ);
+        $list[$table]['Key_name']=[];
         foreach($result as $key=>$res){
+            if(!in_array($res->Key_name,$list[$table]['Key_name'])){
+                $list[$table]['Key_name'][]=$res->Key_name;
+            }
 
-            $list[$table]['Key_name'][]=$res->Key_name;
             $list[$table]['Column_name'][]=$res->Column_name;
 
         }
@@ -390,13 +393,15 @@ class manager {
             if((array_key_exists($table,$index) && array_key_exists("Key_name",$index[$table]))
                 && (array_key_exists($table,$yaml[$table]['fields']) && array_key_exists("Key_name",$yaml[$table]['fields'][$table]))){
 
-                foreach($yaml[$table]['fields'][$table]['Key_name'] as $uniqueVal){
+                foreach($yaml[$table]['fields'][$table]['Key_name'] as $uniqueKey=>$uniqueVal){
 
+                    $timeNext=time()+100+$uniqueKey;
 
                     if(!in_array($uniqueVal,$index[$table]['Key_name'])){
 
+
                         $file=new file();
-                        $modelFile='__'.time().'__'.$table.'';
+                        $modelFile='__'.$timeNext.'__'.$table.'';
                         $path=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/schemas';
                         $file->touch($path.'/'.$table.'/'.$modelFile.'.php');
                         $this->fileProcessIndex($table,[
