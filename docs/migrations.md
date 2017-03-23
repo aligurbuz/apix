@@ -46,3 +46,8 @@ api migration pull:project_name --seed
 api migration push:project_name --seed
 
 ```
+
+# Migration and Seeds Run Automatically
+```diff
++migration and seeds that in src/migration is run automatically for every pull and push 
+```
