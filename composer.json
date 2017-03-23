@@ -33,7 +33,8 @@
         "twig/twig": "~1.0",
         "symfony/cache": "^3.2",
         "respect/validation": "^1.1",
-        "egulias/email-validator": "^2.1"
+        "egulias/email-validator": "^2.1",
+        "doctrine/orm": "^2.5"
     },
     "autoload": {
         "files": ["src/helpers.php"]
