@@ -438,7 +438,7 @@ class querySqlFormatter {
         }
 
         //queue createdAt AND updatedAt fields
-        if(property_exists($model,"createdAndUpdatedFields") && count($model->createdAndUpdatedFields)) {
+        if(count($data) && property_exists($model,"createdAndUpdatedFields") && count($model->createdAndUpdatedFields)) {
             $time=time();
             foreach ($model->createdAndUpdatedFields as $key=>$value) {
                 $data[$value]=$time;
@@ -489,12 +489,16 @@ class querySqlFormatter {
 
         }
 
+
         try {
 
-            $query=$this->db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
-            if($query->execute($dataExecuteValues)){
-                return ['lastInsertId'=>$this->db->lastInsertId(),'status'=>true];
+            if(count($data)){
+                $query=$this->db->prepare("INSERT INTO ".$model->table." (".implode(",",$dataKeyValues).") VALUES (".implode(",",$dataPrepareValues).")");
+                if($query->execute($dataExecuteValues)){
+                    return ['lastInsertId'=>$this->db->lastInsertId(),'status'=>true];
+                }
             }
+
         }
         catch(\Exception $e){
             if(environment()=="local"){
