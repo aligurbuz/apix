@@ -28,22 +28,29 @@ class model {
                     $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                     $list=[];
 
+                    $modelControlPath='./src/app/'.$project.'/'.$version.'/model/'.$this->getParams($data)[1]['file'].'.php';
 
-                    $modelParamsBuilder['execution']='services/modelBuilder';
-                    $modelParamsBuilder['params']['projectName']=$project;
-                    $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
-                    //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
-                    $list[]=$this->touch($project.'/'.$version.'/model/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
+                    if(!file_exists($modelControlPath)){
+                        $modelParamsBuilder['execution']='services/modelBuilder';
+                        $modelParamsBuilder['params']['projectName']=$project;
+                        $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
+                        //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
+                        $list[]=$this->touch($project.'/'.$version.'/model/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
 
-                    $modelParams['execution']='services/model';
-                    $modelParams['params']['projectName']=$project;
-                    $modelParams['params']['className']=$this->getParams($data)[1]['file'];
-                    $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
-                    $list[]=$this->touch($project.'/'.$version.'/model/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
+                        $modelParams['execution']='services/model';
+                        $modelParams['params']['projectName']=$project;
+                        $modelParams['params']['className']=$this->getParams($data)[1]['file'];
+                        $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
+                        $list[]=$this->touch($project.'/'.$version.'/model/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
 
-                    return $this->fileProcessResult($list,function(){
-                        return 'model file has been created';
-                    });
+                        return $this->fileProcessResult($list,function(){
+                            return 'model file has been created';
+                        });
+                    }
+
+                    return $this->getParams($data)[1]['file'].' model is already available';
+
+
                 }
             }
         }

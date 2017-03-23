@@ -65,6 +65,8 @@ class model {
         }
 
         return $model->$name($args,$model);
+
+
     }
 
 
