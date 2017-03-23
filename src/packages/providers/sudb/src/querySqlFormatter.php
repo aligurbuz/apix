@@ -437,7 +437,6 @@ class querySqlFormatter {
             }
         }
 
-
         //queue createdAt AND updatedAt fields
         if(property_exists($model,"createdAndUpdatedFields") && count($model->createdAndUpdatedFields)) {
             $time=time();
@@ -445,6 +444,7 @@ class querySqlFormatter {
                 $data[$value]=$time;
             }
         }
+
 
 
         //last data

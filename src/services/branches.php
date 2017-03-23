@@ -120,7 +120,7 @@ class branches {
      */
     public function runBranch($arguments){
         $branches='branch'.ucfirst($this->name);
-        return $this->$branches();
+        return $this->$branches($arguments);
     }
 
 
@@ -129,7 +129,7 @@ class branches {
      *
      * @return array
      */
-    public function branchSource(){
+    public function branchSource($arguments){
 
         //get method
         $method=$this->getMethod();
@@ -148,7 +148,7 @@ class branches {
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
-        return $container->get($sourcename)->$method();
+        return $container->get($sourcename)->$method($arguments);
     }
 
 
@@ -157,7 +157,7 @@ class branches {
      *
      * @return array
      */
-    public function branchQuery(){
+    public function branchQuery($arguments){
 
         //get method
         $method=$this->getMethod();
@@ -176,7 +176,7 @@ class branches {
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
-        return ['queryResult'=>$container->get($sourcename)->$method()];
+        return ['queryResult'=>$container->get($sourcename)->$method($arguments)];
     }
 
 

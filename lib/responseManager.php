@@ -130,6 +130,7 @@ class responseManager {
                 return call_user_func($callback);
             }
         }
+
         $msg=($msg!==null) ? $msg : 'data is empty';
         $data=['success'=>(bool)false,'statusCode'=>204,'responseTime'=>microtime(true)-time_start,
                 'requestDate'=>date("Y-m-d H:i:s")]+['message'=>$msg,'development'=>$developInfo];
