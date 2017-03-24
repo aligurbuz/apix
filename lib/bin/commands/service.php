@@ -130,12 +130,12 @@ class service {
                         if(array_key_exists("service",$publish)){
                             $valpro=str_replace("\\\\","\\",$val);
                             if(!in_array($valpro,$publish['service']['name'])){
-                                $publishedRoutes[]='$publishes["service"]["name"][]="'.$val.'";';;
+                                $publishedRoutes[]='$publishes["service"]["name"]["'.$service.'"][]="'.$val.'";';;
                             }
 
                         }
                         else{
-                            $publishedRoutes[]='$publishes["service"]["name"][]="'.$val.'";';
+                            $publishedRoutes[]='$publishes["service"]["name"]["'.$service.'"][]="'.$val.'";';
                         }
 
                     }
