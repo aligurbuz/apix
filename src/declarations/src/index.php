@@ -1,9 +1,9 @@
 <?php
 /*
- * This file is general api doc configuration of the every service.
+ * This file is general api declaration configuration of the every service.
  *
- * config app returns boolean,array,string vs
- * access : for example \app::environment()
+ * config api doc returns boolean,array,string vs
+ * you can't extends them because of that declarations are final class
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,7 @@
 namespace src\declarations\src;
 use src\services\httprequest as request;
 
-class index {
+final class index {
 
     public $request;
 
@@ -29,9 +29,9 @@ class index {
     }
 
     /**
-     * get container.
-     * definition:classess is defined in a container
-     * and it is called as app("device")->method()
+     * get declaration main function.
+     * definition:index method is defined in a declaration
+     * and it is called as https://ip/company/service/app/service/doc
      * @param type dependency injection and function
      * @return array
      */
