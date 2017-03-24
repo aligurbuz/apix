@@ -31,7 +31,7 @@ final class index {
         $this->request=new request();
         $this->loader = new \Twig_Loader_Filesystem(root.'/src/declarations/twigTemplate/');
         $this->twig = new \Twig_Environment($this->loader, array(
-            //'cache' => root.'/src/declarations/twigTemplate/cache',
+            'cache' => root.'/src/declarations/twigTemplate/cache',
 
         ));
     }

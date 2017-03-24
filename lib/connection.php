@@ -198,7 +198,7 @@ class connection extends Definitor {
     private function getDefinitions(){
 
         $request=new request();
-        $basePath=$request->getHost().'/'.$request->getBasePath();
+        $basePath=$request->getHost().''.$request->getBasePath();
 
         //define project
         define("basePath",$basePath);
