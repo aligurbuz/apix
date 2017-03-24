@@ -26,7 +26,6 @@
         "symfony/finder": "^3.2",
         "react/react": "^0.4.2",
         "php-amqplib/php-amqplib": "2.6.*",
-        "tightenco/collect": "^5.4",
         "symfony/security-csrf": "^3.2",
         "symfony/filesystem": "^3.2",
         "elasticsearch/elasticsearch": "~5.0",
@@ -34,7 +33,8 @@
         "symfony/cache": "^3.2",
         "respect/validation": "^1.1",
         "egulias/email-validator": "^2.1",
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "tightenco/collect": "^5.4"
     },
     "autoload": {
         "files": ["src/helpers.php"]

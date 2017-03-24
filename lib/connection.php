@@ -3,6 +3,7 @@
 namespace lib;
 use lib\BaseDefinitor as Definitor;
 use Symfony\Component\Yaml\Yaml;
+use src\services\httprequest as request;
 
 class connection extends Definitor {
 
@@ -58,7 +59,8 @@ class connection extends Definitor {
 
                     return $instance->rateLimiterQuery(function() use ($service,$serviceMethod,$getVersion,$instance) {
 
-                       if(method=="doc"){
+                       if($service[1]=="doc"){
+                           header("Content-Type: text/html");
                            $apiDoc="\\src\\declarations\\src\\index";
                            return \app::resolve($apiDoc)->index();
                        }
@@ -194,7 +196,12 @@ class connection extends Definitor {
      * @return response define runner
      */
     private function getDefinitions(){
+
+        $request=new request();
+        $basePath=$request->getHost().'/'.$request->getBasePath();
+
         //define project
+        define("basePath",$basePath);
         define("app",self::$service[0]);
         self::$service[1]=(array_key_exists(1,self::$service)) ? self::$service[1] :null;
         define("service",self::$service[1]);

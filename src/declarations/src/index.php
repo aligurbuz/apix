@@ -29,9 +29,10 @@ final class index {
 
         //get request info
         $this->request=new request();
-        $this->loader = new \Twig_Loader_Filesystem(root.'/src/declarations/twigTemplate');
+        $this->loader = new \Twig_Loader_Filesystem(root.'/src/declarations/twigTemplate/');
         $this->twig = new \Twig_Environment($this->loader, array(
-            'cache' => root.'/src/declarations/twigTemplate/cache',
+            //'cache' => root.'/src/declarations/twigTemplate/cache',
+
         ));
     }
 
@@ -45,8 +46,7 @@ final class index {
     public function index(){
 
         //return
-        $template = $this->twig->load('index.twig');
-        return $template->render(array('the' => 'variables', 'go' => 'here'));
+        return $this->twig->render("index.twig",['root'=>basePath]);
 
     }
 

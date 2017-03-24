@@ -94,6 +94,26 @@ class httprequest {
     }
 
     /**
+     * get base path.
+     *
+     * @return string
+     */
+    public function getBasePath(){
+
+        return $this->request->getBasePath();
+    }
+
+    /**
+     * get base url.
+     *
+     * @return string
+     */
+    public function getBaseUrl(){
+
+        return $this->request->getBaseUrl();
+    }
+
+    /**
      * get input.
      *
      * @return string
