@@ -15,17 +15,24 @@ use src\services\httprequest as request;
 final class index {
 
     public $request;
+    private $loader;
+    private $twig;
 
     /**
      * Constructor.
      * definition : class preloader with default
      * symfony component request class
+     * twig template configuration
      * @param type dependency injection and function
      */
     public function __construct(){
 
         //get request info
         $this->request=new request();
+        $this->loader = new \Twig_Loader_Filesystem(root.'/src/declarations/twigTemplate');
+        $this->twig = new \Twig_Environment($this->loader, array(
+            'cache' => root.'/src/declarations/twigTemplate/cache',
+        ));
     }
 
     /**
@@ -38,7 +45,8 @@ final class index {
     public function index(){
 
         //return
-        return 'hello api';
+        $template = $this->twig->load('index.twig');
+        return $template->render(array('the' => 'variables', 'go' => 'here'));
 
     }
 
