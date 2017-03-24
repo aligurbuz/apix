@@ -49,9 +49,12 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/env');
             $list[]=$this->touch($this->getProjectName($data).'/storage/env/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/declaration');
-            $list[]=$this->touch($this->getProjectName($data).'/declaration/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/helpers');
+            $list[]=$this->touch($this->getProjectName($data).'/helpers/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/helpers/src');
+            $list[]=$this->touch($this->getProjectName($data).'/helpers/src/index.html',null);
 
 
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/webServices');
