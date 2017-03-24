@@ -297,11 +297,18 @@ class manager {
         if(count($result)){
             foreach ($result as $tune=>$res){
                 foreach($this->getFields($table) as $key=>$value){
-                    $list['execute'][$tune][]=$res->$value;
+                    if(strlen($res->$value)==0){
+                        $list['execute'][$tune][]=' ';
+                    }
+                    else{
+                        $list['execute'][$tune][]=$res->$value;
+                    }
+
                     $list['prepare'][$tune][]='?';
                 }
             }
         }
+
 
         return $list;
 
@@ -340,6 +347,7 @@ class manager {
             foreach($resultData['execute'] as $key=>$array){
                 $executeList[$key]=implode("@@",$array);
             }
+
 
             $content=str_replace('//prepare',implode("//",$prepareList),$content);
             $content=str_replace('//execute',implode("//",$executeList),$content);
@@ -783,56 +791,6 @@ class manager {
 
                             echo $this->colors->done('++++'.$table.' migration has been completed as push');
 
-                            if($this->seed){
-                                $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
-                                $seedFileSrc=root.'/src/migrations/seeds/'.$table.'_seed.php';
-                                if(file_exists($seedFile) && !file_exists($seedFileSrc)){
-                                    $seedNameSpace="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\seeds\\".$table."_seed";
-                                    $result=$seedNameSpace::up();
-                                    if($result['prepare']!=="//prepare"){
-                                        $prepareList=explode("//",$result['prepare']);
-                                        $executeList=explode("//",$result['execute']);
-
-                                        foreach($prepareList as $pkey=>$pvalue){
-                                            $resultPrepare=explode("@@",$pvalue);
-                                            $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
-                                            $resultExecute=explode("@@",$executeList[$pkey]);
-                                            if($query->execute($resultExecute)) {
-
-                                                echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
-                                            }
-                                        }
-
-                                    }
-
-                                }
-                                else{
-
-                                    $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
-
-                                    if(file_exists($seedFile)){
-                                        $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
-                                        $result=$seedNameSpace::up();
-                                        if($result['prepare']!=="//prepare"){
-                                            $prepareList=explode("//",$result['prepare']);
-                                            $executeList=explode("//",$result['execute']);
-
-                                            foreach($prepareList as $pkey=>$pvalue){
-                                                $resultPrepare=explode("@@",$pvalue);
-                                                $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
-                                                $resultExecute=explode("@@",$executeList[$pkey]);
-                                                if($query->execute($resultExecute)) {
-
-                                                    echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
-                                                }
-                                            }
-
-                                        }
-                                    }
-
-
-                                }
-                            }
 
                         }
                         catch(\Exception $e){
@@ -849,6 +807,69 @@ class manager {
 
 
 
+                }
+
+                if($this->seed){
+                    $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
+                    $seedFileSrc=root.'/src/migrations/seeds/'.$table.'_seed.php';
+                    if(file_exists($seedFile) && !file_exists($seedFileSrc)){
+                        $seedNameSpace="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\seeds\\".$table."_seed";
+                        $result=$seedNameSpace::up();
+                        if($result['prepare']!=="//prepare"){
+                            $prepareList=explode("//",$result['prepare']);
+                            $executeList=explode("//",$result['execute']);
+
+                            foreach($prepareList as $pkey=>$pvalue){
+                                $resultPrepare=explode("@@",$pvalue);
+                                try {
+                                    $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
+                                    $resultExecute=explode("@@",$executeList[$pkey]);
+                                    if($query->execute($resultExecute)) {
+
+                                        echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
+                                    }
+                                }
+                                catch(\Exception $e){
+                                    echo $this->colors->error('+++' . $table . ' '.$e->getMessage());
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    else{
+
+                        $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
+
+                        if(file_exists($seedFile)){
+                            $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
+                            $result=$seedNameSpace::up();
+                            if($result['prepare']!=="//prepare"){
+                                $prepareList=explode("//",$result['prepare']);
+                                $executeList=explode("//",$result['execute']);
+
+                                foreach($prepareList as $pkey=>$pvalue){
+                                    $resultPrepare=explode("@@",$pvalue);
+                                    try {
+                                        $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
+                                        $resultExecute=explode("@@",$executeList[$pkey]);
+                                        if($query->execute($resultExecute)) {
+
+                                            echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
+                                        }
+                                    }
+                                    catch (\Exception $e){
+                                        echo $this->colors->error('+++' . $table . ' '.$e->getMessage());
+                                    }
+
+                                }
+
+                            }
+                        }
+
+
+                    }
                 }
             }
 
