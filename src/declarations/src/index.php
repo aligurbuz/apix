@@ -35,7 +35,7 @@ class index {
      * @param type dependency injection and function
      * @return array
      */
-    public function main(){
+    public function index(){
 
         //return
         return 'hello api';

@@ -58,6 +58,11 @@ class connection extends Definitor {
 
                     return $instance->rateLimiterQuery(function() use ($service,$serviceMethod,$getVersion,$instance) {
 
+                       if(method=="doc"){
+                           $apiDoc="\\src\\declarations\\src\\index";
+                           return \app::resolve($apiDoc)->index();
+                       }
+
                         //check package auto service and method
                         if($instance->checkPackageAuto($service)['status']){
                             $packageAuto=$instance->resolve->resolve($instance->checkPackageAuto($service)['class']);
