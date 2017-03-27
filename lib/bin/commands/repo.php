@@ -20,67 +20,69 @@ class repo {
     //service create command
     public function create ($data){
 
-        //using : api source bundle projectName:ServiceName bundle:bundleName || src:bundleSrc || src:bundleSrc/bundleSrcFile
+        //using : api repo create projectName repo:repoName || src:repoSrc || src:repoSrc/repoSrcFile
 
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
 
-                foreach ($value as $project=>$service){
-                    $version=require ('./src/app/'.$project.'/version.php');
-                    $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
-                    $list=[];
+                foreach($value as $project){
+                    $project=$project;
+                }
 
-                    if(array_key_exists(2,$this->getParams($data)) && array_key_exists("src",$this->getParams($data)[2])){
+                $version=require ('./src/app/'.$project.'/version.php');
+                $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
+                $list=[];
 
-                        $srcBundle=explode("/",$this->getParams($data)[2]['src']);
-                        if(!file_exists('./src/app/'.$project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/index.php')){
-                            $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0]);
-                        }
+                if(array_key_exists(2,$this->getParams($data)) && array_key_exists("src",$this->getParams($data)[2])){
 
-                        if(array_key_exists(1,$srcBundle)){
+                    $srcBundle=explode("/",$this->getParams($data)[2]['src']);
+                    if(!file_exists('./src/app/'.$project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/index.php')){
+                        $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0]);
+                    }
 
-                            $bundleParamsIndexSrc['execution']='services/repoBundleSrcIndex';
-                            $bundleParamsIndexSrc['params']['projectName']=$project;
-                            $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['repo'];
-                            $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
-                            $bundleParamsIndexSrc['params']['className']=$srcBundle[1];
-                            $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/'.$srcBundle[1].'.php',$bundleParamsIndexSrc);
+                    if(array_key_exists(1,$srcBundle)){
 
-                        }
-                        else{
-                            $bundleParamsIndexSrc['execution']='services/repoBundleSrcIndex';
-                            $bundleParamsIndexSrc['params']['projectName']=$project;
-                            $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['repo'];
-                            $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
-                            $bundleParamsIndexSrc['params']['className']='index';
-                            $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/index.php',$bundleParamsIndexSrc);
-                        }
+                        $bundleParamsIndexSrc['execution']='services/repoBundleSrcIndex';
+                        $bundleParamsIndexSrc['params']['projectName']=$project;
+                        $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['repo'];
+                        $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
+                        $bundleParamsIndexSrc['params']['className']=$srcBundle[1];
+                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/'.$srcBundle[1].'.php',$bundleParamsIndexSrc);
+
                     }
                     else{
-                        $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'');
-                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/index.html',null);
-
-                        $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src');
-                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/index.html',null);
-
-                        $bundleParamsIndex['execution']='services/repoBundleIndex';
-                        $bundleParamsIndex['params']['projectName']=$project;
-                        $bundleParamsIndex['params']['bundleName']=$this->getParams($data)[1]['repo'];
-                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/index.php',$bundleParamsIndex);
-
-                        $bundleParamsInterface['execution']='services/repoBundleInterface';
-                        $bundleParamsInterface['params']['projectName']=$project;
-                        $bundleParamsInterface['params']['bundleName']=$this->getParams($data)[1]['repo'];
-                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/'.$this->getParams($data)[1]['repo'].'Interface.php',$bundleParamsInterface);
-
+                        $bundleParamsIndexSrc['execution']='services/repoBundleSrcIndex';
+                        $bundleParamsIndexSrc['params']['projectName']=$project;
+                        $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['repo'];
+                        $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
+                        $bundleParamsIndexSrc['params']['className']='index';
+                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/index.php',$bundleParamsIndexSrc);
                     }
-
-
-
-                    return $this->fileProcessResult($list,function(){
-                        return 'repo has been created';
-                    });
                 }
+                else{
+                    $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'');
+                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/index.html',null);
+
+                    $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src');
+                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/index.html',null);
+
+                    $bundleParamsIndex['execution']='services/repoBundleIndex';
+                    $bundleParamsIndex['params']['projectName']=$project;
+                    $bundleParamsIndex['params']['bundleName']=$this->getParams($data)[1]['repo'];
+                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/index.php',$bundleParamsIndex);
+
+                    $bundleParamsInterface['execution']='services/repoBundleInterface';
+                    $bundleParamsInterface['params']['projectName']=$project;
+                    $bundleParamsInterface['params']['bundleName']=$this->getParams($data)[1]['repo'];
+                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/'.$this->getParams($data)[1]['repo'].'Interface.php',$bundleParamsInterface);
+
+                }
+
+
+
+                return $this->fileProcessResult($list,function(){
+                    return 'repo has been created';
+                });
             }
         }
 
@@ -119,7 +121,7 @@ class repo {
 
         if(count($data)==0 OR in_array(false,$data)){
 
-            return 'service fail';
+            return 'repo fail';
         }
         else {
 
