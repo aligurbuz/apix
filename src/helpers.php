@@ -45,9 +45,9 @@ if (!function_exists('trans')) {
             $getbase=\app::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
 
             if($langname==null){
-                return \lib\languageDefinitor::get($data,$getbase->lang,$getbase->lang);
+                return \lib\languageDefinitor::get($data,$getbase->getLocalization(),$getbase->getLocalization());
             }
-            return \lib\languageDefinitor::get($data,$langname,$getbase->lang);
+            return \lib\languageDefinitor::get($data,$langname,$getbase->getLocalization());
 
         }
         return null;

@@ -43,4 +43,15 @@ class serviceBaseController
             ]*/
         ];
     }
+
+    /**
+     * localization features provide a convenient way to retrieve strings in various languages,
+     * allowing you to easily support multiple languages within your application.
+     * Language strings are stored in files within the src/app/project_name/storage directory.
+     * Within this directory there should be a subdirectory for each language supported by the application:
+     * @return string
+     */
+    public function getLocalization(){
+        return $this->lang;
+    }
 }
