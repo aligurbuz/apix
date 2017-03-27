@@ -30,7 +30,6 @@ class index implements __bundleName__Interface  {
     public function __construct(request $request){
 
         //get request info
-        parent::__construct();
         $this->request=$request;
 
     }

@@ -30,7 +30,6 @@ class __className__   {
     public function __construct(request $request){
 
         //get request info
-        parent::__construct();
         $this->request=$request;
 
     }
