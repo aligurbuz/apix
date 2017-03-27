@@ -91,6 +91,9 @@ class project {
             $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
 
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/repository');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/repository/index.html',null);
+
 
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/provisions');
 
