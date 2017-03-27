@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\packages\providers\sudb\src;
+namespace src\packages\providers\database\sudb\src;
 use src\services\httprequest as request;
 use src\config\dbConnector as Connector;
 

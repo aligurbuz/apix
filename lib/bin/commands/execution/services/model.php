@@ -1,7 +1,8 @@
 <?php
 namespace src\app\__projectName__\v1\model;
+use src\packages\providers\database\sudb\src\model as Model;
 
-class __className__ extends \src\packages\providers\sudb\src\model {
+class __className__ extends Model {
 
     //tablename
     public $table='__tableName__';

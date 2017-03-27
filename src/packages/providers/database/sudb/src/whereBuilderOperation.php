@@ -8,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-namespace src\packages\providers\sudb\src;
-use \src\packages\providers\sudb\src\querySqlFormatter as querySqlFormatter;
+namespace src\packages\providers\database\sudb\src;
+use \src\packages\providers\database\sudb\src\querySqlFormatter as querySqlFormatter;
 
 /**
  * Represents a index class.
