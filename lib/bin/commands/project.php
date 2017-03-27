@@ -49,12 +49,21 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/env');
             $list[]=$this->touch($this->getProjectName($data).'/storage/env/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/helpers');
-            $list[]=$this->touch($this->getProjectName($data).'/helpers/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/composer');
+            $list[]=$this->touch($this->getProjectName($data).'/composer/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/helpers/src');
-            $list[]=$this->touch($this->getProjectName($data).'/helpers/src/index.html',null);
+            $list[]=$this->touch($this->getProjectName($data).'/composer.json',null);
+
+            $touchProjectComposer['execution']='project_composer';
+            $touchProjectComposer['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/composer.json',$touchProjectComposer);
+
+            $list[]=$this->touch($this->getProjectName($data).'/.gitignore',null);
+
+            $touchProjectGitignore['execution']='project_gitignore';
+            $touchProjectGitignore['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/.gitignore',$touchProjectGitignore);
 
 
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/webServices');
