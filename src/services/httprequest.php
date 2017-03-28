@@ -110,7 +110,44 @@ class httprequest {
      */
     public function getBaseUrl(){
 
-        return $this->request->getBaseUrl();
+        return $this->request->get();
+    }
+
+    /**
+     * get isSecure url.
+     * Checks whether the request is secure or not.
+     * This method can read the client protocol from the "X-Forwarded-Proto" header
+     * when trusted proxies were set via "setTrustedProxies()".
+     * The "X-Forwarded-Proto" header must contain the protocol: "https" or "http".
+     * If your reverse proxy uses a different header name than "X-Forwarded-Proto" ("SSL_HTTPS" for instance),
+     * configure it via "setTrustedHeaderName()" with the "client-proto" key.
+     * @return bool
+     */
+    public function isSecure(){
+
+        return $this->request->isSecure();
+    }
+
+
+    /**
+     * get getDefaultLocale url.
+     * @return bool
+     */
+    public function getDefaultLocale(){
+
+        return $this->request->getDefaultLocale();
+    }
+
+    /**
+     * get getDefaultLocale url.
+     * @return bool
+     */
+    public function setLocale($locale=null){
+        if($locale!==null){
+            return $this->request->setLocale($locale);
+        }
+        return null;
+
     }
 
     /**
