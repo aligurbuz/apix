@@ -52,11 +52,19 @@ class environment {
 
         //check environment
         if(self::get()==self::$local){
-            $appEnvPath=root.'/.'.app.'env';
-            $dotenv=(file_exists($appEnvPath))
+            if(defined("app")){
+                $appEnvPath=root.'/.'.app.'env';
+                $dotenv=(file_exists($appEnvPath))
                     ? new \Dotenv\Dotenv(root,'.'.app.'env')
                     : new \Dotenv\Dotenv(root);
+            }
+            else{
+                $dotenv=new \Dotenv\Dotenv(root);
+            }
+
             $dotenv->load();
+
+
         }
         else{
             $otherenvpath=\app::resolve("\\src\\env\\env");

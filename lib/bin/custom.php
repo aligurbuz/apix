@@ -44,7 +44,12 @@ class custom {
             $command='\\lib\\bin\\'.$data[1];
         }
 
+        if($data[1]=="curl"){
+            $command='\\lib\\bin\\'.$data[1];
+        }
+
         $app=\src\config\app::resolve($command);
+        \lib\environment::config();
 
         $list=[];
         foreach($data as $key=>$value){
