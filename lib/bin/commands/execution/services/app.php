@@ -53,25 +53,6 @@ class app {
         }
     }
 
-    /**
-     * service repository method.
-     *
-     * @param prepared functions and objects
-     * request method : repository call
-     * main overloading method as repository
-     * @return array
-     */
-    public function repository($repo=null,$method='get'){
-        if($repo!==null){
-            $repoNameSpace='\\src\\app\\'.app.'\\'.version.'\\repository\\'.$repo.'\\index';
-            if(class_exists($repoNameSpace)){
-                return \app::resolve($repoNameSpace)->$method();
-            }
-
-        }
-        return null;
-
-    }
 
     /**
      * service restrictions method.

@@ -9,7 +9,8 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\branches\source\__methodName__;
-use src\services\httprequest as request;
+use Src\Services\Httprequest as request;
+use Src\Services\Repository as repo;
 
 /**
  * Represents a index class.
