@@ -2,12 +2,13 @@
 /**
  * Project dev tools
  * helpers and messengers for development environment
- * ## devTools __projectName__
+ * ## devTools management
+ * return @array
  */
 
 return [
 
     'messengers'=>[
-        'migration'
+        'migration'=>false
     ]
 ];
