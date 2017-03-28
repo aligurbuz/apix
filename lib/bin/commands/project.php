@@ -30,6 +30,10 @@ class project {
             $touchServiceVersionMe['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/version.php',$touchServiceVersionMe);
 
+            $touchServiceToolsMe['execution']='project_devtools';
+            $touchServiceToolsMe['params']['projectName']=$this->getProjectName($data);
+            $list[]=$this->touch($this->getProjectName($data).'/devTools.php',$touchServiceToolsMe);
+
             $touchServicePublishMe['execution']='project_publish';
             $touchServicePublishMe['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/publish.php',$touchServicePublishMe);
