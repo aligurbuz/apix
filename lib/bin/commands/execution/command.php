@@ -9,7 +9,7 @@ namespace src\commands;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Src\Services\FileProcess as File;
-use Lib\Colors;
+use Lib\Console;
 
 /**
  * Represents a console command example class.
@@ -17,7 +17,7 @@ use Lib\Colors;
  * every method that on this command is called with console method as string on console
  * return type string
  */
-class __class__ extends  colors {
+class __class__ extends  console {
 
     /**
      * The name and signature of the console command.
@@ -45,22 +45,5 @@ class __class__ extends  colors {
         return $this->info('__class__ command');
     }
 
-
-    /**
-     * Symfony process handle.
-     * new process
-     * return type exec
-     */
-    private function exec($arguments){
-
-        //new process
-        $process = new Process($arguments);
-        $process->run();
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-        return $process->getOutput();
-    }
 
 }

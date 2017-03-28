@@ -10,7 +10,7 @@
  */
 namespace lib;
 
-class colors {
+class console {
 
     private $foreground_colors = array();
     private $background_colors = array();
@@ -83,6 +83,26 @@ class colors {
         return ''.$colored_string.'' . PHP_EOL;
     }
 
+
+    // Returns colored string information
+    public function input($string, $foreground_color = 'blue', $background_color = 'light_gray') {
+        $colored_string = "";
+
+        // Check if given foreground color found
+        if (isset($this->foreground_colors[$foreground_color])) {
+            $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . "m";
+        }
+        // Check if given background color found
+        if (isset($this->background_colors[$background_color])) {
+            $colored_string .= "\033[" . $this->background_colors[$background_color] . "m";
+        }
+
+        // Add string and end coloring
+        $colored_string .=  $string . "\033[0m";
+
+        return ''.$colored_string.'';
+    }
+
     // Returns colored string information
     public function error($string, $foreground_color = 'white', $background_color = 'red') {
         $colored_string = "";
@@ -110,6 +130,17 @@ class colors {
     // Returns all background color names
     public function getBackgroundColors() {
         return array_keys($this->background_colors);
+    }
+
+    public function ReadStdin($prompt=null, $valid_inputs=null, $default = '') {
+        while(!isset($input) || (is_array($valid_inputs) && !in_array($input, $valid_inputs)) || ($valid_inputs == 'is_file' && !is_file($input))) {
+            echo $this->input($prompt);
+            $input = strtolower(trim(fgets(STDIN)));
+            if(empty($input) && !empty($default)) {
+                $input = $default;
+            }
+        }
+        return $input;
     }
 }
 
