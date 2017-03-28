@@ -6,6 +6,7 @@
  */
 
 namespace src\app\__projectName__\v1;
+use Src\Services\Httprequest as request;
 
 
 class serviceBaseController
@@ -16,6 +17,9 @@ class serviceBaseController
     //default lang name
     public $boot=false;
 
+    //http request
+    public $request;
+
     //default search driver
     public $search='elasticSearch';
 
@@ -24,6 +28,18 @@ class serviceBaseController
 
     //platform config
     public $platform=false;
+
+
+    /**
+     * Constructor.
+     *
+     * @param type dependency injection and stk class
+     * request method : symfony component
+     * main loader as construct method
+     */
+    public function __construct(){
+        $this->request=new request();
+    }
 
     /**
      * webserviceBoot is to use guzzle method for http.
@@ -53,5 +69,29 @@ class serviceBaseController
      */
     public function getLocalization(){
         return $this->lang;
+    }
+
+
+    /**
+     * Get a unique fingerprint for the request / route / IP address.
+     * if show paremeter is false,it returns md5 value
+     * if show paremeter is true,it returns array values
+     *
+     * @return string
+     */
+    public function fingerPrint($show=false){
+        $list=[
+            'ip'=>$this->request->getClientIp(),
+            'getHost'=>$this->request->getHost(),
+            'getBasePath'=>$this->request->getBasePath(),
+            'deviceToken'=>\app::deviceToken(),
+            'isSecure'=>$this->request->isSecure()
+
+        ];
+
+        if($show===false){
+            return md5(implode("|",$list));
+        }
+        return $list;
     }
 }

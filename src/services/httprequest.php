@@ -110,7 +110,7 @@ class httprequest {
      */
     public function getBaseUrl(){
 
-        return $this->request->get();
+        return $this->request->getBaseUrl();
     }
 
     /**
