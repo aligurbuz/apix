@@ -25,52 +25,52 @@ class __TwigTemplate_08b2de0882679053602c02e03072c8c0f036f73b881558d44267e66f37e
     <link href=\"http://";
         // line 7
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\">
+        echo "/external/public/declarations/apidoc_files/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\">
     <link href=\"http://";
         // line 8
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/prettify.css\" rel=\"stylesheet\" media=\"screen\">
+        echo "/external/public/declarations/apidoc_files/prettify.css\" rel=\"stylesheet\" media=\"screen\">
     <link href=\"http://";
         // line 9
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/style.css\" rel=\"stylesheet\" media=\"screen, print\">
+        echo "/external/public/declarations/apidoc_files/style.css\" rel=\"stylesheet\" media=\"screen, print\">
     <link href=\"http://apidocjs.com/example/img/favicon.ico\" rel=\"icon\" type=\"image/x-icon\">
     <script src=\"http://";
         // line 11
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/polyfill.js\"></script>
+        echo "/external/public/declarations/apidoc_files/polyfill.js\"></script>
     <script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"main\" src=\"http://";
         // line 12
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/main.js\"></script><style type=\"text/css\">/* This is not a zero-length file! */</style><style type=\"text/css\">/* This is not a zero-length file! */</style><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"jquery\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/main.js\"></script><style type=\"text/css\">/* This is not a zero-length file! */</style><style type=\"text/css\">/* This is not a zero-length file! */</style><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"jquery\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/jquery.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"lodash\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/jquery.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"lodash\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/lodash.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"locales\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/lodash.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"locales\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/locale.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"api_project.js\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/locale.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"api_project.js\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/api_project.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"api_data.js\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/api_project.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"api_data.js\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/api_data.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"utilsSampleRequest\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/api_data.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"utilsSampleRequest\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/send_sample_request.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"pathToRegexp\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/send_sample_request.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"pathToRegexp\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/index.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"prettify\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/index.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"prettify\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/prettify.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"handlebars\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/prettify.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"handlebars\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/handlebars.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"locales/de.js\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/handlebars.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"locales/de.js\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/de.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"bootstrap\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/de.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"bootstrap\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/bootstrap.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"handlebarsExtended\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/bootstrap.min.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"handlebarsExtended\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/handlebars_helper.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"diffMatchPatch\" src=\"http://";
+        echo "/external/public/declarations/apidoc_files/handlebars_helper.js\"></script><script type=\"text/javascript\" charset=\"utf-8\" async=\"\" data-requirecontext=\"_\" data-requiremodule=\"diffMatchPatch\" src=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/diff_match_patch.min.js\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\"http://";
+        echo "/external/public/declarations/apidoc_files/diff_match_patch.min.js\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\"http://";
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/css\"></head>
+        echo "/external/public/declarations/apidoc_files/css\"></head>
 <body>
 
 
@@ -1103,7 +1103,7 @@ class __TwigTemplate_08b2de0882679053602c02e03072c8c0f036f73b881558d44267e66f37e
 <script data-main=\"main.js\" src=\"http://";
         // line 1042
         echo twig_escape_filter($this->env, (isset($context["root"]) ? $context["root"] : null), "html", null, true);
-        echo "/public/declarations/apidoc_files/require.min.js\"></script>
+        echo "/external/public/declarations/apidoc_files/require.min.js\"></script>
 
 
 </body></html>";
