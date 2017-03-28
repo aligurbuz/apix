@@ -2,7 +2,7 @@
 /**
  * Project dev tools
  * helpers and messengers for development environment
- * ## devTools management
+ * ## devTools management can be run for local environment
  * return @array
  */
 
