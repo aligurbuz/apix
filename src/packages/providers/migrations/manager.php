@@ -467,7 +467,7 @@ class manager {
                     if(array_key_exists("diff",$writeInfo['data'])){
                         $updateData=[];
                         foreach ($writeInfo['data']['diff']['beforeField'] as $okey=>$ovalue){
-                            $time=time()+$okey+1;
+                            $time=time()+100+$okey+1;
                             $updateData['diff']['beforeField']=$ovalue;
                             $updateData['diff']['Field']=$writeInfo['data']['diff']['Field'][$okey];
                             $updateData['diff']['Type']=$writeInfo['data']['diff']['Type'][$okey];
@@ -489,7 +489,7 @@ class manager {
 
                         $updateData=[];
                         foreach ($writeInfo['data']['change']['beforeField'] as $okey=>$ovalue){
-                            $time=time()+$okey+2;
+                            $time=time()+100+$okey+2;
                             $updateData['change']['beforeField']=$ovalue;
                             $updateData['change']['Field']=$writeInfo['data']['change']['Field'][$okey];
                             $updateData['change']['Type']=$writeInfo['data']['change']['Type'][$okey];
@@ -512,7 +512,7 @@ class manager {
 
                         $updateData=[];
                         foreach ($writeInfo['data']['changeField']['Field']['old'] as $okey=>$ovalue){
-                            $time=time()+$okey+3;
+                            $time=time()+100+$okey+3;
                             $updateData['changeField']['old']=$ovalue;
                             $updateData['changeField']['new']=$writeInfo['data']['changeField']['Field']['new'][$okey];
                             $updateData['changeField']['Type']=$writeInfo['data']['changeField']['Type'][$okey];
@@ -534,7 +534,7 @@ class manager {
                     if(array_key_exists("dropField",$writeInfo['data'])){
 
                         foreach($writeInfo['data']['dropField']['Field'] as $okey=>$oval){
-                            $time=time()+$okey+4;
+                            $time=time()+100+$okey+4;
                             $updateData['dropField']['Field']=$writeInfo['data']['dropField']['Field'][$okey];
 
                             $modelFile='__'.$time.'__'.$key.'';
