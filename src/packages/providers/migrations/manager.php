@@ -634,6 +634,7 @@ class manager {
             if($table!==null){
                 $full=$this->getShowFullColumns();
                 $comment=$this->getFieldComment($full[$table],$data[$key]->Field);
+                $collation=$this->getFieldCollation($full[$table],$data[$key]->Field);
             }
 
             $list['Field'][]=$data[$key]->Field;
@@ -643,6 +644,7 @@ class manager {
             $list['Default'][]=$data[$key]->Default;
             $list['Extra'][]=$data[$key]->Extra;
             $list['Comment'][]=$comment;
+            $list['Collation'][]=$collation;
         }
         return $list;
     }
@@ -689,6 +691,7 @@ class manager {
         $listVal=[];
         foreach($dump[$table]['fields']['Field'] as $key=>$value){
             $comment=$this->getFieldComment($full[$table],$value);
+            $collation=$this->getFieldCollation($full[$table],$value);
 
             if(count($dump[$table]['fields']['Field'])!==count($yaml[$table]['fields']['Field']) && !in_array($value,$yaml[$table]['fields']['Field'])){
                 foreach($data as $datakey=>$object){
@@ -702,6 +705,7 @@ class manager {
                         $listVal['diff']['Default'][]=$data[$datakey]->Default;
                         $listVal['diff']['Extra'][]=$data[$datakey]->Extra;
                         $listVal['diff']['Comment'][]=$comment;
+                        $listVal['diff']['Collation'][]=$collation;
                     }
                 }
             }
@@ -713,7 +717,8 @@ class manager {
                     $yaml[$table]['fields']['Key'][$key]!==$dump[$table]['fields']['Key'][$key] OR
                     $yaml[$table]['fields']['Default'][$key]!==$dump[$table]['fields']['Default'][$key] OR
                     $yaml[$table]['fields']['Extra'][$key]!==$dump[$table]['fields']['Extra'][$key] OR
-                    $yaml[$table]['fields']['Comment'][$key]!==$comment
+                    $yaml[$table]['fields']['Comment'][$key]!==$comment OR
+                    $yaml[$table]['fields']['Collation'][$key]!==$collation
                 ){
 
                     foreach($data as $datakey=>$object){
@@ -727,6 +732,7 @@ class manager {
                             $listVal['change']['Default'][]=$data[$datakey]->Default;
                             $listVal['change']['Extra'][]=$data[$datakey]->Extra;
                             $listVal['change']['Comment'][]=$comment;
+                            $listVal['change']['Collation'][]=$collation;
                         }
 
                     }
@@ -755,6 +761,7 @@ class manager {
                     $listVal['changeField']['Default'][]=$dump[$table]['fields']['Default'][$key];
                     $listVal['changeField']['Extra'][]=$dump[$table]['fields']['Extra'][$key];
                     $listVal['changeField']['Comment'][]=$comment;
+                    $listVal['changeField']['Collation'][]=$collation;
                 }
 
             }
