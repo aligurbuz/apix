@@ -161,6 +161,20 @@ class manager {
         }
     }
 
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getFieldCollation($data,$field){
+        foreach($data as $result){
+            if($result->Field==$field){
+                return $result->Collation;
+            }
+        }
+    }
+
     /**
      * engine method is main method.
      *
@@ -1124,7 +1138,16 @@ class manager {
                 $commentString='COMMENT \''.$comment.'\'';
             }
 
-           $list[]=''.$object[$key]->Field.' '.$object[$key]->Type.' '.$null.' '.$extension.' '.$commentString ;
+            $collationVal=$this->getFieldCollation($full[$table],$object[$key]->Field);
+
+            $collation='';
+            if(strlen(trim($collationVal))>0){
+                $collation='COLLATE '.$collationVal.'';
+            }
+
+
+
+           $list[]=''.$object[$key]->Field.' '.$object[$key]->Type.' '.$null.' '.$extension.' '.$commentString.' '.$collation ;
         }
 
 
@@ -1255,8 +1278,15 @@ class manager {
                 $commentString='COMMENT \''.$comment.'\'';
             }
 
+            $collationVal=$this->getFieldCollation($full[$table],$object['diff']['Field']);
 
-            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' '.$commentString.' AFTER '.$object['diff']['beforeField'].' '.$unique.'';
+            $collation='';
+            if(strlen(trim($collationVal))>0){
+                $collation='COLLATE '.$collationVal.'';
+            }
+
+
+            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' '.$collation.' '.$commentString.' AFTER '.$object['diff']['beforeField'].' '.$unique.'';
         }
 
         if(array_key_exists("dropField",$object)){
@@ -1320,7 +1350,14 @@ class manager {
                 $commentString='COMMENT \''.$comment.'\'';
             }
 
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$commentString.' '.$unique.'';
+            $collationVal=$this->getFieldCollation($full[$table],$object['change']['Field']);
+
+            $collation='';
+            if(strlen(trim($collationVal))>0){
+                $collation='COLLATE '.$collationVal.'';
+            }
+
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['change']['Field'].'  '.$object['change']['Field'].' '.$object['change']['Type'].' '.$null.' '.$commentString.' '.$collation.' '.$unique.'';
         }
 
 
@@ -1377,7 +1414,14 @@ class manager {
             if(strlen(trim($comment))>0){
                 $commentString='COMMENT \''.$comment.'\'';
             }
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.' '.$commentString.'
+
+            $collationVal=$this->getFieldCollation($full[$table],$object['changeField']['new']);
+
+            $collation='';
+            if(strlen(trim($collationVal))>0){
+                $collation='COLLATE '.$collationVal.'';
+            }
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.' '.$commentString.' '.$collation.'
              '.$unique.'';
         }
 
