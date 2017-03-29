@@ -1256,7 +1256,7 @@ class manager {
             }
 
 
-            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' AFTER '.$object['diff']['beforeField'].' '.$unique.' '.$commentString;
+            return 'ALTER TABLE '.$table.' ADD '.$object['diff']['Field'].' '.$object['diff']['Type'].' '.$null.' '.$commentString.' AFTER '.$object['diff']['beforeField'].' '.$unique.'';
         }
 
         if(array_key_exists("dropField",$object)){
@@ -1377,8 +1377,8 @@ class manager {
             if(strlen(trim($comment))>0){
                 $commentString='COMMENT \''.$comment.'\'';
             }
-            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.'
-             '.$unique.' '.$commentString;
+            return 'ALTER TABLE  '.$table.' CHANGE  '.$object['changeField']['old'].'  '.$object['changeField']['new'].' '.$object['changeField']['Type'].' '.$null.' '.$commentString.'
+             '.$unique.'';
         }
 
     }
