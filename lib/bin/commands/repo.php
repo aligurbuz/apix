@@ -25,8 +25,13 @@ class repo {
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
 
+                $project=null;
                 foreach($value as $project){
                     $project=$project;
+                }
+
+                if(!array_key_exists("repo",$this->getParams($data)[1])){
+                    return 'error : project null or no repo key';
                 }
 
                 $version=require ('./src/app/'.$project.'/version.php');
