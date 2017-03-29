@@ -46,6 +46,7 @@ class branches {
      * @return array
      */
     public function __call($name,$arguments=[]){
+
         if($this->instance==null){
             $this->filename=$name;
         }
@@ -64,6 +65,7 @@ class branches {
         if($this->instance==null){
             $this->instance=1;
         }
+
         return $this;
     }
 
@@ -109,7 +111,14 @@ class branches {
             $this->servicename=$servicename;
         }
 
-        return $this;
+        if($this->name=="main"){
+
+            return $this->runBranch([]);
+        }
+        else{
+            return $this;
+        }
+
 
     }
 
@@ -121,6 +130,37 @@ class branches {
     public function runBranch($arguments){
         $branches='branch'.ucfirst($this->name);
         return $this->$branches($arguments);
+    }
+
+    /**
+     * get branch source.
+     *
+     * @return array
+     */
+    public function branchMain($arguments){
+
+        //get method
+        $method=$this->getMethod();
+
+        //get file name
+        $file=$this->getFile();
+
+        //get service name
+        $service=$this->getService();
+
+        if($service==service){
+            return null;
+        }
+
+        if(defined("devPackage")){
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
+        }
+        else{
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\'.strtolower(request).'Service';
+        }
+
+        $container = \DI\ContainerBuilder::buildDevContainer();
+        return $container->get($sourcename)->$method($arguments);
     }
 
 
@@ -189,7 +229,7 @@ class branches {
      */
     private function getMethod(){
 
-        return ($this->method!==null) ? $this->method : 'get';
+        return ($this->method!==null) ? $this->method : 'index';
     }
 
 

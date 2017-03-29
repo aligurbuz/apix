@@ -39,7 +39,6 @@ class responseManager {
         if(!is_array($data)){
             $data=[$data];
         }
-
         return $this->getQueryErrorLoad($data,function() use ($data,$msg){
             $developInfo=null;
             if(defined("app") && defined("version") && defined("service")) {
