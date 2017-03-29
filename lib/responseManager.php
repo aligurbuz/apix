@@ -35,6 +35,7 @@ class responseManager {
      * @return response boot params runner
      */
     public function responseManagerBoot($data,$msg=null){
+
         if(!is_array($data)){
             $data=[$data];
         }
