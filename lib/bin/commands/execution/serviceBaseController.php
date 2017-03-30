@@ -23,6 +23,9 @@ class serviceBaseController
     //default search driver
     public $search='elasticSearch';
 
+    //default model
+    public $model='sudb';
+
     //model pagination
     public $pagination=10;
 

@@ -24,6 +24,12 @@ class branches {
     public $filename=null;
     public $servicename=null;
     public $instance=null;
+    public $modelDir;
+
+    public function __construct(){
+        $getModelVar='\\src\\app\\mobi\\v1\\serviceBaseController';
+        $this->modelDir=(new $getModelVar())->model;
+    }
 
 
     /**
@@ -209,10 +215,10 @@ class branches {
         $service=$this->getService();
 
         if(defined("devPackage")){
-            $sourcename='\\src\\packages\\dev\\'.$service.'\\devpack\\model\\sudb\\builder\\'.$file.'Builder';
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\devpack\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
         }
         else{
-            $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\sudb\\builder\\'.$file.'Builder';
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
