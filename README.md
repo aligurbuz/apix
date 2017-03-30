@@ -29,3 +29,7 @@ Comprehensive restful API service for php development
 * [Query Caching](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Query For Client](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Database Migrations](https://github.com/aligurbuz/apix/blob/master/docs/migrations.md)
+
+#### Pool Package Development :
+* [Creating Auto Package For Pool](https://github.com/aligurbuz/apix/blob/master/docs/package-auto.md).
+* [Adding Dev Package Your Service ](https://github.com/aligurbuz/apix/blob/master/docs/package-dev.md)
