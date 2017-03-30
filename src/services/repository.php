@@ -40,7 +40,13 @@ class repository {
      * @return array
      */
     public function __call($name,$arguments=[]){
-        $repoNameSpace='\\src\\app\\'.app.'\\'.version.'\\repository\\'.self::$repo.'\\index';
+        if(defined("devPackage")){
+            $repoNameSpace='\\src\\packages\\dev\\'.service.'\\devpack\\repository\\'.self::$repo.'\\index'; ;
+        }
+        else{
+            $repoNameSpace='\\src\\app\\'.app.'\\'.version.'\\repository\\'.self::$repo.'\\index';
+        }
+
         if(class_exists($repoNameSpace)){
             return \app::resolve($repoNameSpace)->$name();
         }

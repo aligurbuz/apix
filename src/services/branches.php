@@ -181,7 +181,7 @@ class branches {
         $service=$this->getService();
 
         if(defined("devPackage")){
-            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\source\\'.strtolower(request).'\\'.$file;
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\source\\bundle\\'.$file.'\\index';
         }
         else{
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\source\\bundle\\'.$file.'\\index';
@@ -209,7 +209,7 @@ class branches {
         $service=$this->getService();
 
         if(defined("devPackage")){
-            $sourcename='\\src\\packages\\dev\\'.$service.'\\branches\\query\\'.strtolower(request).'\\'.$file;
+            $sourcename='\\src\\packages\\dev\\'.$service.'\\devpack\\model\\builder\\'.$file.'Builder';
         }
         else{
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\builder\\'.$file.'Builder';

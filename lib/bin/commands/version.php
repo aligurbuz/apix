@@ -144,6 +144,9 @@ class version {
                 foreach ($value as $project=>$service){
 
                     $sourcepath='./src/app/dev/v1/__call/'.$this->getParams($data)[1]['service'].'';
+                    $modelpath='./src/app/dev/v1/model';
+                    $migrations='./src/app/dev/v1/migrations';
+                    $repository='./src/app/dev/v1/repository';
                     $destinationpath='./src/packages/dev/'.$this->getParams($data)[1]['service'].'';
 
 
@@ -151,7 +154,18 @@ class version {
                     {
                         mkdir($destinationpath,0777,true);
                         chmod($destinationpath,0777);
+                        mkdir($destinationpath.'/devpack',0777,true);
+                        chmod($destinationpath.'/devpack',0777);
+                        mkdir($destinationpath.'/devpack/model',0777,true);
+                        chmod($destinationpath.'/devpack/model',0777);
+                        mkdir($destinationpath.'/devpack/migrations',0777,true);
+                        chmod($destinationpath.'/devpack/migrations',0777);
+                        mkdir($destinationpath.'/devpack/repository',0777,true);
+                        chmod($destinationpath.'/devpack/repository',0777);
                         $this->xcopy($sourcepath,$destinationpath);
+                        $this->xcopy($modelpath,$destinationpath.'/devpack/model');
+                        $this->xcopy($migrations,$destinationpath.'/devpack/migrations');
+                        $this->xcopy($repository,$destinationpath.'/devpack/repository');
 
                         $list=[];
                         $return=$this->listFolderFiles($destinationpath,"/");
@@ -222,7 +236,9 @@ class version {
                             $dt = @fopen($dosya, "rb");
                             $icerik =@fread($dt, filesize($dosya));
                             $icerik=preg_replace('@app\\\\dev\\\\v1\\\\__call@',"packages\\dev",$icerik);
-                            $icerik=preg_replace('@app\\\\dev\\\\v1\\\\model@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack",$icerik);
+                            $icerik=preg_replace('@app\\\\dev\\\\v1\\\\model@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack\\model",$icerik);
+                            $icerik=preg_replace('@app\\\\dev\\\\v1\\\\migrations@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack\\migrations",$icerik);
+                            $icerik=preg_replace('@app\\\\dev\\\\v1\\\\repository@',"packages\\dev\\".$this->getParams($data)[1]['service']."\\devpack\\repository",$icerik);
 
                             $dt = fopen($dosya, 'w');
 
