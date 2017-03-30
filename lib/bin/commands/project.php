@@ -15,7 +15,6 @@ class project {
         require("./lib/bin/commands/lib/getenv.php");
     }
 
-
     //project create command
     public function create ($data){
 
@@ -34,14 +33,14 @@ class project {
             $touchServicePublishMe['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/publish.php',$touchServicePublishMe);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/storage');
-            $list[]=$this->touch($this->getProjectName($data).'/storage/index.html',null);
-
             $list[]=$this->mkdir($this->getProjectName($data).'/declaration');
             $list[]=$this->touch($this->getProjectName($data).'/declaration/index.html',null);
 
             $list[]=$this->mkdir($this->getProjectName($data).'/declaration/history');
             $list[]=$this->touch($this->getProjectName($data).'/declaration/history/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/storage');
+            $list[]=$this->touch($this->getProjectName($data).'/storage/index.html',null);
 
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/lang');
             $list[]=$this->touch($this->getProjectName($data).'/storage/lang/index.html',null);
