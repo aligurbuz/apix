@@ -147,8 +147,25 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
             $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/builder');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/builder/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/sudb');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/sudb/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/sudb/builder');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/sudb/builder/index.html',null);
+
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/eloquent');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/eloquent/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/eloquent/builder');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/eloquent/builder/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine/builder');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/builder/index.html',null);
 
             return $this->fileProcessResult($list,function(){
                 return 'project has been created';

@@ -35,13 +35,13 @@ class model {
                         $modelParamsBuilder['params']['projectName']=$project;
                         $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
                         //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
-                        $list[]=$this->touch($project.'/'.$version.'/model/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
+                        $list[]=$this->touch($project.'/'.$version.'/model/sudb/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
 
                         $modelParams['execution']='services/model';
                         $modelParams['params']['projectName']=$project;
                         $modelParams['params']['className']=$this->getParams($data)[1]['file'];
                         $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
-                        $list[]=$this->touch($project.'/'.$version.'/model/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
+                        $list[]=$this->touch($project.'/'.$version.'/model/sudb/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
 
                         return $this->fileProcessResult($list,function(){
                             return 'model file has been created';

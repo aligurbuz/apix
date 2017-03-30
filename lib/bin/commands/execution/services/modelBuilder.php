@@ -1,6 +1,6 @@
 <?php
-namespace src\app\__projectName__\v1\model\builder;
-use src\app\__projectName__\v1\model\__className__;
+namespace src\app\__projectName__\v1\model\sudb\builder;
+use src\app\__projectName__\v1\model\sudb\__className__;
 
 class __className__Builder  {
 
