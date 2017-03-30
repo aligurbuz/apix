@@ -28,6 +28,17 @@ class cache {
     private $fileExpire=60;
     private $cache=null;
     private $name=null;
+    private $directoryPath;
+
+
+    public function __construct(){
+        if(defined("devPackage")){
+            $this->directoryPath ='./src/packages/dev/'.service.'/cache';
+        }
+        else{
+            $this->directoryPath  = application.'/'.version.'/__call/'.service.'/cache';
+        }
+    }
 
 
     /**
@@ -121,6 +132,8 @@ class cache {
      */
     public function fileCacheAdapter()
     {
+
+
         $this->cache = new FilesystemAdapter(
         // the subdirectory of the main cache directory where cache items are stored
             $namespace = '',
@@ -129,7 +142,8 @@ class cache {
             $defaultLifetime = $this->fileExpire,
             // the main cache directory (the application needs read-write permissions on it)
             // if none is specified, a directory is created inside the system temporary directory
-            $directory = application.'/'.version.'/__call/'.service.'/cache'
+            $directory=$this->directoryPath
+
         );
     }
 
@@ -149,7 +163,7 @@ class cache {
             $defaultLifetime = $this->fileExpire,
             // the main cache directory (the application needs read-write permissions on it)
             // if none is specified, a directory is created inside the system temporary directory
-            $directory = application.'/'.version.'/__call/'.service.'/cache'
+            $directory=$this->directoryPath
         );
     }
 
@@ -170,7 +184,7 @@ class cache {
             $defaultLifetime = $this->fileExpire,
             // the main cache directory (the application needs read-write permissions on it)
             // if none is specified, a directory is created inside the system temporary directory
-            $directory = application.'/'.version.'/__call/'.service.'/cache'
+            $directory=$this->directoryPath
         );
 
         //The createConnection() helper allows creating a connection to a Redis server using a DSN configuration:

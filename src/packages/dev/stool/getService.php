@@ -50,6 +50,9 @@ class getService extends app {
     public function index(){
 
         //result
-        return repo::guzzle()->get();
+        return app("cache")->expire(30)->get(function(){
+            return repo::guzzle()->get();
+        });
+
     }
 }
