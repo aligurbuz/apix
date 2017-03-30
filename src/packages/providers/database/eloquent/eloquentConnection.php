@@ -13,12 +13,15 @@ class eloquentConnection extends Eloquent  {
     public function __construct(){
 
         $this->capsule = new Capsule;
+        $config="\\src\\app\\".app."\\".version."\\config\\database";
+        $configdb=$config::dbsettings();
+
         $this->capsule->addConnection([
-            'driver'    => 'mysql',
-            'host'      => 'localhost',
-            'database'  => 'Prosystem',
-            'username'  => 'root',
-            'password'  => 'laraappdevman*09',
+            'driver'    => $configdb['driver'],
+            'host'      => $configdb['host'],
+            'database'  => $configdb['database'],
+            'username'  => $configdb['user'],
+            'password'  => $configdb['password'],
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
