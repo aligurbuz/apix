@@ -9,7 +9,7 @@
 #### Creating Auto-Package
 
 ```
-api package auto packageName
+php api package auto packageName
 
 ```
 

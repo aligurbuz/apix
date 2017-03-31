@@ -11,21 +11,21 @@
 #### Creating Dev Project
 
 ```
-api project create dev
+php api project create dev
 
 ```
 
 #### Creating Service For Dev Package In Dev Project
 
 ```
-api service create dev:sales
+php api service create dev:sales
 
 ```
 
 #### Adding To Dev Project
 
 ```
-api version dev development service:sales
+php api version dev development service:sales
 
 ```
 

@@ -12,7 +12,7 @@
 #### Pull via your models the tables existing in the database
 
 ```
-api migration pull:project_name
+php api migration pull:project_name
 
 ```
 
@@ -24,7 +24,7 @@ api migration pull:project_name
 #### Push in the specified database your migrations
 
 ```
-api migration push:project_name
+php api migration push:project_name
 
 ```
 
@@ -36,14 +36,14 @@ api migration push:project_name
 #### Pull your seeds via your models the tables existing in the database
 
 ```
-api migration pull:project_name --seed
+php api migration pull:project_name --seed
 
 ```
 
 #### Push in the specified database your migration seeds
 
 ```
-api migration push:project_name --seed
+php api migration push:project_name --seed
 
 ```
 

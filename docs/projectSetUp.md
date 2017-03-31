@@ -1,7 +1,7 @@
 #### After installation, it is okay to create your project now. Create first project by running the following command on terminal
 
 ```
-api project create myapp
+php api project create myapp
 
 ```
 
@@ -14,7 +14,7 @@ api project create myapp
 ## Now, create your first service in your project
 
 ```
-api service create myapp:ghost
+php api service create myapp:ghost
 
 ```
 

@@ -22,14 +22,6 @@ composer update
 ```
 
 
-#### Run following commands on terminal to use system requirements with creating project, service and database migrations. Path/to on shortcut command is network directory path
-
-```
-alias api='php /path/to/foldername/lib/bin/service'
-alias migration='php /path/to/foldername/vendor/bin/phinx'
-
-```
-
 # What is foldername
 ```diff
 -Foldername is your system general name or company name (directory cloned github repository).
