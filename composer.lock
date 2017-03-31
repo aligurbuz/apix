@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6611beadc1a9407a14bfc97ab8d4b376",
-    "content-hash": "c589f6711e90957936fcf175d2ccaa94",
+    "hash": "49374980614b53fd61a8d39aad5de2ec",
+    "content-hash": "b8e75b9dc931ad865d6c9e8699a69d90",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1219,6 +1219,50 @@
                 "sql"
             ],
             "time": "2017-02-22 14:16:49"
+        },
+        {
+            "name": "illuminate/pagination",
+            "version": "v5.4.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/pagination.git",
+                "reference": "9baafdca733239f5bd861ec3dc335045f100044d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/pagination/zipball/9baafdca733239f5bd861ec3dc335045f100044d",
+                "reference": "9baafdca733239f5bd861ec3dc335045f100044d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "5.4.*",
+                "illuminate/support": "5.4.*",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Pagination\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Pagination package.",
+            "homepage": "https://laravel.com",
+            "time": "2017-02-20 13:38:12"
         },
         {
             "name": "illuminate/support",
