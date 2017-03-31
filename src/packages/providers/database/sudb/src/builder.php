@@ -685,11 +685,9 @@ class builder {
                 return (object)['data'=>$result['result'][0]];
             }
             return [
-                'queryResult'=>[
-                    'error'=>true,
-                    'code'=>204,
-                    'message'=>'no data'
-                ]
+                'error'=>true,
+                'code'=>204,
+                'message'=>'no data'
 
             ];
 
