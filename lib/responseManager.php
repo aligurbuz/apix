@@ -39,6 +39,7 @@ class responseManager {
         if(!is_array($data)){
             $data=[$data];
         }
+
         return $this->getQueryErrorLoad($data,function() use ($data,$msg){
             $developInfo=null;
             if(defined("app") && defined("version") && defined("service")) {
@@ -71,11 +72,9 @@ class responseManager {
      */
     private function getQueryErrorLoad($data,$callback){
         $queryError=[];
-        if(array_key_exists("queryResult",$data)){
-            if(is_array($data['queryResult']) && array_key_exists("error",$data['queryResult'])){
-                if($data['queryResult']['error']){
-                    $queryError=['success'=>(bool)false]+['error'=>$data['queryResult']];
-                }
+        if(array_key_exists("error",$data)){
+            if($data['error']){
+                $queryError=['success'=>(bool)false]+['error'=>$data];
             }
         }
 

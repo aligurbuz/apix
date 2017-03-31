@@ -523,7 +523,7 @@ class builder {
                     'paginator'=>(int)$result['paginator'],
                     'currentPage'=>(int)$result['currentPage'],
                     'lastPage'=>(int)ceil($lastpage),
-                    'data'=>$this->getColumnsType($result['result'],$result['columns'],$result['fields'])
+                    'results'=>$this->getColumnsType($result['result'],$result['columns'],$result['fields'])
                 ];
             }
             else{
@@ -649,6 +649,21 @@ class builder {
 
 
         });
+
+    }
+
+
+    /**
+     * max method is main method.
+     *
+     * @return string
+     */
+    public function max($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+        return $this->get();
 
     }
 
