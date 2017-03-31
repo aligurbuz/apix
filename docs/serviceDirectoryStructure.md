@@ -23,7 +23,7 @@
 ```
 
 ```
-api project create project_name
+php api project create project_name
 
 ```
 
@@ -50,7 +50,7 @@ api project create project_name
 ```
 
 ```
-api service create project_name:service_name
+php api service create project_name:service_name
 
 ```
 
