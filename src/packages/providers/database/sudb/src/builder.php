@@ -652,6 +652,37 @@ class builder {
 
     }
 
+
+    /**
+     * first method is main method.
+     *
+     * @return string
+     */
+    public function firstOrFail($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+        return $this->allMethodProcess(function(){
+            $result=$this->queryFormatter();
+
+            if(array_key_exists(0,$result['result'])){
+                return (object)['data'=>$result['result'][0]];
+            }
+            return [
+                'queryResult'=>[
+                    'error'=>true,
+                    'code'=>204,
+                    'message'=>'no data'
+                ]
+
+            ];
+
+
+        });
+
+    }
+
     /**
      * get method is main method.
      *
