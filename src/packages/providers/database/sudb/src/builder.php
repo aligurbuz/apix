@@ -28,6 +28,7 @@ class builder {
     private $find=null;
     private $where=[];
     private $whereIn=[];
+    private $whereNotIn=[];
     private $page=0;
     private $order=null;
     private $groupBy=null;
@@ -57,7 +58,6 @@ class builder {
     private static $attach=null;
     private static $sum=null;
     private static $joiner='';
-    private static $whereNotIn=null;
     private static $orWhere=[];
     private static $whereColumn=[];
     private static $whereYear=[];
@@ -211,6 +211,37 @@ class builder {
                 $this->whereIn['field']=$field;
                 $this->whereIn['operator']='=';
                 $this->whereIn['value']=implode(",",$value);
+            }
+
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * where method is main method.
+     *
+     * @return array
+     */
+    public function whereNotIn($field=null,$value=null,$model=null){
+        if($this->model==null){
+            $this->model=$value;
+        }
+
+        if(is_array($field) && array_key_exists(1,$field)){
+            if(is_array($field[1])){
+                $this->whereNotIn['field']=$field[0];
+                $this->whereNotIn['operator']='=';
+                $this->whereNotIn['value']=implode(",",$field[1]);
+            }
+
+        }
+        else{
+            if(is_array($value)){
+                $this->whereNotIn['field']=$field;
+                $this->whereNotIn['operator']='=';
+                $this->whereNotIn['value']=implode(",",$value);
             }
 
         }
@@ -694,7 +725,8 @@ class builder {
             'orderBy'=>$this->order,
             'groupBy'=>$this->groupBy,
             'bool'=>$this->bool,
-            'whereIn'=>$this->whereIn
+            'whereIn'=>$this->whereIn,
+            'whereNotIn'=>$this->whereNotIn
         ];
     }
 

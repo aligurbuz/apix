@@ -113,6 +113,20 @@ class whereBuilderOperation {
 
         }
 
+
+        if(count($model['whereNotIn'])){
+            $valueEx=explode(",",$model['whereNotIn']['value']);
+            $paramValueEx=[];
+            foreach ($valueEx as $v=>$vv) {
+                $paramValueEx[]=':'.md5($vv).'';
+                $list['execute'][':'.md5($vv).'']=$vv;
+            }
+
+            $list['where'][]=''.$model['whereNotIn']['field'].' NOT IN ('.implode(",",$paramValueEx).')';
+
+
+        }
+
         if(is_array($list['where'])){
             $list['where']='WHERE '.implode(" AND ",$list['where']);
         }
