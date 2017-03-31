@@ -120,6 +120,7 @@ class querySqlFormatter {
      */
 
     public function sqlBuilderDefinition($model,$getCountAll=null){
+
         if($getCountAll!==null){
             $model['select']='COUNT(id) as getCountAllTotal';
             $getPaginateProcessor=$this->getPaginateProcessor($model,false);
@@ -128,8 +129,13 @@ class querySqlFormatter {
             $getPaginateProcessor=$this->getPaginateProcessor($model);
         }
 
+
         if($model['groupBy']!==null){
             $model['select']=''.$model['groupBy'].',count(*) as groupBy'.$model['groupBy'].'Total';
+        }
+
+        if($getCountAll===null && $model['max']!==null){
+            $model['select']='max('.$model['max'].') as '.$model['max'];
         }
         //return select definition
         return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";

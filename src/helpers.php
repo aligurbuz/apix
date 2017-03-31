@@ -3,7 +3,7 @@ if (!function_exists('dd')) {
     function dd()
     {
         $args = func_get_args();
-        header('Content-Type: text/html');
+        header('Content-Type: text/htm');
         call_user_func_array('dump', $args);
         die();
     }

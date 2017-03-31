@@ -29,6 +29,7 @@ class builder {
     private $where=[];
     private $whereIn=[];
     private $whereNotIn=[];
+    private $max=null;
     private $page=0;
     private $order=null;
     private $groupBy=null;
@@ -43,13 +44,13 @@ class builder {
     private $saveOld=null;
     private $transaction=false;
     private $transactionName=null;
+    private $all=false;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
     private static $request=null;
     private static $toSql=null;
     private static $rand=null;
-    private static $all=null;
     private static $callstatic_scope=[];
     private static $join=null;
     private static $joinType=null;
@@ -535,6 +536,43 @@ class builder {
     }
 
 
+
+    /**
+     * all method is main method.
+     *
+     * @return array
+     */
+    public function all($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+        return $this->allMethodProcess(function(){
+            $this->all=true;
+            $result=$this->queryFormatter();
+
+            if(array_key_exists("paginator",$result) && $result['paginator']>0){
+                $lastpage=(int)$result['getCountAllTotal']/(int)$result['paginator'];
+
+                $countAll=[];
+                $resultdata=[];
+                if($this->max===null){
+                    $countAll['CountAllData']=(int)$result['getCountAllTotal'];
+                }
+
+                $resultdata['results']=$this->getColumnsType($result['result'],$result['columns'],$result['fields']);
+
+                return $countAll+$resultdata;
+            }
+            else{
+                return $result['result'];
+            }
+
+        });
+
+    }
+
+
     /**
      * data method is main method.
      *
@@ -663,7 +701,13 @@ class builder {
         if($this->model==null){
             $this->model=$model;
         }
-        return $this->get();
+        if(is_array($args) && array_key_exists(0,$args)){
+            $this->max=$args[0];
+        }
+        else{
+            $this->max=$args;
+        }
+        return $this;
 
     }
 
@@ -770,7 +814,9 @@ class builder {
             'groupBy'=>$this->groupBy,
             'bool'=>$this->bool,
             'whereIn'=>$this->whereIn,
-            'whereNotIn'=>$this->whereNotIn
+            'whereNotIn'=>$this->whereNotIn,
+            'max'=>$this->max,
+            'all'=>$this->all
         ];
     }
 
