@@ -1,5 +1,11 @@
 #!/usr/bin/env php
 <?php
+/**
+ * Api Cli Manager.
+ * Main request for scripts run on terminal
+ * system main skeleton
+ * return type string
+ */
 if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
     $commandFile=require("./lib/bin/commands/".$argv[1].".php");
 
