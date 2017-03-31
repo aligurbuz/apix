@@ -9,29 +9,17 @@
 
 
 
-#### Container usage
+#### Orms Supported By Apix
 
-```
-public function () {
-    //it checks user device
-    return \Container::device()->isMobile();
-}
-
-```
-
-#### App helper method usage
-
-```
-public function () {
-    //it checks user device
-    return app("device")->isMobile();
-}
-
-```
+    * Sudb --Apix Default Orm
+    * Eloquent -- Laravel Orm.
+    * Doctrine -- Used by symfony
 
 
-# Company specific container class
-* src/app/config.php
 
-# Project specific container class
-* src/app/project_name/version/config/app.php
+
+# Eloquent Documentation
+* https://laravel.com/docs/5.4/eloquent
+
+# Doctrine Documentation
+* http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/
