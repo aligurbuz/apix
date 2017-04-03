@@ -48,7 +48,7 @@ class custom {
             $command='\\lib\\bin\\'.$data[1];
         }
 
-        $app=\src\config\app::resolve($command);
+        $app=\lib\utils::resolve($command);
         \lib\environment::config();
 
         $list=[];

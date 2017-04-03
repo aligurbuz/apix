@@ -40,7 +40,7 @@ class model {
      * @return array
      */
     public function getQuery($name,$args){
-        $model=\app::resolve("\\src\\packages\providers\\database\\sudb\\src\\builder");
+        $model=utils::resolve("\\src\\packages\providers\\database\\sudb\\src\\builder");
         $model->subClassOf($this->subClassOf);
         if($name=="where"){
             if(array_key_exists(0,$args)){
@@ -77,7 +77,7 @@ class model {
      */
     public function getSubClassOf($class=null){
         if($class!==null){
-            $this->subClassOf=\app::resolve($class);
+            $this->subClassOf=utils::resolve($class);
         }
 
     }

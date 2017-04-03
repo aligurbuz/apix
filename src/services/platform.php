@@ -79,19 +79,19 @@ class platform {
             $configMethodMain=''.$this->platform;
             $configMethod=''.$this->platform.'_'.$this->service.'_'.$this->filename;
             if(method_exists($config,$configMethod)){
-                $status=\app::resolve($config)->$configMethod();
+                $status=\lib\utils::resolve($config)->$configMethod();
                 $instance=false;
             }
 
             if($instance && method_exists($config,$configMethodMain)){
-                $status=\app::resolve($config)->$configMethodMain();
+                $status=\lib\utils::resolve($config)->$configMethodMain();
             }
 
             if($method!==null && $status){
                 $classplatform=root.'/src/packages/dev/'.service.'/platform/'.$this->platform.'/'.$this->service.'/'.$this->filename.'.php';
                 if(file_exists($classplatform)){
                     $platformname='\\src\\packages\\dev\\'.service.'\\platform\\'.$this->platform.'\\'.$this->service.'\\'.$this->filename;
-                    return \app::resolve($platformname)->$method();
+                    return \lib\utils::resolve($platformname)->$method();
                 }
                 if(is_callable($callback)){
                     return call_user_func($callback);
@@ -109,7 +109,7 @@ class platform {
             $configMethodMain=''.$this->platform;
             $configMethod=''.$this->platform.'_'.$this->service.'_'.$this->filename;
             if(method_exists($config,'handle')){
-                $platformResolve=\app::resolve($config)->handle();
+                $platformResolve=\lib\utils::resolve($config)->handle();
                 $this->platform=$platformResolve;
                 $instance=false;
                 $status=true;
@@ -121,9 +121,9 @@ class platform {
                 if(file_exists($classplatform)){
                     $platformname='\\src\\app\\'.app.'\\'.version.'\\platform\\'.$this->platform.'\\'.$this->service.'\\'.request.'Service';
                     $method=method;
-                    $appPlatform=\app::resolve($platformname);
+                    $appPlatform=\lib\utils::resolve($platformname);
                     if(method_exists($appPlatform,$method)){
-                        return \app::resolve($platformname)->$method(call_user_func($callback));
+                        return \lib\utils::resolve($platformname)->$method(call_user_func($callback));
                     }
 
                 }

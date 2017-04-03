@@ -35,7 +35,7 @@ class search implements searchInterface {
     public function runEngineHandle($driver=null){
         if($driver===null){
             $serviceBase='src\\app\\'.app.'\\'.version.'\\serviceBaseController';
-            $serviceBaseResolve=\app::resolve($serviceBase);
+            $serviceBaseResolve=\lib\utils::resolve($serviceBase);
             $searchDriver=$serviceBaseResolve->search;
         }
         else{
@@ -43,7 +43,7 @@ class search implements searchInterface {
         }
 
         $search='src\\packages\\providers\\search\\'.$searchDriver.'\\search';
-        return \app::resolve($search);
+        return \lib\utils::resolve($search);
     }
 
 

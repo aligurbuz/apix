@@ -36,7 +36,7 @@ class superservicecalls {
     public function ready($status=false,$method=null){
         //set return
         if($status){
-            $serviceReady=\app::resolve("\\src\\app\\".app."\\".version."\\serviceReadyController");
+            $serviceReady=\lib\utils::resolve("\\src\\app\\".app."\\".version."\\serviceReadyController");
             $handle=(object)$serviceReady->handle();
             $handlemethod=explode("::",$handle->$method);
             $srcapp="%src%app%".app."";
@@ -45,7 +45,7 @@ class superservicecalls {
                 $handlemethodclassmethod=$handlemethod[1];
                 $replacehandlemethodclass=str_replace("\\","%",$handlemethodclass);
                 if(preg_match('@'.$srcapp.'@is',$replacehandlemethodclass)){
-                    return \app::resolve($handlemethodclass)->$handlemethodclassmethod();
+                    return \lib\utils::resolve($handlemethodclass)->$handlemethodclassmethod();
                 }
                 return [];
 
@@ -53,7 +53,7 @@ class superservicecalls {
             else{
                 $replacehandlemethodclass=str_replace("\\","%",$handle->$method);
                 if(preg_match('@'.$srcapp.'@is',$replacehandlemethodclass)){
-                    return \app::resolve($handle->$method);
+                    return \lib\utils::resolve($handle->$method);
                 }
                 return [];
             }

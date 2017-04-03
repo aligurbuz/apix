@@ -42,7 +42,7 @@ if (!function_exists('trans')) {
     {
         if($data!==null){
 
-            $getbase=\app::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
+            $getbase=\lib\utils::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
 
             if($langname==null){
                 return \lib\languageDefinitor::get($data,$getbase->getLocalization(),$getbase->getLocalization());

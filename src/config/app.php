@@ -70,7 +70,7 @@ class app {
 
         //get device class
         $deviceClass=self::getContainer("device");
-        $device=self::resolve($deviceClass);
+        $device=\lib\utils::resolve($deviceClass);
 
         //defines
         return [
@@ -128,20 +128,6 @@ class app {
         return $devicetoken;
     }
 
-    /**
-     * response resolve class.
-     * definition : reflector class for dependency injection
-     * outputs constructor parameters.
-     *
-     * @param string
-     * @return response resolve runner
-     */
-    public static function resolve($class){
-
-        $container = \DI\ContainerBuilder::buildDevContainer();
-        return $container->get($class);
-
-    }
 
     /**
      * response checkUrlParam.

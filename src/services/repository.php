@@ -48,7 +48,7 @@ class repository {
         }
 
         if(class_exists($repoNameSpace)){
-            return \app::resolve($repoNameSpace)->$name();
+            return \lib\utils::resolve($repoNameSpace)->$name();
         }
         return null;
 
