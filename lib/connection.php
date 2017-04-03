@@ -40,16 +40,14 @@ class connection extends Definitor {
     public static function run() {
         //get instance
         $instance=self::getInstance();
+        $service=self::$service;
+        $serviceMethod=self::$serviceMethod;
+        $getVersion=self::$getVersion;
 
-        return $instance->checkServiceUrlParamArray(function() use ($instance) {
+        return $instance->checkServiceUrlParamArray(function() use ($service,$serviceMethod,$getVersion,$instance) {
 
             //get auto loads from services
             $instance->getAutoLoadsFromServices();
-
-            //token run
-            $service=self::$service;
-            $serviceMethod=self::$serviceMethod;
-            $getVersion=self::$getVersion;
 
             //get token control
             return $instance->token(function() use ($service,$serviceMethod,$getVersion,$instance) {
@@ -62,7 +60,7 @@ class connection extends Definitor {
                        if($service[1]=="doc"){
                            header("Content-Type: text/html");
                            $apiDoc="\\src\\declarations\\src\\index";
-                           return \app::resolve($apiDoc)->index();
+                           return utils::resolve($apiDoc)->index();
                        }
 
                         //check package auto service and method
@@ -109,9 +107,9 @@ class connection extends Definitor {
                             if($restrictionsStatus){
                                 $boot=$instance->bootServiceLoader($requestServiceMethod);
 
-                                $serviceBasePlatformStatus=\app::resolve(api."serviceBaseController")->platform;
+                                $serviceBasePlatformStatus=utils::resolve(api."serviceBaseController")->platform;
                                 if($serviceBasePlatformStatus){
-                                    $servicePlatform=\app::resolve("\\src\\services\\platform");
+                                    $servicePlatform=utils::resolve("\\src\\services\\platform");
                                     $requestServiceMethodReal=$servicePlatform->take(function() use(&$requestServiceMethodReal,$apix,$requestServiceMethod,$boot){
                                         $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
                                     });
@@ -160,6 +158,9 @@ class connection extends Definitor {
         return (array_key_exists("version",self::$queryParams)) ? self::$queryParams['version'] : $defaultVersionCheck;
 
     }
+
+
+
 
 
     /**
