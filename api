@@ -75,9 +75,7 @@ else{
     if(environment()=="local"){
         //get connection
         $consoleCommandApplication=new \lib\bin\custom();
-        echo $consoleCommandApplication->execute($argv);
-        echo '
-';
+        echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
     }
     else {
         echo 'Console command except local would not work';
