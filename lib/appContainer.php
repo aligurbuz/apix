@@ -6,14 +6,12 @@ class appContainer {
 
     public static function __callStatic($class=null,$value=[]){
         if($class!==null){
-            //class resolve
-            $container = \DI\ContainerBuilder::buildDevContainer();
 
             //container namespace edit
             $containeralias=str_replace("\\","\\\\",$class);
 
             $inApp="\\src\\app\\".app."\\".version."\\config\\app";
-            $inApp=$container->get($inApp);
+            $inApp=utils::resolve($inApp);
             $inAppContainer=$inApp->container();
 
             $inAppContainerList=[];
@@ -29,11 +27,11 @@ class appContainer {
             //check container class alias
             if(array_key_exists($containeralias,$lastContainer)){
                 $class=$lastContainer[$class];
-                return $container->get($class);
+                return utils::resolve($class);
             }
 
             //return pure container
-            return $container->get($class);
+            return utils::resolve($class);
         }
 
     }
