@@ -279,7 +279,7 @@ class BaseDefinitor  {
             'data'=>$data
         ];
         $log="\\src\\app\\".app."\\".version."\\serviceLogController";
-        $log=\app::resolve($log);
+        $log=utils::resolve($log);
         if(property_exists($log,"status") && !$log->status){
             return call_user_func($callback);
         }

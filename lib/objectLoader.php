@@ -22,7 +22,7 @@ class objectLoader {
      */
     public function boot(){
         $objectLoader="\\src\\provisions\\objectloader";
-        $objectLoader=\app::resolve($objectLoader);
+        $objectLoader=utils::resolve($objectLoader);
         if($objectLoader->status){
             $objectLoaderMethod=request.'ObjectLoader';
 
@@ -38,7 +38,7 @@ class objectLoader {
             }
 
             $serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
-            $serviceobjectLoader=\app::resolve($serviceobjectLoader);
+            $serviceobjectLoader=utils::resolve($serviceobjectLoader);
             $serviceobjectLoaderMethod=request.'ObjectLoader';
 
             $servicemethodicCall=$serviceobjectLoader->$serviceobjectLoaderMethod();
@@ -51,7 +51,7 @@ class objectLoader {
 
             //individual method like getStk()
             $s_serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
-            $s_serviceobjectLoader=\app::resolve($s_serviceobjectLoader);
+            $s_serviceobjectLoader=utils::resolve($s_serviceobjectLoader);
             $s_serviceobjectLoaderMethod=strtolower(request).''.ucfirst(service);
 
             $s_serviceobjectLoaderMethodcall=[];

@@ -100,7 +100,7 @@ class appBootLoader {
      * @return response boot params runner
      */
     private function bootFileResolve(){
-        return \app::resolve(api."serviceBaseController");
+        return utils::resolve(api."serviceBaseController");
 
     }
 
