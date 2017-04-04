@@ -62,8 +62,6 @@ class querySqlFormatter {
 
         try {
 
-
-
             $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
             $prepare->execute($model['execute']);
             $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
