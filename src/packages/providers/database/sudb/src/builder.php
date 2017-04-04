@@ -26,6 +26,7 @@ class builder {
     private $model=null;
     private $select="*";
     private $setField=null;
+    private $substring=null;
     private $find=null;
     private $where=[];
     private $whereIn=[];
@@ -164,6 +165,35 @@ class builder {
         else{
             if(count($select)){
                 $this->setField=$select;
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * set select field method is main method.
+     * @forexample : user::substring(['roles.id','-','roles'])->get();
+     * first key : tablo information joined
+     * second value explode seperate that on first table
+     * third value ; information exploded
+     * @return array
+     */
+    public function substring($select=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if(is_array($select) && $model!==null){
+            if(array_key_exists(0,$select) && count($select[0])){
+                $this->substring=$select[0];
+            }
+
+        }
+        else{
+            if(count($select)){
+                $this->substring=$select;
             }
         }
 
@@ -870,7 +900,8 @@ class builder {
             'max'=>$this->max,
             'min'=>$this->min,
             'all'=>$this->all,
-            'setField'=>$this->setField
+            'setField'=>$this->setField,
+            'substring'=>$this->substring
         ];
     }
 

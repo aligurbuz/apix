@@ -54,11 +54,17 @@ class selectBuilderOperation {
      * @return array
      */
     private function getSelectHiddenFields($selectData,$model){
+
         if(is_array($selectData)){
             return $this->getSelectDataValueList($selectData,$model);
         }
         else{
-            $columns=$this->getSelectTableColumns($model);
+            $extra=null;
+            if($model['substring']!==null && is_array($model['substring'])){
+                $extra='substring';
+            }
+            $columns=$this->getSelectTableColumns($model,$extra);
+
             return $this->getSelectDataValueList($columns['field'],$model);
         }
 
@@ -83,6 +89,31 @@ class selectBuilderOperation {
 
 
             }
+        }
+
+        if($model['substring']!==null && is_array($model['substring'])){
+            $joined=explode(".",$model['substring'][0]);
+            $selectData[]='(select group_concat('.$model['substring'][1].') from '.$joined[0].' where
+            substring_index('.$model['substring'][0].',"'.$model['substring'][2].'",'.$model['substring'][3].')) as '.$model['substring'][1].'';
+        }
+
+
+        return $selectData;
+
+    }
+
+
+    /**
+     * getSelect method is main method.
+     *
+     * @return array
+     */
+    private function substringOperation($selectData,$model){
+
+        if($model['substring']!==null && is_array($model['substring'])){
+            $joined=explode(".",$model['substring'][0]);
+            $selectData[]='(select group_concat('.$model['substring'][1].') from '.$joined[0].' where
+            substring_index('.$model['substring'][0].',"'.$model['substring'][2].'",'.$model['substring'][3].')) as '.$model['substring'][1].'';
         }
 
         return $selectData;
@@ -239,8 +270,10 @@ class selectBuilderOperation {
      *
      * @return array
      */
-    private function getSelectTableColumns($model){
+    private function getSelectTableColumns($model,$extra=null){
+
         return $this->querySqlFormatter->getModelTableShowColumns($this->subClassoF($model)->table,null);
+
     }
 
     /**

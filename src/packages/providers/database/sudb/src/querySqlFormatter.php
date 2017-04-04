@@ -62,6 +62,8 @@ class querySqlFormatter {
 
         try {
 
+
+
             $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
             $prepare->execute($model['execute']);
             $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
@@ -142,6 +144,7 @@ class querySqlFormatter {
             $model['select']='min('.$model['min'].') as '.$model['min'];
         }
         //return select definition
+
         return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
     }
 
@@ -302,6 +305,7 @@ class querySqlFormatter {
      */
 
     private function getColumnsTable($columns=null,$model=null){
+
        if($columns!==null){
             $columnsList=[];
             foreach($columns as $key=>$value){
@@ -315,12 +319,19 @@ class querySqlFormatter {
 
             }
 
-           if($model!==null && $model['setField']!==null && is_array($model['setField'])) {
+           if($model!==null &&  $model['setField']!==null && is_array($model['setField'])) {
                foreach ($model['setField'] as $key => $value) {
                    $columnsList['field'][]=$key;
                    $columnsList['type'][$key]='varchar(255)';
                }
            }
+
+           if($model!==null  && $model['substring']!==null  &&  is_array($model['substring'])) {
+               $columnsList['field'][]=$model['substring'][1];
+               $columnsList['type'][$model['substring'][1]]='varchar(255)';
+           }
+
+
 
            return $columnsList;
        }
