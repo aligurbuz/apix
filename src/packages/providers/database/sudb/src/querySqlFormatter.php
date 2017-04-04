@@ -55,7 +55,7 @@ class querySqlFormatter {
                 'paginator'=>$this->getModelOffsetPaginator($model),
                 'currentPage'=>$this->getPaginatorUrlPage(),
                 'result'=>[],
-                'columns'=>$this->getModelTableShowColumns($model['model']->table),
+                'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
                 'fields'=>$this->getResultFields([])
             ];
         }
@@ -70,7 +70,7 @@ class querySqlFormatter {
                 'paginator'=>$this->getModelOffsetPaginator($model),
                 'currentPage'=>$this->getPaginatorUrlPage(),
                 'result'=>$result,
-                'columns'=>$this->getModelTableShowColumns($model['model']->table),
+                'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
                 'fields'=>$this->getResultFields($result)
             ];
         }
@@ -287,10 +287,10 @@ class querySqlFormatter {
      * return type array
      */
 
-    public function getModelTableShowColumns($table){
+    public function getModelTableShowColumns($table,$model){
         $showColumns=$this->db->prepare("SHOW COLUMNS FROM ".$table."");
         $showColumns->execute();
-        return $this->getColumnsTable($showColumns->fetchAll(\PDO::FETCH_OBJ));
+        return $this->getColumnsTable($showColumns->fetchAll(\PDO::FETCH_OBJ),$model);
 
     }
 
@@ -301,7 +301,7 @@ class querySqlFormatter {
      * return type array
      */
 
-    private function getColumnsTable($columns=null){
+    private function getColumnsTable($columns=null,$model=null){
        if($columns!==null){
             $columnsList=[];
             foreach($columns as $key=>$value){
@@ -314,6 +314,13 @@ class querySqlFormatter {
                 }
 
             }
+
+           if($model!==null && $model['setField']!==null && is_array($model['setField'])) {
+               foreach ($model['setField'] as $key => $value) {
+                   $columnsList['field'][]=$key;
+                   $columnsList['type'][$key]='varchar(255)';
+               }
+           }
 
            return $columnsList;
        }

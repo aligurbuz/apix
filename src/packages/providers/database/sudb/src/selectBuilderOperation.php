@@ -41,8 +41,10 @@ class selectBuilderOperation {
      * @return array
      */
     public function selectMainProcess($selectData,$model){
+
         $selectData=$this->getSelectHiddenFields($selectData,$model);
         $selectData=$this->getSelectPermissions($selectData,$model);
+        $selectData=$this->setFieldOperation($selectData,$model);
         return $this->selectImplodeProcess($selectData);
     }
 
@@ -59,6 +61,25 @@ class selectBuilderOperation {
             $columns=$this->getSelectTableColumns($model);
             return $this->getSelectDataValueList($columns['field'],$model);
         }
+
+    }
+
+    /**
+     * getSelect method is main method.
+     *
+     * @return array
+     */
+    private function setFieldOperation($selectData,$model){
+
+        if($model['setField']!==null && is_array($model['setField'])){
+            foreach($model['setField'] as $key=>$value){
+                $varZero=explode("@",$model['setField'][$key][0]);
+                $joinInfo=explode(".",$varZero[1]);
+                $selectData[]='(select '.implode(",",$model['setField'][$key][1]).' from '.$joinInfo[0].' where '.$varZero[1].'='.$varZero[0].') as '.$key.'';
+            }
+        }
+
+        return $selectData;
 
     }
 
@@ -213,7 +234,7 @@ class selectBuilderOperation {
      * @return array
      */
     private function getSelectTableColumns($model){
-        return $this->querySqlFormatter->getModelTableShowColumns($this->subClassoF($model)->table);
+        return $this->querySqlFormatter->getModelTableShowColumns($this->subClassoF($model)->table,null);
     }
 
     /**

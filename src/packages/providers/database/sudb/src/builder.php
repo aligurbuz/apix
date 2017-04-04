@@ -25,6 +25,7 @@ class builder {
 
     private $model=null;
     private $select="*";
+    private $setField=null;
     private $find=null;
     private $where=[];
     private $whereIn=[];
@@ -134,6 +135,35 @@ class builder {
         else{
             if(count($select)){
                 $this->select=$select;
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * set select field method is main method.
+     * @forexample : user::select(['id','firstName'])->setField(['bookName'=>['users.bookId@books.id',['book']]])->get();
+     * first key : alias fieldname
+     * first value matching
+     * second array ;wanted fields
+     * @return array
+     */
+    public function setField($select=null,$model=null){
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+        if(is_array($select) && $model!==null){
+            if(array_key_exists(0,$select) && count($select[0])){
+                $this->setField=$select[0];
+            }
+
+        }
+        else{
+            if(count($select)){
+                $this->setField=$select;
             }
         }
 
@@ -839,7 +869,8 @@ class builder {
             'whereNotIn'=>$this->whereNotIn,
             'max'=>$this->max,
             'min'=>$this->min,
-            'all'=>$this->all
+            'all'=>$this->all,
+            'setField'=>$this->setField
         ];
     }
 
