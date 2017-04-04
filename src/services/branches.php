@@ -222,7 +222,14 @@ class branches {
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
-        return ['queryResult'=>$container->get($sourcename)->$method($arguments)];
+
+        if(count($arguments)){
+            $queryBuild=$container->get($sourcename)->$method($arguments);
+        }
+        else{
+            $queryBuild=$container->get($sourcename)->$method();
+        }
+        return ['queryResult'=>$queryBuild];
     }
 
 

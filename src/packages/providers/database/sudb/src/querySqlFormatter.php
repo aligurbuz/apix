@@ -137,6 +137,10 @@ class querySqlFormatter {
         if($getCountAll===null && $model['max']!==null){
             $model['select']='max('.$model['max'].') as '.$model['max'];
         }
+
+        if($getCountAll===null && $model['min']!==null){
+            $model['select']='min('.$model['min'].') as '.$model['min'];
+        }
         //return select definition
         return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
     }

@@ -30,6 +30,7 @@ class builder {
     private $whereIn=[];
     private $whereNotIn=[];
     private $max=null;
+    private $min=null;
     private $page=0;
     private $order=null;
     private $groupBy=null;
@@ -713,6 +714,27 @@ class builder {
 
 
     /**
+     * max method is main method.
+     *
+     * @return string
+     */
+    public function min($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+        if(is_array($args) && array_key_exists(0,$args)){
+            $this->min=$args[0];
+        }
+        else{
+            $this->min=$args;
+        }
+        return $this;
+
+    }
+
+
+    /**
      * first method is main method.
      *
      * @return string
@@ -816,6 +838,7 @@ class builder {
             'whereIn'=>$this->whereIn,
             'whereNotIn'=>$this->whereNotIn,
             'max'=>$this->max,
+            'min'=>$this->min,
             'all'=>$this->all
         ];
     }
