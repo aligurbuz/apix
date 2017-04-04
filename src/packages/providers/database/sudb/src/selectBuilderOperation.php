@@ -73,9 +73,15 @@ class selectBuilderOperation {
 
         if($model['setField']!==null && is_array($model['setField'])){
             foreach($model['setField'] as $key=>$value){
-                $varZero=explode("@",$model['setField'][$key][0]);
-                $joinInfo=explode(".",$varZero[1]);
-                $selectData[]='(select '.implode(",",$model['setField'][$key][1]).' from '.$joinInfo[0].' where '.$varZero[1].'='.$varZero[0].') as '.$key.'';
+                if(is_array($value)){
+                    if(array_key_exists(0,$model['setField'][$key]) AND array_key_exists(1,$model['setField'][$key])){
+                        $varZero=explode("@",$model['setField'][$key][0]);
+                        $joinInfo=explode(".",$varZero[1]);
+                        $selectData[]='(select '.implode(",",$model['setField'][$key][1]).' from '.$joinInfo[0].' where '.$varZero[1].'='.$varZero[0].') as '.$key.'';
+                    }
+                }
+
+
             }
         }
 
