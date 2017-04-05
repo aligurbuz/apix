@@ -27,7 +27,7 @@ class branches {
     public $modelDir;
 
     public function __construct(){
-        $getModelVar='\\src\\app\\mobi\\v1\\serviceBaseController';
+        $getModelVar='\\src\\app\\'.app.'\\'.version.'\\serviceBaseController';
         $this->modelDir=(new $getModelVar())->model;
     }
 
