@@ -593,18 +593,30 @@ class querySqlFormatter {
         if(count($data)){
             foreach($data as $key=>$value){
                 if($key!=="id"){
-                    $set[]=''.$key.'=:'.$key.'';
-                    $model['execute'][':'.$key]=$value;
+                    if(preg_match('@'.$key.'=:'.$key.'@is',$model['where'])){
+                        $set[]=''.$key.'=:'.$key.'1';
+                        $model['execute'][':'.$key.'1']=$value;
+                    }
+                    else{
+                        $set[]=''.$key.'=:'.$key.'';
+                        $model['execute'][':'.$key]=$value;
+                    }
+
                 }
 
             }
 
 
             try {
+
+
                 $query=$this->db->prepare("UPDATE ".$model['model']->table." SET  ".implode(",",$set)." ".$model['where']."");
-                if($query->execute($model['execute'])){
+                $query->execute($model['execute']);
+
+                if($query->rowCount()){
                     return true;
                 }
+                return false;
             }
             catch(\Exception $e){
                 if(environment()=="local"){

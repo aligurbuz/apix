@@ -59,8 +59,11 @@ class index {
         $success=true;
 
         //need token for production
-        $token=new csrftoken();
-        $success=($token->checkTokenForPostMethod(\app::post("_token"))) ? true : false;
+        if(environment()!=="local"){
+            $token=new csrftoken();
+            $success=($token->checkTokenForPostMethod(\app::post("_token"))) ? true : false;
+        }
+
 
         //post provision
         return [
