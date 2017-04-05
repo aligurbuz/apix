@@ -607,8 +607,17 @@ class querySqlFormatter {
             }
 
 
-            try {
+            //field model method
+            foreach($model['execute'] as $mkey=>$mvalue){
 
+                $fieldMethod='field'.ucfirst(str_replace(":","",$mkey));
+                if(method_exists($model['model'],$fieldMethod)){
+                    $model['execute'][$mkey]=$model['model']->$fieldMethod();
+                }
+            }
+
+
+            try {
 
                 $query=$this->db->prepare("UPDATE ".$model['model']->table." SET  ".implode(",",$set)." ".$model['where']."");
                 $query->execute($model['execute']);
