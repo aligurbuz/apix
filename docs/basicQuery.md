@@ -39,4 +39,11 @@ user::find([1,2],['id','username']); //SELECT id,username FROM user WHERE id IN 
 
 ```
 
+#### Get method : it fetches as object to data-- auto paginate default value is 10 and order by is desc (by model)
+
+```
+user::get(); //SELECT * FROM user ORDER BY desc LIMIT 0,10
+
+```
+
 
