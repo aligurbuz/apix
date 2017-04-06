@@ -6,7 +6,7 @@
 
 ```
 //tablename
-public $table='admins';
+public $table='user';
 
 //primary key
 public $primaryKey='id';
