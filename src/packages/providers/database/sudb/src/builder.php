@@ -992,15 +992,13 @@ class builder {
      *
      * @return array
      */
-    public function update($data,$model=null){
-        if($this->model==null){
-            $this->model=$model;
-        }
+    public function update($data,$model=false){
+
         if(is_array($data)){
             $data=(array_key_exists(0,$data)) ? $data[0] : $data;
-            return $this->allMethodProcess(function() use($data){
+            return $this->allMethodProcess(function() use($data,$model){
                 return $this->querySqlFormatter->getUpdateQueryFormatter($data,['where'=>$this->where,'execute'=>$this->execute,
-                    'model'=>$this->subClassOf,'bool'=>$this->bool]);
+                    'model'=>$this->subClassOf,'bool'=>$this->bool,'detail'=>$model]);
             },"no--autoscope");
 
         }

@@ -623,6 +623,16 @@ class querySqlFormatter {
                 $query->execute($model['execute']);
 
                 if($query->rowCount()){
+                    if($model['detail']){
+                        if(count($set)){
+                            $model['where']="".$model['where']." AND ".implode(" AND ",$set);
+                        }
+
+                        $query=$this->db->prepare("SELECT * FROM ".$model['model']->table." ".$model['where']." LIMIT 1");
+                        $query->execute($model['execute']);
+                        $result=$query->fetchAll(\PDO::FETCH_OBJ);
+                        return ['status'=>true,'data'=>$result];
+                    }
                     return true;
                 }
                 return false;
