@@ -27,4 +27,16 @@ user::find([1,2]); //SELECT * FROM user WHERE id IN (1,2);
 
 ```
 
+#### Find Method second key -- select fields
+
+```
+user::find(1,['id','username']); //SELECT id,username FROM user WHERE id=1;
+
+Or
+
+user::find([1,2],['id','username']); //SELECT id,username FROM user WHERE id IN (1,2);
+
+
+```
+
 
