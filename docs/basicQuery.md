@@ -5,11 +5,11 @@
 # Model file
 
 ```
-    //tablename
-    public $table='admins';
+//tablename
+public $table='admins';
 
-    //primary key
-    public $primaryKey='id';
+//primary key
+public $primaryKey='id';
 
 ```
 
