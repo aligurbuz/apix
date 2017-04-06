@@ -20,4 +20,11 @@ user::find(1); //SELECT * FROM user WHERE id=1;
 
 ```
 
+#### Find Method multiple data as array
+
+```
+user::find([1,2]); //SELECT * FROM user WHERE id IN (1,2);
+
+```
+
 
