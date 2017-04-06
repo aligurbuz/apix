@@ -624,18 +624,45 @@ class querySqlFormatter {
 
                 if($query->rowCount()){
                     if($model['detail']){
-                        if(count($set)){
-                            $model['where']="".$model['where']." AND ".implode(" AND ",$set);
+
+                        $execute=[];
+                        if(count($model['execute'])){
+                            foreach($model['execute'] as $e=>$ee){
+
+                                if(!array_key_exists(str_replace("1","",$e),$execute)){
+                                    $execute[$e]=$ee;
+                                }
+                                else{
+                                    $execute[str_replace("1","",$e)]=$ee;
+                                }
+
+
+
+
+                            }
+
+                            if(count($execute)){
+                                $executeRealList=[];
+                                foreach ($execute as $er=>$erv) {
+                                    if(preg_match('@'.$er.'@is',$model['where'])){
+                                        $executeRealList[$er]=$erv;
+                                    }
+                                }
+
+                            }
                         }
 
+
+
+
                         $query=$this->db->prepare("SELECT * FROM ".$model['model']->table." ".$model['where']." LIMIT 1");
-                        $query->execute($model['execute']);
+                        $query->execute($executeRealList);
                         $result=$query->fetchAll(\PDO::FETCH_OBJ);
-                        return ['status'=>true,'data'=>$result];
+                        return ['post'=>true,'data'=>$result];
                     }
-                    return true;
+                    return ['post'=>true];
                 }
-                return false;
+                return ['post'=>false];
             }
             catch(\Exception $e){
                 if(environment()=="local"){
