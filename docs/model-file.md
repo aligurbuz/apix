@@ -9,7 +9,7 @@
 #### Creating Model File
 
 ```
-api model create project_name file:model_name table:database_table
+php api model create project_name file:model_name table:database_table
 
 ```
 

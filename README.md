@@ -25,7 +25,7 @@ Comprehensive restful API service for php development
 * [Database Introduce](https://github.com/aligurbuz/apix/blob/master/docs/database-introduce.md).
 * [Creating a model file](https://github.com/aligurbuz/apix/blob/master/docs/model-file.md).
 * [Model file content](https://github.com/aligurbuz/apix/blob/master/docs/model-content.md)
-* [Basic Query](https://github.com/aligurbuz/apix/blob/master/docs/serviceDirectoryStructure.md)
+* [Basic Query](https://github.com/aligurbuz/apix/blob/master/docs/basicQuery.md)
 * [Query Methods](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Query Caching](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
 * [Query For Client](https://github.com/aligurbuz/apix/blob/master/docs/serviceClasses.md)
