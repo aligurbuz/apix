@@ -780,91 +780,61 @@ class manager {
     public function push($listTables){
 
         $schemasSql=$this->getUpSchemaHandle($this->getSchemas());
+        if(count($schemasSql)){
+            foreach($this->table as $table){
+                if(array_key_exists($table,$schemasSql)){
+                    foreach($schemasSql[$table] as $key=>$value){
 
-        foreach($this->table as $table){
-            if(array_key_exists($table,$schemasSql)){
-                foreach($schemasSql[$table] as $key=>$value){
-
-                    $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml';
-                    if(file_exists($migrationYaml)){
-                        $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
-                    }
-                    else{
-                        $yaml = Yaml::dump(['migration'=>[]]);
-
-                        file_put_contents($migrationYaml, $yaml);
-
-                        $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
-                    }
-
-
-                    if(!in_array($key,$yaml['migration'])){
-                        try {
-
-                            $query=$this->db->prepare($value);
-                            $query->execute();
-
-                            $yaml['migration'][]=$key;
-
-                            $yaml = Yaml::dump($yaml);
+                        $migrationYaml=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml';
+                        if(file_exists($migrationYaml)){
+                            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
+                        }
+                        else{
+                            $yaml = Yaml::dump(['migration'=>[]]);
 
                             file_put_contents($migrationYaml, $yaml);
 
-                            echo $this->colors->done('++++'.$table.' migration has been completed as push');
-
-
+                            $yaml = Yaml::parse(file_get_contents(root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/migration.yaml'));
                         }
-                        catch(\Exception $e){
-
-                            echo $this->colors->error('---'.$table.' :'.$e->getMessage());
-                        }
-                    }
-
-                    else{
-
-                        echo $this->colors->warning('!!!!'.$table.' ['.$key.'] : has once migration');
-                    }
 
 
+                        if(!in_array($key,$yaml['migration'])){
+                            try {
 
+                                $query=$this->db->prepare($value);
+                                $query->execute();
 
-                }
+                                $yaml['migration'][]=$key;
 
-                if($this->seed){
-                    $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
-                    $seedFileSrc=root.'/src/migrations/seeds/'.$table.'_seed.php';
-                    if(file_exists($seedFile) && !file_exists($seedFileSrc)){
-                        $seedNameSpace="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\seeds\\".$table."_seed";
-                        $result=$seedNameSpace::up();
-                        if($result['prepare']!=="//prepare"){
-                            $prepareList=explode("//",$result['prepare']);
-                            $executeList=explode("//",$result['execute']);
+                                $yaml = Yaml::dump($yaml);
 
-                            foreach($prepareList as $pkey=>$pvalue){
-                                $resultPrepare=explode("@@",$pvalue);
-                                try {
-                                    $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
-                                    $resultExecute=explode("@@",$executeList[$pkey]);
-                                    if($query->execute($resultExecute)) {
+                                file_put_contents($migrationYaml, $yaml);
 
-                                        echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
-                                    }
-                                }
-                                catch(\Exception $e){
-                                    echo $this->colors->error('+++' . $table . ' '.$e->getMessage());
-                                }
+                                echo $this->colors->done('++++'.$table.' migration has been completed as push');
+
 
                             }
+                            catch(\Exception $e){
 
+                                echo $this->colors->error('---'.$table.' :'.$e->getMessage());
+                            }
                         }
 
+                        else{
+
+                            echo $this->colors->warning('!!!!'.$table.' ['.$key.'] : has once migration');
+                        }
+
+
+
+
                     }
-                    else{
 
-                        $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
-
-                        if(file_exists($seedFile)){
-                            $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
+                    if($this->seed){
+                        $seedFile=root.'/src/app/'.$this->project.'/'.$this->version.'/migrations/seeds/'.$table.'_seed.php';
+                        $seedFileSrc=root.'/src/migrations/seeds/'.$table.'_seed.php';
+                        if(file_exists($seedFile) && !file_exists($seedFileSrc)){
+                            $seedNameSpace="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\seeds\\".$table."_seed";
                             $result=$seedNameSpace::up();
                             if($result['prepare']!=="//prepare"){
                                 $prepareList=explode("//",$result['prepare']);
@@ -880,21 +850,55 @@ class manager {
                                             echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
                                         }
                                     }
-                                    catch (\Exception $e){
+                                    catch(\Exception $e){
                                         echo $this->colors->error('+++' . $table . ' '.$e->getMessage());
                                     }
 
                                 }
 
                             }
+
                         }
+                        else{
+
+                            $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
+
+                            if(file_exists($seedFile)){
+                                $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
+                                $result=$seedNameSpace::up();
+                                if($result['prepare']!=="//prepare"){
+                                    $prepareList=explode("//",$result['prepare']);
+                                    $executeList=explode("//",$result['execute']);
+
+                                    foreach($prepareList as $pkey=>$pvalue){
+                                        $resultPrepare=explode("@@",$pvalue);
+                                        try {
+                                            $query=$this->db->prepare("INSERT INTO ".$table." VALUES (".implode(",",$resultPrepare).")");
+                                            $resultExecute=explode("@@",$executeList[$pkey]);
+                                            if($query->execute($resultExecute)) {
+
+                                                echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
+                                            }
+                                        }
+                                        catch (\Exception $e){
+                                            echo $this->colors->error('+++' . $table . ' '.$e->getMessage());
+                                        }
+
+                                    }
+
+                                }
+                            }
 
 
+                        }
                     }
                 }
-            }
 
+            }
         }
+
+        echo $this->colors->error('---No Migration For Push');
+
 
     }
 
@@ -937,7 +941,14 @@ class manager {
                     $schemaNameSpacePath="\\src\\app\\".$this->project."\\".$this->version."\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
                 }
                 else{
-                    $schemaNameSpacePath="\\src\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+
+                    if(array_key_exists("devPackage",$getSrcMigrations)){
+                        $schemaNameSpacePath="\\src\\packages\\dev\\".$getSrcMigrations['devPackage'][$table][0]."\\devpack\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+                    }
+                    else{
+                        $schemaNameSpacePath="\\src\\migrations\\schemas\\".$table."\\".str_replace(".php","",$value);
+                    }
+
                 }
 
                 $list[$table][$value]=$schemaNameSpacePath::up();
@@ -956,8 +967,8 @@ class manager {
      * @return class object
      */
     public function getSrcMigrations(){
-        $dirs = array_filter(glob(root.'/src/migrations/schemas/*'), 'is_dir');
         $list=[];
+        $dirs = array_filter(glob(root.'/src/migrations/schemas/*'), 'is_dir');
         if(count($dirs)){
             foreach ($dirs as $key=>$value){
                 $explode=explode("/",$value);
@@ -976,9 +987,55 @@ class manager {
         }
 
 
+        return $this->getDevPackageMigrations($list);
+
+    }
+
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getDevPackageMigrations($list=array()){
+
+        $servicePackageFile=root.'/src/app/'.$this->project.'/'.$this->version.'/servicePackageDevController.php';
+        $servicePackageFileArray=require($servicePackageFile);
+        $packages=$servicePackageFileArray['packageDevSource']['package'];
+
+        if(count($packages)){
+            foreach ($packages as $pkey=>$pvalue){
+
+                if(file_exists(root.'/src/packages/dev/'.$pvalue.'/devpack/migrations/schemas')){
+                    $dirs = array_filter(glob(root.'/src/packages/dev/'.$pvalue.'/devpack/migrations/schemas/*'), 'is_dir');
+                    if(count($dirs)){
+                        foreach ($dirs as $key=>$value){
+                            $explode=explode("/",$value);
+                            $table=end($explode);
+
+                            if(!in_array($table,$this->table)){
+                                $this->table[]=$table;
+                                $list['devPackage'][$table][]=$pvalue;
+                            }
+
+                            foreach (glob($value."/*.php") as $filename) {
+                                $fileExplode=explode("/",$filename);
+                                $migration=end($fileExplode);
+                                $list[$table][]=$migration;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+
         return $list;
 
     }
+
 
 
     /**
