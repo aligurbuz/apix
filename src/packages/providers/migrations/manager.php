@@ -780,6 +780,7 @@ class manager {
     public function push($listTables){
 
         $schemasSql=$this->getUpSchemaHandle($this->getSchemas());
+
         if(count($schemasSql)){
             foreach($this->table as $table){
                 if(array_key_exists($table,$schemasSql)){
@@ -861,10 +862,18 @@ class manager {
                         }
                         else{
 
-                            $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
+                            if(array_key_exists("devPackage",$schemasSql) && array_key_exists($table,$schemasSql['devPackage'])){
+                                $seedFile=root.'/src/packages/dev/'.$schemasSql['devPackage'][$table][0].'/devpack/migrations/seeds/'.$table.'_seed.php';
+                                $seedNameSpace="\\src\\packages\\dev\\".$schemasSql['devPackage'][$table][0]."\\devpack\\migrations\\seeds\\".$table."_seed";
+                            }
+                            else{
+                                $seedFile=root.'/src/migrations/seeds/'.$table.'_seed.php';
+                                $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
+                            }
+
 
                             if(file_exists($seedFile)){
-                                $seedNameSpace="\\src\\migrations\\seeds\\".$table."_seed";
+
                                 $result=$seedNameSpace::up();
                                 if($result['prepare']!=="//prepare"){
                                     $prepareList=explode("//",$result['prepare']);
@@ -896,8 +905,11 @@ class manager {
 
             }
         }
+        else{
+            echo $this->colors->error('---No Migration For Push');
+        }
 
-        echo $this->colors->error('---No Migration For Push');
+
 
 
     }
@@ -951,7 +963,9 @@ class manager {
 
                 }
 
+                $list['devPackage'][$table][]=$getSrcMigrations['devPackage'][$table][0];
                 $list[$table][$value]=$schemaNameSpacePath::up();
+
             }
         }
 
