@@ -21,7 +21,7 @@ use src\services\httprequest as request;
 class objectloader {
 
     public $request;
-    public $status=true;
+    public $status=false;
 
     /**
      * Represents a object loader construct class.
@@ -43,7 +43,7 @@ class objectloader {
 
         //get object
         $list=[];
-        $list['dummy']['foo']='bar';
+        //$list['dummy']['foo']='bar';
 
         //return
         return $list;
