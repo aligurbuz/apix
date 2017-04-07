@@ -1,4 +1,6 @@
 <?php namespace lib\bin\commands;
+use Illuminate\Database\Connectors\Connector;
+use Lib\Console;
 /**
  * Command write.
  * type array
@@ -7,11 +9,12 @@
  */
 
 
-class service {
+class service extends console {
 
     public $fileprocess;
 
     public function __construct(){
+        parent::__construct();
         $this->fileprocess=$this->fileprocess();
         require("./lib/bin/commands/lib/getenv.php");
     }
@@ -96,13 +99,13 @@ class service {
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/source/bundle/index.html',null);
 
 
-                       return $this->fileProcessResult($list,function(){
-                           return 'service has been created';
+                       return $this->fileProcessResult($list,function() use($service) {
+                           return $this->success('+++ the service named '.$service.' has been created succesfully...');
                        });
 
                    }
 
-                   return 'service fail';
+                   return $this->error('service fail');
                }
            }
        }

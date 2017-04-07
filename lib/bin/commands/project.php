@@ -1,4 +1,5 @@
 <?php namespace lib\bin\commands;
+use Lib\Console;
 /**
  * Command write.
  * type array
@@ -6,11 +7,12 @@
  * user apix
  */
 
-class project {
+class project extends console {
 
     public $fileprocess;
 
     public function __construct(){
+        parent::__construct();
         $this->fileprocess=$this->fileprocess();
         require("./lib/bin/commands/lib/getenv.php");
     }
@@ -167,12 +169,12 @@ class project {
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine/builder');
             $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/builder/index.html',null);
 
-            return $this->fileProcessResult($list,function(){
-                return 'project has been created';
+            return $this->fileProcessResult($list,function() use($data) {
+                return $this->success('+++ the project named '.$this->getProjectName($data).' has been created succesfully...');
             });
         }
 
-        return 'project fail';
+        return $this->error('project fail');
 
     }
 
