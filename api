@@ -68,14 +68,22 @@ if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
 }
 else{
 
+
     /**
      * System cli custom command main file
      * return class method
      */
     if(environment()=="local"){
         //get connection
-        $consoleCommandApplication=new \lib\bin\custom();
-        echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        if($argv[1]=="doctrine"){
+            $consoleCommandApplication=new \lib\bin\doctrine();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
+        else{
+            $consoleCommandApplication=new \lib\bin\custom();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
+
     }
     else {
         echo 'Console command except local would not work';
