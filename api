@@ -45,7 +45,8 @@ spl_autoload_register(function($class) {
 if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
     $commandFile=require("./lib/bin/commands/".$argv[1].".php");
 
-    $commandFile=new $argv[1]();
+    $commandNamespaceSpl='\\lib\\bin\\commands\\'.$argv[1].'';
+    $commandFile=new $commandNamespaceSpl();
 
     $list=[];
     foreach ($argv as $key=>$value){

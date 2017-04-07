@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'libFile'=>'./lib/bin/commands/lib/filedirprocess.php'
+    'libFile'=>'\\lib\\bin\\commands\\lib\\filedirprocess'
 ];

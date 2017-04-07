@@ -1,4 +1,4 @@
-<?php
+<?php namespace lib\bin\commands;
 /**
  * Command write.
  * type array
@@ -237,8 +237,8 @@ $content=str_replace("//publishes","//publishes
 
         //file process new instance
         $libconf=require("./lib/bin/commands/lib/conf.php");
-        $fd=require ($libconf['libFile']);
-        return new filedirprocess();
+        $file=$libconf['libFile'];
+        return new $file();
 
     }
 

@@ -1,4 +1,4 @@
-<?php
+<?php namespace lib\bin\commands\lib;
 /**
  * File directory project.
  * type string

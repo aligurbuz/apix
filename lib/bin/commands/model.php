@@ -1,4 +1,4 @@
-<?php
+<?php namespace lib\bin\commands;
 /**
  * Command write.
  * type array
@@ -126,8 +126,8 @@ class model {
 
         //file process new instance
         $libconf=require("./lib/bin/commands/lib/conf.php");
-        $fd=require ($libconf['libFile']);
-        return new filedirprocess();
+        $file=$libconf['libFile'];
+        return new $file();
 
     }
 
