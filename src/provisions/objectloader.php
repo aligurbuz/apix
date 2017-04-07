@@ -21,7 +21,7 @@ use src\services\httprequest as request;
 class objectloader {
 
     public $request;
-    public $status=false;
+    public $status=true;
 
     /**
      * Represents a object loader construct class.
