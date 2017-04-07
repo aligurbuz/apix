@@ -42,7 +42,7 @@ class service {
                        $touchServicePostParams['params']['serviceName']=$service;
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/postService.php',$touchServicePostParams);
 
-                       $touchServicePutParams['execution']='services/putservice';
+                       /*$touchServicePutParams['execution']='services/putservice';
                        $touchServicePutParams['params']['projectName']=$project;
                        $touchServicePutParams['params']['serviceName']=$service;
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/putService.php',$touchServicePutParams);
@@ -55,7 +55,7 @@ class service {
                        $touchServiceDeleteParams['execution']='services/deleteservice';
                        $touchServiceDeleteParams['params']['projectName']=$project;
                        $touchServiceDeleteParams['params']['serviceName']=$service;
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/deleteService.php',$touchServiceDeleteParams);
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/deleteService.php',$touchServiceDeleteParams);*/
 
 
                        $touchdeveloperParams['execution']='services/developer';
