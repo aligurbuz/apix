@@ -1,4 +1,5 @@
 <?php namespace lib\bin\commands;
+use Lib\Console;
 /**
  * Command write.
  * type array
@@ -7,11 +8,12 @@
  */
 
 
-class model {
+class model extends console {
 
     public $fileprocess;
 
     public function __construct(){
+        parent::__construct();
         $this->fileprocess=$this->fileprocess();
         require("./lib/bin/commands/lib/getenv.php");
     }
@@ -28,7 +30,7 @@ class model {
                     $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                     $list=[];
 
-                    $modelControlPath='./src/app/'.$project.'/'.$version.'/model/'.$this->getParams($data)[1]['file'].'.php';
+                    $modelControlPath='./src/app/'.$project.'/'.$version.'/model/sudb/'.$this->getParams($data)[1]['file'].'.php';
 
                     if(!file_exists($modelControlPath)){
                         $modelParamsBuilder['execution']='services/modelBuilder';
@@ -56,12 +58,15 @@ class model {
                         $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
                         $list[]=$this->touch($project.'/'.$version.'/model/eloquent/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
 
-                        return $this->fileProcessResult($list,function(){
-                            return 'model file has been created';
+                        return $this->fileProcessResult($list,function() use($data){
+                            return $this->success('+++ the model named '.$this->getParams($data)[1]['file'].' has been created succesfully...');
                         });
                     }
+                    else{
+                        return $this->error($this->getParams($data)[1]['file'].' model is already available');
+                    }
 
-                    return $this->getParams($data)[1]['file'].' model is already available';
+
 
 
                 }
