@@ -188,7 +188,7 @@ class httprequest {
 
         $headers=$this->getHeaders();
         $httpHeaders=['host','connection','cache-control','accept','upgrade-insecure-requests','user-agent',
-                     'accept-encoding','accept-language','cookie','postman-token','content-length','origin','content-type'];
+                     'accept-encoding','accept-language','cookie','postman-token','content-length','origin','content-type','clientToken'];
         $list=[];
         foreach ($headers as $key=>$value) {
             if(!in_array($key,$httpHeaders)){
