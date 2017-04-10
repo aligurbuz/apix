@@ -6,7 +6,7 @@
  */
 
 namespace src\app\__projectName__\__version__\staticProvider;
-use src\services\httprequest as request;
+use src\store\services\httprequest as request;
 
 
 class __file__

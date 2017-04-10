@@ -5,10 +5,10 @@
  * __class__
  */
 
-namespace src\commands;
+namespace src\store\commands;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Src\Services\FileProcess as File;
+use Src\Store\Services\FileProcess as File;
 use Lib\Console;
 
 /**

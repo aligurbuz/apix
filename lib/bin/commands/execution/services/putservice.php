@@ -9,8 +9,8 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use Src\Services\Httprequest as request;
-use Src\Services\Repository as repo;
+use src\store\services\Httprequest as request;
+use src\store\services\Repository as repo;
 
 /**
  * Represents a putService class.

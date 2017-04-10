@@ -39,7 +39,7 @@ class custom {
 
         //result
         $application=new Application();
-        $command='\\src\\commands\\'.$data[1];
+        $command='\\src\\store\\commands\\'.$data[1];
         if($data[1]=="migration"){
             $command='\\lib\\bin\\'.$data[1];
         }

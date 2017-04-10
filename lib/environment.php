@@ -27,7 +27,7 @@ class environment {
     public static function get(){
         return self::defaultEnvironment(function(){
             return self::applicationEnvironment(function(){
-                $otherEnvPath=utils::resolve("\\src\\env\\env");
+                $otherEnvPath=utils::resolve("\\src\\store\\env\\env");
                 $environment=$otherEnvPath->environmentSetUp();
                 if($environment!==null){
                     return $environment;
@@ -67,10 +67,10 @@ class environment {
 
         }
         else{
-            $otherenvpath=utils::resolve("\\src\\env\\env");
+            $otherenvpath=utils::resolve("\\src\\store\\env\\env");
             $environment=$otherenvpath->environmentSetUp();
             if($environment!==null){
-                $dotenv = new \Dotenv\Dotenv(root.'/src/env','.'.$environment);
+                $dotenv = new \Dotenv\Dotenv(root.'/src/store/env','.'.$environment);
 
                 $environmentInProjectPath=root.'/'.src.'/'.app.'/storage/env/.'.$environment;
                 if(file_exists($environmentInProjectPath)){

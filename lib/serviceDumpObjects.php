@@ -2,8 +2,8 @@
 
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
-use src\services\httprequest as request;
-use src\services\httpSession;
+use src\store\services\httprequest as request;
+use src\store\services\httpSession;
 
 class serviceDumpObjects {
 

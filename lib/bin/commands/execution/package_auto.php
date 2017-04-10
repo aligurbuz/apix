@@ -1,4 +1,4 @@
-<?php namespace src\packages\auto\__packageName__;
+<?php namespace src\store\packages\auto\__packageName__;
 
 /*
  * This file is __packageName__ package for every service.

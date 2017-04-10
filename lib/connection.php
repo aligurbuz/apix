@@ -3,7 +3,7 @@
 namespace lib;
 use lib\BaseDefinitor as Definitor;
 use Symfony\Component\Yaml\Yaml;
-use src\services\httprequest as request;
+use src\store\services\httprequest as request;
 
 class connection extends Definitor {
 
@@ -38,6 +38,7 @@ class connection extends Definitor {
      * @return connectin runner
      */
     public static function run() {
+
         //get instance
         $instance=self::getInstance();
         $service=self::$service;
@@ -59,7 +60,7 @@ class connection extends Definitor {
 
                        if($service[1]=="doc"){
                            header("Content-Type: text/html");
-                           $apiDoc="\\src\\declarations\\src\\index";
+                           $apiDoc="\\src\\store\\declarations\\src\\index";
                            return utils::resolve($apiDoc)->index();
                        }
 
@@ -109,7 +110,7 @@ class connection extends Definitor {
 
                                 $serviceBasePlatformStatus=utils::resolve(api."serviceBaseController")->platform;
                                 if($serviceBasePlatformStatus){
-                                    $servicePlatform=utils::resolve("\\src\\services\\platform");
+                                    $servicePlatform=utils::resolve("\\src\\store\\services\\platform");
                                     $requestServiceMethodReal=$servicePlatform->take(function() use(&$requestServiceMethodReal,$apix,$requestServiceMethod,$boot){
                                         $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
                                     });
@@ -172,6 +173,7 @@ class connection extends Definitor {
      * @return response autoloads runner
      */
     private function getAutoLoadsFromServices(){
+
 
         //get defines
         $this->getDefinitions();

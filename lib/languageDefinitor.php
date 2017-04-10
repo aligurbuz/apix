@@ -41,7 +41,7 @@ class languageDefinitor {
                 $langStorage=root.'/src/app/'.app.'/storage/lang/'.$langName.'/'.$dataParse[0].'.yaml';
                 if(!file_exists($langStorage)){
 
-                    $langStorage=root.'/src/storage/lang/'.$langName.'/'.$dataParse[0].'.yaml';
+                    $langStorage=root.'/src/store/storage/lang/'.$langName.'/'.$dataParse[0].'.yaml';
 
                     if(!file_exists($langStorage)){
                         $langStorage=root.'/src/app/'.app.'/storage/lang/'.$def.'/'.$dataParse[0].'.yaml';

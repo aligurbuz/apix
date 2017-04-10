@@ -55,7 +55,7 @@ class branch {
 
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
-                require ('./src/config/config.php');
+                require ('./src/store/config/config.php');
                 $config=\src\config\config::get("appVersions");
                 foreach ($value as $project=>$service){
                     $version=(array_key_exists($project,$config)) ? $config[$project] : 'v1';
@@ -83,7 +83,7 @@ class branch {
 
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
-                require ('./src/config/config.php');
+                require ('./src/store/config/config.php');
                 $config=\src\config\config::get("appVersions");
                 foreach ($value as $project=>$service){
                     $version=(array_key_exists($project,$config)) ? $config[$project] : 'v1';

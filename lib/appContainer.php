@@ -15,7 +15,7 @@ class appContainer {
             $inAppContainer=$inApp->container();
 
             $inAppContainerList=[];
-            $appContainer=\src\config\app::getContainer();
+            $appContainer=\src\store\config\app::getContainer();
             foreach ($inAppContainer as $inkey=>$invalue){
                 if(!array_key_exists($inkey,$appContainer)){
                     $inAppContainerList[$inkey]=$invalue;

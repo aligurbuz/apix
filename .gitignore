@@ -4,9 +4,9 @@ node_modules
 .env
 src/app/*
 !important src/app/index.html
-src/provisions/limitation/yaml/*
+src/store/provisions/limitation/yaml/*
 !important src/provisions/limitation/yaml/index.html
-src/commands/*
+src/store/commands/*
 !important src/commands/index.html
 src/access.log
 tests/*

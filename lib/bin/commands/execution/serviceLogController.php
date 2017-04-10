@@ -6,7 +6,7 @@
  */
 
 namespace src\app\__projectName__\v1;
-use src\services\httprequest as request;
+use src\store\services\httprequest as request;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler as StreamHandler;
 

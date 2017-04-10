@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\provisions;
-use src\services\httprequest as request;
+use src\store\services\httprequest as request;
 
 /**
  * Represents a provision class.

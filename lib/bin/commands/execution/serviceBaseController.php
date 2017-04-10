@@ -6,7 +6,7 @@
  */
 
 namespace src\app\__projectName__\v1;
-use Src\Services\Httprequest as request;
+use Src\Store\Services\Httprequest as request;
 
 
 class serviceBaseController

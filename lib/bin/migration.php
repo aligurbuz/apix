@@ -41,7 +41,7 @@ class migration {
 
         //make somethings
         $arg=$this->getArg($arguments);
-        $migrationPath="\\src\\packages\\providers\\migrations\\manager";
+        $migrationPath="\\src\\store\\packages\\providers\\migrations\\manager";
         $migration=new $migrationPath($arg);
         return $migration->handle();
     }

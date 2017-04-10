@@ -9,8 +9,8 @@
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
-use src\services\httprequest as request;
-use src\provisions\limitation\accessRules as rule;
+use src\store\services\httprequest as request;
+use src\store\provisions\limitation\accessRules as rule;
 
 class rateLimitQuery {
 
@@ -62,7 +62,7 @@ class rateLimitQuery {
             return rule::$status;
         }
         else{
-            $projectClass='\\src\\provisions\\limitation\\'.app.'_accessRules';
+            $projectClass='\\src\\store\\provisions\\limitation\\'.app.'_accessRules';
             return $projectClass::$status;
         }
 
@@ -242,7 +242,7 @@ class rateLimitQuery {
             $rule=rule::handle();
         }
         else{
-            $projectClass='\\src\\provisions\\limitation\\'.app.'_accessRules';
+            $projectClass='\\src\\store\\provisions\\limitation\\'.app.'_accessRules';
             $rule=$projectClass::handle();
         }
         return $rule;

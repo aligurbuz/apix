@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\branches\query\__methodName__;
-use src\services\httprequest as request;
+use src\store\services\httprequest as request;
 
 /**
  * Represents a index class.
