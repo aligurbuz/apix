@@ -29,6 +29,7 @@ class languageDefinitor {
             //data parse
             $dataParse=explode(".",$data);
 
+
             //default lang
             $default=self::getDefaultLang($langName,$def);
             $defaultLang=self::getDefaultLangParse($default);
@@ -60,6 +61,7 @@ class languageDefinitor {
 
             //reel data
             $words=(count($defaultLang)==0 OR $lang==null) ? [] : array_merge($defaultLang,$lang);
+
 
             //if there is key : output
             if(array_key_exists($dataParse[1],$words)){
