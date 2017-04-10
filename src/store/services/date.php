@@ -45,4 +45,8 @@ class date {
         return Carbon::createFromTimestamp($int)->timezone(date_default_timezone_get());
     }
 
+    public function test(){
+        return 'test';
+    }
+
 }

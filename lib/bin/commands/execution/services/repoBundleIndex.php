@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\repository\__bundleName__;
-use src\store\services\httprequest as request;
+use Request;
 
 /**
  * Represents a bundle index class.
@@ -27,7 +27,7 @@ class index implements __bundleName__Interface  {
      *
      * @param type dependency injection and function
      */
-    public function __construct(request $request){
+    public function __construct(Request $request){
 
         //get request info
         $this->request=$request;

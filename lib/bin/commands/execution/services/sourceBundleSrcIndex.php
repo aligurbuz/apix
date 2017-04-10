@@ -9,8 +9,8 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\source\bundle\__bundleName__\src\__srcName__;
-use src\store\services\Httprequest as request;
-use src\store\services\Repository as repo;
+use Request;
+use Repo;
 
 /**
  * Represents a bundle index class.
@@ -28,7 +28,7 @@ class __className__ extends \src\app\__projectName__\v1\__call\__serviceName__\a
      *
      * @param type dependency injection and function
      */
-    public function __construct(request $request){
+    public function __construct(Request $request){
 
         //get request info
         parent::__construct();

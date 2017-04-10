@@ -9,8 +9,8 @@
  */
 
 namespace src\app\__projectName__\v1\platform;
-use src\store\services\Httprequest as request;
-use src\store\services\Repository as repo;
+use Request;
+use Repo;
 
 /**
  * Represents a index class.
@@ -28,7 +28,7 @@ class config {
      *
      * @param type dependency injection and function
      */
-    public function __construct(request $request){
+    public function __construct(Request $request){
 
         //get request info
         $this->request=$request;

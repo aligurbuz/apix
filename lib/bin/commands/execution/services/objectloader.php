@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\provisions;
-use src\store\services\httprequest as request;
+use Request;
 
 /**
  * Represents a object loader class.
@@ -28,7 +28,7 @@ class objectloader {
      * $data main variables
      * return type string
      */
-    public function __construct(request $request){
+    public function __construct(Request $request){
 
         $this->request=$request;
     }
