@@ -5,10 +5,9 @@ node_modules
 src/app/*
 !important src/app/index.html
 src/store/provisions/limitation/yaml/*
-!important src/provisions/limitation/yaml/index.html
+!important src/store/provisions/limitation/yaml/index.html
 src/store/commands/*
-!important src/commands/index.html
-src/access.log
+!important src/store/commands/index.html
 tests/*
 !important tests/index.html
 .DS_Store
