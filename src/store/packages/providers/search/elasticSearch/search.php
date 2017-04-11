@@ -113,6 +113,17 @@ class search implements searchInterface {
     }
 
     /**
+     * elastic search getSource.
+     * The Get Mappings API will return the mapping details about your indexes and types.
+     * Depending on the mappings that you wish to retrieve, you can specify a number of combinations of index and type:
+     * @return array
+     */
+    public function getSource($params=array())
+    {
+        return $this->client->getSource($params);
+    }
+
+    /**
      * elastic search delete.
      * Which means that the index was deleted successfully and we are now back to
      * where we started with nothing in our cluster.
@@ -202,6 +213,58 @@ class search implements searchInterface {
 
         // Document will be indexed to my_index/my_type/my_id
         return $this->client->create($params);
+
+    }
+
+
+    /**
+     * elastic search closer search.
+     * Whereas a phrase query simply excludes documents that don’t contain the exact query phrase, a proximity query—a phrase
+     * query where slop is greater than 0—incorporates the proximity of the query terms into the final relevance _score.
+     * By setting a high slop value like 50 or 100,
+     * you can exclude documents in which the words are really too far apart,
+     * but give a higher score to documents in which the words are closer together.
+     *
+     * @return array
+     */
+    public function closerSearch($data,$filter=array())
+    {
+        $params['index'] =$data['index'];
+        $params['type'] =$data['type'];
+        $params['body']['query']['match_phrase'][$data['field']]['query']=$data['search'];
+        $params['body']['query']['match_phrase'][$data['field']]['slop']=50;
+
+
+        $result=$this->client->search($params);
+
+        return $this->filterResults($result,$filter,function() use($result) {
+            return $result;
+        });
+
+    }
+
+
+    /**
+     * elastic search filter search.
+     * document filter
+     *
+     * @return array
+     */
+    private function filterResults($result,$filter,$callback){
+        $list=[];
+        if(count($filter)){
+            foreach ($result['hits']['hits'] as $key=>$value){
+                foreach($filter as $filterVal){
+                    $list[$filterVal][]=$result['hits']['hits'][$key][$filterVal];
+                }
+
+            }
+        }
+        if(count($list)){
+            return $list;
+        }
+
+        return call_user_func($callback);
 
     }
 
