@@ -16,17 +16,17 @@ interface searchInterface
      * getAll
      *
      */
-    public function getAll();
+    public function getAll($data=array());
 
     /**
      * delete index.
      *
      */
-    public function deleteIndex();
+    public function deleteIndex($index=null);
 
     /**
      * set Map.
      *
      */
-    public function setMap();
+    public function setMap($data=array());
 }
