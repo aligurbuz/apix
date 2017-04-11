@@ -243,6 +243,56 @@ class search implements searchInterface {
 
     }
 
+    /**
+     * elastic search search as you type.
+     * Leaving postcodes behind, let’s take a look at how prefix matching can help with full-text queries.
+     * Users have become accustomed to seeing search results before they have finished typing their query—so-called instant search,
+     * or search-as-you-type.
+     * Not only do users receive their search results in less time,
+     * but we can guide them toward results that actually exist in our index.
+     *
+     * @return array
+     */
+    public function searchAsYouType($data,$filter=array())
+    {
+        $params['index'] =$data['index'];
+        $params['type'] =$data['type'];
+        $params['body']['query']['match_phrase_prefix'][$data['field']]['query']=$data['search'];
+        $params['body']['query']['match_phrase_prefix'][$data['field']]['slop']=50;
+
+
+        $result=$this->client->search($params);
+
+        return $this->filterResults($result,$filter,function() use($result) {
+            return $result;
+        });
+
+    }
+
+
+    /**
+     * elastic search match all.
+     * The match_all query simply matches all documents.
+     * It is the default query that is used if no query has been specified:
+     *
+     * @return array
+     */
+    public function getAllMatch($data,$filter=array())
+    {
+        $params['index'] =$data['index'];
+        $params['type'] =$data['type'];
+        $params['body']['query']['match_all']=[];
+
+
+        $result=$this->client->search($params);
+
+        return $this->filterResults($result,$filter,function() use($result) {
+            return $result;
+        });
+
+    }
+
+
 
     /**
      * elastic search filter search.
