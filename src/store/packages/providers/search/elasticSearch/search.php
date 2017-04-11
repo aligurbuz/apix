@@ -43,6 +43,40 @@ class search implements searchInterface {
     }
 
     /**
+     * elastic node stats.
+     * Any time that you start an instance of Elasticsearch, you are starting a node.
+     * A collection of connected nodes is called a cluster. If you are running a single node of Elasticsearch, then you have a cluster of one node.
+     * @return array
+     */
+    public function getNodeStats()
+    {
+        return $this->client->nodes()->stats();
+    }
+
+    /**
+     * elastic index stats.
+     * Indices level stats provide statistics on different operations happening on an index.
+     * The API provides statistics on the index level scope (though most stats can also be retrieved using node level scope).
+     * @return array
+     */
+    public function getIndexStats()
+    {
+        return $this->client->indices()->stats();
+    }
+
+    /**
+     * elastic index stats.
+     * The Cluster Stats API allows to retrieve statistics from a cluster wide perspective. The API returns basic index metrics
+     * (shard numbers, store size, memory usage) and information about the current nodes that form
+     * the cluster (number, roles, os, jvm versions, memory usage, cpu and installed plugins).
+     * @return array
+     */
+    public function getClusterStats()
+    {
+        return $this->client->cluster()->stats();
+    }
+
+    /**
      * elastic search getAll.
      * The Get Mappings API will return the mapping details about your indexes and types.
      * Depending on the mappings that you wish to retrieve, you can specify a number of combinations of index and type:
@@ -52,5 +86,8 @@ class search implements searchInterface {
     {
         return $this->client->indices()->getMapping($params);
     }
+
+
+
 
 }
