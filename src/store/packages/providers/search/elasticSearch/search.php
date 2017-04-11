@@ -65,7 +65,7 @@ class search implements searchInterface {
     }
 
     /**
-     * elastic index stats.
+     * elastic cluster stats.
      * The Cluster Stats API allows to retrieve statistics from a cluster wide perspective. The API returns basic index metrics
      * (shard numbers, store size, memory usage) and information about the current nodes that form
      * the cluster (number, roles, os, jvm versions, memory usage, cpu and installed plugins).
@@ -85,6 +85,17 @@ class search implements searchInterface {
     public function getAll($params=array())
     {
         return $this->client->indices()->getMapping($params);
+    }
+
+    /**
+     * elastic search delete.
+     * Which means that the index was deleted successfully and we are now back to
+     * where we started with nothing in our cluster.
+     * @return array
+     */
+    public function deleteIndex($index=null)
+    {
+        return $this->client->indices()->delete(['index'=>$index]);
     }
 
 
