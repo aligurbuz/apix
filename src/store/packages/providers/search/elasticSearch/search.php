@@ -66,6 +66,7 @@ class search implements searchInterface {
     }
 
 
+
     /**
      * elastic node stats.
      * Any time that you start an instance of Elasticsearch, you are starting a node.
@@ -154,8 +155,8 @@ class search implements searchInterface {
     {
         if(!array_key_exists("settings",$data)){
             $settings=[
-                'number_of_shards' => 3,
-                'number_of_replicas' => 2
+                'number_of_shards' => 1,
+                'number_of_replicas' =>0
             ];
         }
         else{
@@ -178,6 +179,30 @@ class search implements searchInterface {
 
         // Create the index with mappings and settings now
         return $this->client->indices()->create($params);
+    }
+
+
+    /**
+     * elastic search create.
+     * When you add documents to Elasticsearch, you index JSON documents.
+     * This maps naturally to PHP associative arrays, since they can easily be encoded in JSON. Therefore, in Elasticsearch-PHP
+     * you create and pass associative arrays to the client for indexing.
+     * There are several methods of ingesting data into Elasticsearch, which we will cover here.
+     * @return array
+     */
+    public function create($data=array())
+    {
+        $params = [
+            'index' => $data['index'],
+            'type' =>$data['type'],
+            'id' =>$data['id'],
+            'body' =>$data['body']
+        ];
+
+
+        // Document will be indexed to my_index/my_type/my_id
+        return $this->client->create($params);
+
     }
 
 
