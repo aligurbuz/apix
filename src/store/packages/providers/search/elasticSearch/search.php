@@ -32,12 +32,24 @@ class search {
 
     /**
      * elastic search ping.
+     * test start
      *
      */
     public function ping(){
 
         //search ping
         return 'ping';
+    }
+
+    /**
+     * elastic search getAll.
+     * The Get Mappings API will return the mapping details about your indexes and types.
+     * Depending on the mappings that you wish to retrieve, you can specify a number of combinations of index and type:
+     * @return array
+     */
+    public function getAll($params=array())
+    {
+        return $this->client->indices()->getMapping($params);
     }
 
 }
