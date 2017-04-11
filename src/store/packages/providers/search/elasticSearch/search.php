@@ -42,6 +42,30 @@ class search implements searchInterface {
         return $this->client->ping($data);
     }
 
+
+    /**
+     * elastic search health.
+     * test health
+     *
+     */
+    public function health($data=array()){
+
+        //search ping
+        return $this->client->cat()->health($data);
+    }
+
+    /**
+     * elastic search count.
+     * Get the number of documents in an index.
+     *
+     */
+    public function count($data=array()){
+
+        //search ping
+        return $this->client->count($data);
+    }
+
+
     /**
      * elastic node stats.
      * Any time that you start an instance of Elasticsearch, you are starting a node.
@@ -113,10 +137,11 @@ class search implements searchInterface {
      * Used to check if the type (indices) exists or not
      * @return array
      */
-    public function typeExists($index=null,$type=null)
+    public function existsType($index=null,$type=null)
     {
         return $this->client->indices()->existsType(['index'=>$index,'type'=>$type]);
     }
+
 
 
     /**
