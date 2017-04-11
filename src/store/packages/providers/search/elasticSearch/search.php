@@ -36,10 +36,10 @@ class search implements searchInterface {
      * test start
      *
      */
-    public function ping(){
+    public function ping($data=array()){
 
         //search ping
-        return 'ping';
+        return $this->client->ping($data);
     }
 
     /**
@@ -96,6 +96,26 @@ class search implements searchInterface {
     public function deleteIndex($index=null)
     {
         return $this->client->indices()->delete(['index'=>$index]);
+    }
+
+    /**
+     * elastic search index exists.
+     * Used to check if the index (indices) exists or not
+     * @return array
+     */
+    public function indexExists($index=null)
+    {
+        return $this->client->indices()->exists(['index'=>$index]);
+    }
+
+    /**
+     * elastic search type exists.
+     * Used to check if the type (indices) exists or not
+     * @return array
+     */
+    public function typeExists($index=null,$type=null)
+    {
+        return $this->client->indices()->existsType(['index'=>$index,'type'=>$type]);
     }
 
 
