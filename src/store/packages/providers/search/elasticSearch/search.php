@@ -8,6 +8,7 @@
  */
 
 namespace src\store\packages\providers\search\elasticSearch;
+use src\store\packages\providers\search\searchInterface;
 
 /**
  * Represents a elastic search class.
@@ -16,7 +17,7 @@ namespace src\store\packages\providers\search\elasticSearch;
  * return type string
  */
 
-class search {
+class search implements searchInterface {
 
     public $client;
 

@@ -17,7 +17,7 @@ namespace src\store\packages\providers\search;
  * return type array
  */
 
-class search implements searchInterface {
+class search {
 
 
     /**
