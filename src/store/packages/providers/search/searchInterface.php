@@ -17,4 +17,10 @@ interface searchInterface
      *
      */
     public function getAll();
+
+    /**
+     * delete index.
+     *
+     */
+    public function deleteIndex();
 }
