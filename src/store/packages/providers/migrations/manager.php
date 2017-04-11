@@ -963,7 +963,10 @@ class manager {
 
                 }
 
-                $list['devPackage'][$table][]=$getSrcMigrations['devPackage'][$table][0];
+                if(array_key_exists("devPackage",$getSrcMigrations)){
+                    $list['devPackage'][$table][]=$getSrcMigrations['devPackage'][$table][0];
+                }
+
                 $list[$table][$value]=$schemaNameSpacePath::up();
 
             }
