@@ -23,4 +23,10 @@ interface searchInterface
      *
      */
     public function deleteIndex();
+
+    /**
+     * set Map.
+     *
+     */
+    public function setMap();
 }

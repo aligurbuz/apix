@@ -99,6 +99,43 @@ class search implements searchInterface {
     }
 
 
+    /**
+     * elastic search set Map.
+     * You can specify any parameters that would normally be included in a new index creation API.
+     * All parameters that would normally go in the request body are located in the body parameter
+     * @return array
+     */
+    public function setMap($data=array())
+    {
+        if(!array_key_exists("settings",$data)){
+            $settings=[
+                'number_of_shards' => 3,
+                'number_of_replicas' => 2
+            ];
+        }
+        else{
+            $settings=$data['settings'];
+        }
+        $params = [
+            'index' => $data['index'],
+            'body' => [
+                'settings' => $settings,
+                'mappings' => [
+                    $data['type'] => [
+                        '_source' => [
+                            'enabled' => true
+                        ],
+                        'properties' => $data['properties']
+                    ]
+                ]
+            ]
+        ];
+
+        // Create the index with mappings and settings now
+        return $this->client->indices()->create($params);
+    }
+
+
 
 
 }
