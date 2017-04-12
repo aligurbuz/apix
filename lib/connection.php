@@ -3,7 +3,7 @@
 namespace lib;
 use lib\BaseDefinitor as Definitor;
 use Symfony\Component\Yaml\Yaml;
-use src\store\services\httprequest as request;
+use Src\Store\Services\Httprequest as Request;
 
 class connection extends Definitor {
 
@@ -70,15 +70,44 @@ class connection extends Definitor {
      * for service base controller
      */
     public function __construct(){
-        //class resolve
+
+        /**
+         * @class resolve reflection
+         * connection run getClassDependencyResolver
+         * for service base controller
+         */
         $this->resolve=$this->getClassDependencyResolver();
-        //get service and file method from request uri
+
+        /**
+         * @class getServiceNameAndMethodFromRequestUri
+         * connection run getClassDependencyResolver
+         * get service and file method from request uri
+         * for service base controller
+         */
         self::$service=$this->getServiceNameAndMethodFromRequestUri();
-        //get only method name from service
+
+        /**
+         * @class getPureMethodNameFromService
+         * connection run getPureMethodNameFromService
+         * get only method name from service
+         * for service base controller
+         */
         self::$serviceMethod=$this->getPureMethodNameFromService();
-        //get query params from service
+
+        /**
+         * @class getQueryParamsFromRoute
+         * connection run getQueryParamsFromRoute
+         * get query params from service
+         * for service base controller
+         */
         self::$queryParams=$this->getQueryParamsFromRoute();
-        //assign version number
+
+        /**
+         * @class getVersionForProject
+         * connection run getVersionForProject
+         * assign version number
+         * for service base controller
+         */
         self::$getVersion=$this->getVersionForProject();
     }
 
