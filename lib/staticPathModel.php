@@ -12,6 +12,7 @@ namespace lib;
 
 class staticPathModel {
 
+
     /**
      * @var param bootFile
      * it is boot resolve
@@ -32,6 +33,63 @@ class staticPathModel {
      * for service path run
      */
     public static $apiPlatformNamespace='\\src\\store\\services\\platform';
+
+
+    /**
+     * @var param api middleware
+     * it is namespace for api middleware
+     * for service path run
+     */
+    public static $apiMiddlewareNamespace='\\src\\store\\middleware';
+
+
+    /**
+     * @var param api packages auto
+     * it is path for api auto service
+     * for service path run
+     */
+    public static $apiPackageAutoPath='src/store/packages/auto';
+
+
+    /**
+     * @var param api packages auto
+     * it is namespace for api auto service
+     * for service path run
+     */
+    public static $apiPackageAutoNamespace='\\src\\store\\packages\\auto';
+
+
+    /**
+     * @var param api packages dev
+     * it is path for api dev service
+     * for service path run
+     */
+    public static $apiPackageDevPath='src/store/packages/dev';
+
+
+    /**
+     * @var param api packages dev
+     * it is namespace for api dev service
+     * for service path run
+     */
+    public static $apiPackageDevNamespace='\\src\\store\\packages\\dev';
+
+
+    /**
+     * @var param api token
+     * it is namespace for api token service
+     * for service path run
+     */
+    public static $apiTokenNamespace='\\src\\store\\provisions\\token';
+
+
+    /**
+     * @var param api provision
+     * it is namespace for api provision service
+     * for service path run
+     */
+    public static $apiProvisionNamespace='\\src\\store\\provisions\\index';
+
 
 
 

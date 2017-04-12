@@ -304,7 +304,7 @@ class BaseDefinitor  {
 
     protected function middleware($prefix){
 
-        $Middleware="\\src\\store\\middleware\\".$prefix."Middleware";
+        $Middleware="".staticPathModel::$apiMiddlewareNamespace."\\".$prefix."Middleware";
         $Middleware=new $Middleware([]);
 
         $app=''.app.'/'.service.'/'.method;
@@ -353,10 +353,10 @@ class BaseDefinitor  {
      */
 
     protected function checkPackageAuto($service){
-        if(file_exists(root."/src/store/packages/auto/".$service[1]."/".$service[1].".php")){
+        if(file_exists(root."/".staticPathModel::$apiPackageAutoPath."/".$service[1]."/".$service[1].".php")){
             return [
                 'status'=>true,
-                'class'=>"\\src\\store\\packages\\auto\\".$service[1]."\\".$service[1]
+                'class'=>"".staticPathModel::$apiPackageAutoNamespace."\\".$service[1]."\\".$service[1]
             ];
         }
         return [
@@ -384,12 +384,12 @@ class BaseDefinitor  {
                 $service[1]=null;
             }
         }
-        if(file_exists(root."/src/store/packages/dev/".$service[1]."/".request."Service.php")){
+        if(file_exists(root."/".staticPathModel::$apiPackageDevPath."/".$service[1]."/".request."Service.php")){
             $definitions=(array_key_exists($service[1],$servicePackageDev['packageDevSource']['packageDefinition'])) ? $servicePackageDev['packageDevSource']['packageDefinition'][$service[1]] : null;
             return [
                 'status'=>true,
                 'definitions'=>$definitions,
-                'class'=>"\\src\\store\\packages\\dev\\".$service[1]."\\".strtolower(request)."Service",
+                'class'=>"".staticPathModel::$apiPackageDevNamespace."\\".$service[1]."\\".strtolower(request)."Service",
                 'service'=>$service[1]
             ];
         }
@@ -415,7 +415,7 @@ class BaseDefinitor  {
 
     protected function token($callback){
         //get token
-        $token="\\src\\store\\provisions\\token";
+        $token=staticPathModel::$apiTokenNamespace;
         $token=$this->resolve->resolve($token);
 
         $prodDumpStatus=false;
@@ -501,7 +501,7 @@ class BaseDefinitor  {
 
     protected function provision($callback){
 
-        $provision="\\src\\store\\provisions\\index";
+        $provision=staticPathModel::$apiProvisionNamespace;
         $provision=$this->resolve->resolve($provision);
         $provisionMethod=''.request.'Provision';
         $provisionMethodExcept=''.request.'Except';
