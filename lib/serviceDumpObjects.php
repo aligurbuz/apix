@@ -320,11 +320,19 @@ class serviceDumpObjects {
             $session->set("serviceDumpHashDataTypes",md5(implode(",",$inputList)));
         }
         else{
+
+            foreach($session->get("standardDumpList") as $ykey=>$yvalue){
+                if(preg_match('@getData:@is',$ykey)){
+                    $ykeyStr=explode(":",$ykey);
+                    $inputList[$ykeyStr[1]]='string';
+                }
+            }
             if($hashData!==$session->get("serviceDumpHashData")){
                 foreach($this->request->getQueryString() as $key=>$value){
                     $inputList[$key]=gettype($value);
                 }
             }
+
 
         }
 
