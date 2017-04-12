@@ -207,12 +207,46 @@ class serviceDumpObjects {
         }
 
         if($session->has("standardDumpList")){
+
             if(!array_key_exists("standard",$list)){
                 if(array_key_exists("standard",$session->get("standardDumpList"))){
                     return $session->get("standardDumpList");
                 }
+
                 $list['standard']=$session->get("standardDumpList");
             }
+
+            if(!array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")))){
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$data);
+                $list['standard']=$data;
+            }
+
+            if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
+                $dataUpdate=$session->get("standardDumpList");
+                $dataUpdate['standard']=$data;
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$dataUpdate);
+                $list['standard']=$data;
+            }
+
+
+
+
+            /*if(md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
+                $dataUpdate=$session->get("standardDumpList");
+
+                if(array_key_exists("standard",$dataUpdate)){
+                    $dataUpdate['standard']=$data;
+                    $session->remove("standardDumpList");
+                    $session->set("standardDumpList",$dataUpdate);
+                }
+
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$data);
+
+
+            }*/
 
         }
         else{
