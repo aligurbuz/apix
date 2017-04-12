@@ -57,7 +57,7 @@ class serviceDumpObjects {
         }
 
         //token dump
-        $this->tokenInfoDump();
+        //$this->tokenInfoDump();
     }
 
 
@@ -72,6 +72,7 @@ class serviceDumpObjects {
     private function requestServiceMethodReal($requestServiceMethodReal){
         $oArr=[];
         $oInfo=[];
+
         foreach($requestServiceMethodReal as $key=>$value){
             if(is_array($value)){
                 if($key=="queryResult"){
@@ -134,27 +135,31 @@ class serviceDumpObjects {
      * @param string
      * @return response yamlProcess runner
      */
-    private function yamlProcess(){
-        //values
-        $session=new httpSession();
-
-
-        $querydata=$this->requestGetMethodCallback($session,function() use ($session){
-            return $this->requestPostProcess($session);
-        });
+    private function yamlProcess($status=false){
 
         $value = Yaml::parse(file_get_contents($this->serviceYamlFile));
-        $yaml = Yaml::dump(['http'=>strtolower(request),
-                'servicePath'=>''.app.'/'.service.'/'.method.'',
-                'data'=>$this->namedDataDumpList($session,$this->yObjects),
-                'headers'=>$this->getClientHeaders($session)
-            ]+$querydata +$value+['info'=>$this->yInfo]
-        );
 
-        //$session->remove("serviceDumpHashData");
-        //$session->remove("serviceDumpHashDataHeaders");
+        if(!$status){
+            //values
+            $session=new httpSession();
 
-        return $yaml;
+
+            $querydata=$this->requestGetMethodCallback($session,function() use ($session){
+                return $this->requestPostProcess($session);
+            });
+
+            $yaml = Yaml::dump(['http'=>strtolower(request),
+                    'servicePath'=>''.app.'/'.service.'/'.method.'',
+                    'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
+                    'headers'=>$this->getClientHeaders($session)
+                ]+$querydata +$value+['info'=>$this->yInfo]
+            );
+
+            return $yaml;
+        }
+
+        return $value;
+
     }
 
 
@@ -166,18 +171,45 @@ class serviceDumpObjects {
      * @param string
      * @return response requestGetMethodCallback runner
      */
-    private function namedDataDumpList($session,$data){
+    private function namedDataDumpList($session,$data,$querydata=null){
         $list=[];
+
         foreach ($this->getClientHeaders($session) as $key=>$value){
            $list['header_'.$key]=$data;
         }
 
-        if(count($this->getClientHeaders($session))==0){
-            $session->set("standardDumpList",$data);
+
+        if(count($this->getClientHeaders($session))==0 && count($querydata['getData'])==0){
+            if(!$session->has("standardDumpList")){
+                $session->set("standardDumpList",$data);
+            }
+
+        }
+
+
+        if(count($querydata['getData'])){
+
+            $yaml=$this->yamlProcess(true);
+            $getDataList='getData:'.key( array_slice($querydata['getData'], -1, 1, TRUE ) ).'';
+            $list[$getDataList]=$data;
+            foreach ($yaml['data'] as $ykey=>$yvalue){
+                $list[$ykey]=$yvalue;
+            }
+
+            $dataGetJoin=$list;
+            $session->remove("standardDumpList");
+            $session->set("standardDumpList",$dataGetJoin);
+
         }
 
         if($session->has("standardDumpList")){
-            $list['standard']=$session->get("standardDumpList");
+            if(!array_key_exists("standard",$list)){
+                if(array_key_exists("standard",$session->get("standardDumpList"))){
+                    return $session->get("standardDumpList");
+                }
+                $list['standard']=$session->get("standardDumpList");
+            }
+
         }
         else{
             $list['standard']=$data;
