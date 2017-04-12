@@ -7,15 +7,68 @@ use src\store\services\httprequest as request;
 
 class connection extends Definitor {
 
+    /**
+     * @var container var
+     * connection run
+     * for service base controller
+     */
     public $container;
+
+    /**
+     * @var resolve var
+     * connection run
+     * for service base controller
+     */
     public $resolve;
+
+    /**
+     * @var instance var
+     * connection run
+     * for service base controller
+     */
     private static $_instance=null;
+
+    /**
+     * @var globalVars var
+     * connection run
+     * for service base controller
+     */
     private static $globalVars=null;
+
+    /**
+     * @var service var
+     * connection run
+     * for service base controller
+     */
     private static $service=null;
+
+    /**
+     * @var serviceMethod var
+     * connection run
+     * for service base controller
+     */
     private static $serviceMethod=null;
+
+    /**
+     * @var queryParams var
+     * connection run
+     * for service base controller
+     */
     private static $queryParams=null;
+
+    /**
+     * @var getVersion var
+     * connection run
+     * for service base controller
+     */
     private static $getVersion=null;
 
+
+    /**
+     * @internal param __construct $ method
+     * connection run pre loader
+     * for service base controller
+     */
     public function __construct(){
         //class resolve
         $this->resolve=$this->getClassDependencyResolver();
@@ -60,7 +113,7 @@ class connection extends Definitor {
 
                        if($service[1]=="doc"){
                            header("Content-Type: text/html");
-                           $apiDoc="\\src\\store\\declarations\\src\\index";
+                           $apiDoc=staticPathModel::$apiDocNamespace;
                            return utils::resolve($apiDoc)->index();
                        }
 
@@ -110,7 +163,7 @@ class connection extends Definitor {
 
                                 $serviceBasePlatformStatus=utils::resolve(api."serviceBaseController")->platform;
                                 if($serviceBasePlatformStatus){
-                                    $servicePlatform=utils::resolve("\\src\\store\\services\\platform");
+                                    $servicePlatform=utils::resolve(staticPathModel::$apiPlatformNamespace);
                                     $requestServiceMethodReal=$servicePlatform->take(function() use(&$requestServiceMethodReal,$apix,$requestServiceMethod,$boot){
                                         $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
                                     });

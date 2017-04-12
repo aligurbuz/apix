@@ -23,9 +23,5 @@
 
     });
 
-
-
-
-
     //get connection
-    require(root.'/lib/connection.php');
+    echo \lib\connection::run();

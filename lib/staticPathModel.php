@@ -19,6 +19,20 @@ class staticPathModel {
      */
     public static $accessLimitationYamlPath='src/store/provisions/limitation';
 
+    /**
+     * @var param api doc
+     * it is namespace for api documentation
+     * for service path run
+     */
+    public static $apiDocNamespace='\\src\\store\\declarations\\src\\index';
+
+    /**
+     * @var param api platform
+     * it is namespace for api platform
+     * for service path run
+     */
+    public static $apiPlatformNamespace='\\src\\store\\services\\platform';
+
 
 
 }

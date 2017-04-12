@@ -25,4 +25,3 @@
     */
 
     require(root.'/lib/autoload.php');
-    echo \lib\connection::run();
