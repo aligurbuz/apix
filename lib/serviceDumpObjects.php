@@ -222,12 +222,16 @@ class serviceDumpObjects {
                 $list['standard']=$data;
             }
 
+
             if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
-                $dataUpdate=$session->get("standardDumpList");
-                $dataUpdate['standard']=$data;
-                $session->remove("standardDumpList");
-                $session->set("standardDumpList",$dataUpdate);
-                $list['standard']=$data;
+                if(count($this->request->getQueryString())==0){
+                    $dataUpdate=$session->get("standardDumpList");
+                    $dataUpdate['standard']=$data;
+                    $session->remove("standardDumpList");
+                    $session->set("standardDumpList",$dataUpdate);
+                    $list['standard']=$data;
+                }
+
             }
 
 
