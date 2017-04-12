@@ -12,6 +12,7 @@ class serviceDumpObjects {
     private $other;
     private $serviceYamlFile;
     private $yInfo=array();
+    private $yInfoExtra=array();
     private $yObjects=array();
     private $request;
 
@@ -139,6 +140,7 @@ class serviceDumpObjects {
 
         $value = Yaml::parse(file_get_contents($this->serviceYamlFile));
 
+
         if(!$status){
             //values
             $session=new httpSession();
@@ -148,11 +150,13 @@ class serviceDumpObjects {
                 return $this->requestPostProcess($session);
             });
 
+
+
             $yaml = Yaml::dump(['http'=>strtolower(request),
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
                     'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
                     'headers'=>$this->getClientHeaders($session)
-                ]+$querydata +$value+['info'=>$this->yInfo]
+                ]+$querydata +['info'=>$this->yInfo+$this->yInfoExtra]
             );
 
             return $yaml;
@@ -213,6 +217,19 @@ class serviceDumpObjects {
         }
         else{
             $list['standard']=$data;
+        }
+
+        $forInfo=$session->get("standardDumpList");
+
+        foreach($forInfo as $fKey=>$fValue){
+
+            foreach($forInfo[$fKey] as $ffKey=>$ffValue){
+
+                if(!array_key_exists($ffKey,$this->yInfo)){
+                    $this->yInfoExtra[$ffKey]=null;
+                }
+            }
+
         }
 
 
