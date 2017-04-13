@@ -44,7 +44,7 @@ class token {
         //status check
         //false status : access without token
         //tru status : access with token
-        $status=($environment=="local") ? false : false;
+        $status=($environment=="local") ? true : false;
 
         //token status false|true
         $token['status']=$status;

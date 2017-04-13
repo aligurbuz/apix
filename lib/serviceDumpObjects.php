@@ -191,16 +191,19 @@ class serviceDumpObjects {
         }
 
 
+
         if(count($querydata['getData'])){
 
             $yaml=$this->yamlProcess(true);
-            $getDataList='getData:'.key( array_slice($querydata['getData'], -1, 1, TRUE ) ).'';
+
+            $getDataList='getData:'.$this->joinQueryParam().'';
             $list[$getDataList]=$data;
             foreach ($yaml['data'] as $ykey=>$yvalue){
                 $list[$ykey]=$yvalue;
             }
 
             $dataGetJoin=$list;
+
             $session->remove("standardDumpList");
             $session->set("standardDumpList",$dataGetJoin);
 
@@ -235,12 +238,12 @@ class serviceDumpObjects {
                 }
                 else{
 
-                    foreach($querydata['getData'] as $key=>$value){
-                        $dataUpdate['getData:'.$key]=$data;
-                        $session->remove("standardDumpList");
-                        $session->set("standardDumpList",$dataUpdate);
-                        return $session->get("standardDumpList");
-                    }
+                    $dataUpdate['getData:'.$this->joinQueryParam()]=$data;
+                    $session->remove("standardDumpList");
+                    $session->set("standardDumpList",$dataUpdate);
+                    $this->setInfoExtra($session);
+                    return $session->get("standardDumpList");
+
 
                 }
 
@@ -269,19 +272,8 @@ class serviceDumpObjects {
             $list['standard']=$data;
         }
 
-        $forInfo=$session->get("standardDumpList");
 
-        foreach($forInfo as $fKey=>$fValue){
-
-            foreach($forInfo[$fKey] as $ffKey=>$ffValue){
-
-                if(!array_key_exists($ffKey,$this->yInfo)){
-                    $this->yInfoExtra[$ffKey]=null;
-                }
-            }
-
-        }
-
+        $this->setInfoExtra($session);
 
         return $list;
 
@@ -306,6 +298,47 @@ class serviceDumpObjects {
                 return call_user_func($callback);
             }
         }
+    }
+
+    /**
+     * get requestGetMethodCallback method.
+     *
+     * outputs requestGetMethodCallback method.
+     *
+     * @param string
+     * @return response requestGetMethodCallback runner
+     */
+    private function setInfoExtra($session){
+        $forInfo=$session->get("standardDumpList");
+
+        foreach($forInfo as $fKey=>$fValue){
+
+            foreach($forInfo[$fKey] as $ffKey=>$ffValue){
+
+                if(!array_key_exists($ffKey,$this->yInfo)){
+                    $this->yInfoExtra[$ffKey]=null;
+                }
+            }
+
+        }
+    }
+
+
+    /**
+     * get requestGetMethodCallback method.
+     *
+     * outputs requestGetMethodCallback method.
+     *
+     * @param string
+     * @return response requestGetMethodCallback runner
+     */
+    private function joinQueryParam(){
+        $list=[];
+        foreach($this->request->getQueryString() as $key=>$value){
+            $list[]=$key;
+        }
+
+        return implode("&",$list);
     }
 
 
