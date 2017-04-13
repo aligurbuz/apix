@@ -197,12 +197,28 @@ class serviceDumpObjects {
             $yaml=$this->yamlProcess(true);
 
             $listBool=true;
+
             foreach($session->get("standardDumpList") as $key=>$value){
                 $imp=md5(implode(",",$value));
-                if(md5(implode(",",$data))==$imp){
+                $getDataList='getData:'.$this->joinQueryParam().'';
+                if($key!==$getDataList && md5(implode(",",$data))==$imp){
                     $listBool=false;
+                    $listex=[];
+                    foreach ($yaml['data'] as $ykey=>$yvalue){
+                        if($ykey!==$getDataList){
+                            $listex[$ykey]=$yvalue;
+                        }
+
+                    }
+
+                    $session->remove("standardDumpList");
+                    $session->set("standardDumpList",$listex);
+
+                    $this->setInfoExtra($session);
+
                 }
             }
+
 
             if($listBool){
 
@@ -333,6 +349,8 @@ class serviceDumpObjects {
      */
     private function setInfoExtra($session){
         $forInfo=$session->get("standardDumpList");
+
+
 
         foreach($forInfo as $fKey=>$fValue){
 
