@@ -220,17 +220,20 @@ class serviceDumpObjects {
             $this->setInfoExtra($session);
 
 
+
         }
 
         if($session->has("standardDumpList")){
 
             if(!array_key_exists("standard",$list)){
                 if(array_key_exists("standard",$session->get("standardDumpList"))){
+                    $this->setInfoExtra($session);
                     return $session->get("standardDumpList");
                 }
 
                 $list['standard']=$session->get("standardDumpList");
             }
+
 
             if(!array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")))){
 
@@ -248,6 +251,7 @@ class serviceDumpObjects {
                     $dataUpdate['standard']=$data;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataUpdate);
+                    $this->setInfoExtra($session);
                     $list['standard']=$data;
                 }
                 else{
@@ -435,17 +439,25 @@ class serviceDumpObjects {
         }
         else{
 
+
             foreach($session->get("standardDumpList") as $ykey=>$yvalue){
                 if(preg_match('@getData:@is',$ykey)){
                     $ykeyStr=explode(":",$ykey);
-                    $inputList[$ykeyStr[1]]='string';
+                    $ykeyStrExplode=explode("&",$ykeyStr[1]);
+
+                    foreach($ykeyStrExplode as $yexKey=>$yexValue){
+                        $inputList[$yexValue]='string';
+                    }
                 }
             }
+
             if($hashData!==$session->get("serviceDumpHashData")){
                 foreach($this->request->getQueryString() as $key=>$value){
                     $inputList[$key]=gettype($value);
                 }
             }
+
+
 
 
         }
