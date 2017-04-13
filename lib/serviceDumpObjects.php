@@ -196,53 +196,58 @@ class serviceDumpObjects {
 
             $yaml=$this->yamlProcess(true);
 
-            $listBool=true;
+            if($session->has("standardDumpList")){
+                $listBool=true;
 
-            foreach($session->get("standardDumpList") as $key=>$value){
-                $imp=md5(implode(",",$value));
-                $getDataList='getData:'.$this->joinQueryParam().'';
-                if($key!==$getDataList && md5(implode(",",$data))==$imp){
-                    $listBool=false;
-                    $listex=[];
+                foreach($session->get("standardDumpList") as $key=>$value){
+                    $imp=md5(implode(",",$value));
+                    $getDataList='getData:'.$this->joinQueryParam().'';
+                    if($key!==$getDataList && md5(implode(",",$data))==$imp){
+                        $listBool=false;
+                        $listex=[];
+                        foreach ($yaml['data'] as $ykey=>$yvalue){
+                            if($ykey!==$getDataList){
+                                $listex[$ykey]=$yvalue;
+                            }
+
+                        }
+
+                        $session->remove("standardDumpList");
+                        $session->set("standardDumpList",$listex);
+
+                        $this->setInfoExtra($session);
+
+                    }
+                }
+
+
+                if($listBool){
+
+                    $getDataList='getData:'.$this->joinQueryParam().'';
+                    $list[$getDataList]=$data;
                     foreach ($yaml['data'] as $ykey=>$yvalue){
                         if($ykey!==$getDataList){
-                            $listex[$ykey]=$yvalue;
+                            $list[$ykey]=$yvalue;
                         }
 
                     }
 
+                    $dataGetJoin=$list;
+
+
                     $session->remove("standardDumpList");
-                    $session->set("standardDumpList",$listex);
-
-                    $this->setInfoExtra($session);
-
+                    $session->set("standardDumpList",$dataGetJoin);
                 }
+
+                $this->setInfoExtra($session);
             }
 
 
-            if($listBool){
-
-                $getDataList='getData:'.$this->joinQueryParam().'';
-                $list[$getDataList]=$data;
-                foreach ($yaml['data'] as $ykey=>$yvalue){
-                    if($ykey!==$getDataList){
-                        $list[$ykey]=$yvalue;
-                    }
-
-                }
-
-                $dataGetJoin=$list;
-
-
-                $session->remove("standardDumpList");
-                $session->set("standardDumpList",$dataGetJoin);
-            }
-
-            $this->setInfoExtra($session);
 
 
 
         }
+
 
         if($session->has("standardDumpList")){
 
@@ -288,23 +293,6 @@ class serviceDumpObjects {
 
             }
 
-
-
-
-            /*if(md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
-                $dataUpdate=$session->get("standardDumpList");
-
-                if(array_key_exists("standard",$dataUpdate)){
-                    $dataUpdate['standard']=$data;
-                    $session->remove("standardDumpList");
-                    $session->set("standardDumpList",$dataUpdate);
-                }
-
-                $session->remove("standardDumpList");
-                $session->set("standardDumpList",$data);
-
-
-            }*/
 
         }
         else{
@@ -461,6 +449,24 @@ class serviceDumpObjects {
             $session->set("serviceDumpHashDataTypes",md5(implode(",",$inputList)));
         }
         else{
+
+            $getDataList='getData:'.$this->joinQueryParam().'';
+
+            $datU=$session->get("standardDumpList");
+            $updatingList=[];
+            if($datU[$getDataList]!==$this->requestServiceMethodReal){
+                foreach($session->get("standardDumpList") as $akey=>$avalue){
+                    if($akey!==$getDataList){
+                        $updatingList[$akey]=$avalue;
+                    }
+                }
+            }
+
+            if(count($updatingList)){
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$updatingList);
+            }
+
 
 
             foreach($session->get("standardDumpList") as $ykey=>$yvalue){
