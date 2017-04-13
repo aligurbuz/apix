@@ -205,13 +205,18 @@ class serviceDumpObjects {
             }
 
             if($listBool){
+
                 $getDataList='getData:'.$this->joinQueryParam().'';
                 $list[$getDataList]=$data;
                 foreach ($yaml['data'] as $ykey=>$yvalue){
-                    $list[$ykey]=$yvalue;
+                    if($ykey!==$getDataList){
+                        $list[$ykey]=$yvalue;
+                    }
+
                 }
 
                 $dataGetJoin=$list;
+
 
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$dataGetJoin);
