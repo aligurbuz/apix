@@ -165,7 +165,7 @@ class httprequest {
      *
      * @return string
      */
-    public function getQueryString(){
+    public function getQueryString($param=null){
 
         $list=[];
         if($this->request->getQueryString()!==null){
@@ -176,7 +176,15 @@ class httprequest {
             }
         }
 
-        return $list;
+        if($param===null){
+            return $list;
+        }
+
+        if(array_key_exists($param,$list)){
+            return $list[$param];
+        }
+        return null;
+
     }
 
     /**
