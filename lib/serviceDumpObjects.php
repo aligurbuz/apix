@@ -196,16 +196,29 @@ class serviceDumpObjects {
 
             $yaml=$this->yamlProcess(true);
 
-            $getDataList='getData:'.$this->joinQueryParam().'';
-            $list[$getDataList]=$data;
-            foreach ($yaml['data'] as $ykey=>$yvalue){
-                $list[$ykey]=$yvalue;
+            $listBool=true;
+            foreach($session->get("standardDumpList") as $key=>$value){
+                $imp=md5(implode(",",$value));
+                if(md5(implode(",",$data))==$imp){
+                    $listBool=false;
+                }
             }
 
-            $dataGetJoin=$list;
+            if($listBool){
+                $getDataList='getData:'.$this->joinQueryParam().'';
+                $list[$getDataList]=$data;
+                foreach ($yaml['data'] as $ykey=>$yvalue){
+                    $list[$ykey]=$yvalue;
+                }
 
-            $session->remove("standardDumpList");
-            $session->set("standardDumpList",$dataGetJoin);
+                $dataGetJoin=$list;
+
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$dataGetJoin);
+            }
+
+            $this->setInfoExtra($session);
+
 
         }
 
@@ -220,6 +233,7 @@ class serviceDumpObjects {
             }
 
             if(!array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")))){
+
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$data);
                 $list['standard']=$data;
