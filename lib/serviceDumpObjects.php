@@ -1,12 +1,9 @@
 <?php
-
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
 use src\store\services\httprequest as request;
 use src\store\services\httpSession;
-
 class serviceDumpObjects {
-
     private $requestServiceMethodReal;
     private $requestServiceMethod;
     private $other;
@@ -15,7 +12,6 @@ class serviceDumpObjects {
     private $yInfoExtra=array();
     private $yObjects=array();
     private $request;
-
     /**
      * service dump constructs.
      *
@@ -35,7 +31,6 @@ class serviceDumpObjects {
         $this->request=new request();
         $this->dump();
     }
-
     /**
      * service dump runner method.
      *
@@ -45,23 +40,16 @@ class serviceDumpObjects {
      * @return response service dump runner
      */
     public function dump(){
-
         if($this->requestServiceMethodReal!==null && $this->requestServiceMethod!==null){
-
             $requestServiceMethodReal=$this->requestServiceMethodReal($this->requestServiceMethodReal);
             $this->yObjects=$requestServiceMethodReal['yObjects'];
             $this->yInfo=$requestServiceMethodReal['yInfo'];
-
             //file put yaml variables
             file_put_contents($this->serviceYamlFile, $this->yamlProcess());
-
         }
-
         //token dump
         //$this->tokenInfoDump();
     }
-
-
     /**
      * get requestServiceMethodReal method.
      *
@@ -73,7 +61,6 @@ class serviceDumpObjects {
     private function requestServiceMethodReal($requestServiceMethodReal){
         $oArr=[];
         $oInfo=[];
-
         foreach($requestServiceMethodReal as $key=>$value){
             if(is_array($value)){
                 if($key=="queryResult"){
@@ -88,7 +75,6 @@ class serviceDumpObjects {
                             $oArr['queryResult'][$v1]=gettype($v2);
                             $oInfo[$v1]=null;
                         }
-
                     }
                 }
                 else{
@@ -97,21 +83,17 @@ class serviceDumpObjects {
                         $oInfo[$v1]=null;
                     }
                 }
-
             }
             else{
                 $oArr[$key]=gettype($value);
                 $oInfo[$key]=null;
             }
         }
-
         return [
             'yObjects'=>$oArr,
             'yInfo'=>$oInfo
         ];
     }
-
-
     /**
      * get tokenInfoDump method.
      *
@@ -127,7 +109,6 @@ class serviceDumpObjects {
             file_put_contents($this->serviceYamlFile, $yaml);
         }
     }
-
     /**
      * get yamlProcess method.
      *
@@ -137,36 +118,23 @@ class serviceDumpObjects {
      * @return response yamlProcess runner
      */
     private function yamlProcess($status=false){
-
         $value = Yaml::parse(file_get_contents($this->serviceYamlFile));
-
-
         if(!$status){
             //values
             $session=new httpSession();
-
-
             $querydata=$this->requestGetMethodCallback($session,function() use ($session){
                 return $this->requestPostProcess($session);
             });
-
-
-
             $yaml = Yaml::dump(['http'=>strtolower(request),
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
                     'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
                     'headers'=>$this->getClientHeaders($session)
                 ]+$querydata +['info'=>$this->yInfo+$this->yInfoExtra]
             );
-
             return $yaml;
         }
-
         return $value;
-
     }
-
-
     /**
      * get requestGetMethodCallback method.
      *
@@ -177,28 +145,18 @@ class serviceDumpObjects {
      */
     private function namedDataDumpList($session,$data,$querydata=null){
         $list=[];
-
         foreach ($this->getClientHeaders($session) as $key=>$value){
-           $list['header_'.$key]=$data;
+            $list['header_'.$key]=$data;
         }
-
-
         if(count($this->getClientHeaders($session))==0 && count($querydata['getData'])==0){
             if(!$session->has("standardDumpList")){
                 $session->set("standardDumpList",$data);
             }
-
         }
-
-
-
         if(count($querydata['getData'])){
-
             $yaml=$this->yamlProcess(true);
-
             if($session->has("standardDumpList")){
                 $listBool=true;
-
                 foreach($session->get("standardDumpList") as $key=>$value){
                     $imp=md5(implode(",",$value));
                     $getDataList='getData:'.$this->joinQueryParam().'';
@@ -209,107 +167,65 @@ class serviceDumpObjects {
                             if($ykey!==$getDataList){
                                 $listex[$ykey]=$yvalue;
                             }
-
                         }
 
                         $session->remove("standardDumpList");
                         $session->set("standardDumpList",$listex);
-
                         $this->setInfoExtra($session);
-
                     }
                 }
-
-
                 if($listBool){
-
-                        $getDataList='getData:'.$this->joinQueryParam().'';
-                        $list[$getDataList]=$data;
-                        foreach ($yaml['data'] as $ykey=>$yvalue){
-                            if($ykey!==$getDataList){
-                                $list[$ykey]=$yvalue;
-                            }
-
+                    $getDataList='getData:'.$this->joinQueryParam().'';
+                    $list[$getDataList]=$data;
+                    foreach ($yaml['data'] as $ykey=>$yvalue){
+                        if($ykey!==$getDataList){
+                            $list[$ykey]=$yvalue;
                         }
-
-                        $dataGetJoin=$list;
-
-
-
+                    }
+                    $dataGetJoin=$list;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataGetJoin);
-
-
                 }
-
                 $this->setInfoExtra($session);
             }
-
-
-
-
-
         }
-
-
         if($session->has("standardDumpList")){
-
             if(!array_key_exists("standard",$list)){
                 if(array_key_exists("standard",$session->get("standardDumpList"))){
                     $this->setInfoExtra($session);
                     return $session->get("standardDumpList");
                 }
-
-                $list['getData:'.$this->joinQueryParam()]=$session->get("standardDumpList");
+                $list['standard']=$session->get("standardDumpList");
             }
-
-
             if(!array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")))){
-
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$data);
-                $list['getData:'.$this->joinQueryParam()]=$data;
+                $list['standard']=$data;
             }
-
-
-            if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['getData:'.$this->joinQueryParam()]))){
-
+            if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
                 $dataUpdate=$session->get("standardDumpList");
-
                 if(count($this->request->getQueryString())==0){
-                    $dataUpdate['getData:'.$this->joinQueryParam()]=$data;
+                    $dataUpdate['standard']=$data;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataUpdate);
                     $this->setInfoExtra($session);
-                    $list['getData:'.$this->joinQueryParam()]=$data;
+                    $list['standard']=$data;
                 }
                 else{
-
-                    $dataUpdate['getData:'.$this->joinQueryParam()]=$data;
+                    $dataUpdate['standard']=$data;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataUpdate);
                     $this->setInfoExtra($session);
                     return $session->get("standardDumpList");
-
-
                 }
-
             }
-
-
         }
         else{
-            $list['getData:'.$this->joinQueryParam()]=$data;
+            $list['standard']=$data;
         }
-
-
         $this->setInfoExtra($session);
-
         return $list;
-
     }
-
-
     /**
      * get requestGetMethodCallback method.
      *
@@ -323,13 +239,11 @@ class serviceDumpObjects {
             return $this->requestGetProcess($session);
         }
         else{
-
             if(is_callable($callback)){
                 return call_user_func($callback);
             }
         }
     }
-
     /**
      * get requestGetMethodCallback method.
      *
@@ -340,22 +254,14 @@ class serviceDumpObjects {
      */
     private function setInfoExtra($session){
         $forInfo=$session->get("standardDumpList");
-
-
-
         foreach($forInfo as $fKey=>$fValue){
-
             foreach($forInfo[$fKey] as $ffKey=>$ffValue){
-
                 if(!array_key_exists($ffKey,$this->yInfo)){
                     $this->yInfoExtra[$ffKey]=null;
                 }
             }
-
         }
     }
-
-
     /**
      * get requestGetMethodCallback method.
      *
@@ -369,11 +275,8 @@ class serviceDumpObjects {
         foreach($this->request->getQueryString() as $key=>$value){
             $list[]=$key;
         }
-
         return implode("&",$list);
     }
-
-
     /**
      * get requestGetMethodCallback method.
      *
@@ -394,7 +297,6 @@ class serviceDumpObjects {
                 }
                 return $listHeaders;
             }
-
         }
         if($session->has("serviceDumpHashDataHeaders")){
             $listHeaders=[];
@@ -404,13 +306,7 @@ class serviceDumpObjects {
             return $listHeaders;
         }
         return null;
-
-
-
     }
-
-
-
     /**
      * get requestPostProcess method.
      *
@@ -424,14 +320,12 @@ class serviceDumpObjects {
         foreach($this->request->input() as $key=>$value){
             $inputList[$key]=gettype($value);
         }
-
         $getList=[];
         foreach($this->request->getQueryString() as $gkey=>$gvalue){
             $getList[$gkey]=gettype($gvalue);
         }
         return ['postData'=>$inputList,'getData'=>$getList];
     }
-
     /**
      * get requestGetProcess method.
      *
@@ -443,7 +337,6 @@ class serviceDumpObjects {
     private function requestGetProcess($session){
         $inputList=[];
         $hashData=md5(implode(",",$this->requestServiceMethodReal));
-
         if(!$session->has("serviceDumpHashData")){
             $session->set("serviceDumpHashData",$hashData);
             foreach($this->request->getQueryString() as $key=>$value){
@@ -452,9 +345,7 @@ class serviceDumpObjects {
             $session->set("serviceDumpHashDataTypes",md5(implode(",",$inputList)));
         }
         else{
-
             $getDataList='getData:'.$this->joinQueryParam().'';
-
             $datU=$session->get("standardDumpList");
             $updatingList=[];
             if($datU[$getDataList]!==$this->requestServiceMethodReal){
@@ -464,36 +355,25 @@ class serviceDumpObjects {
                     }
                 }
             }
-
             if(count($updatingList)){
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$updatingList);
             }
-
-
-
             foreach($session->get("standardDumpList") as $ykey=>$yvalue){
                 if(preg_match('@getData:@is',$ykey)){
                     $ykeyStr=explode(":",$ykey);
                     $ykeyStrExplode=explode("&",$ykeyStr[1]);
-
                     foreach($ykeyStrExplode as $yexKey=>$yexValue){
                         $inputList[$yexValue]='string';
                     }
                 }
             }
-
             if($hashData!==$session->get("serviceDumpHashData")){
                 foreach($this->request->getQueryString() as $key=>$value){
                     $inputList[$key]=gettype($value);
                 }
             }
-
-
-
-
         }
-
         return ['getData'=>$inputList];
     }
 }
