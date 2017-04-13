@@ -223,20 +223,23 @@ class serviceDumpObjects {
 
                 if($listBool){
 
-                    $getDataList='getData:'.$this->joinQueryParam().'';
-                    $list[$getDataList]=$data;
-                    foreach ($yaml['data'] as $ykey=>$yvalue){
-                        if($ykey!==$getDataList){
-                            $list[$ykey]=$yvalue;
+                        $getDataList='getData:'.$this->joinQueryParam().'';
+                        $list[$getDataList]=$data;
+                        foreach ($yaml['data'] as $ykey=>$yvalue){
+                            if($ykey!==$getDataList){
+                                $list[$ykey]=$yvalue;
+                            }
+
                         }
 
-                    }
+                        $dataGetJoin=$list;
 
-                    $dataGetJoin=$list;
 
 
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataGetJoin);
+
+
                 }
 
                 $this->setInfoExtra($session);
@@ -257,7 +260,7 @@ class serviceDumpObjects {
                     return $session->get("standardDumpList");
                 }
 
-                $list['standard']=$session->get("standardDumpList");
+                $list['getData:'.$this->joinQueryParam()]=$session->get("standardDumpList");
             }
 
 
@@ -265,20 +268,20 @@ class serviceDumpObjects {
 
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$data);
-                $list['standard']=$data;
+                $list['getData:'.$this->joinQueryParam()]=$data;
             }
 
 
-            if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
+            if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['getData:'.$this->joinQueryParam()]))){
 
                 $dataUpdate=$session->get("standardDumpList");
 
                 if(count($this->request->getQueryString())==0){
-                    $dataUpdate['standard']=$data;
+                    $dataUpdate['getData:'.$this->joinQueryParam()]=$data;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataUpdate);
                     $this->setInfoExtra($session);
-                    $list['standard']=$data;
+                    $list['getData:'.$this->joinQueryParam()]=$data;
                 }
                 else{
 
@@ -296,7 +299,7 @@ class serviceDumpObjects {
 
         }
         else{
-            $list['standard']=$data;
+            $list['getData:'.$this->joinQueryParam()]=$data;
         }
 
 
