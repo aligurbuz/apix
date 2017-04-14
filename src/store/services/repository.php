@@ -44,7 +44,7 @@ class repository {
             $repoNameSpace='\\src\\store\\packages\\dev\\'.service.'\\devpack\\repository\\'.self::$repo.'\\index'; ;
         }
         else{
-            $repoNameSpace='\\src\\app\\'.app.'\\'.version.'\\repository\\'.self::$repo.'\\index';
+            $repoNameSpace='\\src\\app\\'.app.'\\'.version.'\\optional\\repository\\'.self::$repo.'\\index';
         }
 
         if(class_exists($repoNameSpace)){

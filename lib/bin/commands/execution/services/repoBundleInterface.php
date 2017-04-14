@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\repository\__bundleName__;
+namespace src\app\__projectName__\v1\optional\repository\__bundleName__;
 
 /**
  * Represents a repository interface class.

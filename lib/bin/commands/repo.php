@@ -52,7 +52,7 @@ class repo {
                         $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['repo'];
                         $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
                         $bundleParamsIndexSrc['params']['className']=$srcBundle[1];
-                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/'.$srcBundle[1].'.php',$bundleParamsIndexSrc);
+                        $list[]=$this->touch($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/'.$srcBundle[1].'.php',$bundleParamsIndexSrc);
 
                     }
                     else{
@@ -61,25 +61,25 @@ class repo {
                         $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['repo'];
                         $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
                         $bundleParamsIndexSrc['params']['className']='index';
-                        $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/index.php',$bundleParamsIndexSrc);
+                        $list[]=$this->touch($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/src/'.$srcBundle[0].'/index.php',$bundleParamsIndexSrc);
                     }
                 }
                 else{
-                    $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'');
-                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/index.html',null);
+                    $list[]=$this->mkdir($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'');
+                    $list[]=$this->touch($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/index.html',null);
 
-                    $list[]=$this->mkdir($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src');
-                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/src/index.html',null);
+                    $list[]=$this->mkdir($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/src');
+                    $list[]=$this->touch($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/src/index.html',null);
 
                     $bundleParamsIndex['execution']='services/repoBundleIndex';
                     $bundleParamsIndex['params']['projectName']=$project;
                     $bundleParamsIndex['params']['bundleName']=$this->getParams($data)[1]['repo'];
-                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/index.php',$bundleParamsIndex);
+                    $list[]=$this->touch($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/index.php',$bundleParamsIndex);
 
                     $bundleParamsInterface['execution']='services/repoBundleInterface';
                     $bundleParamsInterface['params']['projectName']=$project;
                     $bundleParamsInterface['params']['bundleName']=$this->getParams($data)[1]['repo'];
-                    $list[]=$this->touch($project.'/'.$version.'/repository/'.$this->getParams($data)[1]['repo'].'/'.$this->getParams($data)[1]['repo'].'Interface.php',$bundleParamsInterface);
+                    $list[]=$this->touch($project.'/'.$version.'/optional/repository/'.$this->getParams($data)[1]['repo'].'/'.$this->getParams($data)[1]['repo'].'Interface.php',$bundleParamsInterface);
 
                 }
 
