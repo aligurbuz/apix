@@ -28,10 +28,7 @@ class objectloader {
      * $data main variables
      * return type string
      */
-    public function __construct(Request $request){
-
-        $this->request=$request;
-    }
+    public function __construct(){}
 
     /**
      * object loader for get method.

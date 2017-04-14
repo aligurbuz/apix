@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\source\bundle\__bundleName__;
-use Request;
+use src\store\services\httprequest as Request;
 use Repo;
 
 /**
@@ -21,19 +21,16 @@ use Repo;
 
 class index extends \src\app\__projectName__\v1\__call\__serviceName__\app implements __bundleName__Interface  {
 
-    public $request;
 
     /**
      * Constructor.
      *
      * @param type dependency injection and function
      */
-    public function __construct(Request $request){
+    public function __construct(){
 
-        //get request info
+        //get app extends
         parent::__construct();
-        $this->request=$request;
-
     }
 
     /**
