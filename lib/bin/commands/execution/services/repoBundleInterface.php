@@ -17,7 +17,6 @@ namespace src\app\__projectName__\v1\repository\__bundleName__;
  * return type array
  */
 
-interface __bundleName__Interface {
-
-
+interface __bundleName__Interface
+{
 }

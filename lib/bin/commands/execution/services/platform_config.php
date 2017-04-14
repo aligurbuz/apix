@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\optional\platform;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,7 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * return type array
  */
 
-class config {
+class config
+{
 
 
     /**
@@ -26,7 +28,9 @@ class config {
      *
      * @param type dependency injection and function
      */
-    public function __construct(){}
+    public function __construct()
+    {
+    }
 
 
     /**
@@ -34,7 +38,8 @@ class config {
      *
      * @return array
      */
-    public function handle(){
+    public function handle()
+    {
 
         //return source
         return true;

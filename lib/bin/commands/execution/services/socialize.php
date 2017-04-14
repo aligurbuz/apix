@@ -7,7 +7,6 @@
 
 namespace src\app\__projectName__\v1\config;
 
-
 class socialize
 {
 
@@ -19,8 +18,8 @@ class socialize
      * @param string
      * @return response git Repo  runner
      */
-    public static function gitRepo(){
-
+    public static function gitRepo()
+    {
         return [
 
         ];
@@ -35,8 +34,8 @@ class socialize
      * @param string
      * @return response facebook  runner
      */
-    public static function facebook(){
-
+    public static function facebook()
+    {
         return [
 
         ];
@@ -51,8 +50,8 @@ class socialize
      * @param string
      * @return response instagram  runner
      */
-    public static function instagram(){
-
+    public static function instagram()
+    {
         return [
 
         ];
@@ -67,8 +66,8 @@ class socialize
      * @param string
      * @return response twitter  runner
      */
-    public static function twitter(){
-
+    public static function twitter()
+    {
         return [
 
         ];
@@ -83,8 +82,8 @@ class socialize
      * @param string
      * @return response googlePlus  runner
      */
-    public static function googlePlus(){
-
+    public static function googlePlus()
+    {
         return [
 
         ];

@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -19,8 +20,8 @@ use Src\Store\Services\Httprequest as Request;
  * attention:provision condition can be needed for post method
  * return type array
  */
-class postService extends app {
-
+class postService extends app
+{
     public $request;
     public $forbidden=false;
 
@@ -31,7 +32,8 @@ class postService extends app {
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(){
+    public function __construct()
+    {
 
         //get app extends
         parent::__construct();
@@ -46,7 +48,8 @@ class postService extends app {
      * produced json output as result
      * @return array @method
      */
-    public function index(){
+    public function index()
+    {
 
         //return index
         return ['post'=>true];

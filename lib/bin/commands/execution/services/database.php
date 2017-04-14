@@ -7,7 +7,6 @@
 
 namespace src\app\__projectName__\v1\config;
 
-
 class database
 {
 
@@ -19,22 +18,20 @@ class database
      * @param string
      * @return response container runner
      */
-    public static function dbSettings(){
+    public static function dbSettings()
+    {
 
         //default connection
         $connection='mysql';
 
         //local settings
-        $db['mysql']['driver']=env('driver','mysql');
-        $db['mysql']['host']=env('host','localhost');
-        $db['mysql']['database']=env('database','database');
-        $db['mysql']['user']=env('user','user');
-        $db['mysql']['password']=env('password','password');
+        $db['mysql']['driver']=env('driver', 'mysql');
+        $db['mysql']['host']=env('host', 'localhost');
+        $db['mysql']['database']=env('database', 'database');
+        $db['mysql']['user']=env('user', 'user');
+        $db['mysql']['password']=env('password', 'password');
 
         //return db
         return $db[$connection];
-
-
-
     }
 }

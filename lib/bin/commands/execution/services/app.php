@@ -17,8 +17,8 @@ namespace src\app\__projectName__\v1\__call\__serviceName__;
  * return type array
  */
 
-class app {
-
+class app
+{
     public $source;
     public $model;
     public $main;
@@ -30,7 +30,8 @@ class app {
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->source=\branch::source();
         $this->model=\branch::query();
         $this->main=\branch::main();
@@ -45,10 +46,9 @@ class app {
      * main overloading method as restrictions
      * @return array
      */
-    public function restrictions(){
+    public function restrictions()
+    {
         $list=[];
         return $list;
     }
-
-
 }

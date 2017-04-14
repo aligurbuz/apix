@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\platform\__platformdir__\__serviceName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,7 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * return type array
  */
 
-class __platformfile__ extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class __platformfile__ extends \src\app\__projectName__\v1\__call\__serviceName__\app
+{
 
 
     /**
@@ -26,11 +28,11 @@ class __platformfile__ extends \src\app\__projectName__\v1\__call\__serviceName_
      *
      * @param type dependency injection and function
      */
-    public function __construct(){
+    public function __construct()
+    {
 
         //get app extends
         parent::__construct();
-
     }
 
     /**
@@ -38,7 +40,8 @@ class __platformfile__ extends \src\app\__projectName__\v1\__call\__serviceName_
      *
      * @return array
      */
-    public function index($data=array()){
+    public function index($data=array())
+    {
 
         //return source
         return "__projectName__ source __serviceName__ platform __platformdir__ __platformfile__";

@@ -1,8 +1,10 @@
 <?php
 namespace src\app\__projectName__\v1\model\sudb;
+
 use Src\Store\Packages\Providers\Database\Sudb\Src\Model as Model;
 
-class __className__ extends Model {
+class __className__ extends Model
+{
 
     //tablename
     public $table='__tableName__';
@@ -69,22 +71,22 @@ class __className__ extends Model {
      * @param $data
      * @param $query
      */
-    public function modelScope($data,$query){
+    public function modelScope($data, $query)
+    {
 
         //get id
-        if($data=="id"){
-            $query->where(function($model){
-                if(\app::checkUrlParam("id")){
-                    $model->where("id","=",\app::getUrlParam("id"));
+        if ($data=="id") {
+            $query->where(function ($model) {
+                if (\app::checkUrlParam("id")) {
+                    $model->where("id", "=", \app::getUrlParam("id"));
                 }
             });
         }
 
         //scopes
-        if($data=="active"){
-            $query->where("status","=",1);
+        if ($data=="active") {
+            $query->where("status", "=", 1);
         }
-
     }
 
     /**
@@ -94,6 +96,4 @@ class __className__ extends Model {
     /*public function fieldPassword(){
         return md5(\app::post("password"));
     }*/
-
-
 }

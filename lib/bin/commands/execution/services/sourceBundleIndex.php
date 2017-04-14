@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\source\bundle\__bundleName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,7 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * return type array
  */
 
-class index extends \src\app\__projectName__\v1\__call\__serviceName__\app implements __bundleName__Interface  {
+class index extends \src\app\__projectName__\v1\__call\__serviceName__\app implements __bundleName__Interface
+{
 
 
     /**
@@ -26,7 +28,8 @@ class index extends \src\app\__projectName__\v1\__call\__serviceName__\app imple
      *
      * @param type dependency injection and function
      */
-    public function __construct(){
+    public function __construct()
+    {
 
         //get app extends
         parent::__construct();
@@ -38,7 +41,8 @@ class index extends \src\app\__projectName__\v1\__call\__serviceName__\app imple
      *
      * @return string|array|object
      */
-    public function get(){
+    public function get()
+    {
 
         //return source
         return "__projectName__ bundle __serviceName__ __bundleName__";

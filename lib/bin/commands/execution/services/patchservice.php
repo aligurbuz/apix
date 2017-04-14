@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -19,8 +20,8 @@ use Src\Store\Services\Httprequest as Request;
  * attention:provision condition can be needed for patch method
  * return type array
  */
-class patchService extends app {
-
+class patchService extends app
+{
     public $forbidden=false;
 
     /**
@@ -30,8 +31,8 @@ class patchService extends app {
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(){
-
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -44,7 +45,8 @@ class patchService extends app {
      * produced json output as result
      * @return array @method
      */
-    public function index(){
+    public function index()
+    {
 
         //return index
         return ['patch'=>true];

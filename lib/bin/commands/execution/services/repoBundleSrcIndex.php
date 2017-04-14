@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\repository\__bundleName__\src\__srcName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,7 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * return type array
  */
 
-class __className__   {
+class __className__
+{
 
 
     /**
@@ -26,7 +28,9 @@ class __className__   {
      *
      * @param type dependency injection and function
      */
-    public function __construct(){}
+    public function __construct()
+    {
+    }
 
 
     /**
@@ -35,7 +39,8 @@ class __className__   {
      *
      * @return string|array|object
      */
-    public function get(){
+    public function get()
+    {
 
         //return source
         return "__projectName__ repository __bundleName__ __srcName__";

@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,8 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * every service extends app class
  * return type array
  */
-class getService extends app {
-
+class getService extends app
+{
     public $request;
     public $forbidden=false;
 
@@ -29,7 +30,8 @@ class getService extends app {
      * @param type dependency injection and __serviceName__ class
      * main loader as construct method
      */
-    public function __construct(){
+    public function __construct()
+    {
 
         //get app extends
         parent::__construct();
@@ -44,7 +46,8 @@ class getService extends app {
      * produced json output as result
      * @return array @method
      */
-    public function index(){
+    public function index()
+    {
 
         //result
         return [

@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\branches\source\__methodName__;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,7 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * return type array
  */
 
-class __sourceName__ extends \src\app\__projectName__\v1\__call\__serviceName__\app {
+class __sourceName__ extends \src\app\__projectName__\v1\__call\__serviceName__\app
+{
 
 
     /**
@@ -26,11 +28,11 @@ class __sourceName__ extends \src\app\__projectName__\v1\__call\__serviceName__\
      *
      * @param type dependency injection and function
      */
-    public function __construct(Request $request){
+    public function __construct(Request $request)
+    {
 
         //get request info
         parent::__construct();
-
     }
 
     /**
@@ -38,7 +40,8 @@ class __sourceName__ extends \src\app\__projectName__\v1\__call\__serviceName__\
      *
      * @return array
      */
-    public function get(){
+    public function get()
+    {
 
         //return source
         return "__projectName__ source __serviceName__ __methodName__";

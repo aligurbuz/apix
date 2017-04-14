@@ -9,6 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\optional\provisions;
+
 use Src\Store\Services\Httprequest as Request;
 
 /**
@@ -18,8 +19,8 @@ use Src\Store\Services\Httprequest as Request;
  * return type boolean
  */
 
-class index {
-
+class index
+{
     public $request;
 
     /**
@@ -28,8 +29,8 @@ class index {
      * $data main variables
      * return type string
      */
-    public function __construct(Request $request){
-
+    public function __construct(Request $request)
+    {
         $this->request=$request;
     }
 
@@ -38,7 +39,8 @@ class index {
      *
      * @return array
      */
-    public function getProvision(){
+    public function getProvision()
+    {
 
         //get provision
         return [
@@ -52,7 +54,8 @@ class index {
      *
      * @return array
      */
-    public function postProvision(){
+    public function postProvision()
+    {
 
         //post provision
         return [
@@ -67,7 +70,8 @@ class index {
      *
      * @return array
      */
-    public function putProvision(){
+    public function putProvision()
+    {
 
         //put result
         return [
@@ -82,7 +86,8 @@ class index {
      *
      * @return array
      */
-    public function patchProvision(){
+    public function patchProvision()
+    {
 
         //patch result
         return [
@@ -97,7 +102,8 @@ class index {
      *
      * @return array
      */
-    public function deleteProvision(){
+    public function deleteProvision()
+    {
 
         //delete result
         return [
@@ -112,8 +118,8 @@ class index {
      *
      * @return array
      */
-    public function getExcept(){
-
+    public function getExcept()
+    {
         return [
             //app.'/stk'
         ];
@@ -125,8 +131,8 @@ class index {
      *
      * @return array
      */
-    public function postExcept(){
-
+    public function postExcept()
+    {
         return [
             //app.'/stk'
         ];
@@ -138,8 +144,8 @@ class index {
      *
      * @return array
      */
-    public function putExcept(){
-
+    public function putExcept()
+    {
         return [
             //app.'/stk'
         ];
@@ -151,8 +157,8 @@ class index {
      *
      * @return array
      */
-    public function patchExcept(){
-
+    public function patchExcept()
+    {
         return [
             //app.'/stk'
         ];
@@ -164,19 +170,10 @@ class index {
      *
      * @return array
      */
-    public function deleteExcept(){
-
+    public function deleteExcept()
+    {
         return [
             //app.'/stk'
         ];
     }
-
-
-
-
-
-
-
-
-
 }

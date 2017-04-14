@@ -17,7 +17,6 @@ namespace src\app\__projectName__\v1\__call\__serviceName__\source\bundle\__bund
  * return type array
  */
 
-interface __bundleName__Interface {
-
-
+interface __bundleName__Interface
+{
 }
