@@ -58,8 +58,12 @@ class model extends console {
                         $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
                         $list[]=$this->touch($project.'/'.$version.'/model/eloquent/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
 
-                        return $this->fileProcessResult($list,function() use($data){
-                            return $this->success('+++ the model named '.$this->getParams($data)[1]['file'].' has been created succesfully...');
+                        return $this->fileProcessResult($list,function() use($data,$project,$version){
+                            echo $this->info('-------------------------------------------------------------------------------------------------');
+                            echo $this->classical('MODEL GENERATOR : '.$this->getParams($data)[1]['file'].' --- '.$this->getParams($data)[2]['table'].'');
+                            echo $this->info('-------------------------------------------------------------------------------------------------');
+                            echo $this->success('You can see in the src/app/'.$project.'/'.$version.'/model Directory');
+                            echo $this->info('--------------------------------------------------------------------------------------------------');
                         });
                     }
                     else{

@@ -811,7 +811,11 @@ class manager {
 
                                 file_put_contents($migrationYaml, $yaml);
 
-                                echo $this->colors->done('++++'.$table.' migration has been completed as push');
+                                echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+                                echo $this->colors->classical('MIGRATION PUSH : --- '.$table.'');
+                                echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+                                echo $this->colors->success('You can see your migrations in the src/app/'.$this->project.'/'.$this->version.'/migrations Directory');
+                                echo $this->colors->info('--------------------------------------------------------------------------------------------------');
 
 
                             }
@@ -848,7 +852,11 @@ class manager {
                                         $resultExecute=explode("@@",$executeList[$pkey]);
                                         if($query->execute($resultExecute)) {
 
-                                            echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
+                                            echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+                                            echo $this->colors->classical('MIGRATION SEED PUSH : --- '.$table.'');
+                                            echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+                                            echo $this->colors->success('You can see your migrations in the src/app/'.$this->project.'/'.$this->version.'/migrations Directory');
+                                            echo $this->colors->info('--------------------------------------------------------------------------------------------------');
                                         }
                                     }
                                     catch(\Exception $e){
@@ -886,7 +894,11 @@ class manager {
                                             $resultExecute=explode("@@",$executeList[$pkey]);
                                             if($query->execute($resultExecute)) {
 
-                                                echo $this->colors->done('+++' . $table . ' seed has beed completed as push');
+                                                echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+                                                echo $this->colors->classical('MIGRATION SEED PUSH : --- '.$table.'');
+                                                echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+                                                echo $this->colors->success('You can see your migrations in the src/app/'.$this->project.'/'.$this->version.'/migrations Directory');
+                                                echo $this->colors->info('--------------------------------------------------------------------------------------------------');
                                             }
                                         }
                                         catch (\Exception $e){
@@ -1079,7 +1091,11 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo $this->colors->done('+++migration named '.$table.' has been created');
+        echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+        echo $this->colors->classical('MIGRATION GENERATOR : '.$param['__classname__'].' --- '.$table.'');
+        echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+        echo $this->colors->success('You can see your migrations in the src/app/'.$this->project.'/'.$this->version.'/migrations Directory');
+        echo $this->colors->info('--------------------------------------------------------------------------------------------------');
     }
 
 
@@ -1107,7 +1123,11 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo $this->colors->done('+++migration named '.$table.' has been created');
+        echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+        echo $this->colors->classical('MIGRATION GENERATOR : '.$param['__classname__'].' --- '.$table.'');
+        echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+        echo $this->colors->success('You can see your migrations in the src/app/'.$this->project.'/'.$this->version.'/migrations Directory');
+        echo $this->colors->info('--------------------------------------------------------------------------------------------------');
     }
 
 
@@ -1135,7 +1155,11 @@ class manager {
         fwrite($dt, $content);
         fclose($dt);
 
-        echo $this->colors->done('+++migration named '.$table.' has been created');
+        echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+        echo $this->colors->classical('MIGRATION GENERATOR : '.$param['__classname__'].' --- '.$table.'');
+        echo $this->colors->info('-------------------------------------------------------------------------------------------------');
+        echo $this->colors->success('You can see your migrations in the src/app/'.$this->project.'/'.$this->version.'/migrations Directory');
+        echo $this->colors->info('--------------------------------------------------------------------------------------------------');
     }
 
 

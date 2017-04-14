@@ -104,7 +104,7 @@ class service extends console {
                            echo $this->classical('CONGRATULATİONS! YOU HAVE CREATED A SERVICE NAMED '.$service.' IN THE '.$project.' PROJECT ');
                            echo $this->info('-------------------------------------------------------------------------------------------------');
                            echo $this->success('Request : http:ip/[-company]/service/'.$project.'/'.$service.'/index');
-                           echo $this->info('------------------------------------------------------------------------------');
+                           echo $this->info('--------------------------------------------------------------------------------------------------');
                        });
 
                    }
