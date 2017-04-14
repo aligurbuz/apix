@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\provisions;
+namespace src\app\__projectName__\v1\optional\provisions;
 use Src\Store\Services\Httprequest as Request;
 
 /**

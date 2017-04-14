@@ -72,9 +72,12 @@ class project extends console {
             $touchProjectGitignore['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/.gitignore',$touchProjectGitignore);
 
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/webServices');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/webServices/index.html',null);
+
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/webServices');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/webServices/index.html',null);
 
             $touchServiceBaseControllerParams['execution']='serviceBaseController';
             $touchServiceBaseControllerParams['params']['projectName']=$this->getProjectName($data);
@@ -92,25 +95,25 @@ class project extends console {
             $servicePackageDevController['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/servicePackageDevController.php',$servicePackageDevController);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/staticProvider');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/staticProvider/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/staticProvider');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/staticProvider/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/__call');
             $list[]=$this->touch($this->getProjectName($data).'/v1/__call/index.html',null);
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/config');
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/repository');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/repository/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/repository');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/repository/index.html',null);
 
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/provisions');
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/provisions');
 
             $touchprovisionindex['execution']='services/provision';
             $touchprovisionindex['params']['projectName']=$this->getProjectName($data);
-            $list[]=$this->touch($this->getProjectName($data).'/v1/provisions/index.php',$touchprovisionindex);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/provisions/index.php',$touchprovisionindex);
 
             $touchprovisionobjectloader['execution']='services/objectloader';
             $touchprovisionobjectloader['params']['projectName']=$this->getProjectName($data);
-            $list[]=$this->touch($this->getProjectName($data).'/v1/provisions/objectloader.php',$touchprovisionobjectloader);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/provisions/objectloader.php',$touchprovisionobjectloader);
 
 
             $touchServiceApp['execution']='app';
@@ -126,12 +129,12 @@ class project extends console {
             $list[]=$this->touch($this->getProjectName($data).'/v1/config/database.php',$database);
 
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/platform');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/platform/index.html',null);
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/platform');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/platform/index.html',null);
 
             $platformServiceConfParams['execution']='services/platform_config';
             $platformServiceConfParams['params']['projectName']=$this->getProjectName($data);
-            $list[]=$this->touch($this->getProjectName($data).'/v1/platform/config.php',$platformServiceConfParams);
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/platform/config.php',$platformServiceConfParams);
 
             $database['execution']='services/rabbitMQ';
             $database['params']['projectName']=$this->getProjectName($data);

@@ -37,7 +37,7 @@ class objectLoader {
                 $objectMethodicCall=[];
             }
 
-            $serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
+            $serviceobjectLoader="\\src\\app\\".app."\\v1\\optional\\provisions\\objectloader";
             $serviceobjectLoader=utils::resolve($serviceobjectLoader);
             $serviceobjectLoaderMethod=request.'ObjectLoader';
 
@@ -50,7 +50,7 @@ class objectLoader {
             }
 
             //individual method like getStk()
-            $s_serviceobjectLoader="\\src\\app\\".app."\\v1\\provisions\\objectloader";
+            $s_serviceobjectLoader="\\src\\app\\".app."\\v1\\optional\\provisions\\objectloader";
             $s_serviceobjectLoader=utils::resolve($s_serviceobjectLoader);
             $s_serviceobjectLoaderMethod=strtolower(request).''.ucfirst(service);
 
