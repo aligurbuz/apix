@@ -99,8 +99,12 @@ class service extends console {
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/source/bundle/index.html',null);
 
 
-                       return $this->fileProcessResult($list,function() use($service) {
-                           return $this->success('+++ the service named '.$service.' has been created succesfully...');
+                       return $this->fileProcessResult($list,function() use($service,$project) {
+                           echo $this->info('-------------------------------------------------------------------------------------------------');
+                           echo $this->classical('CONGRATULATİONS! YOU HAVE CREATED A SERVICE NAMED '.$service.' IN THE '.$project.' PROJECT ');
+                           echo $this->info('-------------------------------------------------------------------------------------------------');
+                           echo $this->success('Request : http:ip/[-company]/service/'.$project.'/'.$service.'/index');
+                           echo $this->info('------------------------------------------------------------------------------');
                        });
 
                    }

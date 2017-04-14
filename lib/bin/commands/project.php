@@ -173,7 +173,11 @@ class project extends console {
             $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/builder/index.html',null);
 
             return $this->fileProcessResult($list,function() use($data) {
-                return $this->success('+++ the project named '.$this->getProjectName($data).' has been created succesfully...');
+                echo $this->info('------------------------------------------------------------------------------');
+                echo $this->classical('WELCOME TO '.$this->getProjectName($data).' PROJECT ');
+                echo $this->info('------------------------------------------------------------------------------');
+                echo $this->success('+++ Your project has been created succesfully...');
+                echo $this->info('------------------------------------------------------------------------------');
             });
         }
 
