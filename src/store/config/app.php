@@ -94,7 +94,6 @@ class app {
 
         //defines
         return [
-            'Request'=>'\\src\\store\\services\\httprequest',
             'Repo'=>'\\src\\store\\services\\Repository'
         ];
 

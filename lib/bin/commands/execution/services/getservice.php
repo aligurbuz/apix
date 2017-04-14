@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use Request;
+use src\store\services\httprequest as Request;
 use Repo;
 
 /**
@@ -28,14 +28,12 @@ class getService extends app {
      * Constructor.
      *
      * @param type dependency injection and __serviceName__ class
-     * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(Request $request){
+    public function __construct(){
 
-        //get request info
+        //get app extends
         parent::__construct();
-        $this->request=$request;
     }
 
     /**
@@ -52,7 +50,6 @@ class getService extends app {
         //result
         return [
             'environment'=>environment(),
-            'clientIp'=>$this->request->getClientIp(),
             'isMobile'=>app("device")->isMobile()
         ];
     }

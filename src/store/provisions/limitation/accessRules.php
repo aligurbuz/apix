@@ -10,7 +10,7 @@
  */
 
 namespace src\store\provisions\limitation;
-use src\store\services\httprequest as request;
+use src\store\services\Httprequest as Request;
 
 /**
  * Represents a access rules class.

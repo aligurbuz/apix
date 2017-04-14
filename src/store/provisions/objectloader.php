@@ -9,7 +9,7 @@
  */
 
 namespace src\store\provisions;
-use src\store\services\httprequest as request;
+use src\store\services\Httprequest as Request;
 
 /**
  * Represents a object loader class.
@@ -20,7 +20,6 @@ use src\store\services\httprequest as request;
 
 class objectloader {
 
-    public $request;
     public $status=false;
 
     /**
@@ -29,10 +28,7 @@ class objectloader {
      * $data main variables
      * return type string
      */
-    public function __construct(request $request){
-
-        $this->request=$request;
-    }
+    public function __construct(){}
 
     /**
      * object loader for get method.

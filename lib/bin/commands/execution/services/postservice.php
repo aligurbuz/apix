@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use Request;
+use src\store\services\httprequest as Request;
 use Repo;
 
 /**
@@ -32,10 +32,10 @@ class postService extends app {
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(Request $request){
+    public function __construct(){
 
+        //get app extends
         parent::__construct();
-        $this->request=$request;
     }
 
     /**

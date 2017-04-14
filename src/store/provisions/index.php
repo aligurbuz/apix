@@ -9,7 +9,7 @@
  */
 
 namespace src\store\provisions;
-use src\store\services\httprequest as request;
+use src\store\services\Httprequest as Request;
 use src\store\services\httpCsrfToken as csrftoken;
 
 /**
@@ -21,18 +21,13 @@ use src\store\services\httpCsrfToken as csrftoken;
 
 class index {
 
-    public $request;
-
     /**
      * Represents a provision construct class.
      *
      * $data main variables
      * return type string
      */
-    public function __construct(request $request){
-
-        $this->request=$request;
-    }
+    public function __construct(){}
 
     /**
      * provision for get method.

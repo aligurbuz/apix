@@ -10,7 +10,7 @@
  */
 
 namespace src\store\provisions;
-use src\store\Services\Httprequest as request;
+use src\store\Services\Httprequest as Request;
 
 /**
  * Represents a provision class.
@@ -21,18 +21,13 @@ use src\store\Services\Httprequest as request;
 
 class token {
 
-    public $request;
-
     /**
      * Represents a token provision construct class.
      *
      * $data main variables
      * return type string
      */
-    public function __construct(request $request){
-
-        $this->request=$request;
-    }
+    public function __construct(){}
 
     /**
      * token provision for get method.
