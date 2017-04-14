@@ -183,6 +183,7 @@ class serviceDumpObjects {
                         }
                     }
                     $dataGetJoin=$list;
+
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataGetJoin);
                 }
@@ -212,11 +213,11 @@ class serviceDumpObjects {
                     $list['standard']=$data;
                 }
                 else{
-                    $dataUpdate['standard']=$data;
+                    /*$dataUpdate['standard']=$data;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataUpdate);
                     $this->setInfoExtra($session);
-                    return $session->get("standardDumpList");
+                    return $session->get("standardDumpList");*/
                 }
             }
         }
