@@ -7,7 +7,7 @@
 
 namespace src\app\__projectName__\v1;
 
-use Src\Store\Services\Httprequest as request;
+use Src\Store\Services\Httprequest as Request;
 
 class serviceBaseController
 {
@@ -42,7 +42,7 @@ class serviceBaseController
      */
     public function __construct()
     {
-        $this->request=new request();
+        $this->request=new Request();
     }
 
     /**
