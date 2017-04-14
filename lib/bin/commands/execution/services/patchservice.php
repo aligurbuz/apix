@@ -9,8 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use Request;
-use Repo;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a patchService class.
@@ -22,7 +21,6 @@ use Repo;
  */
 class patchService extends app {
 
-    public $request;
     public $forbidden=false;
 
     /**
@@ -32,10 +30,9 @@ class patchService extends app {
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(Request $request){
+    public function __construct(){
 
         parent::__construct();
-        $this->request=$request;
     }
 
     /**

@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use src\store\services\superservicecalls as superservicecalls;
+use Src\Store\Services\Superservicecalls as superservicecalls;
 
 /**
  * Represents a app class.

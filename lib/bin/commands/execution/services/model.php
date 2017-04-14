@@ -1,6 +1,6 @@
 <?php
 namespace src\app\__projectName__\v1\model\sudb;
-use src\store\packages\providers\database\sudb\src\model as Model;
+use Src\Store\Packages\Providers\Database\Sudb\Src\Model as Model;
 
 class __className__ extends Model {
 

@@ -9,8 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use src\store\services\httprequest as Request;
-use Repo;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a getService class.

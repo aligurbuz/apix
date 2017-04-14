@@ -1,6 +1,6 @@
 <?php
 namespace src\app\__projectName__\v1\model\eloquent;
-use src\store\packages\providers\database\eloquent\eloquentConnection as Eloquent;
+use Src\Store\Packages\Providers\Database\Eloquent\EloquentConnection as Eloquent;
 
 class __className__ extends Eloquent {
 

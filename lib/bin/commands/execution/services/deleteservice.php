@@ -9,8 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use src\store\services\Httprequest as request;
-use src\store\services\Repository as repo;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a deleteService class.
@@ -22,7 +21,6 @@ use src\store\services\Repository as repo;
  */
 class deleteService extends app {
 
-    public $request;
     public $forbidden=false;
 
     /**
@@ -32,10 +30,9 @@ class deleteService extends app {
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(request $request){
+    public function __construct(){
 
         parent::__construct();
-        $this->request=$request;
     }
 
     /**

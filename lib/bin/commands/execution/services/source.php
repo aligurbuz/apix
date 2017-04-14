@@ -9,8 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__\branches\source\__methodName__;
-use Request;
-use Repo;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a index class.
@@ -21,7 +20,6 @@ use Repo;
 
 class __sourceName__ extends \src\app\__projectName__\v1\__call\__serviceName__\app {
 
-    public $request;
 
     /**
      * Constructor.
@@ -32,7 +30,6 @@ class __sourceName__ extends \src\app\__projectName__\v1\__call\__serviceName__\
 
         //get request info
         parent::__construct();
-        $this->request=$request;
 
     }
 

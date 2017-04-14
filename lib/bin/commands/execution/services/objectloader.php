@@ -9,7 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\provisions;
-use src\store\services\httprequest as Request;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a object loader class.

@@ -9,8 +9,7 @@
  */
 
 namespace src\app\__projectName__\v1\platform;
-use Request;
-use Repo;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a index class.
@@ -21,19 +20,14 @@ use Repo;
 
 class config {
 
-    public $request;
 
     /**
      * Constructor.
      *
      * @param type dependency injection and function
      */
-    public function __construct(Request $request){
+    public function __construct(){}
 
-        //get request info
-        $this->request=$request;
-
-    }
 
     /**
      * dir method is main method.
