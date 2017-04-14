@@ -26,7 +26,7 @@ class staticprovider {
         $touchServiceStaticProviderMe['params']['projectName']=$this->getProjectName($data);
         $touchServiceStaticProviderMe['params']['version']=$data['version'];
         $touchServiceStaticProviderMe['params']['file']=$data['file'];
-        $list[]=$this->touch($this->getProjectName($data).'/'.$data['version'].'/staticProvider/'.$data['file'].'.php',$touchServiceStaticProviderMe);
+        $list[]=$this->touch($this->getProjectName($data).'/'.$data['version'].'/optional/staticProvider/'.$data['file'].'.php',$touchServiceStaticProviderMe);
 
 
         return $this->fileProcessResult($list,function(){

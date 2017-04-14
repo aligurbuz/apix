@@ -6,8 +6,8 @@
  */
 
 namespace src\app\__projectName__\v1;
-use Src\Store\Services\Httprequest as request;
 
+use Src\Store\Services\Httprequest as request;
 
 class serviceBaseController
 {
@@ -40,7 +40,8 @@ class serviceBaseController
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->request=new request();
     }
 
@@ -51,7 +52,8 @@ class serviceBaseController
      * @param service array or service data array
      * @return array
      */
-    public function webServiceBoot(){
+    public function webServiceBoot()
+    {
         return [
             /*
             'stk'=>[
@@ -70,7 +72,8 @@ class serviceBaseController
      * Within this directory there should be a subdirectory for each language supported by the application:
      * @return string
      */
-    public function getLocalization(){
+    public function getLocalization()
+    {
         return $this->lang;
     }
 
@@ -82,7 +85,8 @@ class serviceBaseController
      *
      * @return string
      */
-    public function fingerPrint($show=false){
+    public function fingerPrint($show=false)
+    {
         $list=[
             'ip'=>$this->request->getClientIp(),
             'getHost'=>$this->request->getHost(),
@@ -92,8 +96,8 @@ class serviceBaseController
 
         ];
 
-        if($show===false){
-            return md5(implode("|",$list));
+        if ($show===false) {
+            return md5(implode("|", $list));
         }
         return $list;
     }

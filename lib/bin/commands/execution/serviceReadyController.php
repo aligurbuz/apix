@@ -7,7 +7,6 @@
 
 namespace src\app\__projectName__\v1;
 
-
 class serviceReadyController
 {
     /**
@@ -16,7 +15,8 @@ class serviceReadyController
      * @param type ready class and function
      * @return array
      */
-    public function handle(){
+    public function handle()
+    {
         return [
             'base'=>'\src\app\__projectName__\v1\serviceBaseController'
         ];

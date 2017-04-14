@@ -5,13 +5,13 @@
  * service provider as static
  */
 
-namespace src\app\__projectName__\__version__\staticProvider;
-use src\store\services\httprequest as request;
+namespace src\app\__projectName__\__version__\optional\staticProvider;
+
+use Src\Store\Services\Httprequest as Request;
 
 
 class __file__
 {
-    private $request;
     /**
      * Constructor.
      *
@@ -19,9 +19,7 @@ class __file__
      * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(){
-        $this->request=new request();
-    }
+    public function __construct(){}
 
     /**
      * provider example method.
@@ -31,7 +29,9 @@ class __file__
      * main overloading method as static provider
      * @return string
      */
-    public static function exampleStaticProvider(){
+    public static function exampleStaticProvider()
+    {
+        //return static provider
         return 'exampleStaticProvider';
     }
 }

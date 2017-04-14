@@ -6,10 +6,10 @@
  */
 
 namespace src\app\__projectName__\v1;
+
 use src\store\services\httprequest as request;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler as StreamHandler;
-
 
 class serviceLogController
 {
@@ -23,7 +23,8 @@ class serviceLogController
      *
      * @param type dependency injection and function
      */
-    public function __construct(request $request){
+    public function __construct(request $request)
+    {
 
         //get request info
         $this->request=$request;
@@ -38,11 +39,10 @@ class serviceLogController
      * @param data client responses
      * @return bool
      */
-    public function handle($data=array()){
+    public function handle($data=array())
+    {
 
         //logging data
         return $this->logger->info(json_encode($data));
     }
-
-
 }

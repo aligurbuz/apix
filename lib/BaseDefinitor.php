@@ -65,7 +65,7 @@ class BaseDefinitor  {
     protected function getStaticProvider(){
         $staticProvider=$this->getServiceConfig()->staticProvider();
         foreach($staticProvider as $key=>$value){
-            $namespace=api."staticProvider\\".$key."";
+            $namespace=api."optional\\staticProvider\\".$key."";
             if($value=="all"){
                 class_alias($namespace,$key);
             }

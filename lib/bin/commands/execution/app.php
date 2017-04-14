@@ -7,7 +7,6 @@
 
 namespace src\app\__projectName__\v1\config;
 
-
 class app
 {
 
@@ -19,13 +18,12 @@ class app
      * @param string
      * @return response container runner
      */
-    public function container(){
-
+    public function container()
+    {
         return [
 
             'base' =>'\\src\\app\\__projectName__\\v1\\serviceBaseController'
         ];
-
     }
 
 
@@ -37,12 +35,11 @@ class app
      * @param string
      * @return response container runner
      */
-    public function staticProvider(){
-
+    public function staticProvider()
+    {
         return [
 
         ];
-
     }
 
     /**
@@ -52,9 +49,8 @@ class app
      * @param type dependency injection and function
      * @return array
      */
-    public static function getAppDefinition(){
-
+    public static function getAppDefinition()
+    {
         return [];
-
     }
 }

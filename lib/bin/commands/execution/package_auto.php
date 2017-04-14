@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-class __packageName__ {
+class __packageName__
+{
 
     /**
      * __packageName__ route is main method.
      *
      * @return array
      */
-    public function index(){
-
+    public function index()
+    {
         return ['package'=>'__packageName__'];
     }
-
 }
