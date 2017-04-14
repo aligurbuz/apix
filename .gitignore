@@ -9,7 +9,6 @@ src/store/provisions/limitation/yaml/*
 src/store/commands/*
 !important src/store/commands/index.html
 tests/*
-!important tests/fixer
 !important tests/index.html
 .DS_Store
 nbproject
