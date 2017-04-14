@@ -9,7 +9,6 @@
  */
 
 namespace src\app\__projectName__\v1\__call\__serviceName__;
-use Src\Store\Services\Superservicecalls as superservicecalls;
 
 /**
  * Represents a app class.
@@ -22,10 +21,7 @@ class app {
 
     public $source;
     public $model;
-    public $handle;
     public $main;
-    private $superservicecall;
-    protected $ready;
 
     /**
      * Constructor.
@@ -38,21 +34,6 @@ class app {
         $this->source=\branch::source();
         $this->model=\branch::query();
         $this->main=\branch::main();
-        $this->superservicecall=new superservicecalls();
-        $this->ready=$this->superservicecall->ready();
-    }
-
-    /**
-     * provider __call method.
-     *
-     * @param prepared functions and objects
-     * request method : super service call
-     * main overloading method as superservicecall
-     */
-    public function __call($name=null,$args){
-        if($name!==null){
-            return $this->superservicecall->$name();
-        }
     }
 
 
