@@ -103,7 +103,7 @@ class platform {
         }
         else{
 
-            $config='\\src\\store\\app\\'.app.'\\'.version.'\\platform\\config';
+            $config='\\src\\app\\'.app.'\\'.version.'\\optional\\platform\\config';
             $status=false;
             $instance=true;
             $configMethodMain=''.$this->platform;
@@ -117,9 +117,9 @@ class platform {
 
             if($status){
 
-                $classplatform=root.'/src/app/'.app.'/'.version.'/platform/'.$this->platform.'/'.$this->service.'/'.request.'Service.php';
+                $classplatform=root.'/src/app/'.app.'/'.version.'/optional/platform/'.$this->platform.'/'.$this->service.'/'.request.'Service.php';
                 if(file_exists($classplatform)){
-                    $platformname='\\src\\store\\app\\'.app.'\\'.version.'\\platform\\'.$this->platform.'\\'.$this->service.'\\'.request.'Service';
+                    $platformname='\\src\\app\\'.app.'\\'.version.'\\optional\\platform\\'.$this->platform.'\\'.$this->service.'\\'.request.'Service';
                     $method=method;
                     $appPlatform=\lib\utils::resolve($platformname);
                     if(method_exists($appPlatform,$method)){
