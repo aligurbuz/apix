@@ -7,13 +7,12 @@
 
 namespace src\app\__projectName__\v1;
 
-use src\store\services\httprequest as request;
+use Src\Store\Services\Httprequest as Request;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler as StreamHandler;
 
 class serviceLogController
 {
-    public $request;
     public $status=false;
     public $logger;
     public $logPath=null;
@@ -23,11 +22,10 @@ class serviceLogController
      *
      * @param type dependency injection and function
      */
-    public function __construct(request $request)
+    public function __construct()
     {
 
-        //get request info
-        $this->request=$request;
+        //get log component
         $this->logger=new logger('log');
         $this->logPath=application.'/storage/logs/access.log';
         $this->logger->pushHandler(new StreamHandler(application.'/storage/logs/access.log', Logger::INFO));
