@@ -149,14 +149,16 @@ class serviceDumpObjects {
         foreach ($this->getClientHeaders($session) as $key=>$value){
             $list['header_'.$key]=$data;
         }
-        if(count($this->getClientHeaders($session))==0 && count($querydata['getData'])==0){
+        if(count($this->getClientHeaders($session))==0 && count($this->request->getQueryString())==0){
             if(!$session->has("standardDumpList")){
                 $session->set("standardDumpList",$data);
             }
         }
-        if(count($querydata['getData'])){
+
+        if(count($this->request->getQueryString())){
             $yaml=$this->yamlProcess(true);
             if($session->has("standardDumpList") && strlen($this->joinQueryParam())>0){
+
                 $listBool=true;
                 foreach($session->get("standardDumpList") as $key=>$value){
                     $imp=md5(implode(",",$value));
@@ -175,8 +177,6 @@ class serviceDumpObjects {
                         if(count($listex)==0){
                             $listex[$getDataList]=$data;
                         }
-
-
 
 
                         $session->remove("standardDumpList");
