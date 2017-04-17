@@ -155,14 +155,17 @@ class serviceDumpObjects {
         }
         if(count($querydata['getData'])){
             $yaml=$this->yamlProcess(true);
-            if($session->has("standardDumpList")){
+            if($session->has("standardDumpList") && strlen($this->joinQueryParam())>0){
                 $listBool=true;
                 foreach($session->get("standardDumpList") as $key=>$value){
                     $imp=md5(implode(",",$value));
                     $getDataList='getData:'.$this->joinQueryParam().'';
+                    $listex=[];
+                    if(!array_key_exists($getDataList,$yaml['data'])){
+                        $listex[$getDataList]=$data;
+                    }
                     if($key!==$getDataList && md5(implode(",",$data))==$imp){
                         $listBool=false;
-                        $listex=[];
                         foreach ($yaml['data'] as $ykey=>$yvalue){
                             if($ykey!==$getDataList){
                                 $listex[$ykey]=$yvalue;
@@ -190,27 +193,35 @@ class serviceDumpObjects {
                 $this->setInfoExtra($session);
             }
         }
+
         if($session->has("standardDumpList")){
-            if(!array_key_exists("standard",$list)){
+
+            if(!array_key_exists("standard",$session->get("standardDumpList"))){
                 if(array_key_exists("standard",$session->get("standardDumpList"))){
                     $this->setInfoExtra($session);
                     return $session->get("standardDumpList");
                 }
                 $list['standard']=$session->get("standardDumpList");
             }
+
+
             if(!array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")))){
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$data);
                 $list['standard']=$data;
             }
+
+
             if(array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")['standard']))){
                 $dataUpdate=$session->get("standardDumpList");
+
+
                 if(count($this->request->getQueryString())==0){
                     $dataUpdate['standard']=$data;
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataUpdate);
                     $this->setInfoExtra($session);
-                    $list['standard']=$data;
+                    return $session->get("standardDumpList");
                 }
                 else{
                     /*$dataUpdate['standard']=$data;
@@ -224,8 +235,17 @@ class serviceDumpObjects {
         else{
             $list['standard']=$data;
         }
+
+
         $this->setInfoExtra($session);
-        return $list;
+
+        if(count($list)){
+            return $list;
+        }
+        else{
+            return $session->get("standardDumpList");
+        }
+
     }
     /**
      * get requestGetMethodCallback method.
