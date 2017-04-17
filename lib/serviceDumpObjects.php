@@ -164,33 +164,42 @@ class serviceDumpObjects {
 
 
                 $listBool=true;
-                foreach($session->get("standardDumpList") as $key=>$value){
+
+                $getDataList='getData:'.$this->joinQueryParam().'';
+
+                $listex=[];
+                $reelListex[strlen($getDataList)][$getDataList]=md5(implode(",",$data));
+                $lists=[];
+
+                $dataU=$session->get("standardDumpList");
+                $dataU[$getDataList]=$data;
+
+                foreach($dataU as $key=>$value){
                     $imp=md5(implode(",",$value));
-                    $getDataList='getData:'.$this->joinQueryParam().'';
+                    $reelListex[strlen($key)][$key]=$imp;
+                }
 
-                    $listex=[];
-                    if($key!==$getDataList && md5(implode(",",$data))==$imp){
-                        $listBool=false;
-                        foreach ($yaml['data'] as $ykey=>$yvalue){
-                            if($ykey!==$getDataList){
-                                $listex[$ykey]=$yvalue;
-                            }
+                ksort($reelListex);
+
+
+
+
+                foreach ($reelListex as $key=>$value){
+                    foreach($value as $a=>$b){
+                        if(!in_array($b,$lists)){
+                            $lists[]=$b;
+                            $listex[$a]=$dataU[$a];
+                            $listBool=false;
                         }
-
-
-                        if(count($listex)==0){
-                            $listex[$getDataList]=$data;
-                        }
-
-
-
-                        $session->remove("standardDumpList");
-                        $session->set("standardDumpList",$listex);
-                        $this->setInfoExtra($session);
-
-                        return $session->get("standardDumpList");
                     }
                 }
+
+
+
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$listex);
+
+
 
 
                 if($listBool){
@@ -215,18 +224,31 @@ class serviceDumpObjects {
         if($session->has("standardDumpList")){
 
             if(!array_key_exists("standard",$session->get("standardDumpList"))){
-                if(array_key_exists("standard",$session->get("standardDumpList"))){
+
+                if(count($this->request->getQueryString())){
                     $this->setInfoExtra($session);
                     return $session->get("standardDumpList");
                 }
-                $list['standard']=$session->get("standardDumpList");
+                else{
+                    $list['standard']=$session->get("standardDumpList");
+                }
+
             }
 
 
             if(!array_key_exists("standard",$session->get("standardDumpList")) && md5(implode(",",$data))!==md5(implode(",",$session->get("standardDumpList")))){
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$data);
-                $list['standard']=$data;
+
+                if(count($this->request->getQueryString())){
+                    $this->setInfoExtra($session);
+                    return $session->get("standardDumpList");
+                }
+                else{
+                    $list['standard']=$data;
+                }
+
+
             }
 
 
@@ -251,7 +273,13 @@ class serviceDumpObjects {
             }
         }
         else{
-            $list['standard']=$data;
+            if(count($this->request->getQueryString())){
+                $list['getData:'.$this->joinQueryParam()]=$data;
+            }
+            else{
+                $list['standard']=$data;
+            }
+
         }
 
 
