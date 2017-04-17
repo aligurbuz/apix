@@ -366,41 +366,14 @@ class serviceDumpObjects {
      */
     private function requestGetProcess($session){
         $inputList=[];
-        $hashData=md5(implode(",",$this->requestServiceMethodReal));
-        if(!$session->has("serviceDumpHashData")){
-            $session->set("serviceDumpHashData",$hashData);
-            foreach($this->request->getQueryString() as $key=>$value){
-                $inputList[$key]=gettype($value);
-            }
-            $session->set("serviceDumpHashDataTypes",md5(implode(",",$inputList)));
-        }
-        else{
-            $getDataList='getData:'.$this->joinQueryParam().'';
-            $datU=$session->get("standardDumpList");
-            $updatingList=[];
-            if($datU[$getDataList]!==$this->requestServiceMethodReal){
-                foreach($session->get("standardDumpList") as $akey=>$avalue){
-                    if($akey!==$getDataList){
-                        $updatingList[$akey]=$avalue;
-                    }
-                }
-            }
-            if(count($updatingList)){
-                $session->remove("standardDumpList");
-                $session->set("standardDumpList",$updatingList);
-            }
-            foreach($session->get("standardDumpList") as $ykey=>$yvalue){
-                if(preg_match('@getData:@is',$ykey)){
-                    $ykeyStr=explode(":",$ykey);
-                    $ykeyStrExplode=explode("&",$ykeyStr[1]);
-                    foreach($ykeyStrExplode as $yexKey=>$yexValue){
-                        $inputList[$yexValue]='string';
-                    }
-                }
-            }
-            if($hashData!==$session->get("serviceDumpHashData")){
-                foreach($this->request->getQueryString() as $key=>$value){
-                    $inputList[$key]=gettype($value);
+        foreach($session->get("standardDumpList") as $ykey=>$yvalue){
+
+            if(preg_match('@getData:@is',$ykey)){
+                $ykeyStr=explode(":",$ykey);
+                $ykeyStrExplode=explode("&",$ykeyStr[1]);
+
+                foreach($ykeyStrExplode as $yexKey=>$yexValue){
+                    $inputList[$yexValue]='string';
                 }
             }
         }
