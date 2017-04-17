@@ -130,7 +130,7 @@ class serviceDumpObjects {
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
                     'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
                     'headers'=>$this->getClientHeaders($session)
-                ]+$querydata +['info'=>$this->yInfo+$this->yInfoExtra]
+                ]+$this->requestGetProcess($session) +['info'=>$this->yInfo+$this->yInfoExtra]
             );
             return $yaml;
         }
