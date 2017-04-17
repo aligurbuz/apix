@@ -155,9 +155,13 @@ class serviceDumpObjects {
             }
         }
 
+
         if(count($this->request->getQueryString())){
+
             $yaml=$this->yamlProcess(true);
+
             if($session->has("standardDumpList") && strlen($this->joinQueryParam())>0){
+
 
                 $listBool=true;
                 foreach($session->get("standardDumpList") as $key=>$value){
@@ -179,6 +183,7 @@ class serviceDumpObjects {
                         }
 
 
+
                         $session->remove("standardDumpList");
                         $session->set("standardDumpList",$listex);
                         $this->setInfoExtra($session);
@@ -186,6 +191,8 @@ class serviceDumpObjects {
                         return $session->get("standardDumpList");
                     }
                 }
+
+
                 if($listBool){
                     $getDataList='getData:'.$this->joinQueryParam().'';
                     $list[$getDataList]=$data;
@@ -196,12 +203,14 @@ class serviceDumpObjects {
                     }
                     $dataGetJoin=$list;
 
+
                     $session->remove("standardDumpList");
                     $session->set("standardDumpList",$dataGetJoin);
                 }
                 $this->setInfoExtra($session);
             }
         }
+
 
         if($session->has("standardDumpList")){
 
@@ -249,6 +258,7 @@ class serviceDumpObjects {
         $this->setInfoExtra($session);
 
         if(count($list)){
+            $session->set("standardDumpList",$list);
             return $list;
         }
         else{
