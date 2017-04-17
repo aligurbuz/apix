@@ -125,6 +125,7 @@ class serviceDumpObjects {
             $querydata=$this->requestGetMethodCallback($session,function() use ($session){
                 return $this->requestPostProcess($session);
             });
+
             $yaml = Yaml::dump(['http'=>strtolower(request),
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
                     'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
@@ -160,10 +161,8 @@ class serviceDumpObjects {
                 foreach($session->get("standardDumpList") as $key=>$value){
                     $imp=md5(implode(",",$value));
                     $getDataList='getData:'.$this->joinQueryParam().'';
+
                     $listex=[];
-                    if(!array_key_exists($getDataList,$yaml['data'])){
-                        $listex[$getDataList]=$data;
-                    }
                     if($key!==$getDataList && md5(implode(",",$data))==$imp){
                         $listBool=false;
                         foreach ($yaml['data'] as $ykey=>$yvalue){
@@ -172,9 +171,19 @@ class serviceDumpObjects {
                             }
                         }
 
+
+                        if(count($listex)==0){
+                            $listex[$getDataList]=$data;
+                        }
+
+
+
+
                         $session->remove("standardDumpList");
                         $session->set("standardDumpList",$listex);
                         $this->setInfoExtra($session);
+
+                        return $session->get("standardDumpList");
                     }
                 }
                 if($listBool){
