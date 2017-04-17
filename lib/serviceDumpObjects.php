@@ -175,7 +175,11 @@ class serviceDumpObjects {
                 $dataU[$getDataList]=$data;
 
                 foreach($dataU as $key=>$value){
-                    $imp=md5(implode(",",$value));
+                    $rl=[];
+                    foreach($value as $h=>$hh){
+                        $rl[]=''.$h.'__'.$hh.'';
+                    }
+                    $imp=md5(implode(",",$rl));
                     $reelListex[strlen($key)][$key]=$imp;
                 }
 
@@ -198,6 +202,7 @@ class serviceDumpObjects {
 
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$listex);
+                $this->setInfoExtra($session);
 
 
 
