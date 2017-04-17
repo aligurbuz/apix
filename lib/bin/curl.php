@@ -8,7 +8,7 @@
 namespace lib\bin;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use src\services\guzzle;
+use src\store\services\guzzle;
 
 /**
  * Represents a console command example class.
