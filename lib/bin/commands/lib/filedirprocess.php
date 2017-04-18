@@ -75,7 +75,7 @@ class filedirprocess {
 
         if($filename!==null){
 
-            $path='./src/commands/'.$filename;
+            $path='./src/store/commands/'.$filename;
 
             if($param!==null AND is_array($param)){
 

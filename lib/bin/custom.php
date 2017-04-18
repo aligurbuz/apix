@@ -48,6 +48,10 @@ class custom {
             $command='\\lib\\bin\\'.$data[1];
         }
 
+        if($data[1]=="apidoc"){
+            $command='\\lib\\bin\\'.$data[1];
+        }
+
         $app=\lib\utils::resolve($command);
         \lib\environment::config();
 

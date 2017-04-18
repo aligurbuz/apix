@@ -24,6 +24,7 @@ class command {
             $file=$key;
         }
 
+
         //usage api command create file:file
         $list=[];
         $touchServiceCommandMe['execution']='command';

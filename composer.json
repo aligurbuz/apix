@@ -36,7 +36,8 @@
         "doctrine/orm": "^2.5",
         "tightenco/collect": "^5.4",
         "illuminate/database": "^5.4",
-        "illuminate/pagination": "^5.4"
+        "illuminate/pagination": "^5.4",
+        "crada/php-apidoc": "@dev"
     },
     "autoload": {
         "files": ["src/helpers.php"]
