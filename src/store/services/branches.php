@@ -229,7 +229,7 @@ class branches {
         else{
             $queryBuild=$container->get($sourcename)->$method();
         }
-        return ['queryResult'=>$queryBuild];
+        return $queryBuild;
     }
 
 
