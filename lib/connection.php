@@ -171,6 +171,9 @@ class connection extends Definitor {
                         //service main file extends this file
                         require(root . '/'.src.'/'.$service[0].'/'.$getVersion.'/__call/'.$service[1].'/app.php');
 
+                        //$service Base
+                        $serviceBase=utils::resolve(api."serviceBaseController");
+
                         //apix resolve
                         $apix=$instance->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
 
@@ -188,9 +191,12 @@ class connection extends Definitor {
                                 $restrictionsStatus=$restrictions[$requestServiceMethod];
                             }
                             if($restrictionsStatus){
-                                $boot=$instance->bootServiceLoader($requestServiceMethod);
+                                $serviceBasePlatformStatus=$serviceBase->platform;
 
-                                $serviceBasePlatformStatus=utils::resolve(api."serviceBaseController")->platform;
+                                $boot=[];
+                                if($serviceBase->boot){
+                                    $boot=$instance->bootServiceLoader($requestServiceMethod);
+                                }
                                 if($serviceBasePlatformStatus){
                                     $servicePlatform=utils::resolve(staticPathModel::$apiPlatformNamespace);
                                     $requestServiceMethodReal=$servicePlatform->take(function() use(&$requestServiceMethodReal,$apix,$requestServiceMethod,$boot){
@@ -203,13 +209,20 @@ class connection extends Definitor {
 
                                 }
                                 else{
-                                    $requestServiceMethodReal=$apix->$requestServiceMethod((object)$boot);
+
+                                    $requestServiceMethodReal=$apix->$requestServiceMethod();
                                 }
 
                                 $instance->serviceDump($requestServiceMethodReal,$requestServiceMethod);
-                                return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
+                                if($serviceBase->log){
+                                    return $instance->logging($requestServiceMethodReal,function() use ($instance,$requestServiceMethodReal){
+                                        return $instance->responseOut($requestServiceMethodReal);
+                                    });
+                                }
+                                else{
                                     return $instance->responseOut($requestServiceMethodReal);
-                                });
+                                }
+
                             }
 
                             return $instance->responseOut([],$instance->getFixLog('serviceRestrictions'));

@@ -11,20 +11,20 @@
 namespace src\app\__projectName__\v1\__call\__serviceName__;
 
 /**
- * Represents a app class.
+ * Represents a app abstract class.
  *
  * it is helper for main file
  * return type array
  */
 
-class app
+abstract class app
 {
     public $source;
     public $model;
     public $main;
 
     /**
-     * Constructor.
+     * Abstract Constructor.
      *
      * @param type dependency injection and app class
      * request method : symfony component
