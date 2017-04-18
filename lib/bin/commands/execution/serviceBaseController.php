@@ -20,7 +20,6 @@ class serviceBaseController
     //data log
     public $log=false;
 
-
     //http request
     public $request;
 
