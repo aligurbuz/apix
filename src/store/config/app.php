@@ -85,7 +85,7 @@ class app {
 
     /**
      * get alias classes app.
-     * definition:classess is defined by user
+     * definition:classes is defined by user
      * and it is called as use aliasClass..
      * @param type dependency injection and function
      * @return array
