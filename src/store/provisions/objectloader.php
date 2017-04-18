@@ -20,8 +20,6 @@ use src\store\services\Httprequest as Request;
 
 class objectloader {
 
-    public $status=false;
-
     /**
      * Represents a object loader construct class.
      *

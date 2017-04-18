@@ -47,11 +47,17 @@ class responseManager {
             }
 
             return $this->getStatusDataEmpty($data,$msg,$developInfo,function() use($data,$msg,$developInfo){
+                $serviceBase=utils::resolve(api."serviceBaseController");
+                if($serviceBase->objectLoader){
+                    $objectData=(new objectLoader())->boot();
+                }
+                else{
+                    $objectData=[];
+                }
 
-                $objectLoader=new objectLoader();
                 $data=['success'=>(bool)true,'statusCode'=>200,
                         'responseTime'=>microtime(true)-time_start,
-                        'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+$objectLoader->boot(),'development'=>$developInfo];
+                        'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+$objectData,'development'=>$developInfo];
 
                 return json_encode($data);
             });

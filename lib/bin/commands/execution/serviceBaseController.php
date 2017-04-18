@@ -20,6 +20,9 @@ class serviceBaseController
     //data log
     public $log=false;
 
+    //data object Loader
+    public $objectLoader=false;
+
     //http request
     public $request;
 
