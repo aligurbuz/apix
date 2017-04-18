@@ -14,8 +14,12 @@ class serviceBaseController
     //default lang name
     public $lang='tr';
 
-    //default lang name
+    //default boot name
     public $boot=false;
+
+    //data log
+    public $log=false;
+
 
     //http request
     public $request;
