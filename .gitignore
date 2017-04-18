@@ -6,8 +6,6 @@ src/app/*
 !important src/app/index.html
 src/store/provisions/limitation/yaml/*
 !important src/store/provisions/limitation/yaml/index.html
-src/store/commands/*
-!important src/store/commands/index.html
 tests/*
 !important tests/index.html
 .DS_Store
