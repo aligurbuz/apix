@@ -122,12 +122,13 @@ class serviceDumpObjects {
         if(!$status){
             //values
             $session=new httpSession();
+            $session->remove('standardDumpList');
 
             $yaml = Yaml::dump(['http'=>strtolower(request),
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
                     'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
                     'headers'=>$this->getClientHeaders($session,null)
-                ]+$this->requestGetProcess($session) +['info'=>$this->yInfo+$this->yInfoExtra]
+                ]+$this->requestGetProcess($session) + $this->requestPostProcess($session) +['info'=>$this->yInfo+$this->yInfoExtra]
             );
             return $yaml;
         }
@@ -431,13 +432,16 @@ class serviceDumpObjects {
     private function requestPostProcess($session){
         $inputList=[];
         foreach($this->request->input() as $key=>$value){
-            $inputList[$key]=gettype($value);
+            if(is_numeric($value)){
+                $inputList[$key]='integer';
+            }
+            else{
+                $inputList[$key]='string';
+            }
+
         }
-        $getList=[];
-        foreach($this->request->getQueryString() as $gkey=>$gvalue){
-            $getList[$gkey]=gettype($gvalue);
-        }
-        return ['postData'=>$inputList,'getData'=>$getList];
+
+        return ['postData'=>$inputList];
     }
     /**
      * get requestGetProcess method.
