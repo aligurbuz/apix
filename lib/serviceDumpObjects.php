@@ -122,14 +122,11 @@ class serviceDumpObjects {
         if(!$status){
             //values
             $session=new httpSession();
-            $querydata=$this->requestGetMethodCallback($session,function() use ($session){
-                return $this->requestPostProcess($session);
-            });
 
             $yaml = Yaml::dump(['http'=>strtolower(request),
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
                     'data'=>$this->namedDataDumpList($session,$this->yObjects,$querydata),
-                    'headers'=>$this->getClientHeaders($session)
+                    'headers'=>$this->getClientHeaders($session,null)
                 ]+$this->requestGetProcess($session) +['info'=>$this->yInfo+$this->yInfoExtra]
             );
             return $yaml;
@@ -146,15 +143,14 @@ class serviceDumpObjects {
      */
     private function namedDataDumpList($session,$data,$querydata=null){
         $list=[];
-        foreach ($this->getClientHeaders($session) as $key=>$value){
-            $list['header_'.$key]=$data;
-        }
-        if(count($this->getClientHeaders($session))==0 && count($this->request->getQueryString())==0){
-            if(!$session->has("standardDumpList")){
-                $session->set("standardDumpList",$data);
-            }
+
+        if(!$session->has("standardDumpList")){
+            $session->set("standardDumpList",$data);
         }
 
+        if(count($this->getClientHeaders($session,$data))){
+            return $session->get('standardDumpList');
+        }
 
         if(count($this->request->getQueryString())){
 
@@ -350,6 +346,8 @@ class serviceDumpObjects {
         }
         return implode("&",$list);
     }
+
+
     /**
      * get requestGetMethodCallback method.
      *
@@ -358,27 +356,71 @@ class serviceDumpObjects {
      * @param string
      * @return response requestGetMethodCallback runner
      */
-    private function getClientHeaders($session){
-        $hashData=md5(implode(",",$this->requestServiceMethodReal));
-        $headers=$this->request->getClientHeaders();
-        if($hashData!==$session->get("serviceDumpHashData")){
-            if(count($headers)){
-                $session->set("serviceDumpHashDataHeaders",$headers);
-                $listHeaders=[];
-                foreach($headers as $key=>$value){
-                    $listHeaders[$key]=gettype($value[0]);
+    private function joinHeaderParam(){
+        $list=[];
+        foreach($this->request->getClientHeaders() as $key=>$value){
+            $list[]=$key;
+        }
+        return implode("&",$list);
+    }
+
+
+    /**
+     * get requestGetMethodCallback method.
+     *
+     * outputs requestGetMethodCallback method.
+     *
+     * @param string
+     * @return response requestGetMethodCallback runner
+     */
+    private function getClientHeaders($session,$data=null){
+        if(count($this->request->getClientHeaders())){
+
+            if($data!==null){
+                $dataU=$session->get('standardDumpList');
+                $getDataList='header_'.$this->joinHeaderParam().':'.$this->joinQueryParam().'';
+                $dataU[$getDataList]=$data;
+
+                $listex=[];
+                $reelListex[strlen($getDataList)][$getDataList]=md5(implode(",",$data));
+                $lists=[];
+
+                $dataU[$getDataList]=$data;
+
+                foreach($dataU as $key=>$value){
+                    $rl=[];
+                    foreach($value as $h=>$hh){
+                        $rl[]=''.$h.'__'.$hh.'';
+                    }
+                    $imp=md5(implode(",",$rl));
+                    $reelListex[strlen($key)][$key]=$imp;
                 }
-                return $listHeaders;
+
+                ksort($reelListex);
+
+
+
+
+                foreach ($reelListex as $key=>$value){
+                    foreach($value as $a=>$b){
+                        if(!in_array($b,$lists)){
+                            $lists[]=$b;
+                            $listex[$a]=$dataU[$a];
+                            $listBool=false;
+                        }
+                    }
+                }
+
+                $this->setInfoExtra($session);
+                $session->remove("standardDumpList");
+                $session->set("standardDumpList",$listex);
             }
+
+
+            return $this->request->getClientHeaders();
         }
-        if($session->has("serviceDumpHashDataHeaders")){
-            $listHeaders=[];
-            foreach($session->get("serviceDumpHashDataHeaders") as $key=>$value){
-                $listHeaders[$key]=gettype($value[0]);
-            }
-            return $listHeaders;
-        }
-        return null;
+
+        return [];
     }
     /**
      * get requestPostProcess method.
