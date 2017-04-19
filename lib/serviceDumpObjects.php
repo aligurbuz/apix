@@ -144,9 +144,7 @@ class serviceDumpObjects {
     private function namedDataDumpList($session,$data,$querydata=null){
         $list=[];
 
-        if(!$session->has("standardDumpList")){
-            $session->set("standardDumpList",$data);
-        }
+
 
         if(count($this->getClientHeaders($session,$data))){
             return $session->get('standardDumpList');
@@ -378,7 +376,7 @@ class serviceDumpObjects {
 
             if($data!==null){
                 $dataU=$session->get('standardDumpList');
-                $getDataList='header_'.$this->joinHeaderParam().':'.$this->joinQueryParam().'';
+                $getDataList='header@'.$this->joinHeaderParam().':'.$this->joinQueryParam().'';
                 $dataU[$getDataList]=$data;
 
                 $listex=[];
@@ -411,9 +409,9 @@ class serviceDumpObjects {
                     }
                 }
 
-                $this->setInfoExtra($session);
                 $session->remove("standardDumpList");
                 $session->set("standardDumpList",$listex);
+                $this->setInfoExtra($session);
             }
 
 
@@ -454,6 +452,15 @@ class serviceDumpObjects {
         foreach($session->get("standardDumpList") as $ykey=>$yvalue){
 
             if(preg_match('@getData:@is',$ykey)){
+                $ykeyStr=explode(":",$ykey);
+                $ykeyStrExplode=explode("&",$ykeyStr[1]);
+
+                foreach($ykeyStrExplode as $yexKey=>$yexValue){
+                    $inputList[$yexValue]='string';
+                }
+            }
+
+            if(preg_match('@header\@@is',$ykey)){
                 $ykeyStr=explode(":",$ykey);
                 $ykeyStrExplode=explode("&",$ykeyStr[1]);
 
