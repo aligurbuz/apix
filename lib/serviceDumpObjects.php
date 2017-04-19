@@ -122,7 +122,10 @@ class serviceDumpObjects {
         if(!$status){
             //values
             $session=new httpSession();
-            $session->remove('standardDumpList');
+            if(!file_exists($this->serviceYamlFile)){
+                $session->remove('standardDumpList');
+            }
+
 
             $yaml = Yaml::dump(['http'=>strtolower(request),
                     'servicePath'=>''.app.'/'.service.'/'.method.'',
