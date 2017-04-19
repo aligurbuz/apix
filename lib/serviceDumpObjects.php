@@ -434,15 +434,18 @@ class serviceDumpObjects {
      */
     private function requestPostProcess($session){
         $inputList=[];
-        foreach($this->request->input() as $key=>$value){
-            if(is_numeric($value)){
-                $inputList[$key]='integer';
-            }
-            else{
-                $inputList[$key]='string';
-            }
+        if(request=="POST"){
+            foreach($this->request->input() as $key=>$value){
+                if(is_numeric($value)){
+                    $inputList[$key]='integer';
+                }
+                else{
+                    $inputList[$key]='string';
+                }
 
+            }
         }
+
 
         return ['postData'=>$inputList];
     }
