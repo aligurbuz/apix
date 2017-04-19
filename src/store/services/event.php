@@ -1,0 +1,51 @@
+<?php
+/*
+ * This file is client and service extra branching of the repository service.
+ *
+ * client and repository info
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace src\store\services;
+
+/**
+ * Represents a index class.
+ *
+ * main call
+ * return type string
+ */
+
+class event {
+
+    private $service=null;
+
+    /**
+     * get repository class call.
+     *
+     * @return array
+     */
+    public function __construct(){
+        $serviceBase=api.'serviceBaseController';
+        $this->service=new $serviceBase();
+    }
+
+    /**
+     * get repository class call.
+     *
+     * @return array
+     */
+    public function dispatch($name,$callback){
+        if(is_callable($callback)){
+            $callData=call_user_func($callback);
+            if($callData){
+                $events=$this->service->event();
+                $getEvent=$events[$name];
+                return $getEvent();
+            }
+        }
+        return false;
+    }
+
+}

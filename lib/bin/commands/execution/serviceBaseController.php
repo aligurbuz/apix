@@ -107,4 +107,21 @@ class serviceBaseController
         }
         return $list;
     }
+
+
+    /**
+     * The EventDispatcher component provides tools that allow your application
+     * components to communicate with each other by dispatching events and listening to them.
+     * @event param src/store/services/event
+     *
+     * @return array
+     */
+    public function event()
+    {
+        $events =[
+            'eventName'=>function () { }
+        ];
+
+        return $events;
+    }
 }

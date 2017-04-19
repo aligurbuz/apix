@@ -51,6 +51,7 @@ class app {
             'search'                =>self::$servicePath.'search',
             'cache'                 =>self::$servicePath.'cache',
             'pushNotification'      =>self::$servicePath.'pushNotifications',
+            'event'                 =>self::$servicePath.'event',
         ];
 
         //if container is null,all containers are evaluated
