@@ -1,8 +1,9 @@
 <?php
 /*
- * This file is client and service extra branching of the repository service.
+ * The EventDispatcher component provides tools that allow your application
+ * components to communicate with each other by dispatching events and listening to them.
  *
- * client and repository info
+ * client and event dispatcher info
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,9 +23,10 @@ class event {
     private $service=null;
 
     /**
-     * get repository class call.
+     * Constructor.
      *
-     * @return array
+     * @param type dependency injection and stk class
+     * main loader as construct method
      */
     public function __construct(){
         $serviceBase=api.'serviceBaseController';
@@ -32,9 +34,14 @@ class event {
     }
 
     /**
-     * get repository class call.
+     * get dispatch method call.
+     * Object-oriented code has gone a long way to ensuring code extensibility.
+     * By creating classes that have well defined responsibilities, your code becomes more flexible and
+     * a developer can extend them with subclasses to modify their behaviors.
+     * But if they want to share the changes with other developers who have also made
+     * their own subclasses, code inheritance is no longer the answer.
      *
-     * @return array
+     * @return boolean
      */
     public function dispatch($name,$callback){
         if(is_callable($callback)){
