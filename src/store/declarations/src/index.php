@@ -71,7 +71,7 @@ final class index {
         if($type=='name'){
             if(array_key_exists("service",$publishes)){
                 foreach ($publishes['service']['name'] as $name=>$services ){
-                    $list[]=ucfirst($name);
+                    $list[]=$name;
                 }
             }
 
@@ -135,7 +135,7 @@ final class index {
         $this->data['lang']=$this->getLang();
         $this->data['services']=$this->getPublishes();
         if(\app::checkToken()){
-            $this->data['token']='?_token='.$this->getQuery('_token');
+            $this->data['token']='&_token='.$this->getQuery('_token');
         }
         else{
             $this->data['token']='';

@@ -19,13 +19,13 @@
         <div id="sidenav" class="span2">
             <nav id="scrollingNav">
                 <ul class="sidenav nav nav-list">
-                    <li class="nav-fixed nav-header" data-group="_"><a href="http://{{ root }}/service/{{ app }}/doc/index{{ token }}">{{ lang['general'] }} </a></li>
+                    <li class="nav-fixed nav-header" data-group="_"><a href="http://{{ root }}/service/{{ app }}/doc/index?doc=true{{ token }}">{{ lang['general'] }} </a></li>
                     <li class="nav-header" data-group="User"><a href="">{{ lang['services'] }}</a></li>
 
                     {% if services|length > 0 %}
                     {% for item in services %}
                     <li data-group="Service" data-name="GetService" data-version="0.1.0">
-                        <a href="">{{ appHeader }} - {{ item }}</a>
+                        <a href="http://{{ root }}/service/{{ app }}/doc/index?doc=true{{ token }}&service={{ item }}">{{ appHeader }} - {{ item | capitalize }}</a>
                     </li>
                     {% endfor %}
 
