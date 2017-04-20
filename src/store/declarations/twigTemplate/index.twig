@@ -41,8 +41,17 @@
         <div id="content">
             <div id="project">
                 <div class="pull-left">
-                    <h1>apidoc-example</h1>
-                    <h2>apiDoc example project</h2>
+                    {% if getService == null %}
+
+                        <h1>Mobi {{ lang['homeintro'] }}</h1>
+
+                    {% else %}
+
+                        <h1>{{ app | capitalize }}-{{ getService | capitalize }} {{ lang['contentintro'] }}</h1>
+
+                    {% endif %}
+
+
                 </div>
                 <div class="pull-right">
                     <div class="btn-group">
@@ -62,9 +71,22 @@
                 <div class="clearfix"></div>
             </div>
             <div id="header">
-                <div id="api-_"><h2 id="welcome-to-apidoc">Welcome to apiDoc</h2>
-                    <p>Please visit <a href="http://apidocjs.com/">apidocjs.com</a> with the full documentation.</p>
-                </div>
+
+                {% if getService == null %}
+
+                    <div id="api-_"><h2 id="welcome-to-apidoc">{{ lang['homeintrosub'] }}</h2>
+                        <p></p>
+                    </div>
+
+                {% else %}
+
+                    <div id="api-_"><h2 id="welcome-to-apidoc">{{  lang['contentintrosub'] }}</h2>
+                        <p>---</p>
+                    </div>
+
+                {% endif %}
+
+
             </div>
             <div id="sections">
                 {% if getService == null %}
@@ -78,14 +100,16 @@
                 {% endif %}
 
             </div>
+
+            <br>
             <div id="footer">
-                <div id="api-_footer"><h2 id="epilogue">Epilogue</h2>
-                    <p>Suggestions, contact, support and error reporting on <a href="https://github.com/apidoc/apidoc/issues">GitHub</a></p>
+                <div id="api-_footer"><h2 id="epilogue">Apix Restfull System</h2>
+                    <p>Suggestions, contact, support and error reporting on <a href="https://github.com/aligurbuz/apix">GitHub</a></p>
                 </div>
             </div>
             <div id="generator">
                 <div class="content">
-                    Generated with <a href="http://apidocjs.com/">apiDoc</a> 0.9.0 - 2014-11-28T14:51:50.677Z
+                    Generated with <a href="https://github.com/aligurbuz/apix">Apix System</a>
                 </div>
             </div>
         </div>
