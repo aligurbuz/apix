@@ -11,6 +11,8 @@
 
 namespace src\store\config;
 use src\store\services\httprequest as request;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 class app {
 
@@ -186,7 +188,7 @@ class app {
 
         //get token
         $token="\\src\\store\\provisions\\token";
-        $token=self::resolve($token);
+        $token=\lib\utils::resolve($token);
         $tokenhandle=$token->handle();
         $tokenexcept=$token->except();
 
@@ -297,6 +299,24 @@ class app {
     public static function requestUri(){
 
         return $_SERVER['REQUEST_URI'];
+    }
+
+
+    /**
+     * get yaml file.
+     *
+     * this checks request uri parameter.
+     *
+     * @param string
+     * @return request yaml runner
+     */
+    public static function getYaml($path){
+
+        try {
+            return Yaml::parse(file_get_contents($path));
+        } catch (ParseException $e) {
+            return "Unable to parse the YAML string: ".$e->getMessage();
+        }
     }
 
 

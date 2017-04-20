@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- saved from url=(0028)http://apidocjs.com/example/ -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>apiDoc: apidoc-example - 0.3.0</title>
+    <title>{{ app }} Project Api Documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="http://{{root}}/external/public/declarations/apidoc_files/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -19,26 +19,15 @@
         <div id="sidenav" class="span2">
             <nav id="scrollingNav">
                 <ul class="sidenav nav nav-list">
-                    <li class="nav-fixed nav-header" data-group="_"><a href="http://apidocjs.com/example/#api-_">General</a></li>
-                    <li class="nav-header" data-group="User"><a href="http://apidocjs.com/example/#api-User">User</a></li>
+                    <li class="nav-fixed nav-header" data-group="_"><a href="http://{{ root }}/service/{{ app }}/doc/index{{ token }}">{{ lang['general'] }} </a></li>
+                    <li class="nav-header" data-group="User"><a href="">{{ lang['services'] }}</a></li>
+
+                    {% for item in services %}
                     <li data-group="User" data-name="GetUser" data-version="0.3.0">
-                        <a href="http://apidocjs.com/example/#api-User-GetUser">Read data of a User</a>
+                        <a href="">{{ appHeader }} - {{ item }}</a>
                     </li>
-                    <li class="hide" data-group="User" data-name="GetUser" data-version="0.2.0">
-                        <a href="http://apidocjs.com/example/#api-User-GetUser">Read data of a User</a>
-                    </li>
-                    <li class="hide" data-group="User" data-name="GetUser" data-version="0.1.0">
-                        <a href="http://apidocjs.com/example/#api-User-GetUser">Read data of a User</a>
-                    </li>
-                    <li data-group="User" data-name="PostUser" data-version="0.3.0">
-                        <a href="http://apidocjs.com/example/#api-User-PostUser">Create a new User</a>
-                    </li>
-                    <li class="hide" data-group="User" data-name="PostUser" data-version="0.2.0">
-                        <a href="http://apidocjs.com/example/#api-User-PostUser">Create a User</a>
-                    </li>
-                    <li data-group="User" data-name="PutUser" data-version="0.3.0" class="is-new">
-                        <a href="http://apidocjs.com/example/#api-User-PutUser">Change a new User</a>
-                    </li>
+                    {% endfor %}
+
                 </ul>
             </nav>
         </div>
