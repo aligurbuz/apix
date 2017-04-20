@@ -134,6 +134,7 @@ final class index {
         $this->data['appHeader']=ucfirst(app);
         $this->data['lang']=$this->getLang();
         $this->data['services']=$this->getPublishes();
+        $this->data['getService']=$this->request->getQueryString('service');
         if(\app::checkToken()){
             $this->data['token']='&_token='.$this->getQuery('_token');
         }
