@@ -77,9 +77,19 @@ final class index {
                 foreach ($services as $key=>$value){
                     $valueExplode=explode("\\",$value);
                     $classMethod=end($valueExplode);
+                    $path=str_replace(end($valueExplode),"",$value);
+                    $pathPurePath=str_replace("\\","/",$path);
                     $classMethodExplode=explode("::",$classMethod);
                     $request=str_replace("Service","",$classMethodExplode[0]);
                     $methods[$request][]=$classMethodExplode[1];
+                    $yamlFile=root.''.$pathPurePath.'/yaml/expected/'.$name.'_'.$request.'_'.$classMethodExplode[1].'.yaml';
+                    if(file_exists($yamlFile)){
+                        $methods['yaml'][]=\app::getYaml($yamlFile);
+                    }
+                    else{
+                        $methods['yaml'][]=[];
+                    }
+
                 }
             }
         }
