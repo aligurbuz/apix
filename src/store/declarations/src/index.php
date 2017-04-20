@@ -61,21 +61,34 @@ final class index {
      * @param type dependency injection and function
      * @return array
      */
-    public function getPublishes($type='name'){
+    public function getPublishes($type=null){
 
         //return
         $publishesPath=root.'/src/app/'.app.'/publish.php';
-        $publishes=require_once($publishesPath);
+        $publishes=require($publishesPath);
+
 
         $list=[];
-        if($type=='name'){
-            if(array_key_exists("service",$publishes)){
-                foreach ($publishes['service']['name'] as $name=>$services ){
-                    $list[]=$name;
+        $methods=[];
+
+        if(array_key_exists("service",$publishes)){
+            foreach ($publishes['service']['name'] as $name=>$services ){
+                $list[]=$name;
+                foreach ($services as $key=>$value){
+                    $valueExplode=explode("\\",$value);
+                    $classMethod=end($valueExplode);
+                    $classMethodExplode=explode("::",$classMethod);
+                    $request=str_replace("Service","",$classMethodExplode[0]);
+                    $methods[$request][]=$classMethodExplode[1];
                 }
             }
-
         }
+
+
+        if($type=="methods"){
+            return $methods;
+        }
+
 
         if(count($list)){
             return $list;
@@ -134,6 +147,7 @@ final class index {
         $this->data['appHeader']=ucfirst(app);
         $this->data['lang']=$this->getLang();
         $this->data['services']=$this->getPublishes();
+        $this->data['methods']=$this->getPublishes('methods');
         $this->data['getService']=$this->request->getQueryString('service');
         if(\app::checkToken()){
             $this->data['token']='&_token='.$this->getQuery('_token');
