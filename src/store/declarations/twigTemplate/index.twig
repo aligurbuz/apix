@@ -22,11 +22,18 @@
                     <li class="nav-fixed nav-header" data-group="_"><a href="http://{{ root }}/service/{{ app }}/doc/index{{ token }}">{{ lang['general'] }} </a></li>
                     <li class="nav-header" data-group="User"><a href="">{{ lang['services'] }}</a></li>
 
+                    {% if services|length > 0 %}
                     {% for item in services %}
-                    <li data-group="User" data-name="GetUser" data-version="0.3.0">
+                    <li data-group="Service" data-name="GetService" data-version="0.1.0">
                         <a href="">{{ appHeader }} - {{ item }}</a>
                     </li>
                     {% endfor %}
+
+                    {% else %}
+                        <li data-group="Service" data-name="GetService" data-version="0.1.0">
+                            <a href="">{{ lang['noService'] }}</a>
+                        </li>
+                    {% endif %}
 
                 </ul>
             </nav>
