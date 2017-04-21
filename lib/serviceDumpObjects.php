@@ -14,6 +14,7 @@ class serviceDumpObjects {
     private $request;
     private $oArr=array();
     private $oInfo=array();
+    private $lang=null;
     /**
      * service dump constructs.
      *
@@ -31,6 +32,9 @@ class serviceDumpObjects {
         $this->other=$other;
         $this->serviceYamlFile='./'.src.'/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml';
         $this->request=new request();
+        $basePath=api.'serviceBaseController';
+        $base=new $basePath();
+        $this->lang=$base->lang;
         $this->dump();
     }
     /**
@@ -42,6 +46,7 @@ class serviceDumpObjects {
      * @return response service dump runner
      */
     public function dump(){
+
         if($this->requestServiceMethodReal!==null && $this->requestServiceMethod!==null){
             $requestServiceMethodReal=$this->requestServiceMethodReal($this->requestServiceMethodReal);
             $this->yObjects=$requestServiceMethodReal['yObjects'];
@@ -147,6 +152,31 @@ class serviceDumpObjects {
                     'headers'=>$this->getClientHeaders($session,null)
                 ]+$this->requestGetProcess($session) + $this->requestPostProcess($session) +['info'=>$this->yInfo+$this->yInfoExtra]
             );
+
+            $apiLangPath=root.'/src/app/'.app.'/storage/lang/'.$this->lang;
+            if(!file_exists($apiLangPath)){
+                mkdir($apiLangPath,0777);
+            }
+            $apiLangPathName=$apiLangPath.'/'.service.'_'.strtolower(request).'_'.method.'_doc.yaml';
+            $apiDocData=$this->yInfo+$this->yInfoExtra;
+
+            if(file_exists($apiLangPathName)){
+                $apiDocYamlFile=Yaml::parse(file_get_contents($apiLangPathName));
+            }
+            else{
+                $apiDocYamlFile=[];
+            }
+
+            foreach($apiDocData as $key=>$value){
+                if(!array_key_exists($key,$apiDocYamlFile)){
+                    $apiDocYamlFile[$key]=$value;
+                }
+            }
+
+            $yamlDump = Yaml::dump($apiDocYamlFile);
+
+            file_put_contents($apiLangPathName, $yamlDump);
+
             return $yaml;
         }
         return $value;
@@ -161,7 +191,6 @@ class serviceDumpObjects {
      */
     private function namedDataDumpList($session,$data,$querydata=null){
         $list=[];
-
 
 
         if(count($this->getClientHeaders($session,$data))){
