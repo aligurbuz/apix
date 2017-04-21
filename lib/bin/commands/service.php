@@ -1,6 +1,8 @@
 <?php namespace lib\bin\commands;
 use Illuminate\Database\Connectors\Connector;
 use Lib\Console;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 /**
  * Command write.
  * type array
@@ -134,12 +136,23 @@ class service extends console {
                     }
 
                     $servicePath='\\\\src\\\\app\\\\'.$project.'\\\\'.$versionNumber.'\\\\__call\\\\'.$service.'\\\\'.$this->getParams($data)[2]['http'].'Service';
-                    $names=explode("/",$this->getParams($data)[1]['names']);
-                    $list=[];
-                    foreach($names as $name){
+                    //$names=explode("/",$this->getParams($data)[1]['names']);
+                    $list[]=''.$servicePath.'::'.$this->getParams($data)[1]['names'].'';
 
-                        $list[]=''.$servicePath.'::'.$name.'';
+                    $yamlFilePath=root.'/src/app/'.$project.'/'.$versionNumber.'/__call/'.$service.'/yaml/expected/'.$service.'_'.$this->getParams($data)[2]['http'].'_'.$this->getParams($data)[1]['names'].'.yaml';
+                    if(!file_exists($yamlFilePath)){
+                        return '!!! No service dump for your service';
                     }
+
+                    $yamlFile=Yaml::parse(file_get_contents($yamlFilePath));
+
+                    $time=time();
+
+                    $yamlFile['publishedDate']=$time;
+
+                    $yamlDump = Yaml::dump($yamlFile);
+
+                    file_put_contents(root.'/src/app/'.$project.'/declaration/history/'.$time.'_'.$service.'_'.$this->getParams($data)[2]['http'].'_'.$this->getParams($data)[1]['names'].'.yaml', $yamlDump);
 
 
                     $publishPath='./src/app/'.$project.'/publish.php';
