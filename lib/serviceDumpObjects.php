@@ -12,6 +12,8 @@ class serviceDumpObjects {
     private $yInfoExtra=array();
     private $yObjects=array();
     private $request;
+    private $oArr=array();
+    private $oInfo=array();
     /**
      * service dump constructs.
      *
@@ -59,41 +61,48 @@ class serviceDumpObjects {
      * @return response requestServiceMethodReal runner
      */
     private function requestServiceMethodReal($requestServiceMethodReal){
-        $oArr=[];
-        $oInfo=[];
+
         foreach($requestServiceMethodReal as $key=>$value){
             if(is_array($value)){
-                if($key=="queryResult"){
-                    foreach($value as $v1=>$v2){
-                        if($v1=="data"){
-                            foreach($requestServiceMethodReal['queryResult']['data'][0] as $dkey=>$dvalue){
-                                $oArr['queryResult'][$v1][$dkey]=gettype($dvalue);
-                                $oInfo[$v1][$dkey]=null;
-                            }
-                        }
-                        else{
-                            $oArr['queryResult'][$v1]=gettype($v2);
-                            $oInfo[$v1]=null;
-                        }
-                    }
-                }
-                else{
-                    foreach($value as $v1=>$v2){
-                        $oArr[$v1]=gettype($v2);
-                        $oInfo[$v1]=null;
-                    }
-                }
+                $this->recursiveArray($value);
+
             }
             else{
-                $oArr[$key]=gettype($value);
-                $oInfo[$key]=null;
+                $this->oArr[$key]=gettype($value);
+                $this->oInfo[$key]=null;
             }
         }
         return [
-            'yObjects'=>$oArr,
-            'yInfo'=>$oInfo
+            'yObjects'=>$this->oArr,
+            'yInfo'=>$this->oInfo
         ];
     }
+
+    /**
+     * get tokenInfoDump method.
+     *
+     * outputs get file.
+     *
+     * @param string
+     * @return response tokenInfoDump runner
+     */
+    private function recursiveArray($value){
+        $list=[];
+        if(is_array($value)){
+            foreach($value as $v1=>$v2){
+                if(is_array($v2)){
+                    $this->recursiveArray($v2);
+                }
+                else{
+                    $this->oArr[$v1]=gettype($v2);
+                    $this->oInfo[$v1]=null;
+                }
+
+            }
+        }
+
+    }
+
     /**
      * get tokenInfoDump method.
      *
