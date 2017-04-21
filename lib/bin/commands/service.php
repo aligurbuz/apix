@@ -152,8 +152,9 @@ class service extends console {
 
                     $yamlDump = Yaml::dump($yamlFile);
 
-                    file_put_contents(root.'/src/app/'.$project.'/declaration/history/'.$time.'_'.$service.'_'.$this->getParams($data)[2]['http'].'_'.$this->getParams($data)[1]['names'].'.yaml', $yamlDump);
+                    file_put_contents(root.'/src/app/'.$project.'/declaration/history/'.$service.'_'.$this->getParams($data)[2]['http'].'_'.$this->getParams($data)[1]['names'].'.yaml', $yamlDump);
 
+                    unlink($yamlFilePath);
 
                     $publishPath='./src/app/'.$project.'/publish.php';
                     $publish=require($publishPath);

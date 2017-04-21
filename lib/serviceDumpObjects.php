@@ -133,6 +133,11 @@ class serviceDumpObjects {
             $session=new httpSession();
             if(!file_exists($this->serviceYamlFile)){
                 $session->remove('standardDumpList');
+                $getHistory=root.'/src/app/'.app.'/declaration/history/'.service.'_'.request.'_'.method.'.yaml';
+                if(file_exists($getHistory)){
+                    $yamlFile=Yaml::parse(file_get_contents($getHistory));
+                    $session->set('standardDumpList',$yamlFile['data']);
+                }
             }
 
 
