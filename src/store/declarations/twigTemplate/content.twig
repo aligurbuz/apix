@@ -65,16 +65,18 @@
                 {% if itemkey matches '{header.*}' %}
 
                 {% set headerData = itemkey|split('@') %}
-                {% set headerParam = headerData[1]|split('&') %}
+                {% set headerParam = headerData[1]|split(':') %}
 
                 {% for headerparamskey,headerparamsvalue in headerParam %}
+
+                    {% if methods['yaml'][0]['headers'][headerparamsvalue] is defined %}
 
                 <tbody>
 
                 <tr>
-                    <td class="code">{{ headerparamsvalue }}</td>
+                    <td class="code">{{ headerparamsvalue }} </td>
                     <td>
-                        ---
+                        {{ methods['yaml'][0]['headers'][headerparamsvalue][0] }}
                     </td>
                     <td>
                         <p>---</p>
@@ -83,6 +85,8 @@
                     </td>
                 </tr>
                 </tbody>
+
+                        {% endif %}
 
                 {% endfor %}
 
@@ -182,7 +186,34 @@
 
                     {% endfor %}
 
+                {% elseif itemkey matches '{header.*}' %}
+
+                    {% for headerparamskey,headerparamsvalue in headerParam %}
+
+                        {% if methods['yaml'][0]['getData'][headerparamsvalue] is defined %}
+
+                            <tbody>
+
+                            <tr>
+                                <td class="code">{{ headerparamsvalue }} </td>
+                                <td>
+                                    {{ methods['yaml'][0]['getData'][headerparamsvalue] }}
+                                </td>
+                                <td>
+                                    <p>---</p>
+
+
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
                 {% else %}
+
 
                     <tbody>
 
