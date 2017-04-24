@@ -116,49 +116,34 @@
 
 
 
-            <h2>Error 4xx</h2>
+            <h2>{{ lang['error_response'] }}</h2>
             <table>
                 <thead>
                 <tr>
-                    <th style="width: 30%">Field</th>
+                    <th style="width: 30%">{{ lang['field'] }}</th>
 
-                    <th style="width: 70%">Description</th>
+                    <th style="width: 70%">{{ lang['description'] }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="code">NoAccessRight</td>
+                    <td class="code">Success : false </td>
                     <td>
-                        <p>Only authenticated Admins can access the data.</p>
+                        <p>Fail Response</p>
 
 
                     </td>
                 </tr>
                 <tr>
-                    <td class="code">UserNotFound</td>
+                    <td class="code">Status : (int)</td>
                     <td>
-                        <p>The <code>id</code> of the User was not found.</p>
+                        <p>Http status code</p>
 
 
                     </td>
                 </tr>
                 </tbody>
             </table>
-
-            <ul class="nav nav-tabs nav-tabs-examples">
-                <li class="active">
-                    <a href="http://apidocjs.com/example/#error-examples-User-GetUser-0_3_0-0">Response (example):</a>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="error-examples-User-GetUser-0_3_0-0">
-        <pre class="prettyprint language-json prettyprinted" data-type="json"><code><span class="pln">    HTTP</span><span class="pun">/</span><span class="lit">1.1</span><span class="pln"> </span><span class="lit">401</span><span class="pln"> </span><span class="typ">Not</span><span class="pln"> </span><span class="typ">Authenticated</span><span class="pln">
-    </span><span class="pun">{</span><span class="pln">
-      </span><span class="str">"error"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"NoAccessRight"</span><span class="pln">
-    </span><span class="pun">}</span></code></pre>
-                </div>
-            </div>
 
 
 
