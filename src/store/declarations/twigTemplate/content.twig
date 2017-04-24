@@ -1,195 +1,116 @@
 <section id="api-User">
     <h1>{{ getService | capitalize }} - {{ methods['get'][0] | capitalize }}</h1>
+    <div class="pull-left" style="margin:-30px 0 0 0;">
+        {% if trans[0].stk_book_description is defined %}
+        <h5 style="color:#336699;">{{ trans[0]['stk_book_description'] }}</h5>
+        {%  else %}
+            <h5 style="color:#336699;"></h5>
+        {%  endif %}
+    </div>
+
+    <div class="pull-right">
+        <div class="btn-group">
+            <button class="version btn dropdown-toggle" data-toggle="dropdown">
+                <strong>{{ methods['get'][0] | capitalize }}</strong> <span class="caret"></span>
+            </button>
+            <!--<ul class="versions dropdown-menu open-left">
+                <li class="disabled"><a href="http://apidocjs.com/example/#">compare changes to:</a></li>
+                <li class="version"><a href="http://apidocjs.com/example/#">0.3.0</a></li>
+                <li class="version"><a href="http://apidocjs.com/example/#">0.2.0</a></li>
+                <li class="version"><a href="http://apidocjs.com/example/#">0.1.0</a></li>
+            </ul>-->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    {% for itemkey,item in methods['yaml'][0]['data'] %}
+
     <div id="api-User-GetUser">
 
         <article id="api-User-GetUser-0.3.0" data-group="User" data-name="GetUser" data-version="0.3.0">
-            <div class="pull-left">
-                <h1>{{ methods['get'][0] | capitalize }} - Description</h1>
-            </div>
-            <div class="pull-right">
-                <div class="btn-group">
-                    <button class="version btn dropdown-toggle" data-toggle="dropdown">
-                        <strong>{{ methods['get'][0] | capitalize }}</strong> <span class="caret"></span>
-                    </button>
-                    <!--<ul class="versions dropdown-menu open-left">
-                        <li class="disabled"><a href="http://apidocjs.com/example/#">compare changes to:</a></li>
-                        <li class="version"><a href="http://apidocjs.com/example/#">0.3.0</a></li>
-                        <li class="version"><a href="http://apidocjs.com/example/#">0.2.0</a></li>
-                        <li class="version"><a href="http://apidocjs.com/example/#">0.1.0</a></li>
-                    </ul>-->
-                </div>
-            </div>
-            <div class="clearfix"></div>
 
-            <p></p><p>Description</p> <p></p>
 
-            <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/user/:id</span></code></pre>
+
+            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][0]['http'] }}"><code><span class="pln">/{{ getService }}/{{ methods['get'][0] }}</span></code></pre>
+
 
 
 
             <ul class="nav nav-tabs nav-tabs-examples">
                 <li class="active">
-                    <a href="http://apidocjs.com/example/#examples-User-GetUser-0_3_0-0">Example usage:</a>
+                    <a href="http://apidocjs.com/example/#examples-User-GetUser-0_3_0-0">{{ lang['example_usage'] }}:</a>
                 </li>
             </ul>
 
             <div class="tab-content">
                 <div class="tab-pane active" id="examples-User-GetUser-0_3_0-0">
-                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code><span class="pln">curl </span><span class="pun">-</span><span class="pln">i http</span><span class="pun">://</span><span class="pln">localhost</span><span class="pun">/</span><span class="pln">user</span><span class="pun">/</span><span class="lit">4711</span></code></pre>
+                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ methods['get'][0] }}</code></pre>
                 </div>
             </div>
 
 
 
 
-            <h2>Parameter</h2>
+            <h2>{{ lang['get_param'] }}</h2>
+
             <table>
                 <thead>
                 <tr>
-                    <th style="width: 30%">Field</th>
-                    <th style="width: 10%">Type</th>
-                    <th style="width: 70%">Description</th>
+                    <th style="width: 30%">{{ lang['field'] }}</th>
+                    <th style="width: 10%">{{ lang['type'] }}</th>
+                    <th style="width: 70%">{{ lang['description'] }}</th>
                 </tr>
                 </thead>
+
+                {% if itemkey == 'standard' %}
+
                 <tbody>
+
                 <tr>
-                    <td class="code">id</td>
+                    <td class="code">---</td>
                     <td>
-                        String
+                        ---
                     </td>
                     <td>
-                        <p>The Users-ID.</p>
+                        <p>---</p>
 
 
                     </td>
                 </tr>
                 </tbody>
+
+                {% endif %}
+
             </table>
 
 
 
 
-            <h2>Success 200</h2>
+            <h2>Success : true - {{ lang['response_object'] }}</h2>
             <table>
                 <thead>
                 <tr>
-                    <th style="width: 30%">Field</th>
-                    <th style="width: 10%">Type</th>
-                    <th style="width: 70%">Description</th>
+                    <th style="width: 30%">{{ lang['field'] }}</th>
+                    <th style="width: 10%">{{ lang['type'] }}</th>
+                    <th style="width: 70%">{{ lang['description'] }}</th>
                 </tr>
                 </thead>
+                {% for okey,ovalue in methods['yaml'][0]['data'][itemkey] %}
                 <tbody>
                 <tr>
-                    <td class="code">id</td>
+                    <td class="code">{{ okey }}</td>
                     <td>
-                        String
+                        {{ ovalue }}
                     </td>
                     <td>
-                        <p>The Users-ID.</p>
+                        <p>--</p>
 
 
                     </td>
                 </tr>
-                <tr>
-                    <td class="code">registered</td>
-                    <td>
-                        Date
-                    </td>
-                    <td>
-                        <p>Registration Date.</p>
 
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">name</td>
-                    <td>
-                        Date
-                    </td>
-                    <td>
-                        <p>Fullname of the User.</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">nicknames</td>
-                    <td>
-                        String[]
-                    </td>
-                    <td>
-                        <p>List of Users nicknames (Array of Strings).</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">profile</td>
-                    <td>
-                        Object
-                    </td>
-                    <td>
-                        <p>Profile data (example for an Object)</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">&nbsp;&nbsp;age</td>
-                    <td>
-                        Number
-                    </td>
-                    <td>
-                        <p>Users age.</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">&nbsp;&nbsp;image</td>
-                    <td>
-                        String
-                    </td>
-                    <td>
-                        <p>Avatar-Image.</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">options</td>
-                    <td>
-                        Object[]
-                    </td>
-                    <td>
-                        <p>List of Users options (Array of Objects).</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">&nbsp;&nbsp;name</td>
-                    <td>
-                        String
-                    </td>
-                    <td>
-                        <p>Option Name.</p>
-
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="code">&nbsp;&nbsp;value</td>
-                    <td>
-                        String
-                    </td>
-                    <td>
-                        <p>Option Value.</p>
-
-
-                    </td>
-                </tr>
                 </tbody>
+                {% endfor %}
             </table>
 
 
@@ -290,5 +211,5 @@
         </article>
 
     </div>
-
+    {% endfor %}
 </section>

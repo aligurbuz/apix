@@ -50,6 +50,10 @@ final class index {
     public function index(){
 
         //return
+        /*echo '<pre>';
+        print_r($this->data);
+        echo '</pre>';
+        exit();*/
         return $this->twig->render("index.twig",$this->data);
 
     }
@@ -82,12 +86,21 @@ final class index {
                     $classMethodExplode=explode("::",$classMethod);
                     $request=str_replace("Service","",$classMethodExplode[0]);
                     $methods[$request][]=$classMethodExplode[1];
-                    $yamlFile=root.''.$pathPurePath.'/yaml/expected/'.$name.'_'.$request.'_'.$classMethodExplode[1].'.yaml';
+                    $yamlFile=root.'/src/app/'.app.'/declaration/history/'.$name.'_'.$request.'_'.$classMethodExplode[1].'.yaml';
                     if(file_exists($yamlFile)){
                         $methods['yaml'][]=\app::getYaml($yamlFile);
                     }
                     else{
                         $methods['yaml'][]=[];
+                    }
+
+                    $trans=root.'/src/app/'.app.'/storage/lang/'.$this->getBaseObject().'/'.$name.'_'.$request.'_'.$classMethodExplode[1].'_doc.yaml';
+
+                    if(file_exists($trans)){
+                        $this->data['trans'][]=\app::getYaml($trans);
+                    }
+                    else{
+                        $this->data['trans'][]=[];
                     }
 
                 }
@@ -120,6 +133,22 @@ final class index {
 
         //return
         return \app::getYaml(root.'/src/store/storage/lang/'.$this->lang.'/doc.yaml');
+
+    }
+
+    /**
+     * get lang main function.
+     * definition:index method is defined in a declaration
+     * and it is called as https://ip/company/service/app/service/doc
+     * @param type dependency injection and function
+     * @return array
+     */
+    public function getBaseObject($object='lang'){
+
+        //return
+        $baseServicePath=api.'serviceBaseController';
+        $baseService=new $baseServicePath();
+        return $baseService->$object;
 
     }
 
@@ -165,6 +194,8 @@ final class index {
         else{
             $this->data['token']='';
         }
+
+
 
 
     }
