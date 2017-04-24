@@ -62,10 +62,17 @@
                 </tr>
                 </thead>
 
+                {% if itemkey matches '{header.*}' %}
+
+                {% set headerData = itemkey|split('@') %}
+                {% set headerParam = headerData[1]|split('&') %}
+
+                {% for headerparamskey,headerparamsvalue in headerParam %}
+
                 <tbody>
 
                 <tr>
-                    <td class="code">---</td>
+                    <td class="code">{{ headerparamsvalue }}</td>
                     <td>
                         ---
                     </td>
@@ -77,6 +84,26 @@
                 </tr>
                 </tbody>
 
+                {% endfor %}
+
+                {% else %}
+
+                    <tbody>
+
+                    <tr>
+                        <td class="code">---</td>
+                        <td>
+                            ---
+                        </td>
+                        <td>
+                            <p>---</p>
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+
+                {%  endif %}
 
 
             </table>
@@ -130,24 +157,6 @@
                 </tr>
                 </thead>
 
-                {% if itemkey == 'standard' %}
-
-                    <tbody>
-
-                    <tr>
-                        <td class="code">---</td>
-                        <td>
-                            ---
-                        </td>
-                        <td>
-                            <p>---</p>
-
-
-                        </td>
-                    </tr>
-                    </tbody>
-
-                {% endif %}
 
                 {% if itemkey matches '{getData.*}' %}
 
@@ -172,6 +181,23 @@
                         </tbody>
 
                     {% endfor %}
+
+                {% else %}
+
+                    <tbody>
+
+                    <tr>
+                        <td class="code">---</td>
+                        <td>
+                            ---
+                        </td>
+                        <td>
+                            <p>---</p>
+
+
+                        </td>
+                    </tr>
+                    </tbody>
 
                 {% endif %}
 
