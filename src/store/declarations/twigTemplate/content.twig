@@ -51,7 +51,7 @@
 
 
 
-            <h2>{{ lang['get_param'] }}</h2>
+            <h2>{{ lang['header_param'] }}</h2>
 
             <table>
                 <thead>
@@ -61,8 +61,6 @@
                     <th style="width: 70%">{{ lang['description'] }}</th>
                 </tr>
                 </thead>
-
-                {% if itemkey == 'standard' %}
 
                 <tbody>
 
@@ -79,10 +77,105 @@
                 </tr>
                 </tbody>
 
-                {% endif %}
+
 
             </table>
 
+
+
+
+
+            <h2>{{ lang['post_param'] }}</h2>
+
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 30%">{{ lang['field'] }}</th>
+                    <th style="width: 10%">{{ lang['type'] }}</th>
+                    <th style="width: 70%">{{ lang['description'] }}</th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr>
+                    <td class="code">---</td>
+                    <td>
+                        ---
+                    </td>
+                    <td>
+                        <p>---</p>
+
+
+                    </td>
+                </tr>
+                </tbody>
+
+
+            </table>
+
+
+
+
+
+            <h2>{{ lang['get_param'] }}</h2>
+
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 30%">{{ lang['field'] }}</th>
+                    <th style="width: 10%">{{ lang['type'] }}</th>
+                    <th style="width: 70%">{{ lang['description'] }}</th>
+                </tr>
+                </thead>
+
+                {% if itemkey == 'standard' %}
+
+                    <tbody>
+
+                    <tr>
+                        <td class="code">---</td>
+                        <td>
+                            ---
+                        </td>
+                        <td>
+                            <p>---</p>
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+
+                {% endif %}
+
+                {% if itemkey matches '{getData.*}' %}
+
+                    {% set getData = itemkey|split(':') %}
+                    {% set getParam = getData[1]|split('&') %}
+
+                    {% for getparamskey,getparamsvalue in getParam %}
+
+                        <tbody>
+
+                        <tr>
+                            <td class="code">{{ getparamsvalue }}</td>
+                            <td>
+                                {{ methods['yaml'][0]['getData'][getparamsvalue] }}
+                            </td>
+                            <td>
+                                <p>---</p>
+
+
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            </table>
 
 
 
@@ -90,9 +183,9 @@
             <table>
                 <thead>
                 <tr>
-                    <th style="width: 30%">{{ lang['field'] }}</th>
-                    <th style="width: 10%">{{ lang['type'] }}</th>
-                    <th style="width: 70%">{{ lang['description'] }}</th>
+                    <th style="width: 30%; background-color: #c0a16b;">{{ lang['field'] }}</th>
+                    <th style="width: 10%; background-color: #c0a16b;">{{ lang['type'] }}</th>
+                    <th style="width: 70%; background-color: #c0a16b;">{{ lang['description'] }}</th>
                 </tr>
                 </thead>
                 {% for okey,ovalue in methods['yaml'][0]['data'][itemkey] %}
