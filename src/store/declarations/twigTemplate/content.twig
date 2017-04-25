@@ -3,7 +3,7 @@
     <div class="pull-right">
         <div class="btn-group">
             <button class="version btn dropdown-toggle" data-toggle="dropdown">
-                <strong>{{ methods['yaml'][0]['http'] }} - {{ methods[methods['yaml'][0]['http']][0] | capitalize }}</strong> <span class="caret"></span>
+                <strong>{{ methods['yaml'][reverse]['http'] }} - {{ methods[methods['yaml'][reverse]['http']][0] | capitalize }}</strong> <span class="caret"></span>
             </button>
             <!--<ul class="versions dropdown-menu open-left">
                 <li class="disabled"><a href="http://apidocjs.com/example/#">compare changes to:</a></li>
@@ -15,13 +15,13 @@
     </div>
     <div class="clearfix"></div>
 
-    <h1>{{ getService | capitalize }} - {{ methods[methods['yaml'][0]['http']][0] | capitalize }}</h1>
+    <h1>{{ getService | capitalize }} - {{ methods[methods['yaml'][reverse]['http']][0] | capitalize }}</h1>
 
 
     {% set servicenameDescription = [] %}
     {% set servicenameDescription = servicenameDescription|merge([getService]) %}
-    {% set servicenameDescription = servicenameDescription|merge([methods['yaml'][0]['http']]) %}
-    {% set servicenameDescription = servicenameDescription|merge([methods[methods['yaml'][0]['http']][0]]) %}
+    {% set servicenameDescription = servicenameDescription|merge([methods['yaml'][reverse]['http']]) %}
+    {% set servicenameDescription = servicenameDescription|merge([methods[methods['yaml'][reverse]['http']][0]]) %}
     {% set servicenameDescription = servicenameDescription|merge(['description']) %}
 
     {% set serviceDescription = servicenameDescription|join('_') %}
@@ -37,7 +37,7 @@
 
 
 
-    {% for itemkey,item in methods['yaml'][0]['data'] %}
+    {% for itemkey,item in methods['yaml'][reverse]['data'] %}
 
     <div id="api-User-GetUser">
 
@@ -45,7 +45,7 @@
 
 
 
-            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][0]['http'] }}"><code><span class="pln">/{{ getService }}/{{ methods[methods['yaml'][0]['http']][0] }}</span></code></pre>
+            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][reverse]['http'] }}"><code><span class="pln">/{{ getService }}/{{ methods[methods['yaml'][reverse]['http']][0] }}</span></code></pre>
 
 
 
@@ -58,7 +58,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="examples-User-GetUser-0_3_0-0">
-                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ methods[methods['yaml'][0]['http']][0] }}</code></pre>
+                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ methods[methods['yaml'][reverse]['http']][0] }}</code></pre>
                 </div>
             </div>
 
@@ -89,14 +89,14 @@
 
                 {% for headerparamskey,headerparamsvalue in headerQuery %}
 
-                    {% if methods['yaml'][0]['headers'][headerparamsvalue] is defined %}
+                    {% if methods['yaml'][reverse]['headers'][headerparamsvalue] is defined %}
 
                 <tbody>
 
                 <tr>
                     <td class="code">{{ headerparamsvalue }} </td>
                     <td>
-                        {{ methods['yaml'][0]['headers'][headerparamsvalue][0] }}
+                        {{ methods['yaml'][reverse]['headers'][headerparamsvalue][0] }}
                     </td>
                 </tr>
                 </tbody>
@@ -139,8 +139,8 @@
                 </thead>
 
 
-                {% if methods['yaml'][0]['postData']|length >0 %}
-                {% for postparamskey,postparamsvalue in methods['yaml'][0]['postData'] %}
+                {% if methods['yaml'][reverse]['postData']|length >0 %}
+                {% for postparamskey,postparamsvalue in methods['yaml'][reverse]['postData'] %}
 
                 <tbody>
 
@@ -209,7 +209,7 @@
                         <tr>
                             <td class="code">{{ getparamsvalue }}</td>
                             <td>
-                                {{ methods['yaml'][0]['getData'][getparamsvalue] }}
+                                {{ methods['yaml'][reverse]['getData'][getparamsvalue] }}
                             </td>
                             <td>
                                 <p>---</p>
@@ -225,14 +225,14 @@
 
                     {% for headerparamskey,headerparamsvalue in headerQuery %}
 
-                        {% if methods['yaml'][0]['getData'][headerparamsvalue] is defined %}
+                        {% if methods['yaml'][reverse]['getData'][headerparamsvalue] is defined %}
 
                             <tbody>
 
                             <tr>
                                 <td class="code">{{ headerparamsvalue }} </td>
                                 <td>
-                                    {{ methods['yaml'][0]['getData'][headerparamsvalue] }}
+                                    {{ methods['yaml'][reverse]['getData'][headerparamsvalue] }}
                                 </td>
                                 <td>
                                     <p>---</p>
@@ -280,7 +280,7 @@
                     <th style="width: 70%; background-color: #c0a16b;">{{ lang['description'] }}</th>
                 </tr>
                 </thead>
-                {% for okey,ovalue in methods['yaml'][0]['data'][itemkey] %}
+                {% for okey,ovalue in methods['yaml'][reverse]['data'][itemkey] %}
                 <tbody>
                 <tr>
                     <td class="code">{{ okey }}</td>
