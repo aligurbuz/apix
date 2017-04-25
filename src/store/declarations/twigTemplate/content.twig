@@ -129,12 +129,15 @@
                 </thead>
 
 
+                {% if methods['yaml'][0]['postData']|length >0 %}
+                {% for postparamskey,postparamsvalue in methods['yaml'][0]['postData'] %}
+
                 <tbody>
 
                 <tr>
-                    <td class="code">---</td>
+                    <td class="code">{{ postparamskey }}</td>
                     <td>
-                        ---
+                        {{ postparamsvalue }}
                     </td>
                     <td>
                         <p>---</p>
@@ -143,6 +146,27 @@
                     </td>
                 </tr>
                 </tbody>
+
+                {%  endfor %}
+
+                {% else %}
+
+                    <tbody>
+
+                    <tr>
+                        <td class="code">---</td>
+                        <td>
+                            ---
+                        </td>
+                        <td>
+                            <p>---</p>
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+
+                {% endif %}
 
 
             </table>
