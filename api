@@ -18,6 +18,7 @@ require_once './vendor/autoload.php';
  */
 $root=dirname(__FILE__);
 define('root',$root);
+define('src','src/app');
 
 /**
  * Spl auto load register.
@@ -78,6 +79,10 @@ else{
         //get connection
         if($argv[1]=="doctrine"){
             $consoleCommandApplication=new \lib\bin\doctrine();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
+        elseif($argv[1]=="system"){
+            $consoleCommandApplication=new \lib\bin\system();
             echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
         }
         else{

@@ -91,6 +91,13 @@ class staticPathModel {
     public static $apiProvisionNamespace='\\src\\store\\provisions\\index';
 
 
+    public static function getProjectPath($projectName=null){
+        if($projectName!==null){
+            return root.'/'.src.'/'.$projectName;
+        }
+    }
+
+
 
 
 }
