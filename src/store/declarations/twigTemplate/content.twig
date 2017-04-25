@@ -1,17 +1,9 @@
 <section id="api-User">
-    <h1>{{ getService | capitalize }} - {{ methods['get'][0] | capitalize }}</h1>
-    <div class="pull-left" style="margin:-30px 0 0 0;">
-        {% if trans[0].stk_book_description is defined %}
-        <h5 style="color:#336699;">{{ trans[0]['stk_book_description'] }}</h5>
-        {%  else %}
-            <h5 style="color:#336699;"></h5>
-        {%  endif %}
-    </div>
 
     <div class="pull-right">
         <div class="btn-group">
             <button class="version btn dropdown-toggle" data-toggle="dropdown">
-                <strong>{{ methods['get'][0] | capitalize }}</strong> <span class="caret"></span>
+                <strong>{{ methods['yaml'][0]['http'] }} - {{ methods[methods['yaml'][0]['http']][0] | capitalize }}</strong> <span class="caret"></span>
             </button>
             <!--<ul class="versions dropdown-menu open-left">
                 <li class="disabled"><a href="http://apidocjs.com/example/#">compare changes to:</a></li>
@@ -23,6 +15,28 @@
     </div>
     <div class="clearfix"></div>
 
+    <h1>{{ getService | capitalize }} - {{ methods[methods['yaml'][0]['http']][0] | capitalize }}</h1>
+
+
+    {% set servicenameDescription = [] %}
+    {% set servicenameDescription = servicenameDescription|merge([getService]) %}
+    {% set servicenameDescription = servicenameDescription|merge([methods['yaml'][0]['http']]) %}
+    {% set servicenameDescription = servicenameDescription|merge([methods[methods['yaml'][0]['http']][0]]) %}
+    {% set servicenameDescription = servicenameDescription|merge(['description']) %}
+
+    {% set serviceDescription = servicenameDescription|join('_') %}
+
+
+    <div class="pull-left" style="margin:-30px 0 0 0;">
+        {% if trans[0][serviceDescription] is defined %}
+        <h5 style="color:#336699;">{{ trans[0][serviceDescription] }}</h5>
+        {%  else %}
+            <h5 style="color:#336699;"></h5>
+        {%  endif %}
+    </div>
+
+
+
     {% for itemkey,item in methods['yaml'][0]['data'] %}
 
     <div id="api-User-GetUser">
@@ -31,7 +45,7 @@
 
 
 
-            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][0]['http'] }}"><code><span class="pln">/{{ getService }}/{{ methods['get'][0] }}</span></code></pre>
+            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][0]['http'] }}"><code><span class="pln">/{{ getService }}/{{ methods[methods['yaml'][0]['http']][0] }}</span></code></pre>
 
 
 
@@ -44,7 +58,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="examples-User-GetUser-0_3_0-0">
-                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ methods['get'][0] }}</code></pre>
+                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ methods[methods['yaml'][0]['http']][0] }}</code></pre>
                 </div>
             </div>
 
