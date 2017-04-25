@@ -57,8 +57,7 @@
                 <thead>
                 <tr>
                     <th style="width: 30%">{{ lang['field'] }}</th>
-                    <th style="width: 10%">{{ lang['type'] }}</th>
-                    <th style="width: 70%">{{ lang['description'] }}</th>
+                    <th style="width: 10%">{{ lang['value'] }}</th>
                 </tr>
                 </thead>
 
@@ -67,7 +66,14 @@
                 {% set headerData = itemkey|split('@') %}
                 {% set headerParam = headerData[1]|split(':') %}
 
+                    {% set headerQuery = [] %}
+
                 {% for headerparamskey,headerparamsvalue in headerParam %}
+                    {% set headerQuery = headerQuery|merge(headerparamsvalue|split('&')) %}
+                {% endfor %}
+
+
+                {% for headerparamskey,headerparamsvalue in headerQuery %}
 
                     {% if methods['yaml'][0]['headers'][headerparamsvalue] is defined %}
 
@@ -77,11 +83,6 @@
                     <td class="code">{{ headerparamsvalue }} </td>
                     <td>
                         {{ methods['yaml'][0]['headers'][headerparamsvalue][0] }}
-                    </td>
-                    <td>
-                        <p>---</p>
-
-
                     </td>
                 </tr>
                 </tbody>
@@ -188,7 +189,7 @@
 
                 {% elseif itemkey matches '{header.*}' %}
 
-                    {% for headerparamskey,headerparamsvalue in headerParam %}
+                    {% for headerparamskey,headerparamsvalue in headerQuery %}
 
                         {% if methods['yaml'][0]['getData'][headerparamsvalue] is defined %}
 
