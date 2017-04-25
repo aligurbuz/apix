@@ -132,6 +132,11 @@ class connection extends Definitor {
             //get auto loads from services
             $instance->getAutoLoadsFromServices();
 
+            $downPath=staticPathModel::getProjectPath(app).'/down.yaml';
+            if(file_exists($downPath)){
+                return $instance->responseOut([],$instance->getFixLog('maintenance'));
+            }
+
             //get token control
             return $instance->token(function() use ($service,$serviceMethod,$getVersion,$instance) {
 
