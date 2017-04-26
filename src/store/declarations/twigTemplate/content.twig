@@ -144,13 +144,26 @@
 
                 <tbody>
 
+                {% set postParamDescription = [] %}
+                {% set postParamDescription = postParamDescription|merge(['post']) %}
+                {% set postParamDescription = postParamDescription|merge([postparamskey]) %}
+                {% set postParamDescription = postParamDescription|merge(['param']) %}
+
+
+                {% set postParamDescription = postParamDescription|join('_') %}
+
+
                 <tr>
                     <td class="code">{{ postparamskey }}</td>
                     <td>
                         {{ postparamsvalue }}
                     </td>
                     <td>
-                        <p>---</p>
+                        {% if trans[0][postParamDescription] is defined %}
+                            <p>{{ trans[0][postParamDescription] }}</p>
+                        {% else %}
+                            <p>---</p>
+                        {% endif %}
 
 
                     </td>
@@ -204,6 +217,15 @@
 
                     {% for getparamskey,getparamsvalue in getParam %}
 
+                        {% set getParamDescription = [] %}
+                        {% set getParamDescription = getParamDescription|merge(['get']) %}
+                        {% set getParamDescription = getParamDescription|merge([getparamsvalue]) %}
+                        {% set getParamDescription = getParamDescription|merge(['param']) %}
+
+
+                        {% set getParamDescription = getParamDescription|join('_') %}
+
+
                         <tbody>
 
                         <tr>
@@ -212,7 +234,11 @@
                                 {{ methods['yaml'][reverse]['getData'][getparamsvalue] }}
                             </td>
                             <td>
-                                <p>---</p>
+                                {% if trans[0][getParamDescription] is defined %}
+                                <p>{{ trans[0][getParamDescription] }}</p>
+                                {% else %}
+                                    <p>---</p>
+                                {% endif %}
 
 
                             </td>
