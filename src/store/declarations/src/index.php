@@ -196,7 +196,14 @@ final class index {
         }
 
         if(\app::checkUrlParam('service')){
-            $this->data['reverse']=array_search(\app::getUrlParam('service'),$this->data['services']);
+
+            if(\app::checkUrlParam('key')){
+                $this->data['reverse']=\app::getUrlParam('key');
+            }
+            else{
+                $this->data['reverse']=array_search(\app::getUrlParam('service'),$this->data['services']);
+            }
+
         }
         else{
             $this->data['reverse']=null;

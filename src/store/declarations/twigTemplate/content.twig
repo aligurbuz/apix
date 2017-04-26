@@ -1,16 +1,30 @@
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <section id="api-User">
 
     <div class="pull-right">
         <div class="btn-group">
-            <button class="version btn dropdown-toggle" data-toggle="dropdown">
-                <strong>{{ methods['yaml'][reverse]['http'] }} - {{ methods[methods['yaml'][reverse]['http']][0] | capitalize }}</strong> <span class="caret"></span>
-            </button>
-            <!--<ul class="versions dropdown-menu open-left">
-                <li class="disabled"><a href="http://apidocjs.com/example/#">compare changes to:</a></li>
-                <li class="version"><a href="http://apidocjs.com/example/#">0.3.0</a></li>
-                <li class="version"><a href="http://apidocjs.com/example/#">0.2.0</a></li>
-                <li class="version"><a href="http://apidocjs.com/example/#">0.1.0</a></li>
-            </ul>-->
+            <select class="form-control selectservice" http="http://{{ root }}/service/{{ app }}/doc/index?doc=true{{ token }}&service={{ getService }}">
+                <option value="{{ reverse }}">{{ methods['yaml'][reverse]['http'] }} - {{ methods[methods['yaml'][reverse]['http']][0] | capitalize }}</option>
+                {% for nkey,nvalue in methods['yaml'] %}
+
+                    {% if nkey!=reverse %}
+
+                        {% set selectService = methods['yaml'][nkey]['servicePath']|split('/') %}
+                        <option value="{{ nkey }}">{{ methods['yaml'][nkey]['http'] }} - {{ selectService|last|capitalize }}</option>
+
+                    {% endif %}
+
+                {% endfor %}
+            </select>
+
+            <script>
+                $("select.selectservice").change(function(){
+                    var currentLocation = $(this).attr("http");
+                    var key=$(this).val();
+                    window.location.href = ""+currentLocation+"&key="+key;
+                });
+            </script>
+
         </div>
     </div>
     <div class="clearfix"></div>
