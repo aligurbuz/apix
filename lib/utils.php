@@ -55,4 +55,62 @@ class utils {
         }
 
     }
+
+
+    /**
+     * Spl auto load register.
+     * spl_autoload_register — Register given function as __autoload() implementation
+     * Register a function with the spl provided __autoload queue. If the queue is not yet activated it will be activated.
+     * If your code has an existing __autoload() function then this function must be explicitly registered on the __autoload queue.
+     * This is because spl_autoload_register() will effectively replace the engine cache for the __autoload() function
+     * by either spl_autoload() or spl_autoload_call()
+     * return autoload
+     */
+    public static function getArgForConsoleParameters($argv){
+        $list=[];
+        foreach ($argv as $key=>$value){
+            if($key>2){
+
+                if(preg_match('@:@is',$value))
+                {
+                    $value=explode(":",$value);
+                    $list[$value[0]]=$value[1];
+                }
+                else
+                {
+                    $list[$value]=$value;
+                }
+            }
+        }
+
+        return $list;
+
+    }
+
+
+    /**
+     * Spl auto load register.
+     * spl_autoload_register — Register given function as __autoload() implementation
+     * Register a function with the spl provided __autoload queue. If the queue is not yet activated it will be activated.
+     * If your code has an existing __autoload() function then this function must be explicitly registered on the __autoload queue.
+     * This is because spl_autoload_register() will effectively replace the engine cache for the __autoload() function
+     * by either spl_autoload() or spl_autoload_call()
+     * return autoload
+     */
+    public static function getBaseConsoleStaticProperties($argv){
+        //get connection
+        if($argv[1]=="doctrine"){
+            $consoleCommandApplication=new \lib\bin\doctrine();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
+        elseif($argv[1]=="system"){
+            $consoleCommandApplication=new \lib\bin\system();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
+        else{
+            $consoleCommandApplication=new \lib\bin\custom();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
+
+    }
 }

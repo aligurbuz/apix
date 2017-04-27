@@ -43,52 +43,25 @@ spl_autoload_register(function($class) {
  * this snippet calls really command file for system
  * return class method
  */
-if(file_exists('./lib/bin/commands/'.$argv[1].'.php')){
-    $commandFile=require("./lib/bin/commands/".$argv[1].".php");
+if(file_exists(\lib\staticPathModel::$binCommandsPath.''.$argv[1].'.php')){
 
-    $commandNamespaceSpl='\\lib\\bin\\commands\\'.$argv[1].'';
+    //get command file
+    $commandFile=require(\lib\staticPathModel::$binCommandsPath.''.$argv[1].'.php');
+    $commandNamespaceSpl=\lib\staticPathModel::$binCommandsNameSpace.''.$argv[1];
     $commandFile=new $commandNamespaceSpl();
 
-    $list=[];
-    foreach ($argv as $key=>$value){
-        if($key>2){
-
-            if(preg_match('@:@is',$value))
-            {
-                $value=explode(":",$value);
-                $list[$value[0]]=$value[1];
-            }
-            else
-            {
-                $list[$value]=$value;
-            }
-        }
-    }
-
     $method=$argv[2];
-    echo $commandFile->$method($list).''.PHP_EOL;
+    echo $commandFile->$method(\lib\utils::getArgForConsoleParameters($argv)).''.PHP_EOL;
 }
 else{
-
 
     /**
      * System cli custom command main file
      * return class method
      */
     if(environment()=="local"){
-        //get connection
-        if($argv[1]=="doctrine"){
-            $consoleCommandApplication=new \lib\bin\doctrine();
-            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
-        }
-        elseif($argv[1]=="system"){
-            $consoleCommandApplication=new \lib\bin\system();
-            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
-        }
-        else{
-            $consoleCommandApplication=new \lib\bin\custom();
-            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
-        }
+        //get base properties
+        echo \lib\utils::getBaseConsoleStaticProperties($argv);
 
     }
     else {

@@ -90,6 +90,20 @@ class staticPathModel {
      */
     public static $apiProvisionNamespace='\\src\\store\\provisions\\index';
 
+    /**
+     * @var param api lib bin commands
+     * it is namespace for api commands service
+     * for service path run
+     */
+    public static $binCommandsPath='./lib/bin/commands/';
+
+    /**
+     * @var param api lib bin commands
+     * it is namespace for api commands service
+     * for service path run
+     */
+    public static $binCommandsNameSpace='\\lib\\bin\\commands\\';
+
 
     public static function getProjectPath($projectName=null){
         if($projectName!==null){
