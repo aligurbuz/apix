@@ -23,9 +23,9 @@ class project extends console {
         $list=[];
         if($this->mkdir($this->getProjectName($data))){
 
-            $touchServiceReadMe['execution']='project_readme';
+            /*$touchServiceReadMe['execution']='project_readme';
             $touchServiceReadMe['params']['projectName']=$this->getProjectName($data);
-            $list[]=$this->touch($this->getProjectName($data).'/README.md',$touchServiceReadMe);
+            $list[]=$this->touch($this->getProjectName($data).'/README.md',$touchServiceReadMe);*/
 
             $touchServiceVersionMe['execution']='project_version';
             $touchServiceVersionMe['params']['projectName']=$this->getProjectName($data);

@@ -107,6 +107,10 @@ class utils {
             $consoleCommandApplication=new \lib\bin\system();
             echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
         }
+        elseif($argv[1]=="git"){
+            $consoleCommandApplication=new \lib\bin\git();
+            echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
+        }
         else{
             $consoleCommandApplication=new \lib\bin\custom();
             echo $consoleCommandApplication->execute($argv).''.PHP_EOL;
