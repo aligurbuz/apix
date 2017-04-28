@@ -18,6 +18,13 @@ class staticPathModel {
      * it is boot resolve
      * for service base controller
      */
+    public static $storePath='src/store';
+
+    /**
+     * @var param bootFile
+     * it is boot resolve
+     * for service base controller
+     */
     public static $accessLimitationYamlPath='src/store/provisions/limitation';
 
     /**

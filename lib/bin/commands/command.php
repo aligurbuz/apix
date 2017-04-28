@@ -1,4 +1,5 @@
 <?php namespace lib\bin\commands;
+use lib\staticPathModel;
 /**
  * Command write.
  * type array
@@ -24,19 +25,24 @@ class command {
             $file=$key;
         }
 
+        $path=root.'/'.staticPathModel::$storePath.'/commands/'.$file.'.php';
 
-        //usage api command create file:file
-        $list=[];
-        $touchServiceCommandMe['execution']='command';
-        $touchServiceCommandMe['params']['class']=$file;
-        $list[]=$this->touch(''.$file.'.php',$touchServiceCommandMe);
+        if(!file_exists($path)){
+            //usage api command create file:file
+            $list=[];
+            $touchServiceCommandMe['execution']='command';
+            $touchServiceCommandMe['params']['class']=$file;
+            $list[]=$this->touch(''.$file.'.php',$touchServiceCommandMe);
 
 
-        return $this->fileProcessResult($list,function(){
-            return 'command has been created';
-        });
+            return $this->fileProcessResult($list,function(){
+                return 'command has been created';
+            });
+        }
+        else{
+            return 'command fail';
+        }
 
-        return 'command fail';
 
     }
 
