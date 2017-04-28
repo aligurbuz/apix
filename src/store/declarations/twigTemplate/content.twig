@@ -5,9 +5,26 @@
         <div class="btn-group">
             <select class="form-control selectservice" http="http://{{ root }}/service/{{ app }}/doc/index?doc=true{{ token }}&service={{ getService }}">
                 <option value="{{ reverse }}">{{ methods['yaml'][reverse]['http'] }} - {{ methods[methods['yaml'][reverse]['http']][0] | capitalize }}</option>
+
+                {% set httpbasetrue = [] %}
+                {% set httpbasetrue = httpbasetrue|merge([methods['yaml'][reverse]['http']]) %}
+                {% set httpbasetrue = httpbasetrue|merge([methods['yaml'][reverse]['servicePath']]) %}
+
+                {% set httpbasetrue = httpbasetrue|join('@@@@@') %}
+
+                {% set httpbasereal = [httpbasetrue] %}
+
                 {% for nkey,nvalue in methods['yaml'] %}
 
-                    {% if nkey!=reverse %}
+                    {% set httpbase = [] %}
+                    {% set httpbase = httpbase|merge([methods['yaml'][nkey]['http']]) %}
+                    {% set httpbase = httpbase|merge([methods['yaml'][nkey]['servicePath']]) %}
+
+                    {% set httpbasejoin = httpbase|join('@@@@@') %}
+
+                    {% if (nkey!=reverse) and (httpbasejoin not in httpbasereal) %}
+
+                        {% set httpbasereal = httpbasereal|merge([httpbasejoin]) %}
 
                         {% set selectService = methods['yaml'][nkey]['servicePath']|split('/') %}
                         <option value="{{ nkey }}">{{ methods['yaml'][nkey]['http'] }} - {{ selectService|last|capitalize }}</option>
@@ -373,49 +390,7 @@
 
 
 
-            <h2>Send a Sample Request</h2>
-            <form class="form-horizontal">
-                <fieldset>
-                    <div class="control-group">
-                        <div class="controls">
-                            <div class="input-prepend">&gt;
-                                <span class="add-on">url</span>
-                                <input type="text" class="input-xxlarge sample-request-url" value="http://apidocjs.com/example/api_project.json">
-                            </div>
-                        </div>
-                    </div>
 
-
-                    <h3>Parameters</h3>
-                    <h4><input type="radio" data-sample-request-param-group-id="sample-request-param-0" name="User-GetUser-0_3_0-sample-request-param" value="0" class="sample-request-param sample-request-switch" checked=""> Parameter</h4>
-                    <div class="User-GetUser-0_3_0-sample-request-param-fields">
-                        <div class="control-group">
-                            <label class="control-label" for="sample-request-param-field-id">id</label>
-                            <div class="controls">
-                                <div class="input-append">&gt;
-                                    <input type="text" placeholder="id" class="input-xxlarge sample-request-param" data-sample-request-param-name="id" data-sample-request-param-group="sample-request-param-0">
-                                    <span class="add-on">String</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="controls">
-                            <button class="btn btn-default sample-request-send" data-sample-request-type="get">Send</button>
-                        </div>
-                    </div>
-
-                    <div class="sample-request-response" style="display: none;">
-                        <h3>
-                            Response
-                            <button class="btn btn-small btn-default pull-right sample-request-clear">X</button>
-                        </h3>
-                        <pre class="prettyprint language-json prettyprinted" data-type="json"><code class="sample-request-response-json"></code></pre>
-                    </div>
-
-                </fieldset>
-            </form>
 
 
         </article>
