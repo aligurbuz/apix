@@ -54,19 +54,21 @@
 
     <h1>{{ getService | capitalize }} - {{ myservice | last  | capitalize }}</h1>
 
+    {% set serv = myservice | last %}
 
     {% set servicenameDescription = [] %}
     {% set servicenameDescription = servicenameDescription|merge([getService]) %}
     {% set servicenameDescription = servicenameDescription|merge([methods['yaml'][reverse]['http']]) %}
-    {% set servicenameDescription = servicenameDescription|merge([methods[methods['yaml'][reverse]['http']][0]]) %}
+    {% set servicenameDescription = servicenameDescription|merge([serv]) %}
     {% set servicenameDescription = servicenameDescription|merge(['description']) %}
 
     {% set serviceDescription = servicenameDescription|join('_') %}
 
 
+
     <div class="pull-left" style="margin:-30px 0 0 0;">
-        {% if trans[0][serviceDescription] is defined %}
-        <h5 style="color:#336699;">{{ trans[0][serviceDescription] }}</h5>
+        {% if trans[reverse][serviceDescription] is defined %}
+        <h5 style="color:#336699;">{{ trans[reverse][serviceDescription] }}</h5>
         {%  else %}
             <h5 style="color:#336699;"></h5>
         {%  endif %}
