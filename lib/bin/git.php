@@ -37,15 +37,7 @@ class git {
                 return false;
             }
         }
-        $process = new Process('cd '.$this->applicationPath.' && '.$this->getCommandGit($data));
-        $process->run();
-
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        echo $process->getOutput();
+        return $this->process('cd '.$this->applicationPath.' && '.$this->getCommandGit($data));
     }
 
     /**
@@ -78,15 +70,7 @@ class git {
         if(file_exists($applicationPath.'/.git')){
             return true;
         }
-        $process = new Process('cd '.$this->applicationPath.' && git init');
-        $process->run();
-
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        return true;
+        return $this->process('cd '.$this->applicationPath.' && git init','bool');
     }
 
 
@@ -98,15 +82,7 @@ class git {
      */
     public function getRemoteGitOrigin($applicationPath){
 
-        $process = new Process('cd '.$applicationPath.' && git remote -v');
-        $process->run();
-
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        if(strlen($process->getOutput())==0){
+        if(strlen($this->process('cd '.$applicationPath.' && git remote -v'))==0){
             return $this->setRemoteGitOrigin($applicationPath);
         }
         return true;
@@ -124,15 +100,7 @@ class git {
         $getGitRepoProject=$this->getSocializeGitRepo($applicationPath);
         $getStringForRemoteAdd=$this->getStringForRemoteAdd($getGitRepoProject);
 
-        $process = new Process('cd '.$applicationPath.' && '.$getStringForRemoteAdd);
-        $process->run();
-
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        return true;
+        return $this->process('cd '.$applicationPath.' && '.$getStringForRemoteAdd);
     }
 
     /**
@@ -172,6 +140,32 @@ class git {
     public function getSocializeGitRepo($applicationPath){
         $gitRepo=utils::getAppRootNamespace($this->project).'\\config\\socialize';
         return $gitRepo::gitRepo();
+    }
+
+
+    /**
+     * index method is main method.
+     * Then, require the vendor/autoload.php file to enable the autoloading mechanism provided by Composer.
+     * Otherwise, your application won't be able to find the classes of this Symfony component.
+     * @return array @method
+     */
+    public function process($command=null,$type='output'){
+        if($command!==null){
+            $process = new Process('cd '.$this->applicationPath.' && '.$command);
+            $process->run();
+
+            // executes after the command finishes
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            if($type=='output'){
+                return $process->getOutput();
+            }
+            return true;
+        }
+
+        return false;
     }
 
 
