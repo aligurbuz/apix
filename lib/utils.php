@@ -20,6 +20,41 @@ class utils {
 
     }
 
+
+    /**
+     * Class resolve.
+     * PHP-DI's container is preconfigured for "plug'n'play", i.e. development environment.
+     * By default, PHP-DI will have Autowiring enabled (annotations are disabled by default).
+     * return type container
+     */
+    public static function getAppVersion($app=null){
+        if($app!==null){
+            $getAppVersionPath=root.'/'.src.'/'.$app.'/version.php';
+            if(file_exists($getAppVersionPath)){
+                $getAppVersion=require($getAppVersionPath);
+                return $getAppVersion['version'];
+            }
+        }
+        return null;
+
+    }
+
+
+    /**
+     * Class resolve.
+     * PHP-DI's container is preconfigured for "plug'n'play", i.e. development environment.
+     * By default, PHP-DI will have Autowiring enabled (annotations are disabled by default).
+     * return type container
+     */
+    public static function getAppRootNamespace($app=null){
+        if($app!==null){
+            $getAppRoot='\\src\\app\\'.$app.'\\'.self::getAppVersion($app).'';
+            return $getAppRoot;
+        }
+        return null;
+
+    }
+
     /**
      * Method getYaml.
      * The Symfony Yaml component is very simple and consists of two main classes:

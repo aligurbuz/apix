@@ -7,6 +7,7 @@
 namespace lib\bin;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Lib\Utils;
 
 /**
  * Represents a doctrine class.
@@ -17,6 +18,9 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  */
 class git {
 
+    private $project=null;
+    private $applicationPath=null;
+
     /**
      * index method is main method.
      * Then, require the vendor/autoload.php file to enable the autoloading mechanism provided by Composer.
@@ -25,14 +29,15 @@ class git {
      */
     public function execute($data){
 
-        $applicationPath=root.'/'.src.'/'.$this->getProject($data);
+        $this->project=$this->getProject($data);
+        $this->applicationPath=root.'/'.src.'/'.$this->project;
 
-        if($this->gitInitExists($applicationPath)){
-            if($this->getRemoteGitOrigin($applicationPath)){
-                return true;
+        if($this->gitInitExists($this->applicationPath)){
+            if(!$this->getRemoteGitOrigin($this->applicationPath)){
+                return false;
             }
         }
-        $process = new Process('cd '.$applicationPath.' && '.$this->getCommandGit($data));
+        $process = new Process('cd '.$this->applicationPath.' && '.$this->getCommandGit($data));
         $process->run();
 
         // executes after the command finishes
@@ -94,8 +99,31 @@ class git {
         }
 
         if(strlen($process->getOutput())==0){
-
+            return $this->setRemoteGitOrigin($applicationPath);
         }
+        return true;
+    }
+
+
+    /**
+     * index method is main method.
+     * Then, require the vendor/autoload.php file to enable the autoloading mechanism provided by Composer.
+     * Otherwise, your application won't be able to find the classes of this Symfony component.
+     * @return array @method
+     */
+    public function setRemoteGitOrigin($applicationPath){
+
+        $getGitRepoProject=$this->getSocializeGitRepo($applicationPath);
+        $getStringForRemoteAdd=$this->getStringForRemoteAdd($getGitRepoProject);
+
+        $process = new Process('cd '.$applicationPath.' && '.$getStringForRemoteAdd);
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
         return true;
     }
 
@@ -109,4 +137,34 @@ class git {
 
         return $data[2];
     }
+
+    /**
+     * index method is main method.
+     * Then, require the vendor/autoload.php file to enable the autoloading mechanism provided by Composer.
+     * Otherwise, your application won't be able to find the classes of this Symfony component.
+     * @return array @method
+     */
+    public function getStringForRemoteAdd($data){
+
+        $list=[];
+        foreach ($data['remote'] as $key=>$value){
+            $list[]='git remote add '.$key.' '.$data['remote'][$key]['url'].'';
+        }
+
+        return implode (' && ',$list);
+    }
+
+
+    /**
+     * index method is main method.
+     * Then, require the vendor/autoload.php file to enable the autoloading mechanism provided by Composer.
+     * Otherwise, your application won't be able to find the classes of this Symfony component.
+     * @return array @method
+     */
+    public function getSocializeGitRepo($applicationPath){
+        $gitRepo=utils::getAppRootNamespace($this->project).'\\config\\socialize';
+        return $gitRepo::gitRepo();
+    }
+
+
 }
