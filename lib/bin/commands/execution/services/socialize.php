@@ -21,7 +21,11 @@ class socialize
     public static function gitRepo()
     {
         return [
-
+            'remote'=>[
+                'origin'=>[
+                    'url'=>null
+                ]
+            ]
         ];
     }
 
