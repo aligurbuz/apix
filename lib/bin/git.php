@@ -78,7 +78,15 @@ class git {
         if(file_exists($applicationPath.'/.git')){
             return true;
         }
-        return false;
+        $process = new Process('cd '.$this->applicationPath.' && git init');
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return true;
     }
 
 
