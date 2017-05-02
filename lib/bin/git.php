@@ -151,7 +151,7 @@ class git {
      */
     public function process($command=null,$type='output'){
         if($command!==null){
-            $process = new Process('cd '.$this->applicationPath.' && '.$command);
+            $process = new Process($command);
             $process->run();
 
             // executes after the command finishes
