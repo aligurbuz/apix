@@ -79,6 +79,9 @@ class project extends console {
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/webServices');
             $list[]=$this->touch($this->getProjectName($data).'/v1/optional/webServices/index.html',null);
 
+            $list[]=$this->mkdir($this->getProjectName($data).'/v1/optional/jobs');
+            $list[]=$this->touch($this->getProjectName($data).'/v1/optional/jobs/index.html',null);
+
             $touchServiceBaseControllerParams['execution']='serviceBaseController';
             $touchServiceBaseControllerParams['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/v1/serviceBaseController.php',$touchServiceBaseControllerParams);

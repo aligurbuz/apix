@@ -23,7 +23,6 @@ use src\store\services\httprequest as request;
 
 class rabbitMQ {
 
-    public $request;
     private $connection;
     private $channel;
 
@@ -33,8 +32,6 @@ class rabbitMQ {
      */
     public function __construct(request $request){
 
-        //request component
-        $this->request=$request;
         //rabbitMQ connections
         $projectConfig="\\src\\store\\app\\".app."\\".version."\\config\\rabbitMQ";
         $rabbitMQ=$projectConfig::rmqSettings();
@@ -42,8 +39,8 @@ class rabbitMQ {
         $this->channel = $this->connection->channel();
     }
 
-    public function test(){
-        return 'hello world';
+    protected function channel(){
+        return $this->channel;
     }
 
 }
