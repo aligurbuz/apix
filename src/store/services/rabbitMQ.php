@@ -30,7 +30,7 @@ class rabbitMQ {
      * queue construct class.
      *
      */
-    public function __construct(request $request){
+    public function __construct(){
 
         //rabbitMQ connections
         $projectConfig="\\src\\store\\app\\".app."\\".version."\\config\\rabbitMQ";
