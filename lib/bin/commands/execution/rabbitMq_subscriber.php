@@ -11,6 +11,8 @@
 
 namespace src\app\__projectName__\__version__\optional\jobs\rabbitMq\__dir__;
 
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 use Src\Store\Services\RabbitMQ as rabbit;
 use Src\Store\Services\Httprequest as Request;
 
@@ -19,10 +21,14 @@ use Src\Store\Services\Httprequest as Request;
  * Although messages flow through RabbitMQ and your applications,
  * @class subscriber
  */
-class subscriber extends rabbit {
+class subscriber {
 
-    //redis object
-    private $redis;
+
+    //get channel
+    private $channel;
+
+    //get connection
+    private $connection;
 
     /**
      * Constructor.
@@ -30,9 +36,11 @@ class subscriber extends rabbit {
      * @param type dependency injection and stk class
      * main loader as construct method
      */
-    public function __construct(){
-
-        parent::__construct();
+    public function __construct($app,$declare)
+    {
+        $this->connection=(new rabbit($app))->getConnection();
+        $this->channel=$this->connection->channel();
+        $this->execute($app,$declare);
     }
 
     /**
@@ -40,22 +48,15 @@ class subscriber extends rabbit {
      *
      * @param directly handle method
      * execute loader as construct method
+     * @return string
+     * @return string
      */
-    public function execute(){
+    public function execute($app=null,$declare=null){
 
-        //make something
+        if($app!==null && $declare!==null){
+
+            //make something for subscriber
+        }
     }
-
-    /**
-     * Redis Instance.
-     *
-     * @param get redis connection
-     * redis loader as construct method
-     */
-    public function redisInstance(){
-
-        $this->redis=app('redis');
-    }
-
 
 }

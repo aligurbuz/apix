@@ -9,6 +9,7 @@
  */
 
 namespace src\store\services;
+use lib\utils;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use src\store\services\httprequest as request;
@@ -30,17 +31,24 @@ class rabbitMQ {
      * queue construct class.
      *
      */
-    public function __construct(){
+    public function __construct($app=null){
 
         //rabbitMQ connections
-        $projectConfig="\\src\\store\\app\\".app."\\".version."\\config\\rabbitMQ";
+        if($app!==null){
+            $projectConfig="\\src\\app\\".$app."\\".utils::getAppVersion($app)."\\config\\rabbitMQ";
+        }
+        else{
+            $projectConfig="\\src\\app\\".app."\\".version."\\config\\rabbitMQ";
+        }
+
         $rabbitMQ=$projectConfig::rmqSettings();
-        $this->connection = new AMQPStreamConnection($rabbitMQ['rabbitMQ']['host'], $rabbitMQ['rabbitMQ']['port'], $rabbitMQ['rabbitMQ']['user'], $rabbitMQ['rabbitMQ']['password']);
-        $this->channel = $this->connection->channel();
+        $this->connection=new AMQPStreamConnection($rabbitMQ['rabbitMQ']['host'], $rabbitMQ['rabbitMQ']['port'], $rabbitMQ['rabbitMQ']['user'], $rabbitMQ['rabbitMQ']['password']);
+
     }
 
-    protected function channel(){
-        return $this->channel;
+    public function getConnection(){
+        return $this->connection;
     }
+
 
 }

@@ -35,7 +35,7 @@ class job {
         }
 
         $appOptionalJobDir=staticPathModel::getProjectPath($project).'/'.utils::getAppVersion($project).'/optional/jobs';
-        $rabbitMqPath=$appOptionalJobDir.'/rabbitMq';
+        $rabbitMqPath=$appOptionalJobDir.'/rabbitmq';
         if(!file_exists($rabbitMqPath)){
             $list[]=$this->mkdir($rabbitMqPath);
         }
@@ -67,6 +67,14 @@ class job {
         }
 
 
+    }
+
+
+    //project create command
+    public function pusher ($data){
+        $list=array_keys($data);
+        $path=utils::getAppRootNamespace($list[1]).'\\optional\\jobs\\'.$list[0].'\\'.$list[2].'\\'.$list[3];
+        return new $path($list[1],$list[2]);
     }
 
 
