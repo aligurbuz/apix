@@ -59,7 +59,8 @@ class apixlist extends console  {
 
         echo $this->success('SOURCE CREATE : ');
         echo $this->bluePrint('source bundle [projectName]:[serviceName] bundle:[bundleName] => "create source in project service"');
-        echo $this->bluePrint('service create [projectName]:[serviceName] => "create service in project"');
+        echo $this->bluePrint('source bundle [projectName]:[serviceName] bundle:[bundleName] src:bundle => "create src source in project service"');
+        echo $this->bluePrint('source bundle [projectName]:[serviceName] bundle:[bundleName] src:bundleDir/bundle => "create src source in project service"');
 
         echo PHP_EOL;
 
