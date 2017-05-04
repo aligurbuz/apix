@@ -21,7 +21,7 @@ use src\app\__projectName__\__version__\__call\__serviceName__\app;
  * return type array
  */
 
-class __srcName__ extends app
+class __className__ extends app
 {
 
     /**

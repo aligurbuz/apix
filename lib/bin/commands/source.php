@@ -33,7 +33,7 @@ class source {
                     if(array_key_exists(2,$this->getParams($data)) && array_key_exists("src",$this->getParams($data)[2])){
 
                         $srcBundle=explode("/",$this->getParams($data)[2]['src']);
-                        if(!file_exists('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/index.php')){
+                        if(!file_exists('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/'.$srcBundle[0].'.php')){
                             $list[]=$this->mkdir($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0]);
                         }
 
@@ -59,7 +59,7 @@ class source {
                             $bundleParamsIndexSrc['params']['serviceName']=$service;
                             $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['bundle'];
                             $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
-                            $bundleParamsIndexSrc['params']['className']='index';
+                            $bundleParamsIndexSrc['params']['className']=$srcBundle[0];
                             $bundleParamsIndexSrc['params']['version']=$version;
                             $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/'.$srcBundle[0].'.php',$bundleParamsIndexSrc);
 
