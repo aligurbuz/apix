@@ -49,7 +49,7 @@ class source {
                             $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/'.$srcBundle[1].'.php',$bundleParamsIndexSrc);
 
                             $requestBundleFile='./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/index.php';
-                            $this->fileprocess->changeClass($requestBundleFile,['use src\app\mobi\v1\__call\stk\app;'=>'use src\app\mobi\v1\__call\stk\app;'.PHP_EOL.' use src\\app\\'.$project.'\\'.$version.'\\__call\\'.$service.'\\source\bundle\\'.$this->getParams($data)[1]['bundle'].'\\src\\'.$srcBundle[0].'\\'.$srcBundle[1].';'
+                            $this->fileprocess->changeClass($requestBundleFile,['use src\app\mobi\v1\__call\stk\app;'=>'use src\app\mobi\v1\__call\stk\app;'.PHP_EOL.'use src\\app\\'.$project.'\\'.$version.'\\__call\\'.$service.'\\source\bundle\\'.$this->getParams($data)[1]['bundle'].'\\src\\'.$srcBundle[0].'\\'.$srcBundle[1].';'
                             ]);
 
                         }
@@ -61,7 +61,11 @@ class source {
                             $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
                             $bundleParamsIndexSrc['params']['className']='index';
                             $bundleParamsIndexSrc['params']['version']=$version;
-                            $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/index.php',$bundleParamsIndexSrc);
+                            $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/'.$srcBundle[0].'.php',$bundleParamsIndexSrc);
+
+                            $requestBundleFile='./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/index.php';
+                            $this->fileprocess->changeClass($requestBundleFile,['use src\app\mobi\v1\__call\stk\app;'=>'use src\app\mobi\v1\__call\stk\app;'.PHP_EOL.'use src\\app\\'.$project.'\\'.$version.'\\__call\\'.$service.'\\source\bundle\\'.$this->getParams($data)[1]['bundle'].'\\src\\'.$srcBundle[0].'\\'.$srcBundle[0].';'
+                            ]);
                         }
                     }
                     else{
