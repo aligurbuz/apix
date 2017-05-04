@@ -81,5 +81,22 @@ class apixlist extends console  {
         echo $this->bluePrint('system [projectName] down => "create a maintenance status for all services"');
         echo $this->bluePrint('system [projectName] up => "remove from maintenance status to all services"');
 
+
+        echo PHP_EOL;
+
+        echo $this->success('SERVİCE PUBLISH : ');
+        echo $this->bluePrint('service publish [projectName]:[serviceName] names:serviceNameMethod http:httpMethod   => "publish the identified service"');
+        echo $this->bluePrint('service publish [projectName]:[serviceName] names:serviceNameMethod1/serviceNameMethod2 http:httpMethod   => "publish the identified service"');
+
+        echo PHP_EOL;
+
+        echo $this->success('VERSION MOVE : ');
+        echo $this->bluePrint('version move [projectName] d:defaultVersionNumber m:movedVersionNumber=> "create a new version directory in project"');
+
+        echo PHP_EOL;
+
+        echo $this->success('COMMAND CREATE : ');
+        echo $this->bluePrint('command create [commandName]=> "create a new command file in src/store/commands and it can be accessed via php api [commandName]"');
+
     }
 }
