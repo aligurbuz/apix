@@ -22,6 +22,7 @@ class source {
 
         //using : api source bundle projectName:ServiceName bundle:bundleName || src:bundleSrc || src:bundleSrc/bundleSrcFile
 
+
         foreach ($this->getParams($data) as $key=>$value){
             if($key==0){
 
@@ -29,6 +30,12 @@ class source {
                     $version=require ('./src/app/'.$project.'/version.php');
                     $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                     $list=[];
+
+                    if(!file_exists('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source')){
+                        $this->fileprocess->mkdir_path('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/');
+                        $this->fileprocess->mkdir_path('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/bundle');
+                        $this->fileprocess->touch_path('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/source/bundle/index.html');
+                    }
 
                     if(array_key_exists(2,$this->getParams($data)) && array_key_exists("src",$this->getParams($data)[2])){
 

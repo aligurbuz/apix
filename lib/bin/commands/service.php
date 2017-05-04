@@ -96,9 +96,9 @@ class service extends console {
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/cache');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/cache/index.html',null);
 
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/source');
+                       /*$list[]=$this->mkdir($project.'/v1/__call/'.$service.'/source');
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/source/bundle');
-                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/source/bundle/index.html',null);
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/source/bundle/index.html',null);*/
 
 
                        return $this->fileProcessResult($list,function() use($service,$project) {
