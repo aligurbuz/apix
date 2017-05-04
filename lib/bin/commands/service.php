@@ -93,8 +93,8 @@ class service extends console {
                        /*$list[]=$this->mkdir($project.'/v1/__call/'.$service.'/interfaceObjects');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/interfaceObjects/index.html',null);*/
 
-                       $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/cache');
-                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/cache/index.html',null);
+                       /*$list[]=$this->mkdir($project.'/v1/__call/'.$service.'/cache');
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/cache/index.html',null);*/
 
                        /*$list[]=$this->mkdir($project.'/v1/__call/'.$service.'/source');
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/source/bundle');

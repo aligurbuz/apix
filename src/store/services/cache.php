@@ -14,6 +14,7 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
+use src\store\services\fileProcess as file;
 
 /**
  * Represents a cache class.
@@ -37,6 +38,10 @@ class cache {
         }
         else{
             $this->directoryPath  = application.'/'.version.'/__call/'.service.'/cache';
+            $file=new file();
+            if(!$file->exists($this->directoryPath)){
+                $file->mkdir(application.'/'.version.'/__call/'.service.'','cache');
+            }
         }
     }
 
