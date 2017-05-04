@@ -123,6 +123,45 @@ class console {
         return ''.$colored_string.'' . PHP_EOL;
     }
 
+    // Returns colored string information
+    public function bluePrint($string, $foreground_color = 'blue', $background_color = 'white') {
+        $colored_string = "";
+
+        // Check if given foreground color found
+        if (isset($this->foreground_colors[$foreground_color])) {
+            $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . "m";
+        }
+        // Check if given background color found
+        if (isset($this->background_colors[$background_color])) {
+            $colored_string .= "\033[" . $this->background_colors[$background_color] . "m";
+        }
+
+        // Add string and end coloring
+        $colored_string .=  $string . "\033[0m";
+
+        return ''.$colored_string.'' . PHP_EOL;
+    }
+
+
+    // Returns colored string information
+    public function blue($string, $foreground_color = 'white', $background_color = 'blue') {
+        $colored_string = "";
+
+        // Check if given foreground color found
+        if (isset($this->foreground_colors[$foreground_color])) {
+            $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . "m";
+        }
+        // Check if given background color found
+        if (isset($this->background_colors[$background_color])) {
+            $colored_string .= "\033[" . $this->background_colors[$background_color] . "m";
+        }
+
+        // Add string and end coloring
+        $colored_string .=  $string . "\033[0m";
+
+        return ''.$colored_string.'' . PHP_EOL;
+    }
+
 
     // Returns colored string information
     public function input($string, $foreground_color = 'blue', $background_color = 'light_gray') {
