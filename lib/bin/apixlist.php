@@ -98,5 +98,12 @@ class apixlist extends console  {
         echo $this->success('COMMAND CREATE : ');
         echo $this->bluePrint('command create [commandName]=> "create a new command file in src/store/commands and it can be accessed via php api [commandName]"');
 
+
+        echo PHP_EOL;
+
+        echo $this->success('OTHER COMMANDS : ');
+        echo $this->bluePrint('repo create [projectName] repo:repoName=> "create a new repository"');
+        echo $this->bluePrint('staticprovider create [projectName] version:[versionNumber] file:staticClassName=> "create a new static provider class"');
+
     }
 }
