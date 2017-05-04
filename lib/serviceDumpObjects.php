@@ -3,6 +3,8 @@ namespace lib;
 use Symfony\Component\Yaml\Yaml;
 use src\store\services\httprequest as request;
 use src\store\services\httpSession;
+use src\store\services\fileProcess as file;
+
 class serviceDumpObjects {
     private $requestServiceMethodReal;
     private $requestServiceMethod;
@@ -30,6 +32,14 @@ class serviceDumpObjects {
         $this->requestServiceMethodReal=$requestServiceMethodReal;
         $this->requestServiceMethod=$requestServiceMethod;
         $this->other=$other;
+
+        $file=new file();
+        if(!file_exists('./'.src.'/'.app.'/'.version.'/__call/'.service.'/yaml')){
+            $file->mkdir('./'.src.'/'.app.'/'.version.'/__call/'.service.'','yaml');
+            $file->touch('./'.src.'/'.app.'/'.version.'/__call/'.service.'/yaml/index.html');
+            $file->mkdir('./'.src.'/'.app.'/'.version.'/__call/'.service.'','yaml/expected');
+            $file->touch('./'.src.'/'.app.'/'.version.'/__call/'.service.'/yaml/expected/index.html');
+        }
         $this->serviceYamlFile='./'.src.'/'.app.'/'.version.'/__call/'.service.'/yaml/expected/'.service.'_'.strtolower(request).'_'.method.'.yaml';
         $this->request=new request();
         $basePath=api.'serviceBaseController';

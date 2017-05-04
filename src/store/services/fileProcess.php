@@ -80,7 +80,7 @@ class fileProcess {
     public function touch($touch=null,$own=null,$access=null)
     {
         if($touch!==null){
-            $this->fs->touch($touch,$own,$access);
+            $this->fs->touch($touch);
         }
     }
 

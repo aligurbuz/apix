@@ -33,9 +33,9 @@ class service extends console {
                    $list=[];
                    if($this->mkdir(''.$project.'/'.$version.'/__call/'.$service)){
 
-                       $touchReadmeParams['execution']='project_readme';
+                       /*$touchReadmeParams['execution']='project_readme';
                        $touchReadmeParams['params']['projectName']=$project;
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/README.md',$touchReadmeParams);
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/README.md',$touchReadmeParams);*/
 
                        $touchServiceGetParams['execution']='services/getservice';
                        $touchServiceGetParams['params']['projectName']=$project;
@@ -85,10 +85,10 @@ class service extends console {
                        //$list[]=$this->touch($project.'/v1/__call/'.$service.'/branches/index.html',null);
 
                        /*$list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml');
-                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);*/
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/index.html',null);
 
                        $list[]=$this->mkdir($project.'/v1/__call/'.$service.'/yaml/expected');
-                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/expected/index.html',null);
+                       $list[]=$this->touch($project.'/v1/__call/'.$service.'/yaml/expected/index.html',null);*/
 
                        /*$list[]=$this->mkdir($project.'/v1/__call/'.$service.'/interfaceObjects');
                        $list[]=$this->touch($project.'/v1/__call/'.$service.'/interfaceObjects/index.html',null);*/
