@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\source\bundle\__bundleName__;
+namespace src\app\__projectName__\__version__\__call\__serviceName__\source\bundle\__bundleName__;
 
 /**
  * Represents a bundle interface class.

@@ -8,10 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace src\app\__projectName__\v1\__call\__serviceName__\source\bundle\__bundleName__;
+namespace src\app\__projectName__\__version__\__call\__serviceName__\source\bundle\__bundleName__;
 
 use Src\Store\Services\Httprequest as Request;
 use Src\Store\Services\Repository as Repo;
+use src\app\__projectName__\__version__\__call\__serviceName__\app;
 
 /**
  * Represents a bundle index class.
@@ -20,7 +21,7 @@ use Src\Store\Services\Repository as Repo;
  * return type array
  */
 
-class index extends \src\app\__projectName__\v1\__call\__serviceName__\app implements __bundleName__Interface
+class index extends app implements __bundleName__Interface
 {
 
 

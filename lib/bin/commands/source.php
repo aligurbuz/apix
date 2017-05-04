@@ -45,6 +45,7 @@ class source {
                             $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['bundle'];
                             $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
                             $bundleParamsIndexSrc['params']['className']=$srcBundle[1];
+                            $bundleParamsIndexSrc['params']['version']=$version;
                             $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/'.$srcBundle[1].'.php',$bundleParamsIndexSrc);
 
                         }
@@ -55,6 +56,7 @@ class source {
                             $bundleParamsIndexSrc['params']['bundleName']=$this->getParams($data)[1]['bundle'];
                             $bundleParamsIndexSrc['params']['srcName']=$srcBundle[0];
                             $bundleParamsIndexSrc['params']['className']='index';
+                            $bundleParamsIndexSrc['params']['version']=$version;
                             $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/src/'.$srcBundle[0].'/index.php',$bundleParamsIndexSrc);
                         }
                     }
@@ -69,12 +71,14 @@ class source {
                         $bundleParamsIndex['params']['projectName']=$project;
                         $bundleParamsIndex['params']['serviceName']=$service;
                         $bundleParamsIndex['params']['bundleName']=$this->getParams($data)[1]['bundle'];
+                        $bundleParamsIndex['params']['version']=$version;
                         $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/index.php',$bundleParamsIndex);
 
                         $bundleParamsInterface['execution']='services/sourceBundleInterface';
                         $bundleParamsInterface['params']['projectName']=$project;
                         $bundleParamsInterface['params']['serviceName']=$service;
                         $bundleParamsInterface['params']['bundleName']=$this->getParams($data)[1]['bundle'];
+                        $bundleParamsInterface['params']['version']=$version;
                         $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/source/bundle/'.$this->getParams($data)[1]['bundle'].'/'.$this->getParams($data)[1]['bundle'].'Interface.php',$bundleParamsInterface);
 
                     }
