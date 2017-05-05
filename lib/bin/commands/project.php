@@ -21,6 +21,12 @@ class project extends console {
     public function create ($data){
 
         $list=[];
+
+        echo $this->info('------------------------------------------------------------------------------');
+        echo $this->classical('HI DEVELOPER! WE WANT TO ASK SOME QUESTİONS BEFORE STARTING');
+        $composer=$this->ReadStdin('Do you want to use composer in the your project? ["Y","N"]',null,'N');
+        $orm=$this->ReadStdin('Which orm do you want to use in the your project? ["sudb","doctrine","eloquent"]',null,'sudb');
+
         if($this->mkdir($this->getProjectName($data))){
 
             /*$touchServiceReadMe['execution']='project_readme';
@@ -56,17 +62,23 @@ class project extends console {
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/env');
             $list[]=$this->touch($this->getProjectName($data).'/storage/env/index.html',null);
 
-            /*$list[]=$this->mkdir($this->getProjectName($data).'/composer');
-            $list[]=$this->touch($this->getProjectName($data).'/composer/index.html',null);*/
+            if($composer=="y"){
+
+                $list[]=$this->mkdir($this->getProjectName($data).'/composer');
+                $list[]=$this->touch($this->getProjectName($data).'/composer/index.html',null);
+
+                $list[]=$this->touch($this->getProjectName($data).'/composer.json',null);
+
+                $touchProjectComposer['execution']='project_composer';
+                $touchProjectComposer['params']['projectName']=$this->getProjectName($data);
+                $list[]=$this->touch($this->getProjectName($data).'/composer.json',$touchProjectComposer);
+            }
+
 
 
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
 
-            $list[]=$this->touch($this->getProjectName($data).'/composer.json',null);
 
-            $touchProjectComposer['execution']='project_composer';
-            $touchProjectComposer['params']['projectName']=$this->getProjectName($data);
-            $list[]=$this->touch($this->getProjectName($data).'/composer.json',$touchProjectComposer);
 
             $list[]=$this->touch($this->getProjectName($data).'/.gitignore',null);
 
@@ -157,25 +169,33 @@ class project extends console {
             $list[]=$this->mkdir($this->getProjectName($data).'/v1/model');
             $list[]=$this->touch($this->getProjectName($data).'/v1/model/index.html',null);
 
+            if($orm=="sudb"){
+                $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/sudb');
+                $list[]=$this->touch($this->getProjectName($data).'/v1/model/sudb/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/sudb');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/sudb/index.html',null);
-
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/sudb/builder');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/sudb/builder/index.html',null);
+                $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/sudb/builder');
+                $list[]=$this->touch($this->getProjectName($data).'/v1/model/sudb/builder/index.html',null);
+            }
 
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/eloquent');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/eloquent/index.html',null);
+            if($orm=="eloquent"){
+                $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/eloquent');
+                $list[]=$this->touch($this->getProjectName($data).'/v1/model/eloquent/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/eloquent/builder');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/eloquent/builder/index.html',null);
+                $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/eloquent/builder');
+                $list[]=$this->touch($this->getProjectName($data).'/v1/model/eloquent/builder/index.html',null);
+            }
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine/builder');
-            $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/builder/index.html',null);
+            if($orm=="doctrine"){
+                $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine');
+                $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/index.html',null);
+
+                $list[]=$this->mkdir($this->getProjectName($data).'/v1/model/doctrine/builder');
+                $list[]=$this->touch($this->getProjectName($data).'/v1/model/doctrine/builder/index.html',null);
+            }
+
+
 
             return $this->fileProcessResult($list,function() use($data) {
                 echo $this->info('------------------------------------------------------------------------------');

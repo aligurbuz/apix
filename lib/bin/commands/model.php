@@ -30,45 +30,68 @@ class model extends console {
                     $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                     $list=[];
 
-                    $modelControlPath='./src/app/'.$project.'/'.$version.'/model/sudb/'.$this->getParams($data)[1]['file'].'.php';
 
-                    if(!file_exists($modelControlPath)){
-                        $modelParamsBuilder['execution']='services/modelBuilder';
-                        $modelParamsBuilder['params']['projectName']=$project;
-                        $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
-                        //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
-                        $list[]=$this->touch($project.'/'.$version.'/model/sudb/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
-
-                        $modelParams['execution']='services/model';
-                        $modelParams['params']['projectName']=$project;
-                        $modelParams['params']['className']=$this->getParams($data)[1]['file'];
-                        $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
-                        $list[]=$this->touch($project.'/'.$version.'/model/sudb/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
+                    if(file_exists('./src/app/'.$project.'/'.$version.'/model/eloquent')){
 
 
-                        $modelParamsBuilder['execution']='services/eloquentmodelBuilder';
-                        $modelParamsBuilder['params']['projectName']=$project;
-                        $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
-                        //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
-                        $list[]=$this->touch($project.'/'.$version.'/model/eloquent/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
+                        $modelControlPath='./src/app/'.$project.'/'.$version.'/model/eloquent/'.$this->getParams($data)[1]['file'].'.php';
 
-                        $modelParams['execution']='services/eloquentmodel';
-                        $modelParams['params']['projectName']=$project;
-                        $modelParams['params']['className']=$this->getParams($data)[1]['file'];
-                        $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
-                        $list[]=$this->touch($project.'/'.$version.'/model/eloquent/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
+                        if(!file_exists($modelControlPath)){
+                            $modelParamsBuilder['execution']='services/eloquentmodelBuilder';
+                            $modelParamsBuilder['params']['projectName']=$project;
+                            $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
+                            //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
+                            $list[]=$this->touch($project.'/'.$version.'/model/eloquent/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
 
-                        return $this->fileProcessResult($list,function() use($data,$project,$version){
-                            echo $this->info('-------------------------------------------------------------------------------------------------');
-                            echo $this->classical('MODEL GENERATOR : '.$this->getParams($data)[1]['file'].' --- '.$this->getParams($data)[2]['table'].'');
-                            echo $this->info('-------------------------------------------------------------------------------------------------');
-                            echo $this->success('You can see in the src/app/'.$project.'/'.$version.'/model Directory');
-                            echo $this->info('--------------------------------------------------------------------------------------------------');
-                        });
+                            $modelParams['execution']='services/eloquentmodel';
+                            $modelParams['params']['projectName']=$project;
+                            $modelParams['params']['className']=$this->getParams($data)[1]['file'];
+                            $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
+                            $list[]=$this->touch($project.'/'.$version.'/model/eloquent/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
+                        }
+                        else{
+                            return $this->error($this->getParams($data)[1]['file'].' model is already available');
+                        }
+
+
                     }
-                    else{
-                        return $this->error($this->getParams($data)[1]['file'].' model is already available');
+
+
+                    if(file_exists('./src/app/'.$project.'/'.$version.'/model/sudb')){
+
+                        $modelControlPath='./src/app/'.$project.'/'.$version.'/model/sudb/'.$this->getParams($data)[1]['file'].'.php';
+
+                        if(!file_exists($modelControlPath)){
+
+                            $modelParamsBuilder['execution']='services/modelBuilder';
+                            $modelParamsBuilder['params']['projectName']=$project;
+                            $modelParamsBuilder['params']['className']=$this->getParams($data)[1]['file'];
+                            //$modelParamsBuilder['params']['tableName']=$this->getParams($data)[2]['table'];
+                            $list[]=$this->touch($project.'/'.$version.'/model/sudb/builder/'.$this->getParams($data)[1]['file'].'Builder.php',$modelParamsBuilder);
+
+                            $modelParams['execution']='services/model';
+                            $modelParams['params']['projectName']=$project;
+                            $modelParams['params']['className']=$this->getParams($data)[1]['file'];
+                            $modelParams['params']['tableName']=$this->getParams($data)[2]['table'];
+                            $list[]=$this->touch($project.'/'.$version.'/model/sudb/'.$this->getParams($data)[1]['file'].'.php',$modelParams);
+
+
+                        }
+                        else{
+                            return $this->error($this->getParams($data)[1]['file'].' model is already available');
+                        }
+
                     }
+
+                    return $this->fileProcessResult($list,function() use($data,$project,$version){
+                        echo $this->info('-------------------------------------------------------------------------------------------------');
+                        echo $this->classical('MODEL GENERATOR : '.$this->getParams($data)[1]['file'].' --- '.$this->getParams($data)[2]['table'].'');
+                        echo $this->info('-------------------------------------------------------------------------------------------------');
+                        echo $this->success('You can see in the src/app/'.$project.'/'.$version.'/model Directory');
+                        echo $this->info('--------------------------------------------------------------------------------------------------');
+                    });;
+
+
 
 
 
