@@ -31,7 +31,33 @@ class service extends console {
                    $version=require ('./src/app/'.$project.'/version.php');
                    $version=(is_array($version) && array_key_exists('version',$version)) ? $version['version'] : 'v1';
                    $list=[];
+
+
+                   if(file_exists('./src/app/'.$project.'/'.$version.'/__call/'.$service)){
+
+                       if(array_key_exists('file',$data)){
+                           if(!file_exists('./src/app/'.$project.'/'.$version.'/__call/'.$service.'/'.$data['file'].'Service.php')){
+                                $touchServicePostParams['execution']='services/serviceFilePut';
+                                $touchServicePostParams['params']['projectName']=$project;
+                                $touchServicePostParams['params']['serviceName']=$service;
+                                $touchServicePostParams['params']['method']=$data['file'];
+
+                                $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/'.$data['file'].'Service.php',$touchServicePostParams);
+
+                               return $this->fileProcessResult($list,function() use($service,$project,$data) {
+                                   echo $this->info('-------------------------------------------------------------------------------------------------');
+                                   echo $this->classical('CONGRATULATİONS! YOU HAVE CREATED A SERVICE FILE NAMED '.$data['file'].'Service FOR '.$service.' IN THE '.$project.' PROJECT ');
+                                   echo $this->info('-------------------------------------------------------------------------------------------------');
+                                   echo $this->success('Request : http:ip/[-company]/service/'.$project.'/'.$service.'/index');
+                                   echo $this->info('--------------------------------------------------------------------------------------------------');
+                               });
+                           }
+                       }
+
+                   }
+
                    if($this->mkdir(''.$project.'/'.$version.'/__call/'.$service)){
+
 
                        /*$touchReadmeParams['execution']='project_readme';
                        $touchReadmeParams['params']['projectName']=$project;
@@ -42,10 +68,10 @@ class service extends console {
                        $touchServiceGetParams['params']['serviceName']=$service;
                        $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/getService.php',$touchServiceGetParams);
 
-                       $touchServicePostParams['execution']='services/postservice';
+                       /*$touchServicePostParams['execution']='services/postservice';
                        $touchServicePostParams['params']['projectName']=$project;
                        $touchServicePostParams['params']['serviceName']=$service;
-                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/postService.php',$touchServicePostParams);
+                       $list[]=$this->touch($project.'/'.$version.'/__call/'.$service.'/postService.php',$touchServicePostParams);*/
 
                        /*$touchServicePutParams['execution']='services/putservice';
                        $touchServicePutParams['params']['projectName']=$project;
