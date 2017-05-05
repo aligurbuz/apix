@@ -118,6 +118,12 @@ class staticPathModel {
         }
     }
 
+    public static function getAppServiceBase(){
+        $serviceBase='\\src\\app\\'.app.'\\'.version.'\\serviceBaseController';
+        return new $serviceBase();
+
+    }
+
 
 
 

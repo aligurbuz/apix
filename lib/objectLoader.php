@@ -21,9 +21,10 @@ class objectLoader {
      * @return response boot object loader runner
      */
     public function boot(){
+        $serviceBase=staticPathModel::getAppServiceBase();
         $objectLoader="\\src\\store\\provisions\\objectloader";
         $objectLoader=utils::resolve($objectLoader);
-        if($objectLoader->status){
+        if($serviceBase->objectLoader){
             $objectLoaderMethod=request.'ObjectLoader';
 
             $objectLoaderExcept=strtolower(request).'Except';
