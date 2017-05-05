@@ -125,8 +125,16 @@ class service extends console {
         foreach ($this->getParams($data) as $key=>$value) {
             if($key==0){
 
+
                 foreach($value as $project=>$service){
                     $versionPath='./src/app/'.$project.'/version.php';
+
+                    if(!file_exists('./src/app/'.$project.'/declaration')){
+                        $this->fileprocess->mkdir_path('./src/app/'.$project.'/declaration');
+                        $this->fileprocess->touch_path('./src/app/'.$project.'/declaration/index.html');
+                        $this->fileprocess->mkdir_path('./src/app/'.$project.'/declaration/history');
+                        $this->fileprocess->touch_path('./src/app/'.$project.'/declaration/history/index.html');
+                    }
                     $version=require($versionPath);
                     if(is_array($version) && array_key_exists("version",$version)){
                         $versionNumber=$version['version'];

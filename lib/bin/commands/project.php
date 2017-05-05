@@ -35,11 +35,11 @@ class project extends console {
             $touchServicePublishMe['params']['projectName']=$this->getProjectName($data);
             $list[]=$this->touch($this->getProjectName($data).'/publish.php',$touchServicePublishMe);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/declaration');
+            /*$list[]=$this->mkdir($this->getProjectName($data).'/declaration');
             $list[]=$this->touch($this->getProjectName($data).'/declaration/index.html',null);
 
             $list[]=$this->mkdir($this->getProjectName($data).'/declaration/history');
-            $list[]=$this->touch($this->getProjectName($data).'/declaration/history/index.html',null);
+            $list[]=$this->touch($this->getProjectName($data).'/declaration/history/index.html',null);*/
 
             $list[]=$this->mkdir($this->getProjectName($data).'/storage');
             $list[]=$this->touch($this->getProjectName($data).'/storage/index.html',null);
@@ -56,8 +56,10 @@ class project extends console {
             $list[]=$this->mkdir($this->getProjectName($data).'/storage/env');
             $list[]=$this->touch($this->getProjectName($data).'/storage/env/index.html',null);
 
-            $list[]=$this->mkdir($this->getProjectName($data).'/composer');
-            $list[]=$this->touch($this->getProjectName($data).'/composer/index.html',null);
+            /*$list[]=$this->mkdir($this->getProjectName($data).'/composer');
+            $list[]=$this->touch($this->getProjectName($data).'/composer/index.html',null);*/
+
+
             $list[]=$this->mkdir($this->getProjectName($data).'/v1');
 
             $list[]=$this->touch($this->getProjectName($data).'/composer.json',null);
