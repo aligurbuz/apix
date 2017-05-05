@@ -284,9 +284,6 @@ class connection extends Definitor {
         //check environment
         \lib\environment::config();
 
-        //get before middleware
-        $this->middleware("before");
-
         $projectComposerPath=root.'/'.src.'/'.app.'/composer/autoload.php';
         if(file_exists($projectComposerPath)){
             require_once $projectComposerPath;
