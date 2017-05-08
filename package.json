@@ -1,0 +1,23 @@
+{
+  "name": "apix",
+  "version": "6.6.0",
+  "description": "apix rest",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aligurbuz/apix.git"
+  },
+  "author": "aligurbuz <galiant781@gmail.com> (https://github.com/aligurbuz)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aligurbuz/apix/issues"
+  },
+  "homepage": "https://github.com/aligurbuz/apix#readme"
+}

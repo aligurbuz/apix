@@ -75,8 +75,10 @@ class job {
         $list=array_keys($data);
         define ('app',$list[1]);
         define ('version',utils::getAppVersion($list[1]));
-        $path=utils::getAppRootNamespace($list[1]).'\\optional\\jobs\\'.$list[0].'\\'.$list[2].'\\'.$list[3];
-        return new $path($list[1],$list[2]);
+        //$path=utils::getAppRootNamespace($list[1]).'\\optional\\jobs\\'.$list[0].'\\'.$list[2].'\\'.$list[3];
+        $path="\\src\\store\\services\\rabbitMQ";
+        $method=$list[3];
+        return (new $path($list[1],$list[2]))->$method();
     }
 
 

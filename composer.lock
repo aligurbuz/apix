@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b130c885dc89a9c29f11d797724d1ef",
-    "content-hash": "fbe237cdbb6cc775d1e829605ca60499",
+    "hash": "d0ab380489a8abfd637c2879a20be807",
+    "content-hash": "20ad3093d2f3e587c4c3f0dbd87f9ec6",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -3856,6 +3856,44 @@
                 "environment"
             ],
             "time": "2016-09-01 10:05:43"
+        },
+        {
+            "name": "vvondra/php-daemon",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vvondra/php-daemon.git",
+                "reference": "13c26125d6353c5ba2d3b468b25051190c6b5c87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vvondra/php-daemon/zipball/13c26125d6353c5ba2d3b468b25051190c6b5c87",
+                "reference": "13c26125d6353c5ba2d3b468b25051190c6b5c87",
+                "shasum": ""
+            },
+            "require": {
+                "ext-posix": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Daemon.php",
+                    "DaemonException.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vojtech Vondra",
+                    "email": "vojtavondra@gmail.com"
+                }
+            ],
+            "description": "A base implementation of a UNIX daemon in PHP",
+            "time": "2013-08-31 19:36:23"
         },
         {
             "name": "zendframework/zend-code",
