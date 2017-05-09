@@ -73,6 +73,9 @@ class rabbitMQ {
 
     public function subscriber(){
 
+        //cli command : nohup php api job pusher rabbitmq mobi user subscriber  > /dev/null 2>&1 &
+        // nohup kill :  kill -9 pid
+
         $this->channel->exchange_declare($this->declare, 'fanout', false, false, false);
 
         list($queue_name, ,) = $this->channel->queue_declare("", false, false, true, false);
