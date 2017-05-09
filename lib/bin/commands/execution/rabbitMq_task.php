@@ -21,27 +21,12 @@ use Src\Store\Services\Httprequest as Request;
  * Although messages flow through RabbitMQ and your applications,
  * @class publisher
  */
-class publisher {
+class task {
 
 
     //get channel
-    private $channel;
+    public $scheduleTime='* * * *';
 
-    //get connection
-    private $connection;
-
-    /**
-     * Constructor.
-     *
-     * @param type dependency injection and stk class
-     * main loader as construct method
-     */
-    public function __construct($app,$declare)
-    {
-        $this->connection=(new rabbit($app))->getConnection();
-        $this->channel=$this->connection->channel();
-        $this->execute($app,$declare);
-    }
 
     /**
      * Console rabbitMQ execute method.
@@ -51,12 +36,9 @@ class publisher {
      * @return string
      * @return string
      */
-    public function execute($app=null,$declare=null){
+    public function execute(){
 
-        if($app!==null && $declare!==null){
-
-            //make something for subscriber
-        }
+        //make task
     }
 
 

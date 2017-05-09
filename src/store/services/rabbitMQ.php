@@ -50,7 +50,9 @@ class rabbitMQ {
             $this->declare=app;
         }
 
+
         $rabbitMQ=$projectConfig::rmqSettings();
+
         $this->connection=new AMQPStreamConnection($rabbitMQ['rabbitMQ']['host'], $rabbitMQ['rabbitMQ']['port'], $rabbitMQ['rabbitMQ']['user'], $rabbitMQ['rabbitMQ']['password']);
         $this->channel=$this->connection->channel();
 
@@ -62,7 +64,9 @@ class rabbitMQ {
 
         $this->channel->exchange_declare($this->declare, 'fanout', false, false, false);
 
-        $msg = new AMQPMessage(test::create(['pusher'=>1]));
+        $task='\\src\\app\\'.$this->app.'\\'.utils::getAppVersion($this->app).'\\optional\\jobs\\rabbitmq\\'.$this->declare.'\\task';
+
+        $msg = new AMQPMessage((new $task())->execute());
 
         $this->channel->basic_publish($msg, $this->declare);
 
@@ -88,18 +92,33 @@ class rabbitMQ {
 
         while(count($this->channel->callbacks)) {
 
-            $process = new Process('php api job pusher rabbitmq mobi user publisher');
+            $process = new Process('php api job run rabbitmq mobi user publisher');
             $process->run();
 
             // executes after the command finishes
             if (!$process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
+            echo $process->getOutput();
             sleep(5);
         }
 
         $this->channel->close();
         $this->connection->close();
+    }
+
+
+    public function run(){
+
+        $process = new Process('nohup php api job run rabbitmq mobi user subscriber > '.root.'/src/app/'.$this->app.'/'.utils::getAppVersion($this->app).'/optional/jobs/rabbitmq/'.$this->declare.'/nohup 2>&1 & echo $! > '.root.'/src/app/'.$this->app.'/'.utils::getAppVersion($this->app).'/optional/jobs/rabbitmq/'.$this->declare.'/save_pid.txt');
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        echo $process->getOutput();
     }
 
 

@@ -45,17 +45,11 @@ class job {
 
             $list[]=$this->mkdir($rabbitMqPath.'/'.$dir);
 
-            $touchServiceRabbitMqPublisher['execution']='rabbitMq_publisher';
+            $touchServiceRabbitMqPublisher['execution']='rabbitMq_task';
             $touchServiceRabbitMqPublisher['params']['projectName']=$project;
             $touchServiceRabbitMqPublisher['params']['version']=utils::getAppVersion($project);
             $touchServiceRabbitMqPublisher['params']['dir']=$dir;
-            $list[]=$this->touch($rabbitMqPath.'/'.$dir.'/publisher.php',$touchServiceRabbitMqPublisher);
-
-            $touchServiceRabbitMqSubscriber['execution']='rabbitMq_subscriber';
-            $touchServiceRabbitMqSubscriber['params']['projectName']=$project;
-            $touchServiceRabbitMqSubscriber['params']['version']=utils::getAppVersion($project);
-            $touchServiceRabbitMqSubscriber['params']['dir']=$dir;
-            $list[]=$this->touch($rabbitMqPath.'/'.$dir.'/subscriber.php',$touchServiceRabbitMqSubscriber);
+            $list[]=$this->touch($rabbitMqPath.'/'.$dir.'/task.php',$touchServiceRabbitMqPublisher);
 
 
             return $this->fileProcessResult($list,function(){
@@ -71,14 +65,20 @@ class job {
 
 
     //project create command
-    public function pusher ($data){
+    public function run ($data){
         $list=array_keys($data);
         define ('app',$list[1]);
         define ('version',utils::getAppVersion($list[1]));
         //$path=utils::getAppRootNamespace($list[1]).'\\optional\\jobs\\'.$list[0].'\\'.$list[2].'\\'.$list[3];
         $path="\\src\\store\\services\\rabbitMQ";
-        $method=$list[3];
-        return (new $path($list[1],$list[2]))->$method();
+
+        if(array_key_exists(3,$list)){
+            $method=$list[3];
+            return (new $path($list[1],$list[2]))->$method();
+        }
+
+        return (new $path($list[1],$list[2]))->run();
+
     }
 
 
