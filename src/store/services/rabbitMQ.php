@@ -60,10 +60,11 @@ class rabbitMQ {
 
     public function publisher(){
 
-        $this->channel->queue_declare($this->declare, false, false, false, false);
-        $msg = new AMQPMessage(test::create(['pusher'=>1]),array('delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT));
-        $this->channel->basic_publish($msg, '', $this->declare);
-        echo " [x] Sent Pusher! \n";
+        $this->channel->exchange_declare($this->declare, 'fanout', false, false, false);
+
+        $msg = new AMQPMessage(test::create(['pusher'=>1]));
+
+        $this->channel->basic_publish($msg, $this->declare);
 
         $this->channel->close();
         $this->connection->close();
@@ -72,25 +73,28 @@ class rabbitMQ {
 
     public function subscriber(){
 
-        $this->channel->queue_declare($this->declare, false, false, false, false);
-        $callback = function($msg) {
-            //echo " [x] Received ", $msg->body, "\n";
-        };
-        $this->channel->basic_qos(null, 1, null);
-        $this->channel->basic_consume($this->declare, '', false, true, false, false, $callback);
+        $this->channel->exchange_declare($this->declare, 'fanout', false, false, false);
+
+        list($queue_name, ,) = $this->channel->queue_declare("", false, false, true, false);
+
+        $this->channel->queue_bind($queue_name, $this->declare);
+
+        $callback = function($msg){};
+
+        $this->channel->basic_consume($queue_name, '', false, true, false, false, $callback);
+
         while(count($this->channel->callbacks)) {
-            /*$process = new Process('php api job pusher rabbitmq '.$this->app.' '.$this->declare.' publisher');
+
+            $process = new Process('php api job pusher rabbitmq mobi user publisher');
             $process->run();
 
             // executes after the command finishes
             if (!$process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
-
-            sleep(5);*/
-
-            $this->channel->wait();
+            sleep(5);
         }
+
         $this->channel->close();
         $this->connection->close();
     }
