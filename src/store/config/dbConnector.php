@@ -26,6 +26,7 @@ class dbConnector {
             else{
                 $app=app;
                 $version=version;
+
             }
 
             $config="\\src\\app\\".$app."\\".$version."\\config\\database";

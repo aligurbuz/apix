@@ -68,6 +68,18 @@ class custom {
             }
         }
 
+        if(method_exists($app,'appNameSpace')){
+            $appDef=$app->appNameSpace((object)$list);
+            define('app',$appDef['app']);
+            define('version',$appDef['version']);
+        }
+
+        if(property_exists($app,'appNameSpace')){
+            $appDef=$app->appNameSpace;
+            define('app',$appDef['app']);
+            define('version',$appDef['version']);
+        }
+
         return $app->handle((object)$list);
         $application->run();
     }
