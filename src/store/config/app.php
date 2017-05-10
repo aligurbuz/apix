@@ -86,6 +86,21 @@ class app {
     }
 
 
+    /**
+     * get definitive app.
+     * definition:classess is defined by user
+     * and it is called as IOS,MOBILE,vs..
+     * @param type dependency injection and function
+     * @return array
+     */
+    public static function getClassAliasLoader(){
+
+        //defines
+        return [];
+
+    }
+
+
 
     /**
      * post method for services.

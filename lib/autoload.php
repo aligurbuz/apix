@@ -13,14 +13,33 @@
     */
 
     // Use default autoload implementation
-    spl_autoload_register(function($class){
+    spl_autoload_register(function($class) {
 
-        //echo $class.''.PHP_EOL;
+
         $class=root.'/'.$class.'.php';
 
         $class=str_replace("\\","/",$class);
 
-        require($class);
+        if(!file_exists($class)){
+            $alias=str_replace(root.'/','',$class);
+            $alias=str_replace('.php','',$alias);
+            $systemApp=\src\store\config\app::getClassAliasLoader();
+            $appAlias='\\src\\app\\'.app.'\\'.version.'\\config\\app';
+            $systemApp=array_merge($systemApp,$appAlias::getAppClassAlias());
+            if(array_key_exists($alias,$systemApp)){
+                class_alias($systemApp[$alias],$alias);
+            }
+        }
+        else{
+            require($class);
+        }
+
+
+
+
+
+
+
 
     });
 
