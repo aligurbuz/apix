@@ -23,5 +23,6 @@ spl_autoload_register(function($class) {
     require($class);
 
 });
+require ('./lib/appClassAlias.php');
 \lib\environment::config();
 
