@@ -24,3 +24,5 @@ spl_autoload_register(function($class) {
 
 });
 
+\lib\environment::config();
+
