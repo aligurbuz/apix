@@ -53,7 +53,6 @@ class custom {
         }
 
         $app=\lib\utils::resolve($command);
-        \lib\environment::config();
 
         $list=[];
         foreach($data as $key=>$value){

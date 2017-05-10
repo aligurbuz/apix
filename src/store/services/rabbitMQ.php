@@ -92,7 +92,7 @@ class rabbitMQ {
 
         while(count($this->channel->callbacks)) {
 
-            $process = new Process('php api job run rabbitmq mobi user publisher');
+            $process = new Process('php api job run rabbitmq '.$this->app.' '.$this->declare.' publisher');
             $process->run();
 
             // executes after the command finishes
@@ -110,7 +110,7 @@ class rabbitMQ {
 
     public function run(){
 
-        $process = new Process('nohup php api job run rabbitmq mobi user subscriber > '.root.'/src/app/'.$this->app.'/'.utils::getAppVersion($this->app).'/optional/jobs/rabbitmq/'.$this->declare.'/nohup 2>&1 & echo $! > '.root.'/src/app/'.$this->app.'/'.utils::getAppVersion($this->app).'/optional/jobs/rabbitmq/'.$this->declare.'/save_pid.txt');
+        $process = new Process('nohup php api job run rabbitmq '.$this->app.' '.$this->declare.' subscriber > '.root.'/src/app/'.$this->app.'/'.utils::getAppVersion($this->app).'/optional/jobs/rabbitmq/'.$this->declare.'/nohup 2>&1 & echo $! > '.root.'/src/app/'.$this->app.'/'.utils::getAppVersion($this->app).'/optional/jobs/rabbitmq/'.$this->declare.'/save_pid.txt');
         $process->run();
 
         // executes after the command finishes

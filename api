@@ -29,6 +29,8 @@ use lib\utils;
  * this snippet calls really command file for system
  * return class method
  */
+\lib\environment::config();
+
 if(file_exists(staticPath::$binCommandsPath.''.$argv[1].'.php')){
 
     //get command file
