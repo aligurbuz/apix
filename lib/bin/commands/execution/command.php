@@ -46,4 +46,19 @@ class __class__ extends  console {
     }
 
 
+    /**
+     * Represents a appNameSpace method.
+     * api __class__ create --
+     * return type string
+     */
+    public function appNameSpace($arguments){
+
+        //make somethings
+        return [
+            'app'=>'ProjectName',
+            'version'=>'versionNumber'
+        ];
+    }
+
+
 }
