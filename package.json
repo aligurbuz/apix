@@ -1,5 +1,5 @@
 {
-  "name": "apix",
+  "name": "apix_node",
   "version": "6.6.0",
   "description": "apix rest",
   "main": "index.js",
@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/aligurbuz/apix/issues"
   },
-  "homepage": "https://github.com/aligurbuz/apix#readme"
+  "homepage": "https://github.com/aligurbuz/apix#readme",
+  "keywords": [
+    "apix"
+  ]
 }
