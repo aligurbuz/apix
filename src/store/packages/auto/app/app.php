@@ -1,4 +1,7 @@
 <?php namespace src\store\packages\auto\app;
+use lib\utils;
+use lib\staticPathModel;
+use Src\Store\Services\Httprequest as Request;
 
 /*
  * This file is app package for every service.
@@ -12,6 +15,21 @@
 class app
 {
 
+    public $request;
+
+    /**
+     * Constructor.
+     *
+     * @param type dependency injection and stk class
+     * main loader as construct method
+     */
+    public function __construct(Request $request)
+    {
+
+        //get app extends
+        $this->request=$request;
+    }
+
     /**
      * app route is main method.
      *
@@ -19,9 +37,36 @@ class app
      */
     public function index()
     {
-        return [
-            'application'=>app,
-            'version'=>version
+        /**
+         * app settings is main method.
+         *
+         * @return array
+         */
+        $app=[
+            'app'=>[
+                'app'=>app,
+                'version'=>version,
+                'host'=>$this->request->getHost(),
+                'isSecure'=>$this->request->isSecure()
+            ]
+
         ];
+
+
+        /**
+         * node settings is main method.
+         *
+         * @return array
+         */
+        $node=[
+            'node'=>staticPathModel::getAppServiceBase()->nodeServiceSide()
+        ];
+
+        /**
+         * array_merge for result.
+         *
+         * @return array
+         */
+        return array_merge($app,$node);
     }
 }
