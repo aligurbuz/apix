@@ -22,5 +22,8 @@
   "homepage": "https://github.com/aligurbuz/apix#readme",
   "keywords": [
     "apix"
-  ]
+  ],
+  "dependencies": {
+    "express": "^4.15.2"
+  }
 }
