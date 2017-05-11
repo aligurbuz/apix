@@ -20,15 +20,15 @@ class package {
     public function auto ($data){
 
         $list=[];
-        if(!file_exists('./src/packages/auto/'.$this->getProjectName($data))){
+        if(!file_exists('./src/store/packages/auto/'.$this->getProjectName($data))){
 
 
-            $list[]=$this->mkdir_path('./src/packages/auto/'.$this->getProjectName($data));
+            $list[]=$this->mkdir_path('./src/store/packages/auto/'.$this->getProjectName($data));
 
 
             $touchPackage['execution']='package_auto';
             $touchPackage['params']['packageName']=$this->getProjectName($data);
-            $list[]=$this->touch_path('./src/packages/auto/'.$this->getProjectName($data).'/'.$this->getProjectName($data).'.php',$touchPackage);
+            $list[]=$this->touch_path('./src/store/packages/auto/'.$this->getProjectName($data).'/'.$this->getProjectName($data).'.php',$touchPackage);
 
             return $this->fileProcessResult($list,function(){
                 return 'auto package has been created';
