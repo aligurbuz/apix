@@ -126,18 +126,18 @@ class serviceBaseController
     }
 
     /**
-     * The service side component provides tools that allow your application
+     * The node side component provides tools that allow your application
      * components to communicate with each other by dispatching events and listening to them.
      * @access project/serviceside/key
      *
      * @return array
      */
-    public function serviceSide()
+    public function nodeServiceSide()
     {
-        $serviceSideKeys=[
+        $node=[
 
         ];
 
-        return $serviceSideKeys;
+        return $node;
     }
 }
