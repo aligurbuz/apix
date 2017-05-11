@@ -8,6 +8,7 @@
 namespace src\app\__projectName__\__version__\optional\staticProvider;
 
 use Src\Store\Services\Httprequest as Request;
+use Src\Store\Services\Repository as Repo;
 
 
 class __file__
