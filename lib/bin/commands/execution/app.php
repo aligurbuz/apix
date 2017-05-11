@@ -37,9 +37,7 @@ class app
      */
     public function staticProvider()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
