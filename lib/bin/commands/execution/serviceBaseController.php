@@ -124,4 +124,20 @@ class serviceBaseController
 
         return $events;
     }
+
+    /**
+     * The service side component provides tools that allow your application
+     * components to communicate with each other by dispatching events and listening to them.
+     * @access project/serviceside/key
+     *
+     * @return array
+     */
+    public function serviceSide()
+    {
+        $serviceSideKeys=[
+
+        ];
+
+        return $serviceSideKeys;
+    }
 }
