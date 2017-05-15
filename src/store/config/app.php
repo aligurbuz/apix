@@ -100,7 +100,8 @@ class app {
         return [
 
             //carbon get date process alias loader
-            'Date'=>'src\store\services\date'
+            'Date'=>'src\store\services\date',
+            'Collection'=>'src\store\services\appCollection',
         ];
 
     }

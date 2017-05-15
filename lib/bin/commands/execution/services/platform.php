@@ -11,6 +11,7 @@
 namespace src\app\__projectName__\v1\optional\platform\__platformdir__\__serviceName__;
 
 use Src\Store\Services\Httprequest as Request;
+use Collection;
 
 /**
  * Represents a index class.

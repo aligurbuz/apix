@@ -13,6 +13,7 @@ namespace src\app\__projectName__\__version__\__call\__serviceName__\source\bund
 use Src\Store\Services\Httprequest as Request;
 use Src\Store\Services\Repository as Repo;
 use src\app\__projectName__\__version__\__call\__serviceName__\app;
+use Collection;
 
 /**
  * Represents a bundle index class.

@@ -12,6 +12,7 @@ namespace src\app\__projectName__\v1\__call\__serviceName__;
 
 use Src\Store\Services\Httprequest as Request;
 use Src\Store\Services\Repository as Repo;
+use Collection;
 
 /**
  * Represents a __method__Service class.
