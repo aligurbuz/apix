@@ -89,5 +89,156 @@ class faker {
         return $this->faker->password();
     }
 
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getPhoneNumber($arg=array())
+    {
+        return $this->faker->phoneNumber();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getText($arg=array())
+    {
+        if(count($arg)){
+            return $this->faker->text($arg[0]);
+        }
+        return $this->faker->text();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getAddress($arg=array())
+    {
+        return $this->faker->address();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getCity($arg=array())
+    {
+        return $this->faker->city();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getCitySuffix($arg=array())
+    {
+        return $this->faker->citySuffix();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getPostcode($arg=array())
+    {
+        return $this->faker->postcode();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getCountry($arg=array())
+    {
+        return $this->faker->country();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getCountryCode($arg=array())
+    {
+        return $this->faker->countryCode();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getLatitude($arg=array())
+    {
+        return $this->faker->latitude();
+    }
+
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getLongitude($arg=array())
+    {
+        return $this->faker->longitude();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getUnixTime($arg=array())
+    {
+        return $this->faker->unixTime();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getDate($arg=array())
+    {
+        if(count($arg)){
+            if(array_key_exists(1,$arg)){
+                return $this->faker->date($arg[0],$arg[1]);
+            }
+
+            return $this->faker->date($arg[0]);
+
+        }
+        return $this->faker->date();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getTime($arg=array())
+    {
+        if(count($arg)){
+            if(array_key_exists(1,$arg)){
+                return $this->faker->time($arg[0],$arg[1]);
+            }
+
+            return $this->faker->time($arg[0]);
+
+        }
+        return $this->faker->time();
+    }
+
+
 
 }
