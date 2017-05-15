@@ -26,7 +26,7 @@ class faker {
     public function __construct(){
 
         //get faker instance model
-        $this->faker=\Faker\Factory::create();
+        $this->faker=\Faker\Factory::create('tr_TR');
     }
 
     /**
@@ -36,7 +36,7 @@ class faker {
      */
     public static function __callStatic($name,$arg=array())
     {
-        $instance=new static;
+        $instance=new self;
         $method='get'.ucfirst($name).'';
         return $instance->$method($arg);
     }
@@ -208,6 +208,16 @@ class faker {
      *
      * @return faker class
      */
+    public function getBoolean($arg=array())
+    {
+        return $this->faker->boolean();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
     public function getDate($arg=array())
     {
         if(count($arg)){
@@ -237,6 +247,43 @@ class faker {
 
         }
         return $this->faker->time();
+    }
+
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getRandomNumber($arg=array())
+    {
+        if(count($arg)){
+            if(array_key_exists(1,$arg)){
+                return $this->faker->randomNumber($arg[0],$arg[1]);
+            }
+
+            return $this->faker->randomNumber($arg[0]);
+
+        }
+        return $this->faker->randomNumber();
+    }
+
+    /**
+     * faker call_static get data.
+     *
+     * @return faker class
+     */
+    public function getRandomFloat($arg=array())
+    {
+        if(count($arg)){
+            if(array_key_exists(1,$arg)){
+                return $this->faker->randomFloat(2,$arg[0],$arg[1]);
+            }
+
+            return $this->faker->randomFloat(2,$arg[0]);
+
+        }
+        return $this->faker->randomFloat(2,0,NULL);
     }
 
 
