@@ -172,6 +172,45 @@ class appCollection {
     }
 
     /**
+     * collection min get data.
+     * The max method returns the minimum value of a given key:
+     * @return collection class
+     */
+    public function min($data=array(),$key=null)
+    {
+        if(count($data)){
+            if($key===null){
+                return collect($data)->min();
+            }
+            return collect($data)->min($key);
+
+        }
+        return null;
+    }
+
+    /**
+     * collection sum get data.
+     * The sum method returns the sum of all items in the collection:
+     * @return collection class
+     */
+    public function sum($data=array(),$callback=null)
+    {
+        if(count($data)){
+            if(is_callable($callback)){
+                return collect($data)->sum($callback);
+            }
+
+            if($callback===null){
+                return collect($data)->sum();
+            }
+            return collect($data)->sum($callback);
+
+
+        }
+        return null;
+    }
+
+    /**
      * collection diffKeys get data.
      * The diffKeys method compares the collection against another collection or a plain PHP array based on its keys.
      * This method will return the key / value pairs in the original collection that are not present in the given collection.
