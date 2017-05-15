@@ -155,6 +155,23 @@ class appCollection {
     }
 
     /**
+     * collection max get data.
+     * The max method returns the maximum value of a given key:
+     * @return collection class
+     */
+    public function max($data=array(),$key=null)
+    {
+        if(count($data)){
+            if($key===null){
+                return collect($data)->max();
+            }
+            return collect($data)->max($key);
+
+        }
+        return null;
+    }
+
+    /**
      * collection diffKeys get data.
      * The diffKeys method compares the collection against another collection or a plain PHP array based on its keys.
      * This method will return the key / value pairs in the original collection that are not present in the given collection.
@@ -188,7 +205,7 @@ class appCollection {
      * The filter method filters the collection using the given callback, keeping only those items that pass a given truth test:
      * @return collection class
      */
-    public function filter($data=array(),$callback)
+    public function filter($data=array(),$callback=null)
     {
         if(count($data)){
             if(is_callable($callback)){
@@ -202,6 +219,26 @@ class appCollection {
         }
         return null;
     }
+
+    /**
+     * collection first get data.
+     * The first method returns the first element in the collection that passes a given truth test:
+     * @return collection class
+     */
+    public function first($data=array(),$callback=null)
+    {
+        if(count($data)){
+            if(is_callable($callback)){
+                return collect($data)->first($callback);
+            }
+            else{
+                return collect($data)->first();
+            }
+
+        }
+        return null;
+    }
+
 
 
 }
