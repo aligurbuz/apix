@@ -17,12 +17,8 @@ require_once './vendor/autoload.php';
  * by either spl_autoload() or spl_autoload_call()
  * return autoload
  */
-spl_autoload_register(function($class) {
-    $class='./'.$class.'.php';
-    $class=str_replace("\\","/",$class);
-    require($class);
+require_once(root.'/lib/spl_autoload_register.php');
 
-});
 require ('./lib/appClassAlias.php');
 \lib\environment::config();
 
