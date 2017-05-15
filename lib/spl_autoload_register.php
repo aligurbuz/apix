@@ -25,8 +25,12 @@ spl_autoload_register(function($class) {
 
         //check system app control for class alias
         $systemApp=\src\store\config\app::getClassAliasLoader();
-        $appAlias='\\src\\app\\'.app.'\\'.version.'\\config\\app';
-        $systemApp=array_merge($systemApp,$appAlias::getAppClassAlias());
+        if(defined('app')){
+            $appAlias='\\src\\app\\'.app.'\\'.version.'\\config\\app';
+            $systemApp=array_merge($systemApp,$appAlias::getAppClassAlias());
+        }
+
+
 
         //set class_alias groups
         if(array_key_exists($alias,$systemApp)){
