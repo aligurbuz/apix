@@ -111,10 +111,14 @@ class branches {
      *
      * @return array
      */
-    public function service($servicename=null){
+    public function service($servicename=null,$methodName=null){
 
         if($servicename!==null){
             $this->servicename=$servicename;
+        }
+
+        if($methodName!==null){
+            $this->method=$methodName;
         }
 
         if($this->name=="main"){
