@@ -39,7 +39,8 @@
         "illuminate/pagination": "^5.4",
         "crada/php-apidoc": "@dev",
         "symfony/event-dispatcher": "^3.2",
-        "vvondra/php-daemon": "^1.0"
+        "vvondra/php-daemon": "^1.0",
+        "fzaninotto/faker": "^1.6"
     },
     "autoload": {
         "files": ["src/helpers.php"]

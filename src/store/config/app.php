@@ -102,6 +102,7 @@ class app {
             //carbon get date process alias loader
             'Date'=>'src\store\services\date',
             'Collection'=>'src\store\services\appCollection',
+            'Faker'=>'src\store\services\faker',
         ];
 
     }
