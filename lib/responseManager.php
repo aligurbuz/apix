@@ -8,6 +8,7 @@
 namespace lib;
 use lib\utils;
 use lib\staticPathModel;
+use Spatie\ArrayToXml\ArrayToXml;
 
 class responseManager {
 
@@ -168,6 +169,13 @@ class responseManager {
             //json encode
             return json_encode($data);
         }
+
+        if($this->definitor=="xml"){
+
+            //json encode
+            return ArrayToXml::convert($data);
+        }
+
     }
 
     /**

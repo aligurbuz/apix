@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8a738de921b14413c1d9e17c1128fa34",
-    "content-hash": "4ba58caa76c2d657ecf128c524fa0537",
+    "hash": "bfefda14ffed3e72c5900a6be813e075",
+    "content-hash": "0024ac3bb8786451a78a91ed818db3b8",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -2865,6 +2865,54 @@
                 "os"
             ],
             "time": "2016-12-28 16:31:30"
+        },
+        {
+            "name": "spatie/array-to-xml",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/array-to-xml.git",
+                "reference": "48a71d57980a40a1f84d741df563a594272feae9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/48a71d57980a40a1f84d741df563a594272feae9",
+                "reference": "48a71d57980a40a1f84d741df563a594272feae9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4|^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\ArrayToXml\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://murze.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Convert an array to xml",
+            "homepage": "https://github.com/spatie/array-to-xml",
+            "keywords": [
+                "array",
+                "convert",
+                "xml"
+            ],
+            "time": "2017-02-18 10:05:46"
         },
         {
             "name": "symfony/cache",

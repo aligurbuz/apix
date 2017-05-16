@@ -40,7 +40,8 @@
         "crada/php-apidoc": "@dev",
         "symfony/event-dispatcher": "^3.2",
         "vvondra/php-daemon": "^1.0",
-        "fzaninotto/faker": "^1.6"
+        "fzaninotto/faker": "^1.6",
+        "spatie/array-to-xml": "^2.3"
     },
     "autoload": {
         "files": ["src/helpers.php"]
