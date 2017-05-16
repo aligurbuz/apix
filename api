@@ -20,7 +20,7 @@ define('src','src/app');
  * return autoload file
  */
 require_once './lib/bootstrap.php';
-use lib\staticPathModel as staticPath;
+use Apix\StaticPathModel as staticPath;
 use Apix\Utils;
 
 

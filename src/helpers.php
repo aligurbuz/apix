@@ -32,7 +32,7 @@ if (!function_exists('app')) {
 if (!function_exists('environment')) {
     function environment()
     {
-        return \lib\environment::get();
+        return \Apix\environment::get();
     }
 }
 

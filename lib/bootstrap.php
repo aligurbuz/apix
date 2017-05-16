@@ -19,6 +19,6 @@ require_once './vendor/autoload.php';
  */
 require_once(root.'/lib/spl_autoload_register.php');
 
-require ('./lib/appClassAlias.php');
-\lib\environment::config();
+require ('./vendor/apixphp/restapixlib/src/apix/appClassAlias.php');
+\Apix\environment::config();
 
