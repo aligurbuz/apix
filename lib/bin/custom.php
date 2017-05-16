@@ -52,7 +52,7 @@ class custom {
             $command='\\lib\\bin\\'.$data[1];
         }
 
-        $app=\lib\utils::resolve($command);
+        $app=\Apix\Utils::resolve($command);
 
         $list=[];
         foreach($data as $key=>$value){
