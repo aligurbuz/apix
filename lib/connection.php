@@ -73,13 +73,6 @@ class connection extends Definitor {
     public function __construct(){
 
         /**
-         * @class resolve reflection
-         * connection run getClassDependencyResolver
-         * for service base controller
-         */
-        $this->resolve=$this->getClassDependencyResolver();
-
-        /**
          * @class getServiceNameAndMethodFromRequestUri
          * connection run getClassDependencyResolver
          * get service and file method from request uri
@@ -154,13 +147,13 @@ class connection extends Definitor {
 
                         //check package auto service and method
                         if($instance->checkPackageAuto($service)['status']){
-                            $packageAuto=$instance->resolve->resolve($instance->checkPackageAuto($service)['class']);
+                            $packageAuto=utils::resolve($instance->checkPackageAuto($service)['class']);
                             return $instance->responseOut($packageAuto->$serviceMethod());
                         }
 
                         //check package dev service and method
                         if($instance->checkPackageDev($service)['status']){
-                            $packageDev=$instance->resolve->resolve($instance->checkPackageDev($service)['class']);
+                            $packageDev=utils::resolve($instance->checkPackageDev($service)['class']);
                             define("devPackage",true);
                             return $instance->responseOut($packageDev->$serviceMethod($instance->checkPackageDev($service)['definitions']));
                         }
@@ -181,7 +174,7 @@ class connection extends Definitor {
                         $serviceBase=utils::resolve(api."serviceBaseController");
 
                         //apix resolve
-                        $apix=$instance->resolve->resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
+                        $apix=utils::resolve("\\src\\app\\".$service[0]."\\".$getVersion."\\__call\\".$service[1]."\\".request."Service");
 
                         $requestServiceMethod=$serviceMethod;
                         if(method_exists($apix,$requestServiceMethod)){
