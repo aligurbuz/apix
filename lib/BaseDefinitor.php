@@ -7,6 +7,7 @@
 
 namespace lib;
 use Symfony\Component\Yaml\Yaml;
+use Apix\Utils;
 
 
 /**
@@ -324,7 +325,7 @@ class BaseDefinitor  {
             return $data;
         }
         else{
-            $responseManager=new responseManager("json");
+            $responseManager=new \Apix\ResponseManager("json");
             return $responseManager->responseManagerBoot($data,$msg);
         }
 

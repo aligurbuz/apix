@@ -13,6 +13,7 @@ namespace src\store\config;
 use src\store\services\httprequest as request;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Apix\Utils;
 
 class app {
 
@@ -74,7 +75,7 @@ class app {
 
         //get device class
         $deviceClass=self::getContainer("device");
-        $device=\lib\utils::resolve($deviceClass);
+        $device=utils::resolve($deviceClass);
 
         //defines
         return [
@@ -104,6 +105,7 @@ class app {
             'Collection'=>'src\store\services\appCollection',
             'Faker'=>'src\store\services\faker',
             'Response'=>'lib\responseManager',
+            'Repo'=>'src\store\services\repository'
         ];
 
     }
@@ -211,7 +213,7 @@ class app {
 
         //get token
         $token="\\src\\store\\provisions\\token";
-        $token=\lib\utils::resolve($token);
+        $token=utils::resolve($token);
         $tokenhandle=$token->handle();
         $tokenexcept=$token->except();
 

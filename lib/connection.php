@@ -4,6 +4,7 @@ namespace lib;
 use lib\BaseDefinitor as Definitor;
 use Symfony\Component\Yaml\Yaml;
 use Src\Store\Services\Httprequest as Request;
+use Apix\Utils;
 
 class connection extends Definitor {
 

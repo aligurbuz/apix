@@ -11,7 +11,7 @@
 namespace src\app\__projectName__\__version__\__call\__serviceName__\source\bundle\__bundleName__\src\__srcName__;
 
 use Src\Store\Services\Httprequest as Request;
-use Src\Store\Services\Repository as Repo;
+use Repo;
 use src\app\__projectName__\__version__\__call\__serviceName__\app;
 use Collection;
 

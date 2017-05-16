@@ -9,6 +9,7 @@
  * return @array
  */
 namespace lib;
+use Apix\Utils;
 
 class staticPathModel {
 

@@ -1,4 +1,5 @@
 vendor
+apix
 .idea/
 node_modules
 .env

@@ -11,6 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use src\store\services\httprequest as request;
 use src\store\provisions\limitation\accessRules as rule;
+use Apix\Utils;
 
 class rateLimitQuery {
 

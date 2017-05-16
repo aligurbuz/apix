@@ -4,6 +4,7 @@ use Symfony\Component\Yaml\Yaml;
 use src\store\services\httprequest as request;
 use src\store\services\httpSession;
 use src\store\services\fileProcess as file;
+use Apix\Utils;
 
 class serviceDumpObjects {
     private $requestServiceMethodReal;

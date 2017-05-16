@@ -1,6 +1,7 @@
 <?php
 
 namespace lib;
+use Apix\Utils;
 
 class appContainer {
 
