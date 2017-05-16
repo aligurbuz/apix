@@ -42,12 +42,12 @@ if (!function_exists('trans')) {
     {
         if($data!==null){
 
-            $getbase=\lib\utils::resolve("\\src\\app\\".app."\\".version."\\serviceBaseController");
+            $getbase=\Apix\StaticPathModel::getAppServiceBase();
 
             if($langname==null){
-                return \lib\languageDefinitor::get($data,$getbase->getLocalization(),$getbase->getLocalization());
+                return \Apix\LanguageDefinitor::get($data,$getbase->getLocalization(),$getbase->getLocalization());
             }
-            return \lib\languageDefinitor::get($data,$langname,$getbase->getLocalization());
+            return \Apix\LanguageDefinitor::get($data,$langname,$getbase->getLocalization());
 
         }
         return null;
