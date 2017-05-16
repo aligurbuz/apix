@@ -1,4 +1,5 @@
 <?php namespace lib\bin\commands;
+use Apix\Utils;
 /**
  * Command write.
  * type array
@@ -19,6 +20,9 @@ class staticprovider {
     //project create command
     public function create ($data){
 
+
+        $version=utils::getAppVersion($this->getProjectName($data));
+        $data['version']=$version;
 
         //usage api staticprovider create project version:versionnumber file:file
         $list=[];
