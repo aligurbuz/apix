@@ -6,10 +6,13 @@
  * return @array
  */
 namespace lib;
+use lib\utils;
+use lib\staticPathModel;
 
 class responseManager {
 
 
+    public $definitor;
     /**
      * get response Out construct.
      * booting resolve
@@ -18,10 +21,12 @@ class responseManager {
      *
      * @internal param $string
      */
-    public function __construct($responseOutType){
-        if($responseOutType=="json"){
-            header('Content-Type: application/json');
+    public function __construct($responseOutType=null){
+        if($responseOutType===null){
+            $responseOutType=staticPathModel::getAppServiceBase()->response;
         }
+        $this->definitor=$responseOutType;
+        header('Content-Type: application/'.$responseOutType);
 
     }
 
@@ -59,7 +64,7 @@ class responseManager {
                         'responseTime'=>microtime(true)-time_start,
                         'requestDate'=>date("Y-m-d H:i:s")]+['data'=>$data+$objectData,'development'=>$developInfo];
 
-                return json_encode($data);
+                return $this->responseDefinitor($data);
             });
 
         });
@@ -85,7 +90,7 @@ class responseManager {
         }
 
         if(count($queryError)){
-            return json_encode($queryError);
+            return $this->responseDefinitor($queryError);
         }
         else{
             if(is_callable($callback)){
@@ -140,9 +145,43 @@ class responseManager {
         $data=['success'=>(bool)false,'statusCode'=>204,'responseTime'=>microtime(true)-time_start,
                 'requestDate'=>date("Y-m-d H:i:s")]+['message'=>$msg,'development'=>$developInfo];
 
-        return json_encode($data);
+        return $this->responseDefinitor($data);
 
 
+    }
+
+
+    /**
+     * get response definitor.
+     * if responseOut comes empty.
+     * query type definitor
+     *
+     * get response definitor.
+     *
+     * @param array
+     * @return response query definitor runner
+     */
+    private function responseDefinitor($data){
+
+        if($this->definitor=="json"){
+
+            //json encode
+            return json_encode($data);
+        }
+    }
+
+    /**
+     * get response definitor.
+     * if responseOut comes empty.
+     * query type definitor
+     *
+     * get response definitor.
+     *
+     * @param array
+     * @return response query definitor runner
+     */
+    public function out($data,$msg=null){
+        return $this->responseManagerBoot($data,$msg);
     }
 
 }

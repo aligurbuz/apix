@@ -225,6 +225,7 @@ class connection extends Definitor {
                                     });
                                 }
                                 else{
+
                                     return $instance->responseOut($requestServiceMethodReal);
                                 }
 

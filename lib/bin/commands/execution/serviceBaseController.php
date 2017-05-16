@@ -11,6 +11,9 @@ use Src\Store\Services\Httprequest as Request;
 
 class serviceBaseController
 {
+    //response object
+    public $response='json';
+
     //default lang name
     public $lang='tr';
 

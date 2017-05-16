@@ -103,6 +103,7 @@ class app {
             'Date'=>'src\store\services\date',
             'Collection'=>'src\store\services\appCollection',
             'Faker'=>'src\store\services\faker',
+            'Response'=>'lib\responseManager',
         ];
 
     }

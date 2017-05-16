@@ -319,8 +319,15 @@ class BaseDefinitor  {
      */
 
     protected function responseOut($data,$msg=null){
-        $responseManager=new responseManager("json");
-        return $responseManager->responseManagerBoot($data,$msg);
+
+        if(!is_array($data)){
+            return $data;
+        }
+        else{
+            $responseManager=new responseManager("json");
+            return $responseManager->responseManagerBoot($data,$msg);
+        }
+
     }
 
     /**
@@ -609,11 +616,26 @@ class BaseDefinitor  {
      * @param string
      * @return response service config runner
      */
-
     protected function getServiceConfig(){
         $serviceConfig=api."config\\app";
         $serviceConfig=new $serviceConfig();
         return $serviceConfig;
+    }
+
+
+    /**
+     * get service isJson method.
+     *
+     * outputs get config.
+     *
+     * @param string
+     * @return response service config runner
+     */
+    public function isArray($data) {
+        if(is_array($data)){
+            return true;
+        }
+        return false;
     }
 
 
