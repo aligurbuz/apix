@@ -1,7 +1,7 @@
 <?php
 
 namespace lib;
-use lib\BaseDefinitor as Definitor;
+use Apix\BaseDefinitor as Definitor;
 use Symfony\Component\Yaml\Yaml;
 use Src\Store\Services\Httprequest as Request;
 use Apix\Utils;
