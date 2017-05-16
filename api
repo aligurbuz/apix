@@ -21,7 +21,7 @@ define('src','src/app');
  */
 require_once './lib/bootstrap.php';
 use lib\staticPathModel as staticPath;
-use lib\utils;
+use Apix\Utils;
 
 
 /**
