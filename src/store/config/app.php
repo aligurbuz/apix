@@ -14,6 +14,7 @@ use src\store\services\httprequest as request;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Apix\Utils;
+use Apix\StaticPathModel;
 
 class app {
 
@@ -209,15 +210,23 @@ class app {
      * @param string
      * @return response token runner
      */
-    public static function checkToken(){
+    public static function checkToken($environment=null){
 
         //get token
-        $token="\\src\\store\\provisions\\token";
+        $token="".staticPathModel::$appNamespace."\\".app."\\".version."\\serviceTokenController";
         $token=utils::resolve($token);
         $tokenhandle=$token->handle();
         $tokenexcept=$token->except();
 
+
         $queryParams=self::getQueryParamsFromRoute();
+
+        if($environment!==null){
+            $envStatus=$token->handle($environment);
+            if(!$envStatus['status']){
+                return false;
+            }
+        }
 
         //token provision
         if(array_key_exists("_token",$queryParams)){
