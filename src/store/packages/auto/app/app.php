@@ -1,6 +1,6 @@
 <?php namespace src\store\packages\auto\app;
-use lib\utils;
-use lib\staticPathModel;
+use Apix\utils;
+use Apix\staticPathModel;
 use Src\Store\Services\Httprequest as Request;
 
 /*
@@ -38,7 +38,7 @@ class app
     public function index()
     {
         /**
-         * app settings is main method.
+         * app settings is an array.
          *
          * @return array
          */
@@ -54,7 +54,7 @@ class app
 
 
         /**
-         * node settings is main method.
+         * node settings is an array.
          *
          * @return array
          */
