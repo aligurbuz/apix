@@ -9,7 +9,7 @@
  */
 
 namespace src\store\services;
-use lib\utils;
+use Apix\utils;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use src\app\mobi\v1\model\sudb\test;
