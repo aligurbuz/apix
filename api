@@ -33,7 +33,6 @@ use Apix\Utils;
 if(file_exists(staticPath::$binCommandsPath.''.$argv[1].'.php')){
 
     //get command file
-    $commandFile=require(staticPath::$binCommandsPath.''.$argv[1].'.php');
     $commandNamespaceSpl=staticPath::$binCommandsNameSpace.''.$argv[1];
     $commandFile=new $commandNamespaceSpl();
 

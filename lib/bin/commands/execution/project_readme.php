@@ -1,1 +1,0 @@
-## Project __projectName__
