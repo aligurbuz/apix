@@ -14,6 +14,9 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use src\store\services\fileProcess as file;
 use src\store\packages\providers\migrations\consoleColors;
 use src\store\config\dbConnector as Connector;
+use Apix\Utils;
+use Apix\Console;
+use Apix\StaticPathModel;
 
 /**
  * Represents a search class.
@@ -68,9 +71,10 @@ class manager {
         $this->migration=$data['migration'];
 
         define("app",$this->project);
+        define("version",$this->version);
 
         //check environment
-        \lib\environment::config();
+        \Apix\environment::config();
 
         if($this->model!==null){
             $model="\\src\\app\\".$this->project."\\".$this->version."\\model\\sudb\\".$this->model;
@@ -336,7 +340,7 @@ class manager {
      */
     public function seedFileProcess($table,$param=array(),$object){
 
-        $executionPath=root."/lib/bin/commands/execution/migration_seed.php";
+        $executionPath=root."/".staticPathModel::$binCommandsPath."/execution/migration_seed.php";
         $dt = fopen($executionPath, "r");
         $content = fread($dt, filesize($executionPath));
         fclose($dt);
@@ -1073,7 +1077,7 @@ class manager {
      * @return class object
      */
     public function fileProcess($table,$param=array(),$object){
-        $executionPath=root."/lib/bin/commands/execution/migration.php";
+        $executionPath=root."/".staticPathModel::$binCommandsPath."/execution/migration.php";
         $dt = fopen($executionPath, "r");
         $content = fread($dt, filesize($executionPath));
         fclose($dt);
@@ -1105,7 +1109,7 @@ class manager {
      * @return class object
      */
     public function fileProcessUpdate($table,$param=array(),$object){
-        $executionPath=root."/lib/bin/commands/execution/migration.php";
+        $executionPath=root."/".staticPathModel::$binCommandsPath."/execution/migration.php";
         $dt = fopen($executionPath, "r");
         $content = fread($dt, filesize($executionPath));
         fclose($dt);
@@ -1137,7 +1141,7 @@ class manager {
      * @return class object
      */
     public function fileProcessIndex($table,$param=array(),$object){
-        $executionPath=root."/lib/bin/commands/execution/migration.php";
+        $executionPath=root."/".staticPathModel::$binCommandsPath."/execution/migration.php";
         $dt = fopen($executionPath, "r");
         $content = fread($dt, filesize($executionPath));
         fclose($dt);
