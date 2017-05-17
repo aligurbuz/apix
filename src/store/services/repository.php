@@ -48,7 +48,7 @@ class repository {
         }
 
         if(class_exists($repoNameSpace)){
-            return \lib\utils::resolve($repoNameSpace)->$name();
+            return \Apix\utils::resolve($repoNameSpace)->$name();
         }
         return null;
 
