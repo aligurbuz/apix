@@ -1,4 +1,5 @@
 <?php namespace src\store\packages\auto\app;
+
 use Apix\utils;
 use Apix\staticPathModel;
 use Src\Store\Services\Httprequest as Request;

@@ -1,4 +1,5 @@
 <?php namespace src\store\packages\auto\translations;
+
 use Symfony\Component\Yaml\Yaml;
 
 /*

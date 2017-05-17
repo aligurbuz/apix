@@ -1,4 +1,5 @@
 <?php namespace src\store\packages\auto\csrf;
+
 use src\store\services\httpCsrfToken as csrfToken;
 
 /*
