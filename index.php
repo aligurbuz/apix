@@ -28,5 +28,19 @@ define("src","src/app");
  */
 require_once root.'/vendor/autoload.php';
 
-//run the application
-require_once(root.'/lib/index.php');
+/*
+|--------------------------------------------------------------------------
+| Application Starting
+|--------------------------------------------------------------------------
+|
+| This class is the starter of your application. This class is used when the
+| apix firstly calls.all request coming to application are run here.
+| Apix starter place
+|
+*/
+
+//load spl autoload register
+require_once(root.'/lib/spl_autoload_register.php');
+
+//get connection
+echo \Apix\connection::run();
