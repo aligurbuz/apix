@@ -18,6 +18,6 @@ require_once './vendor/autoload.php';
  * return autoload
  */
 require_once(root.'/lib/spl_autoload_register.php');
-require (''.\Apix\staticPathModel::$apixClassAliasPath.'');
+require (\Apix\staticPathModel::$apixClassAliasPath);
 \Apix\environment::config();
 
