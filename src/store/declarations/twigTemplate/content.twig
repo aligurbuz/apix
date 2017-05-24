@@ -6,8 +6,10 @@
 
             {% set myservice =  methods['yaml'][reverse]['servicePath']|split('/') %}
 
+            {% set serv = myservice | last|replace({'Action':''}) %}
+
             <select class="form-control selectservice" http="http://{{ root }}/service/{{ app }}/doc/index?doc=true{{ token }}&service={{ getService }}">
-                <option value="{{ reverse }}">{{ methods['yaml'][reverse]['http'] }} - {{ myservice | last | capitalize }}</option>
+                <option value="{{ reverse }}">{{ methods['yaml'][reverse]['http'] }} - {{ serv | capitalize }}</option>
 
                 {% set httpbasetrue = [] %}
                 {% set httpbasetrue = httpbasetrue|merge([methods['yaml'][reverse]['http']]) %}
@@ -33,7 +35,9 @@
 
                         {% set myservicetrue = methods['yaml'][nkey]['servicePath']|split('/') %}
 
-                        <option value="{{ nkey }}">{{ methods['yaml'][nkey]['http'] }} - {{ myservicetrue | last |capitalize }}</option>
+                        {% set myserv = myservicetrue | last|replace({'Action':''}) %}
+
+                        <option value="{{ nkey }}">{{ methods['yaml'][nkey]['http'] }} - {{ myserv |capitalize }}</option>
 
                     {% endif %}
 
@@ -52,9 +56,11 @@
     </div>
     <div class="clearfix"></div>
 
-    <h1>{{ getService | capitalize }} - {{ myservice | last  | capitalize }}</h1>
 
-    {% set serv = myservice | last %}
+
+    <h1>{{ getService | capitalize }} - {{ serv|capitalize }}</h1>
+
+
 
     {% set servicenameDescription = [] %}
     {% set servicenameDescription = servicenameDescription|merge([getService]) %}
@@ -84,7 +90,7 @@
 
 
 
-            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][reverse]['http'] }}"><code><span class="pln">/{{ getService }}/{{ myservice | last }}</span></code></pre>
+            <pre class="prettyprint language-html prettyprinted" data-type="{{ methods['yaml'][reverse]['http'] }}"><code><span class="pln">/{{ getService }}/{{ serv }}</span></code></pre>
 
 
 
@@ -97,7 +103,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="examples-User-GetUser-0_3_0-0">
-                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ myservice | last }}</code></pre>
+                    <pre class="prettyprint language-json prettyprinted" data-type="json"><code> curl -i {{ root }}/service/{{ app }}/{{ getService }}/{{ serv }}</code></pre>
                 </div>
             </div>
 
