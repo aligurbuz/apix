@@ -29,13 +29,21 @@ use Apix\Utils;
  * this snippet calls really command file for system
  * return class method
  */
+if(file_exists(staticPath::$binCommandsPath.''.$argv[1].''.utils::$extension)){
 
-if(file_exists(staticPath::$binCommandsPath.''.$argv[1].'.php')){
-
-    //get command file
+    /**
+     * System cli command for spl function
+     * this snippet calls really spl command for system
+     * return spl method
+     */
     $commandNamespaceSpl=staticPath::$binCommandsNameSpace.''.$argv[1];
     $commandFile=new $commandNamespaceSpl();
 
+    /**
+     * System cli main class file
+     * this snippet calls really main class file for system
+     * return main class method
+     */
     $method=$argv[2];
     echo $commandFile->$method(utils::getArgForConsoleParameters($argv)).''.PHP_EOL;
 }
@@ -43,7 +51,7 @@ else{
 
     /**
      * System cli custom command main file
-     * return class method
+     * return class custom method
      */
     if(environment()=="local"){
         //get base properties
@@ -51,9 +59,7 @@ else{
 
     }
     else {
-        echo 'Console command except local would not work';
-        echo '
-        ================================';
+        echo 'Console command except local would not work.'.PHP_EOL;
     }
 
 
