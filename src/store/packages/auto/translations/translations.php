@@ -18,7 +18,7 @@ class translations {
      *
      * @return array
      */
-    public function index(){
+    public function indexAction(){
         if(\app::checkUrlParam("lang") && \app::checkUrlParam("yaml")){
             $transfile=root.'/'.src.'/'.app.'/storage/'.\app::getUrlParam("lang").'/'.\app::getUrlParam("yaml").'.yaml';
             if(file_exists($transfile)){

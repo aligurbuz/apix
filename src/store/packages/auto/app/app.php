@@ -36,7 +36,7 @@ class app
      *
      * @return array
      */
-    public function index()
+    public function indexAction()
     {
         /**
          * app settings is an array.

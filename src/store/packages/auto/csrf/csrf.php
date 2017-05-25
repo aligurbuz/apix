@@ -29,7 +29,7 @@ class csrf {
      *
      * @return array
      */
-    public function index(){
+    public function indexAction(){
 
         //check session for postToken
         if($this->session->has("postToken")===false){
