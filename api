@@ -29,7 +29,7 @@ use Apix\Utils;
  * this snippet calls really command file for system
  * return class method
  */
-if(file_exists(staticPath::$binCommandsPath.''.$argv[1].''.utils::$extension)){
+if(file_exists(staticPath::$binCommandsPath.''.$argv[1].'.php')){
 
     /**
      * System cli command for spl function
@@ -42,7 +42,7 @@ if(file_exists(staticPath::$binCommandsPath.''.$argv[1].''.utils::$extension)){
     /**
      * System cli main class file
      * this snippet calls really main class file for system
-     * return main class method
+     * return class method
      */
     $method=$argv[2];
     echo $commandFile->$method(utils::getArgForConsoleParameters($argv)).''.PHP_EOL;
@@ -51,7 +51,7 @@ else{
 
     /**
      * System cli custom command main file
-     * return class custom method
+     * return class method
      */
     if(environment()=="local"){
         //get base properties
