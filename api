@@ -29,7 +29,7 @@ use Apix\Utils;
  * this snippet calls really command file for system
  * return class method
  */
-if(file_exists(staticPath::$binCommandsPath.''.$argv[1].'.php')){
+if(file_exists(staticPath::$binCommandsPath.''.$argv[1].''.utils::$extension)){
 
     /**
      * System cli command for spl function
