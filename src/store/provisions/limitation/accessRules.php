@@ -21,8 +21,6 @@ use src\store\services\Httprequest as Request;
 
 class accessRules {
 
-    public static $status=false;
-
     /**
      * general limitations for every service.
      * if it is true status,run handle
