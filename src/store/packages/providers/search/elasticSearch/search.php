@@ -31,6 +31,7 @@ class search implements searchInterface {
         $this->client=\Elasticsearch\ClientBuilder::create()->build();
     }
 
+
     /**
      * elastic search ping.
      * test start

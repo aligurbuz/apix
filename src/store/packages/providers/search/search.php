@@ -9,6 +9,8 @@
  */
 
 namespace src\store\packages\providers\search;
+use Apix\Utils;
+use Apix\StaticPathModel;
 
 /**
  * Represents a search class.
@@ -34,16 +36,15 @@ class search {
      */
     public function runEngineHandle($driver=null){
         if($driver===null){
-            $serviceBase='src\\app\\'.app.'\\'.version.'\\serviceBaseController';
-            $serviceBaseResolve=\lib\utils::resolve($serviceBase);
-            $searchDriver=$serviceBaseResolve->search;
+            $serviceBase=staticPathModel::getAppServiceBase();
+            $searchDriver=$serviceBase->search;
         }
         else{
             $searchDriver=$driver;
         }
 
         $search='src\store\\packages\\providers\\search\\'.$searchDriver.'\\search';
-        return \lib\utils::resolve($search);
+        return utils::resolve($search);
     }
 
 
