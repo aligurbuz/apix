@@ -69,6 +69,8 @@ class facebook
             return ['Facebook SDK returned an error: ' . $e->getMessage()];
         }
 
-        return $response->getGraphUser();
+        return [
+            'facebookSdkResult'=>$response->getGraphUser()
+        ];
     }
 }
