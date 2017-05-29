@@ -150,7 +150,7 @@ class branches {
     public function branchMain($arguments){
 
         //get method
-        $method=$this->getMethod();
+        $method=$this->getMethod().'Action';
 
         //get file name
         $file=$this->getFile();
