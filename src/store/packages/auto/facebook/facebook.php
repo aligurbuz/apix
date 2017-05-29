@@ -61,12 +61,18 @@ class facebook
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
 
             // When Graph returns an error
-            return ['Graph returned an error: ' . $e->getMessage()];
+            return [
+
+                'facebookSdkResult'=>'Graph returned an error: ' . $e->getMessage()
+            ];
 
         } catch(\Facebook\Exceptions\FacebookSDKException $e) {
 
             // When validation fails or other local issues
-            return ['Facebook SDK returned an error: ' . $e->getMessage()];
+            return [
+
+                'facebookSdkResult'=>'Facebook SDK returned an error: ' . $e->getMessage()
+            ];
         }
 
         return [
