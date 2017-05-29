@@ -120,7 +120,8 @@ class app {
             'Collection'=>self::$servicePath.'appCollection',
             'Faker'=>self::$servicePath.'faker',
             'Response'=>'Apix\ResponseManager',
-            'Repo'=>self::$servicePath.'repository'
+            'Repo'=>self::$servicePath.'repository',
+            'Validator'=>'Respect\Validation\Validator'
         ];
 
     }
