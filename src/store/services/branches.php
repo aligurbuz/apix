@@ -246,7 +246,7 @@ class branches {
      */
     private function getMethod(){
 
-        return ($this->method!==null) ? $this->method : 'index';
+        return ($this->method!==null) ? $this->method.'Action' : 'indexAction';
     }
 
 
