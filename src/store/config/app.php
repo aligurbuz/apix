@@ -10,7 +10,8 @@
  */
 
 namespace src\store\config;
-use src\store\services\httprequest as request;
+
+use Src\Store\Services\Httprequest as Request;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Apix\Utils;
@@ -18,7 +19,20 @@ use Apix\StaticPathModel;
 
 class app {
 
+    /**
+     * Symfony request object.
+     *
+     * @intro request module and symfony http foundation
+     * constructor object
+     */
     public $request;
+
+    /**
+     * Path Belonging To Service methods .
+     *
+     * @param type string
+     * general path using
+     */
     private static $servicePath='\\src\\store\\services\\';
 
     /**
@@ -102,11 +116,11 @@ class app {
         return [
 
             //carbon get date process alias loader
-            'Date'=>'src\store\services\date',
-            'Collection'=>'src\store\services\appCollection',
-            'Faker'=>'src\store\services\faker',
+            'Date'=>self::$servicePath.'date',
+            'Collection'=>self::$servicePath.'appCollection',
+            'Faker'=>self::$servicePath.'faker',
             'Response'=>'Apix\ResponseManager',
-            'Repo'=>'src\store\services\repository'
+            'Repo'=>self::$servicePath.'repository'
         ];
 
     }
@@ -123,8 +137,8 @@ class app {
      * @return response post runner
      */
     public static function post($data){
-        $border=new self;
-        $request=$border->request->input();
+        $instance=new self;
+        $request=$instance->request->input();
         if(array_key_exists($data,$request)){
             return $request[$data];
         }
@@ -145,16 +159,16 @@ class app {
      * @return response generate device token runner
      */
     public static function deviceToken($data=array(),$status=false){
-        $devicetoken=$_SERVER['HTTP_USER_AGENT'];
+        $deviceToken=$_SERVER['HTTP_USER_AGENT'];
         if(!$status){
             if(count($data)){
                 foreach($data as $value){
-                    $devicetoken.='__'.$value.'__';
+                    $deviceToken.='__'.$value.'__';
                 }
             }
-            return md5($devicetoken);
+            return md5($deviceToken);
         }
-        return $devicetoken;
+        return $deviceToken;
     }
 
 
@@ -169,11 +183,11 @@ class app {
      */
     public static function checkUrlParam($param=null){
 
-        $border=new self;
+        $instance=new self;
         if($param==null){
             return false;
         }
-        if(array_key_exists($param,$border->request->getQueryString())){
+        if(array_key_exists($param,$instance->request->getQueryString())){
             return true;
         }
         return false;
@@ -192,8 +206,8 @@ class app {
         if($param==null){
             return null;
         }
-        $border=new self;
-        $string=$border->request->getQueryString();
+        $instance=new self;
+        $string=$instance->request->getQueryString();
         if(array_key_exists($param,$string)){
             return $string[$param];
         }
