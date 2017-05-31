@@ -189,10 +189,10 @@ final class index {
         $this->data['methods']=$this->getPublishes('methods');
         $this->data['getService']=$this->request->getQueryString('service');
         if(\app::checkToken()){
-            $this->data['token']='&_token='.$this->getQuery('_token');
+            $this->data['token']=''.$this->getQuery('_token');
         }
         else{
-            $this->data['token']='';
+            $this->data['token']=null;
         }
 
         if(\app::checkUrlParam('service')){

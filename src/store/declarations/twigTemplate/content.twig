@@ -262,6 +262,9 @@
 
                     {% for getparamskey,getparamsvalue in getParam %}
 
+                        {% set getParamsValueOriginal = [] %}
+                        {% set getParamsValueOriginal = getParamsValueOriginal|merge([getparamsvalue]) %}
+
                         {% set getParamDescription = [] %}
                         {% set getParamDescription = getParamDescription|merge(['get']) %}
                         {% set getParamDescription = getParamDescription|merge([getparamsvalue]) %}
@@ -291,6 +294,28 @@
                         </tbody>
 
                     {% endfor %}
+
+
+                {% if (_token not in getParamsValueOriginal) and (token != null) %}
+
+                    <tbody>
+
+                    <tr>
+                        <td class="code">_token</td>
+                        <td>
+                            string
+                        </td>
+                        <td>
+                            {% if trans[0]['tokenDescription'] is defined %}
+                                <p>{{ trans[0]['tokenDescription'] }}</p>
+                            {% else %}
+                                <p>---</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    {%  endif %}
 
                 {% elseif itemkey matches '{header.*}' %}
 
@@ -323,17 +348,39 @@
 
                     <tbody>
 
-                    <tr>
-                        <td class="code">---</td>
-                        <td>
-                            ---
-                        </td>
-                        <td>
-                            <p>---</p>
+                    {% if token != null %}
+
+                        <tr>
+                            <td class="code">_token</td>
+                            <td>
+                                string
+                            </td>
+                            <td>
+                                {% if trans[0]['tokenDescription'] is defined %}
+                                    <p>{{ trans[0]['tokenDescription'] }}</p>
+                                {% else %}
+                                    <p>---</p>
+                                {% endif %}
 
 
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td class="code">---</td>
+                                <td>
+                                    ---
+                                </td>
+                                <td>
+                                    <p>---</p>
+
+
+                                </td>
+                            </tr>
+                    {% endif %}
+
                     </tbody>
 
                 {% endif %}
