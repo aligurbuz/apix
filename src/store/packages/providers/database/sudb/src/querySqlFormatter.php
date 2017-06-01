@@ -56,7 +56,8 @@ class querySqlFormatter {
                 'currentPage'=>$this->getPaginatorUrlPage(),
                 'result'=>[],
                 'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
-                'fields'=>$this->getResultFields([])
+                'fields'=>$this->getResultFields([]),
+                'resultDataInfo'=>$model['model']->resultDataInfo
             ];
         }
 
@@ -71,7 +72,8 @@ class querySqlFormatter {
                 'currentPage'=>$this->getPaginatorUrlPage(),
                 'result'=>$result,
                 'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
-                'fields'=>$this->getResultFields($result)
+                'fields'=>$this->getResultFields($result),
+                'resultDataInfo'=>$model['model']->resultDataInfo
             ];
         }
         catch(\Exception $e){

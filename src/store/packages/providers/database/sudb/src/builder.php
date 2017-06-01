@@ -575,16 +575,22 @@ class builder {
         if($this->model==null){
             $this->model=$model;
         }
+
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
+
+            $countAllData=array_key_exists('CountAllData',$result['resultDataInfo']) ? $result['resultDataInfo']['CountAllData'] : 'CountAllData';
+            $paginator=array_key_exists('paginator',$result['resultDataInfo']) ? $result['resultDataInfo']['paginator'] : 'paginator';
+            $currentPage=array_key_exists('currentPage',$result['resultDataInfo']) ? $result['resultDataInfo']['currentPage'] : 'currentPage';
+            $lastPaginator=array_key_exists('lastPage',$result['resultDataInfo']) ? $result['resultDataInfo']['lastPage'] : 'lastPage';
 
             if(array_key_exists("paginator",$result) && $result['paginator']>0){
                 $lastpage=(int)$result['getCountAllTotal']/(int)$result['paginator'];
                 return [
-                    'CountAllData'=>(int)$result['getCountAllTotal'],
-                    'paginator'=>(int)$result['paginator'],
-                    'currentPage'=>(int)$result['currentPage'],
-                    'lastPage'=>(int)ceil($lastpage),
+                    $countAllData=>(int)$result['getCountAllTotal'],
+                    $paginator=>(int)$result['paginator'],
+                    $currentPage=>(int)$result['currentPage'],
+                    $lastPaginator=>(int)ceil($lastpage),
                     'results'=>$this->getColumnsType($result['result'],$result['columns'],$result['fields'])
                 ];
             }
