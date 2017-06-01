@@ -11,6 +11,7 @@
 namespace src\store\packages\providers\database\sudb\src;
 use \src\store\packages\providers\database\sudb\src\querySqlFormatter as querySqlFormatter;
 use \src\store\packages\providers\database\sudb\src\selectBuilderOperation as selectBuilderOperation;
+use \src\store\packages\providers\database\sudb\src\joinBuilderOperation as joinBuilderOperation;
 use \src\store\packages\providers\database\sudb\src\whereBuilderOperation as whereBuilderOperation;
 
 /**
@@ -48,6 +49,8 @@ class builder {
     private $transaction=false;
     private $transactionName=null;
     private $all=false;
+    private $join=[];
+    private $joinBuilderOperation;
 
     private static $primarykey_static=null;
     private static $modelscope=null;
@@ -55,7 +58,6 @@ class builder {
     private static $toSql=null;
     private static $rand=null;
     private static $callstatic_scope=[];
-    private static $join=null;
     private static $joinType=null;
     private static $joinTypeField=null;
     private static $hasMany=null;
@@ -63,17 +65,13 @@ class builder {
     private static $sum=null;
     private static $joiner='';
     private static $orWhere=[];
-    private static $whereColumn=[];
-    private static $whereYear=[];
-    private static $whereMonth=[];
-    private static $whereDay=[];
-    private static $whereDate=[];
     private static $addToSelectSql=null;
     private static $having=[];
 
-    public function __construct(querySqlFormatter $querySqlFormatter,selectBuilderOperation $selectBuilderOperation,whereBuilderOperation $whereBuilderOperation){
+    public function __construct(querySqlFormatter $querySqlFormatter,selectBuilderOperation $selectBuilderOperation,joinBuilderOperation $joinBuilderOperation,whereBuilderOperation $whereBuilderOperation){
         $this->querySqlFormatter=$querySqlFormatter;
         $this->selectBuilderOperation=$selectBuilderOperation;
+        $this->joinBuilderOperation=$joinBuilderOperation;
         $this->whereBuilderOperation=$whereBuilderOperation;
     }
 
@@ -491,6 +489,42 @@ class builder {
 
     }
 
+
+    /**
+     * query group by.
+     *
+     * @return pdo class
+     */
+    public function join($join=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
+
+
+        $this->join=['joiner'=>$join];
+
+        if(array_key_exists(1,$join) && !is_array($join[1])){
+
+            $this->join['type']=$join[1];
+            if(array_key_exists(2,$join)){
+                $this->join['select']=$join[2];
+            }
+            else{
+                $this->join['select']=[];
+            }
+
+        }
+        else{
+            $this->join['type']='left';
+            $this->join['select']=$join[1];
+
+        }
+
+        return $this;
+
+    }
+
     /**
      * paginate method is main method.
      *
@@ -895,6 +929,7 @@ class builder {
         return [
             'model'=>$this->subClassOf,
             'select'=>$this->select,
+            'join'=>$this->join,
             'where'=>$this->where,
             'execute'=>$this->execute,
             'paginate'=>$this->page,
@@ -922,6 +957,7 @@ class builder {
         }
 
         $this->select=$this->selectBuilderOperation->selectMainProcess($this->select,$this->SqlPrepareFormatterHandleObject());
+        $this->join=$this->joinBuilderOperation->joinMainProcess($this->join,$this->SqlPrepareFormatterHandleObject());
         $whereOperation=$this->whereBuilderOperation->whereMainProcess($this->where,$this->SqlPrepareFormatterHandleObject());
         $this->where=$whereOperation->where;
         $this->execute=$whereOperation->execute;

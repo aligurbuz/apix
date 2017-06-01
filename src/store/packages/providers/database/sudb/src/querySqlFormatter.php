@@ -49,6 +49,7 @@ class querySqlFormatter {
 
     public function getSqlPrepareFormatter($model){
 
+
         if(in_array(false,$model['bool'])){
             return [
                 'getCountAllTotal'=>0,
