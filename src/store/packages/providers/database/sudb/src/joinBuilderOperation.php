@@ -43,23 +43,23 @@ class joinBuilderOperation {
 
         $joinerArray=[];
         if(array_key_exists('joiner',$data)){
+
             foreach ($data['joiner'][0] as $myJoin) {
                 foreach ($joinerModel[$myJoin] as $key => $value) {
                     $joinerArray['join'][] = strtoupper($data['type']) . ' JOIN ' . $myJoin . ' ON ' . $model['model']->table . '.' . $key . '=' . $myJoin . '.' . $value;
                 }
 
-                if (array_key_exists($myJoin, $data['select'])) {
+                if (array_key_exists("select",$data) && array_key_exists($myJoin, $data['select'])) {
 
                     foreach ($data['select'][$myJoin] as $selectVal) {
                         $joinerArray['select'][] = $myJoin . '.' . $selectVal;
                     }
                 } else {
-                    $joinerArray['select'][] = null;
+                    $joinerArray['select'][] =null;
                 }
 
             }
         }
-
 
 
         return $joinerArray;

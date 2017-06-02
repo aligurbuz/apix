@@ -49,6 +49,7 @@ class querySqlFormatter {
 
     public function getSqlPrepareFormatter($model){
 
+        ;
 
         if(in_array(false,$model['bool'])){
             return [
@@ -62,11 +63,15 @@ class querySqlFormatter {
             ];
         }
 
+
         try {
 
             $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
             $prepare->execute($model['execute']);
             $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
+
+
+
             return [
                 'getCountAllTotal'=>$this->getCountAllProcessor($model),
                 'paginator'=>$this->getModelOffsetPaginator($model),
@@ -124,12 +129,26 @@ class querySqlFormatter {
 
     public function sqlBuilderDefinition($model,$getCountAll=null){
 
+        $join='';
+        $joinSelect='';
+
         if($getCountAll!==null){
             $model['select']='COUNT(id) as getCountAllTotal';
             $getPaginateProcessor=$this->getPaginateProcessor($model,false);
         }
         else{
             $getPaginateProcessor=$this->getPaginateProcessor($model);
+
+            if(count($model['join'])){
+
+                $join=$model['join']['join'][0];
+            }
+
+
+            if(array_key_exists('select',$model['join']) && $model['join']['select'][0]!==null){
+
+                $joinSelect=','.implode(",",$model['join']['select']);
+            }
         }
 
 
@@ -146,7 +165,11 @@ class querySqlFormatter {
         }
         //return select definition
 
-        return "SELECT ".$model['select']." FROM ".$model['model']->table." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
+
+
+
+
+        return "SELECT ".$model['select']." ".$joinSelect." FROM ".$model['model']->table." ".$join." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
     }
 
     /**
@@ -291,10 +314,20 @@ class querySqlFormatter {
      * return type array
      */
 
-    public function getModelTableShowColumns($table,$model){
+    public function getModelTableShowColumns($table,$model,$type=false){
+
         $showColumns=$this->db->prepare("SHOW COLUMNS FROM ".$table."");
         $showColumns->execute();
-        return $this->getColumnsTable($showColumns->fetchAll(\PDO::FETCH_OBJ),$model);
+
+        $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+
+        if(!$type){
+            return $this->getColumnsTable($columns,$model);
+        }
+        else{
+            return $columns;
+        }
+
 
     }
 
@@ -320,6 +353,39 @@ class querySqlFormatter {
 
             }
 
+
+           $selectAppendTable=[];
+           if(is_array($model)){
+               $selectAppend=$this->selectAppend($model);
+               foreach($selectAppend as $sa){
+                   $saTable=explode(".",$sa);
+                   $selectAppendTable[$saTable[0]][]=$saTable[1];
+               }
+           }
+
+           if(count($selectAppendTable)){
+               foreach($selectAppendTable as $stable=>$sarray){
+                   $columnsExtra=$this->getModelTableShowColumns($stable,$model,true);
+
+                   foreach($columnsExtra as $key=>$value){
+                       if(in_array($columnsExtra[$key]->Field,$sarray)){
+                           $columnsList['field'][]=$columnsExtra[$key]->Field;
+                           if($columnsExtra[$key]->Type=="tinyint(1)"){
+                               $columnsList['type'][$columnsExtra[$key]->Field]="bool";
+                           }
+                           else{
+                               $columnsList['type'][$columnsExtra[$key]->Field]=$columnsExtra[$key]->Type;
+                           }
+                       }
+
+
+                   }
+               }
+           }
+
+
+
+
            if($model!==null &&  $model['setField']!==null && is_array($model['setField'])) {
                foreach ($model['setField'] as $key => $value) {
                    $columnsList['field'][]=$key;
@@ -331,7 +397,6 @@ class querySqlFormatter {
                $columnsList['field'][]=$model['substring'][1];
                $columnsList['type'][$model['substring'][1]]='varchar(255)';
            }
-
 
 
            return $columnsList;
@@ -768,6 +833,19 @@ class querySqlFormatter {
         }
 
         return $list;
+    }
+
+
+    private function selectAppend($model,$extension=[]){
+
+        $selectAppend=[];
+        if(array_key_exists('select',$model['join']) && $model['join']['select'][0]!==null){
+            foreach($model['join']['select'] as $value){
+                $selectAppend[]=$value;
+            }
+        }
+
+        return $selectAppend;
     }
 
 

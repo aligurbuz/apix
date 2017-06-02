@@ -497,29 +497,50 @@ class builder {
      */
     public function join($join=null,$model=null){
 
-        if($this->model==null){
+        if($this->model===null){
             $this->model=$model;
-        }
 
+            $this->join=['joiner'=>$join];
 
-        $this->join=['joiner'=>$join];
+            if(array_key_exists(1,$join) && !is_array($join[1])){
 
-        if(array_key_exists(1,$join) && !is_array($join[1])){
+                $this->join['type']=$join[1];
+                if(array_key_exists(2,$join)){
+                    $this->join['select']=$join[2];
+                }
+                else{
+                    $this->join['select']=[];
+                }
 
-            $this->join['type']=$join[1];
-            if(array_key_exists(2,$join)){
-                $this->join['select']=$join[2];
             }
             else{
+                $this->join['type']='left';
+
+                if(array_key_exists(1,$join)){
+                    $this->join['select']=$join[1];
+                }
+                else{
+                    $this->join['select']=[];
+                }
+
+
+            }
+        }
+        else{
+
+            $this->join=['joiner'=>[$join]];
+            if(!is_array($model)){
+                $this->join['type']=$model;
                 $this->join['select']=[];
+            }
+            else{
+                $this->join['type']='left';
+                $this->join['select']=$model;
             }
 
         }
-        else{
-            $this->join['type']='left';
-            $this->join['select']=$join[1];
 
-        }
+
 
         return $this;
 

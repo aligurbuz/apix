@@ -43,8 +43,8 @@ class whereBuilderOperation {
         if(count($whereData)){
             foreach ($whereData['field'] as $key=>$value){
                 if($whereData['operator'][$key]=="LIKE"){
-                    $list['where'][]=''.$value.' '.$whereData['operator'][$key].' :'.$value.'';
-                    $list['execute'][':'.$value.'']='%'.$whereData['value'][$key].'%';
+                    $list['where'][]=''.$value.' '.$whereData['operator'][$key].' :'.str_replace(".","_",$value).'';
+                    $list['execute'][':'.str_replace(".","_",$value).'']='%'.$whereData['value'][$key].'%';
                 }
                 else{
                     if(preg_match('@^between_@is',$value)){
@@ -88,8 +88,8 @@ class whereBuilderOperation {
 
                     }
                     else{
-                        $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.$value.'';
-                        $list['execute'][':'.$value.'']=$whereData['value'][$key];
+                        $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.str_replace(".","_",$value).'';
+                        $list['execute'][':'.str_replace(".","_",$value).'']=$whereData['value'][$key];
                     }
 
                 }

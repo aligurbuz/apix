@@ -45,7 +45,7 @@ class selectBuilderOperation {
         $selectData=$this->getSelectHiddenFields($selectData,$model);
         $selectData=$this->getSelectPermissions($selectData,$model);
         $selectData=$this->setFieldOperation($selectData,$model);
-        return $this->selectImplodeProcess($selectData);
+        return $this->selectImplodeProcess($selectData,$model['model']->table);
     }
 
     /**
@@ -290,8 +290,13 @@ class selectBuilderOperation {
      *
      * @return array
      */
-    private function selectImplodeProcess($selectData){
-        return implode(",",$selectData);
+    private function selectImplodeProcess($selectData,$table){
+
+        $list=[];
+        foreach ($selectData as $value){
+            $list[]=$table.'.'.$value;
+        }
+        return implode(",",$list);
     }
 
 }
