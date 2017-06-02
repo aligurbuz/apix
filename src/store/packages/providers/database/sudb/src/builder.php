@@ -494,8 +494,10 @@ class builder {
      * query group by.
      *
      * @return pdo class
+     * @using join(['modelName'],'inner|left|right',['modelName'=>['field1','field2']]
      */
     public function join($join=null,$model=null){
+
 
         if($this->model===null){
             $this->model=$model;

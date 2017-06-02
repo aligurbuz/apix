@@ -155,9 +155,23 @@ class querySqlFormatter {
             }
 
 
+
             if(array_key_exists('select',$model['join']) && $model['join']['select'][0]!==null){
 
-                $joinSelect=','.implode(",",$model['join']['select']);
+                $childTableFields=$this->arrayFieldData($model['model']->table,$model);
+
+                $selectListReal=[];
+                foreach($model['join']['select'] as $fval){
+                    $fvalEx=explode(".",$fval);
+                    if(in_array($fvalEx[1],$childTableFields)){
+                        $selectListReal[]=$fval.' as '.$fvalEx[0].''.ucfirst($fvalEx[1]);
+                    }
+                    else{
+                        $selectListReal[]=$fval;
+                    }
+                }
+
+                $joinSelect=','.implode(",",$selectListReal);
             }
         }
 
@@ -174,7 +188,6 @@ class querySqlFormatter {
             $model['select']='min('.$model['min'].') as '.$model['min'];
         }
         //return select definition
-
 
 
 
@@ -379,19 +392,36 @@ class querySqlFormatter {
 
                    foreach($columnsExtra as $key=>$value){
                        if(in_array($columnsExtra[$key]->Field,$sarray)){
-                           $columnsList['field'][]=$columnsExtra[$key]->Field;
-                           if($columnsExtra[$key]->Type=="tinyint(1)"){
-                               $columnsList['type'][$columnsExtra[$key]->Field]="bool";
+                           if(in_array($columnsExtra[$key]->Field,$columnsList['field'])){
+
+                               $columnsList['field'][]=$stable.''.ucfirst($columnsExtra[$key]->Field);
+                               if($columnsExtra[$key]->Type=="tinyint(1)"){
+                                   $columnsList['type'][$stable.''.ucfirst($columnsExtra[$key]->Field)]="bool";
+                               }
+                               else{
+                                   $columnsList['type'][$stable.''.ucfirst($columnsExtra[$key]->Field)]=$columnsExtra[$key]->Type;
+                               }
                            }
                            else{
-                               $columnsList['type'][$columnsExtra[$key]->Field]=$columnsExtra[$key]->Type;
+                               $columnsList['field'][]=$columnsExtra[$key]->Field;
+                               if($columnsExtra[$key]->Type=="tinyint(1)"){
+                                   $columnsList['type'][$columnsExtra[$key]->Field]="bool";
+                               }
+                               else{
+                                   $columnsList['type'][$columnsExtra[$key]->Field]=$columnsExtra[$key]->Type;
+                               }
                            }
+
                        }
 
 
                    }
+
+
                }
            }
+
+
 
 
 
@@ -407,6 +437,7 @@ class querySqlFormatter {
                $columnsList['field'][]=$model['substring'][1];
                $columnsList['type'][$model['substring'][1]]='varchar(255)';
            }
+
 
 
            return $columnsList;
@@ -856,6 +887,20 @@ class querySqlFormatter {
         }
 
         return $selectAppend;
+    }
+
+
+    private function arrayFieldData($table,$model){
+
+        $list=[];
+        $fields=json_decode(json_encode($this->getModelTableShowColumns($table,$model,true)),1);
+        if(count($fields)){
+            foreach ($fields as $key=>$array){
+                $list[]=$fields[$key]['Field'];
+            }
+        }
+        return $list;
+
     }
 
 
