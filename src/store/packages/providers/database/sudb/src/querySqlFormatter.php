@@ -70,17 +70,27 @@ class querySqlFormatter {
             $prepare->execute($model['execute']);
             $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
 
-
+            if(count($result)){
+                return [
+                    'getCountAllTotal'=>$this->getCountAllProcessor($model),
+                    'paginator'=>$this->getModelOffsetPaginator($model),
+                    'currentPage'=>$this->getPaginatorUrlPage(),
+                    'result'=>$result,
+                    'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
+                    'fields'=>$this->getResultFields($result),
+                    'resultDataInfo'=>$model['model']->resultDataInfo
+                ];
+            }
 
             return [
-                'getCountAllTotal'=>$this->getCountAllProcessor($model),
-                'paginator'=>$this->getModelOffsetPaginator($model),
-                'currentPage'=>$this->getPaginatorUrlPage(),
-                'result'=>$result,
-                'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
-                'fields'=>$this->getResultFields($result),
-                'resultDataInfo'=>$model['model']->resultDataInfo
+                'result'=>[
+                    'error'=>true,
+                    'code'=>204,
+                    'message'=>'data empty'
+                ]
+
             ];
+
         }
         catch(\Exception $e){
             return [
