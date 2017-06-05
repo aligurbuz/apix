@@ -496,44 +496,51 @@ class builder {
      * @return pdo class
      * @using join(['modelName'],'inner|left|right',['modelName'=>['field1','field2']]
      */
-    public function join($join=null,$model=null){
+    public function join($join=null,$model=null,$extension=null){
+
+
 
 
         if($this->model===null){
-            $this->model=$model;
 
             $this->join=['joiner'=>$join];
 
-            if(array_key_exists(1,$join) && !is_array($join[1])){
+            $this->model=$model;
 
+            if(array_key_exists(1,$join) && !is_array($join[1])){
                 $this->join['type']=$join[1];
-                if(array_key_exists(2,$join)){
+
+                if(array_key_exists(2,$join) && is_array($join[2])){
                     $this->join['select']=$join[2];
                 }
                 else{
                     $this->join['select']=[];
                 }
-
             }
             else{
                 $this->join['type']='left';
-
-                if(array_key_exists(1,$join)){
+                if(is_array($join[1])){
                     $this->join['select']=$join[1];
                 }
                 else{
                     $this->join['select']=[];
                 }
-
-
             }
+
         }
         else{
 
             $this->join=['joiner'=>[$join]];
-            if(!is_array($model)){
+
+            if($model!==null && !is_array($model)){
                 $this->join['type']=$model;
-                $this->join['select']=[];
+
+                if($extension!==null && is_array($extension)){
+                    $this->join['select']=$extension;
+                }
+                else{
+                    $this->join['select']=[];
+                }
             }
             else{
                 $this->join['type']='left';
@@ -541,8 +548,6 @@ class builder {
             }
 
         }
-
-
 
         return $this;
 
