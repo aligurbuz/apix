@@ -498,53 +498,62 @@ class builder {
      */
     public function join($join=null,$model=null,$extension=null){
 
-        if($this->model===null){
+        if(count($join)){
+            if($this->model===null){
 
-            $this->join=['joiner'=>$join];
+                $this->join=['joiner'=>$join];
 
-            $this->model=$model;
+                $this->model=$model;
 
-            if(array_key_exists(1,$join) && !is_array($join[1])){
-                $this->join['type']=$join[1];
+                if(array_key_exists(1,$join) && !is_array($join[1])){
+                    $this->join['type']=$join[1];
 
-                if(array_key_exists(2,$join) && is_array($join[2])){
-                    $this->join['select']=$join[2];
+                    if(array_key_exists(2,$join) && is_array($join[2])){
+                        $this->join['select']=$join[2];
+                    }
+                    else{
+                        $this->join['select']=[];
+                    }
                 }
                 else{
-                    $this->join['select']=[];
+                    $this->join['type']='left';
+                    if(is_array($join[1])){
+                        $this->join['select']=$join[1];
+                    }
+                    else{
+                        $this->join['select']=[];
+                    }
                 }
+
             }
             else{
-                $this->join['type']='left';
-                if(is_array($join[1])){
-                    $this->join['select']=$join[1];
+
+                $this->join=['joiner'=>[$join]];
+
+                if($model!==null && !is_array($model)){
+                    $this->join['type']=$model;
+
+                    if($extension!==null && is_array($extension)){
+                        $this->join['select']=$extension;
+                    }
+                    else{
+                        $this->join['select']=[];
+                    }
                 }
                 else{
-                    $this->join['select']=[];
+                    $this->join['type']='left';
+                    $this->join['select']=$model;
                 }
-            }
 
+            }
         }
         else{
 
-            $this->join=['joiner'=>[$join]];
-
-            if($model!==null && !is_array($model)){
-                $this->join['type']=$model;
-
-                if($extension!==null && is_array($extension)){
-                    $this->join['select']=$extension;
-                }
-                else{
-                    $this->join['select']=[];
-                }
+            if($this->model===null){
+                $this->model=$model;
             }
-            else{
-                $this->join['type']='left';
-                $this->join['select']=$model;
-            }
-
         }
+
 
         return $this;
 
