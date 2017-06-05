@@ -498,9 +498,6 @@ class builder {
      */
     public function join($join=null,$model=null,$extension=null){
 
-
-
-
         if($this->model===null){
 
             $this->join=['joiner'=>$join];
