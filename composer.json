@@ -42,7 +42,8 @@
         "vvondra/php-daemon": "^1.0",
         "fzaninotto/faker": "^1.6",
         "spatie/array-to-xml": "^2.3",
-        "facebook/graph-sdk": "^5.5"
+        "facebook/graph-sdk": "^5.5",
+        "league/pipeline": "^0.3.0"
     },
     "autoload": {
         "files": ["src/helpers.php"]

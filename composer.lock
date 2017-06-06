@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "15400999aa399bbd85c98308908c9494",
-    "content-hash": "ec930ca19925319588587f70bfd6a39f",
+    "hash": "42cfb611aa9eb5138f2be0bc31104a86",
+    "content-hash": "9e9e3a40a359210553f62c59e26c36c8",
     "packages": [
         {
             "name": "apixphp/restapixlib",
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/3572553db1c0805ef70b5efd2e4a3f2d8ce5599a",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/0dea04feba3ec1ec4144a91483c14328e969cf93",
                 "reference": "3572553db1c0805ef70b5efd2e4a3f2d8ce5599a",
                 "shasum": ""
             },
@@ -1464,6 +1464,53 @@
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
             "time": "2017-04-09 14:34:57"
+        },
+        {
+            "name": "league/pipeline",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/pipeline.git",
+                "reference": "27dc18166c30d6429c75d1320f41e8238c59c3d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/pipeline/zipball/27dc18166c30d6429c75d1320f41e8238c59c3d4",
+                "reference": "27dc18166c30d6429c75d1320f41e8238c59c3d4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "henrikbjorn/phpspec-code-coverage": "^1.0",
+                "phpspec/phpspec": "^2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Pipeline\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "A plug and play pipeline implementation.",
+            "keywords": [
+                "composition",
+                "design pattern",
+                "pattern",
+                "pipeline",
+                "sequential"
+            ],
+            "time": "2016-10-13 20:53:39"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
