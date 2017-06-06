@@ -118,6 +118,7 @@ class querySqlFormatter {
 
         //dd($this->sqlBuilderDefinition($model,1));
         $getCountAll=$this->db->prepare($this->sqlBuilderDefinition($model,1));
+
         $getCountAll->execute($model['execute']);
         if($model['groupBy']!==null){
             $getCountAll=$getCountAll->rowCount(\PDO::FETCH_OBJ);
@@ -143,8 +144,14 @@ class querySqlFormatter {
         $joinSelect='';
 
         if($getCountAll!==null){
-            $model['select']='COUNT(id) as getCountAllTotal';
+            $model['select']='COUNT(*) as getCountAllTotal';
             $getPaginateProcessor=$this->getPaginateProcessor($model,false);
+
+            if(count($model['join'])){
+
+                $join=$model['join']['join'][0];
+            }
+
         }
         else{
             $getPaginateProcessor=$this->getPaginateProcessor($model);
