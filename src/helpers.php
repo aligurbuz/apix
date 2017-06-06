@@ -2,9 +2,20 @@
 if (!function_exists('dd')) {
     function dd()
     {
+        header('Content-Type: application/text');
         $args = func_get_args();
-        header('Content-Type: text/htm');
         call_user_func_array('dump', $args);
+        die();
+    }
+}
+
+if (!function_exists('pr')) {
+    function pr()
+    {
+        echo '<pre>';
+        $args = func_get_args();
+        print_r($args);
+        echo '</pre>';
         die();
     }
 }

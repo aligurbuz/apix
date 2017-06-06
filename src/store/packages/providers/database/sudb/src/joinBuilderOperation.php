@@ -43,16 +43,22 @@ class joinBuilderOperation {
 
         $joinerArray=[];
         if(array_key_exists('joiner',$data)){
+            
 
             foreach ($data['joiner'][0] as $myJoin) {
+                
+                $myJoinBuilder="\\src\\app\\mobi\\v1\\model\\sudb\\".$myJoin."";
+                $myJoinClass=new $myJoinBuilder();
+                $myJoinTable=$myJoinClass->table;
+                
                 foreach ($joinerModel[$myJoin] as $key => $value) {
-                    $joinerArray['join'][] = strtoupper($data['type']) . ' JOIN ' . $myJoin . ' ON ' . $model['model']->table . '.' . $key . '=' . $myJoin . '.' . $value;
+                    $joinerArray['join'][] = strtoupper($data['type']) . ' JOIN ' . $myJoinTable . ' ON ' . $model['model']->table . '.' . $key . '=' . $myJoinTable . '.' . $value;
                 }
 
                 if (array_key_exists("select",$data) && array_key_exists($myJoin, $data['select'])) {
 
                     foreach ($data['select'][$myJoin] as $selectVal) {
-                        $joinerArray['select'][] = $myJoin . '.' . $selectVal;
+                        $joinerArray['select'][] = $myJoinTable . '.' . $selectVal;
                     }
                 } else {
                     $joinerArray['select'][] =null;
