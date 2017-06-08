@@ -60,7 +60,7 @@ class app
          * @return array
          */
         $node=[
-            'node'=>staticPathModel::getAppServiceBase()->nodeServiceSide()
+            'node'=>null
         ];
 
         /**
