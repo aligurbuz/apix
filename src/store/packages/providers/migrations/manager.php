@@ -1233,11 +1233,11 @@ class manager {
 
 
             if($object[$key]->Key=="UNI"){
-                $unique[]=',UNIQUE KEY '.$object[$key]->Field.' ('.$object[$key]->Field.')';
+                $unique[]='UNIQUE KEY '.$object[$key]->Field.' ('.$object[$key]->Field.')';
             }
             if($object[$key]->Key=="MUL"){
                 if(array_key_exists($object[$key]->Field,$uniqueKeys) && count($uniqueKeys[$object[$key]->Field])){
-                    $unique[]=',UNIQUE KEY '.$object[$key]->Field.' ('.implode(",",$uniqueKeys[$object[$key]->Field]).')';
+                    $unique[]='UNIQUE KEY '.$object[$key]->Field.' ('.implode(",",$uniqueKeys[$object[$key]->Field]).')';
                 }
             }
 
@@ -1262,11 +1262,18 @@ class manager {
 
         if(count($list)){
 
+            if(count($unique)){
+                $uniqueString=','.implode(',',$unique);
+            }
+            else{
+                $uniqueString='';
+            }
+
             return 'CREATE TABLE IF NOT EXISTS '.$table.' (
             '.implode(",
             ",$list).'
             '.$indexExtension.'
-            '.implode(",",$unique).'
+            '.$uniqueString.'
             ) ENGINE='.$statusLike[$table][0]->Engine.' DEFAULT COLLATE='.$statusLike[$table][0]->Collation.' AUTO_INCREMENT=1 ;';
         }
     }
