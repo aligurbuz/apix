@@ -29,6 +29,12 @@ class repository {
      */
     public static function __callStatic($name,$arguments=[]){
         self::$repo=$name;
+        if(array_key_exists(0,$arguments)){
+            if($arguments[0]){
+                $instance=new self;
+                return $instance->get($arguments);
+            }
+        }
         return new self;
 
 
