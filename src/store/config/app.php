@@ -119,6 +119,7 @@ class app {
             'Date'=>self::$servicePath.'date',
             'Collection'=>self::$servicePath.'appCollection',
             'Faker'=>self::$servicePath.'faker',
+            'Pipeline'=>self::$servicePath.'pipeline',
             'Response'=>'Apix\ResponseManager',
             'Repo'=>self::$servicePath.'repository',
             'Validator'=>'Respect\Validation\Validator'
