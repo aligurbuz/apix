@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "44dfdd756192f63b8e5c4dc24ec40d6dc0257064"
+                "reference": "008b7aea362c72037882c5b305f695fbc1463ebe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/44dfdd756192f63b8e5c4dc24ec40d6dc0257064",
-                "reference": "44dfdd756192f63b8e5c4dc24ec40d6dc0257064",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/008b7aea362c72037882c5b305f695fbc1463ebe",
+                "reference": "008b7aea362c72037882c5b305f695fbc1463ebe",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-06-09 09:08:55"
+            "time": "2017-06-09 12:52:50"
         },
         {
             "name": "container-interop/container-interop",
@@ -3513,16 +3513,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
+                "reference": "dee1c8b1e040d7dec299e4133c8105538cb2e5c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
-                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dee1c8b1e040d7dec299e4133c8105538cb2e5c7",
+                "reference": "dee1c8b1e040d7dec299e4133c8105538cb2e5c7",
                 "shasum": ""
             },
             "require": {
@@ -3568,11 +3568,11 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2017-05-29 17:37:41"
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
@@ -3628,16 +3628,16 @@
         },
         {
             "name": "symfony/polyfill-php70",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php70.git",
-                "reference": "13ce343935f0f91ca89605a2f6ca6f5c2f3faac2"
+                "reference": "3ef55965136f1df57e2cf1e893d91d3bc1516822"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php70/zipball/13ce343935f0f91ca89605a2f6ca6f5c2f3faac2",
-                "reference": "13ce343935f0f91ca89605a2f6ca6f5c2f3faac2",
+                "url": "https://api.github.com/repos/symfony/polyfill-php70/zipball/3ef55965136f1df57e2cf1e893d91d3bc1516822",
+                "reference": "3ef55965136f1df57e2cf1e893d91d3bc1516822",
                 "shasum": ""
             },
             "require": {
@@ -3683,11 +3683,11 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2017-06-09 14:07:13"
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
