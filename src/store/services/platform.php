@@ -123,7 +123,7 @@ class platform {
                     $method=method;
                     $appPlatform=\Apix\utils::resolve($platformname);
                     if(method_exists($appPlatform,$method)){
-                        return \Apix\utils::resolve($platformname)->$method(call_user_func($callback));
+                        return \Apix\utils::resolve($platformname)->$method();
                     }
 
                 }
