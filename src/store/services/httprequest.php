@@ -161,6 +161,17 @@ class httprequest {
     }
 
     /**
+     * get content.
+     *
+     * @return string
+     */
+    public function content(){
+
+        return $this->request->getContent();
+    }
+
+
+    /**
      * get input.
      *
      * @return string
