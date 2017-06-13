@@ -10,6 +10,8 @@
  * apix api services
  */
 
+error_reporting(0);
+
 //micro time starter for apix response time
 define("time_start",microtime(true));
 
