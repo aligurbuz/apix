@@ -225,6 +225,7 @@ class branches {
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\adapter\\'.$file.'Adapter';
         }
 
+
         $container = \DI\ContainerBuilder::buildDevContainer();
 
         $resolve=$container->get($sourcename);
@@ -245,6 +246,10 @@ class branches {
         }
         else{
             $queryBuild=$resolve->$method();
+        }
+
+        if($this->modelDir!=='sudb'){
+            return ['results'=>$queryBuild];
         }
         return $queryBuild;
     }
