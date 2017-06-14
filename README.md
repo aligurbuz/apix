@@ -1,5 +1,5 @@
 # Php-Apix Restfull System
-Comprehensive restfull api service with php -- (supported illuminate and symfony components)...!!! Enjoy developing restfull api by console with php.
+Comprehensive restfull api service with php -- (supported illuminate and symfony components)...!!! Enjoy development restfull api by console with php.
 * - Core system for business logic
 * - Supported with composer packages (mostly illuminate and symfony packages)
 * - Full console assistance for all project management
