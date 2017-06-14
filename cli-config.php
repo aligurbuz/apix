@@ -12,5 +12,6 @@
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 // replace with file to your own project bootstrap
+//doctrine orm configuration file
 require_once './src/store/packages/providers/database/doctrine/bootstrap.php';
 return ConsoleRunner::createHelperSet($entityManager);
