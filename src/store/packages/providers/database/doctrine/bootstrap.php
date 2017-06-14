@@ -12,7 +12,7 @@ $isDevMode = false;
 $dbParams = array(
     'driver'   => 'pdo_mysql',
     'user'     => 'root',
-    'password' => 'laraappdevman*09',
+    'password' => '280384483082',
     'dbname'   => 'Prosystem',
 );
 
