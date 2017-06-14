@@ -2,7 +2,8 @@
 Comprehensive restfull api service with php -- (supported illuminate and symfony components)...!!! Enjoy developing restfull api by console with php.
 * - Core system for business logic
 * - Supported with composer packages (mostly illuminate and symfony packages)
-* - Developer : Ali Gurbuz
+* - Full console assistance for all project management
+* - You need just writing business logic to you
 
 > Package allows you to design restful services easily. Creating API services is very easy.
 > For creating your API easily, please keep track of following instructions.
