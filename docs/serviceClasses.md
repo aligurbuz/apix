@@ -1,9 +1,9 @@
-# Get Service Form
+# Service Form
 
 ```
 <?php
 /*
- * This file is the main class of the service named stk on  mobi project.
+ * This file is main class of the  service named stk on  mobi project .
  * METHOD : GET
  * every service is called with index method as default
  * service name : mobi
@@ -12,104 +12,57 @@
  */
 
 namespace src\app\mobi\v1\__call\stk;
-use src\services\httprequest as request;
+
+use Src\Store\Services\Httprequest as Request;
+use Src\Store\Services\appCollection as Collection;
+
 
 /**
  * Represents a getService class.
- *
- * main call
+ * http method : get
+ * every method that on this service is called with get method as http method on browser
+ * every service extends app class
  * return type array
  */
+class getService extends app
+{
 
-class getService extends \src\app\mobi\v1\__call\stk\app {
-
-    public $request;
+    /**
+     * Production forbidden.
+     *
+     * @if it is true,you can't access on the production
+     * @restrictions method is comprenhensive on app class
+     */
     public $forbidden=false;
 
     /**
      * Constructor.
      *
      * @param type dependency injection and stk class
-     * request method : symfony component
      * main loader as construct method
      */
-    public function __construct(request $request){
-
-        //get request info
+    public function __construct()
+    {
+        //get app extends
         parent::__construct();
-        $this->request=$request;
     }
 
     /**
-     * index method is main method.
-     *
-     * @return array
+     * index method is main method
+     * because method name is called on the url
+     * method can produce output with response class
+     * produced json output as result (default)
+     * @return array @method
      */
-    public function index(){
-
-        //return index
+    public function indexAction()
+    {
         return [
-            'environment'=>\app::environment(),
-            'clientIp'=>$this->request->getClientIp(),
+            'environment'=>environment(),
             'isMobile'=>app("device")->isMobile()
         ];
     }
 }
 
-```
-
-# Post Service Form
 
 ```
-<?php
-/*
- * This file is main class of the  service named stk on  mobi project .
- * METHOD : POST
- * every service is called with index method as default
- * service name : mobi
- * namespace : src\app\mobi\v1\__call\stk
- * app class namespace : \src\app\mobi\v1\__call\stk\app
- */
 
-namespace src\app\mobi\v1\__call\stk;
-use src\services\httprequest as request;
-
-/**
- * Represents a getService class.
- *
- * main call
- * return type array
- */
-
-class postService extends \src\app\mobi\v1\__call\stk\app {
-
-    public $request;
-    public $forbidden=false;
-
-    /**
-     * Constructor.
-     *
-     * @param type dependency injection and stk class
-     * request method : symfony component
-     * main loader as construct method
-     */
-    public function __construct(request $request){
-
-        //get request info
-        parent::__construct();
-        $this->request=$request;
-    }
-
-    /**
-     * index method is main method.
-     *
-     * @return array
-     */
-    public function index(){
-
-        //return index
-        return ['post'=>true];
-    }
-}
-
-```
