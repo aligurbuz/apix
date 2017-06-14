@@ -1,6 +1,7 @@
 # Apix Restful Service
 Comprehensive restfull api service with php -- (supported illuminate and symfony components)...!!! Enjoy developing restfull api by console with php.
-* - Core system for business logic 
+* - Core system for business logic
+* - Supported with composer packages (mostly illuminate and symfony packages)
 * - Developer : Ali Gurbuz
 
 > Package allows you to design restful services easily. Creating API services is very easy.
