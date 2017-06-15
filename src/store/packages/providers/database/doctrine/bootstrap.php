@@ -27,3 +27,4 @@ $driver = new AnnotationDriver(new AnnotationReader(), $paths);
 AnnotationRegistry::registerLoader('class_exists');
 $config->setMetadataDriverImpl($driver);
 $entityManager = EntityManager::create($dbParams, $config);
+
