@@ -14,10 +14,11 @@ $isDevMode = false;
 
 // the connection configuration
 $dbParams = array(
-    'driver'   => 'pdo_mysql',
-    'user'     => 'root',
-    'password' => '280384483082',
-    'dbname'   => 'Prosystem',
+    'driver'=>'pdo_mysql',
+    'host'=>'localhost',
+    'user'=>'root',
+    'password'=>'280384483082',
+    'dbname'=>'Prosystem',
 );
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);

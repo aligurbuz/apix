@@ -6,7 +6,8 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
-class DoctrineEntityManager {
+class DoctrineEntityManager extends Config {
+
 
     public function getDoctrine($model=null){
 
@@ -16,26 +17,13 @@ class DoctrineEntityManager {
             $model=str_replace('Builder','',end($getCalledClassArray));
         }
 
-
-
-        $paths = array("");
-        $isDevMode = false;
-
-        // the connection configuration
-        $dbParams = array(
-            'driver'   => 'pdo_mysql',
-            'user'     => 'root',
-            'password' => '280384483082',
-            'dbname'   => 'Prosystem',
-        );
-
-        $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-        $driver = new AnnotationDriver(new AnnotationReader(), $paths);
+        $config = Setup::createAnnotationMetadataConfiguration($this->paths, $this->isDevMode);
+        $driver = new AnnotationDriver(new AnnotationReader(), $this->paths);
 
         // registering noop annotation autoloader - allow all annotations by default
         AnnotationRegistry::registerLoader('class_exists');
         $config->setMetadataDriverImpl($driver);
-        $entityManager = EntityManager::create($dbParams, $config);
+        $entityManager = EntityManager::create($this->dbParams(), $config);
 
         return $entityManager->getRepository('src\app\\'.app.'\\'.version.'\model\doctrine\\'.$model);
     }

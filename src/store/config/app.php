@@ -174,6 +174,13 @@ class app {
     }
 
 
+    public static function dbConfig(){
+
+        $config="\\src\\app\\".app."\\".version."\\config\\database";
+        return $config::dbsettings();
+    }
+
+
     /**
      * response checkUrlParam.
      * definition : it checks query on url with the given param value
