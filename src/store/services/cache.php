@@ -40,7 +40,7 @@ class cache {
      */
     public function __construct(){
 
-        $base=\apix\staticPathModel::getAppServiceBase();
+        $base=\Apix\staticPathModel::getAppServiceBase();
         $this->adapter=$base->cacheAdapter;
 
 
