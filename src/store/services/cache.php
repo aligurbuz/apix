@@ -25,27 +25,26 @@ use src\store\services\fileProcess as file;
 
 class cache {
 
-    private $adapter='file';
-    private $fileExpire=60;
+    private $adapter;
+    private $cacheExpire;
     private $cache=null;
     private $name=null;
     private $directoryPath;
 
 
+    /**
+     * Constructor.
+     *
+     * @param type dependency injection and stk class
+     * main loader as construct method
+     */
     public function __construct(){
-        if(defined("devPackage")){
-            $this->directoryPath ='./src/packages/dev/'.service.'/cache';
-        }
-        else{
-            $this->directoryPath  = application.'/'.version.'/__call/'.service.'/cache';
-            $file=new file();
-            if(!$file->exists($this->directoryPath)){
-                $file->mkdir(application.'/'.version.'/__call/'.service.'','cache');
-            }
-        }
+
+        $base=\apix\staticPathModel::getAppServiceBase();
+        $this->adapter=$base->cacheAdapter;
+
+
     }
-
-
     /**
      * cache adapter data.
      *
@@ -56,8 +55,6 @@ class cache {
         //adapter set
         if($adapter!==null){
             $this->adapter=$adapter;
-            $adapterMethod=$this->adapter.'CacheAdapter';
-            $this->$adapterMethod();
         }
         return $this;
     }
@@ -73,7 +70,7 @@ class cache {
     {
         //expire set
         if($expire!==null){
-            $this->fileExpire=$expire;
+            $this->cacheExpire=$expire;
         }
         return $this;
     }
@@ -95,16 +92,12 @@ class cache {
 
 
     /**
-     * cache get data.
+     * cache name data.
      *
-     * @return cache class
+     * @return cache name method
      */
-    public function get($callback)
+    public function getName()
     {
-        //adapter set
-        $adapterMethod=$this->adapter.'CacheAdapter';
-        $this->$adapterMethod();
-
         //get Item
         if($this->name===null){
             $name="".request."_".service."_".method;
@@ -113,8 +106,47 @@ class cache {
             $name=$this->name;
         }
 
+        return 'cache'.$name;
+    }
 
-        $name='cache.'.$name.'';
+    public function cachePath(){
+        if($this->adapter==="file"){
+            if(defined("devPackage")){
+                $this->directoryPath ='./src/packages/dev/'.service.'/cache';
+            }
+            else{
+                $this->directoryPath  = application.'/'.version.'/__call/'.service.'/cache';
+                $file=new file();
+                if(!$file->exists($this->directoryPath)){
+                    $file->mkdir(application.'/'.version.'/__call/'.service.'','cache');
+                }
+            }
+        }
+    }
+
+
+    /**
+     * cache get data.
+     *
+     * @return cache class
+     */
+    public function get($callback)
+    {
+        $this->cachePath();
+
+        //adapter set
+        $adapterMethod=$this->adapter.'CacheAdapter';
+
+        if($this->adapter==='file'){
+            $this->$adapterMethod();
+        }
+        else{
+            return $this->$adapterMethod($callback);
+        }
+
+
+        $name=$this->getName();
+
         $nameSet=$this->cache->getItem($name);
 
         //check is hit
@@ -144,7 +176,7 @@ class cache {
             $namespace = '',
             // in seconds; applied to cache items that don't define their own lifetime
             // 0 means to store the cache items indefinitely (i.e. until the files are deleted)
-            $defaultLifetime = $this->fileExpire,
+            $defaultLifetime = $this->cacheExpire,
             // the main cache directory (the application needs read-write permissions on it)
             // if none is specified, a directory is created inside the system temporary directory
             $directory=$this->directoryPath
@@ -178,22 +210,18 @@ class cache {
      *
      * @return redis adapter class
      */
-    public function redisCacheAdapter()
+    public function redisCacheAdapter($callback)
     {
-        $this->cache = new RedisAdapter(
-
-            // the subdirectory of the main cache directory where cache items are stored
-            $namespace = '',
-            // in seconds; applied to cache items that don't define their own lifetime
-            // 0 means to store the cache items indefinitely (i.e. until the files are deleted)
-            $defaultLifetime = $this->fileExpire,
-            // the main cache directory (the application needs read-write permissions on it)
-            // if none is specified, a directory is created inside the system temporary directory
-            $directory=$this->directoryPath
-        );
-
-        //The createConnection() helper allows creating a connection to a Redis server using a DSN configuration:
-        $redisConnection = RedisAdapter::createConnection('redis://localhost');
+        $redisConnection=app('redis');
+        $name=$this->getName();
+        if(!$redisConnection->exists($name)){
+            $data=call_user_func($callback);
+            $redisConnection->set([$name,json_encode($data)]);
+            if($this->cacheExpire!==null){
+                $redisConnection->expire($name,$this->cacheExpire);
+            }
+        }
+        return json_decode($redisConnection->get($name),1);
     }
 
 
