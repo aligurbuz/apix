@@ -49,6 +49,20 @@ class redis {
 
 
     /**
+     * Select the DB with having the specified zero-based numeric index.
+     * New connections always use DB 0.
+     *
+     * @return redis @data
+     */
+    public function select($databaseNumber=0){
+
+        //get ping return
+        return $this->client->select($databaseNumber);
+
+    }
+
+
+    /**
      * Set key to hold the string value. If key already holds a value, it is overwritten,
      * regardless of its type. Any previous time to live associated with the key is
      * discarded on successful SET operation.
