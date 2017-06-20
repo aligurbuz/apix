@@ -19,6 +19,7 @@ use Apix\StaticPathModel;
 class redis {
 
     public $client;
+    private $appRedisConnection;
 
     /**
      * redis configuration.
@@ -29,10 +30,10 @@ class redis {
 
         //app redis config
         $appRedisConfig=StaticPathModel::getConfigStaticApp('redis');
-        $appRedisConnection=$appRedisConfig::redisConnection();
+        $this->appRedisConnection=$appRedisConfig::redisConnection();
 
         //redis client
-        $this->client=new Client($appRedisConnection['redis']);
+        $this->client=new Client($this->appRedisConnection['connection']);
     }
 
 
@@ -59,10 +60,11 @@ class redis {
      *
      * @return redis @data
      */
-    public function select($databaseNumber=0){
+    public function select($databaseName=0){
 
         //get ping return
-        return $this->client->select($databaseNumber);
+        $databases=$this->appRedisConnection['databases'];
+        return $this->client->select($databases['redisDb::'.$databaseName]);
 
     }
 
