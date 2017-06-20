@@ -7,6 +7,7 @@
 
 namespace src\store\services;
 use Predis\Client as client;
+use Apix\StaticPathModel;
 
 /**
  * Represents a redis class.
@@ -24,10 +25,14 @@ class redis {
      *
      * @return redis @connection
      */
-    public function __construct(client $client){
+    public function __construct(){
+
+        //app redis config
+        $appRedisConfig=StaticPathModel::getConfigStaticApp('redis');
+        $appRedisConnection=$appRedisConfig::redisConnection();
 
         //redis client
-        $this->client=$client;
+        $this->client=new Client($appRedisConnection['redis']);
     }
 
 
