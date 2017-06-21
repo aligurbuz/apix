@@ -53,14 +53,8 @@ else{
      * System cli custom command main file
      * return class method
      */
-    if(environment()=="local"){
-        //get base properties
-        echo utils::getBaseConsoleStaticProperties($argv);
-
-    }
-    else {
-        echo 'Console command except local would not work.'.PHP_EOL;
-    }
+    //get base properties
+    echo utils::getBaseConsoleStaticProperties($argv);
 
 
 }
