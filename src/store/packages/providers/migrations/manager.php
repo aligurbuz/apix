@@ -76,21 +76,12 @@ class manager {
         //check environment
         \Apix\environment::config();
 
-        if($this->model!==null){
-            $model="\\src\\app\\".$this->project."\\".$this->version."\\model\\sudb\\".$this->model;
-            $model=new $model();
-            $this->table[]=$model->table;
-        }
-        else{
-            foreach (glob(root."/src/app/".$this->project."/".$this->version."/model/sudb/*.php") as $filename) {
-                $filename=str_replace(root."/src/app/".$this->project."/".$this->version."/model/sudb/","",$filename);
-                $filename=str_replace(".php","",$filename);
-                $model="\\src\\app\\".$this->project."\\".$this->version."\\model\\sudb\\".$filename;
-                $model=new $model();
-                $this->table[]=$model->table;
-            }
-        }
+        $tablesYamlDatas=utils::getYaml(root."/src/app/".$this->project."/".$this->version."/model/tables.yaml");
 
+        foreach ($tablesYamlDatas['tables'] as $tables){
+
+            $this->table[]=$tables;
+        }
 
         $connector=new Connector(true,$this->project,$this->version);
         $this->db=$connector->get();
