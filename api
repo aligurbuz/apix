@@ -52,8 +52,8 @@ else{
     /**
      * System cli custom command main file
      * return class method
+     * get base properties
      */
-    //get base properties
     echo utils::getBaseConsoleStaticProperties($argv);
 
 
