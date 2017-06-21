@@ -35,6 +35,8 @@
         "respect/validation": "^1.1",
         "egulias/email-validator": "^2.1",
         "doctrine/orm": "^2.5",
+        "doctrine/dbal": "2.5.*",
+        "doctrine/migrations": "dev-master",
         "tightenco/collect": "^5.4",
         "illuminate/database": "^5.4",
         "illuminate/pagination": "^5.4",
