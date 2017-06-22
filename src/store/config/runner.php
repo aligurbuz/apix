@@ -5,5 +5,7 @@
  */
 
 return [
-    'ls -la'
+    'mixed'=>[
+        'ls -la'
+    ]
 ];
