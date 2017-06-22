@@ -179,7 +179,7 @@ class builder {
      * @return array
      */
     public function substring($select=null,$model=null){
-        if($this->model==null){
+        if($this->model===null){
             $this->model=$model;
         }
 
@@ -194,6 +194,34 @@ class builder {
                 $this->substring=$select;
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * callback method is main method.
+     *
+     * @return array
+     */
+    public function callback($field=null,$model=null){
+
+        if($this->model===null){
+            $this->model=$model;
+
+            if(is_callable($field[0])){
+
+                call_user_func_array($field[0],[$this->model]);
+            }
+        }
+        else{
+            if(is_callable($field)){
+
+                call_user_func_array($field,[$this->model]);
+            }
+        }
+
+
 
         return $this;
     }
