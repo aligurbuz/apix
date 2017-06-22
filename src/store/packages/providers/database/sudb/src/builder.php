@@ -720,14 +720,18 @@ class builder {
             $this->model=$model;
         }
 
+        if($args===null){
+            $args=[];
+        }
+
 
         $model=$this->model;
         return $this->allMethodProcess(function() use ($args,$model){
             $result=$this->queryFormatter();
 
-            error_reporting(0);
             if(array_key_exists(0,$result['result'])){
                 $result['result'][0]->count=$result['getCountAllTotal'];
+
                 if(array_key_exists(0,$args) && is_callable($args[0])){
                     $callBackData=call_user_func_array($args[0],[$result['result'][0]]);
                     $this->saveNew=$result['result'][0];

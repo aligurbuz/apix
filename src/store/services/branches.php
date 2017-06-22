@@ -245,7 +245,7 @@ class branches {
             $queryBuild=$resolve->$method($arguments);
         }
         else{
-            $queryBuild=$resolve->$method();
+            $queryBuild=$resolve->$method($arguments);
         }
 
         if($this->modelDir!=='sudb'){
