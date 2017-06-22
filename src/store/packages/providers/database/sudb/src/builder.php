@@ -677,7 +677,11 @@ class builder {
      *
      * @return array
      */
-    public function toSql(){
+    public function toSql($args=null,$model=null){
+
+        if($this->model==null){
+            $this->model=$model;
+        }
 
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
