@@ -38,8 +38,7 @@ class whereBuilderOperation {
      * @return array
      */
     public function whereMainProcess($whereData,$model){
-        $list['where']='';
-        $list['execute']=[];
+        $list=[];
         if(count($whereData)){
             foreach ($whereData['field'] as $key=>$value){
                 if($whereData['operator'][$key]=="LIKE"){
@@ -88,6 +87,7 @@ class whereBuilderOperation {
 
                     }
                     else{
+
                         $list['where'][]=''.$value.''.$whereData['operator'][$key].':'.str_replace(".","_",$value).'';
                         $list['execute'][':'.str_replace(".","_",$value).'']=$whereData['value'][$key];
                     }
@@ -127,8 +127,12 @@ class whereBuilderOperation {
 
         }
 
-        if(is_array($list['where'])){
+
+        if(array_key_exists('where',$list) && is_array($list['where'])){
             $list['where']='WHERE '.implode(" AND ",$list['where']);
+        }
+        else{
+            $list['where']='';
         }
 
         return (object)$list;

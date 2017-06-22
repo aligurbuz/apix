@@ -647,12 +647,13 @@ class builder {
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
 
-            $countAllData=array_key_exists('CountAllData',$result['resultDataInfo']) ? $result['resultDataInfo']['CountAllData'] : 'CountAllData';
-            $paginator=array_key_exists('paginator',$result['resultDataInfo']) ? $result['resultDataInfo']['paginator'] : 'paginator';
-            $currentPage=array_key_exists('currentPage',$result['resultDataInfo']) ? $result['resultDataInfo']['currentPage'] : 'currentPage';
-            $lastPaginator=array_key_exists('lastPage',$result['resultDataInfo']) ? $result['resultDataInfo']['lastPage'] : 'lastPage';
-
             if(array_key_exists("paginator",$result) && $result['paginator']>0){
+
+                $countAllData=array_key_exists('CountAllData',$result['resultDataInfo']) ? $result['resultDataInfo']['CountAllData'] : 'CountAllData';
+                $paginator=array_key_exists('paginator',$result['resultDataInfo']) ? $result['resultDataInfo']['paginator'] : 'paginator';
+                $currentPage=array_key_exists('currentPage',$result['resultDataInfo']) ? $result['resultDataInfo']['currentPage'] : 'currentPage';
+                $lastPaginator=array_key_exists('lastPage',$result['resultDataInfo']) ? $result['resultDataInfo']['lastPage'] : 'lastPage';
+
                 $lastpage=(int)$result['getCountAllTotal']/(int)$result['paginator'];
                 return [
                     $countAllData=>(int)$result['getCountAllTotal'],
@@ -994,7 +995,11 @@ class builder {
         $this->join=$this->joinBuilderOperation->joinMainProcess($this->join,$this->SqlPrepareFormatterHandleObject());
         $whereOperation=$this->whereBuilderOperation->whereMainProcess($this->where,$this->SqlPrepareFormatterHandleObject());
         $this->where=$whereOperation->where;
-        $this->execute=$whereOperation->execute;
+        $this->execute=[];
+        if(property_exists($whereOperation,'execute')){
+            $this->execute=$whereOperation->execute;
+        }
+
         return call_user_func($callback);
     }
 
