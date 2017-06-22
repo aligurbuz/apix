@@ -672,6 +672,26 @@ class builder {
     }
 
 
+    /**
+     * get method is main method.
+     *
+     * @return array
+     */
+    public function toSql(){
+
+        return $this->allMethodProcess(function(){
+            $result=$this->queryFormatter();
+            foreach($result['execute'] as $key=>$value){
+                $result['prepare']=str_replace($key,$value,$result['prepare']);
+            }
+
+            return $result['prepare'];
+
+        });
+
+    }
+
+
 
     /**
      * all method is main method.

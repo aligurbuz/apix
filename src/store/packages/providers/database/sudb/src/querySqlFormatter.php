@@ -78,6 +78,8 @@ class querySqlFormatter {
                     'result'=>$result,
                     'columns'=>$this->getModelTableShowColumns($model['model']->table,$model),
                     'fields'=>$this->getResultFields($result),
+                    'prepare'=>$this->sqlBuilderDefinition($model),
+                    'execute'=>$model['execute'],
                     'resultDataInfo'=>$model['model']->resultDataInfo
                 ];
             }
