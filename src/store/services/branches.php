@@ -10,6 +10,9 @@
 
 namespace src\store\services;
 
+use Apix\Utils;
+use Apix\StaticPathModel;
+
 /**
  * Represents a index class.
  *
@@ -27,8 +30,11 @@ class branches {
     public $modelDir;
 
     public function __construct(){
-        $getModelVar='\\src\\app\\'.app.'\\'.version.'\\serviceBaseController';
-        $this->modelDir=(new $getModelVar())->model;
+        $this->modelDir=staticPathModel::getAppServiceBase()->model;
+        $serviceConf=staticPathModel::getServiceConf();
+        if(array_key_exists('model',$serviceConf) && $serviceConf['model']!==null){
+            $this->modelDir=$serviceConf['model'];
+        }
     }
 
 
@@ -225,10 +231,11 @@ class branches {
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\adapter\\'.$file.'Adapter';
         }
 
-
         $container = \DI\ContainerBuilder::buildDevContainer();
 
         $resolve=$container->get($sourcename);
+
+
 
         if(!method_exists($resolve,$method)){
             if(defined("devPackage")){
@@ -240,6 +247,7 @@ class branches {
 
             $resolve=$container->get($sourcename);
         }
+
 
         if(count($arguments)){
             $queryBuild=$resolve->$method($arguments);

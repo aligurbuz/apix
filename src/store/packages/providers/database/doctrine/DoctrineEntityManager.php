@@ -25,6 +25,11 @@ class DoctrineEntityManager extends Config {
         $config->setMetadataDriverImpl($driver);
         $entityManager = EntityManager::create($this->dbParams(), $config);
 
+        if(defined('devPackage')){
+            return $entityManager->getRepository('src\\store\\packages\\dev\\'.service.'\\devpack\\model\\doctrine\\'.$model);
+        }
+
         return $entityManager->getRepository('src\app\\'.app.'\\'.version.'\model\doctrine\\'.$model);
+
     }
 }
