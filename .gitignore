@@ -3,7 +3,6 @@ apix
 .idea/
 node_modules
 .env
-src/app/*
 !important src/app/index.html
 src/store/provisions/limitation/yaml/*
 src/store/packages/providers/database/doctrine/bootstrap.php
