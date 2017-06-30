@@ -24,13 +24,8 @@ class httpSession
      */
     public function __construct()
     {
-        if(self::$instance===null){
-            $storage = new NativeSessionStorage(array(), new NativeFileSessionHandler(application.'/storage/session'));
-            $this->session = new Session($storage);
-            self::$instance=$this->session;
-        }else{
-            $this->session=self::$instance;
-        }
+        $storage = new NativeSessionStorage(array(), new NativeFileSessionHandler(application.'/storage/session'));
+        $this->session = new Session($storage);
 
     }
 
