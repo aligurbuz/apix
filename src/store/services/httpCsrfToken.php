@@ -28,7 +28,6 @@ class httpCsrfToken {
 
     public function __construct(){
         $this->setUp();
-        $this->session=app("session");
 
     }
     public static function setUpBeforeClass()
@@ -48,16 +47,6 @@ class httpCsrfToken {
         return $this->generator->generateToken();
 
     }
-    public function checkTokenForPostMethod($data){
-        $border=new self;
-        if($border->session->has("postToken")){
-            $token=$border->session->get("postToken");
-            if($data==$token){
-                return true;
-            }
-        }
 
-        return false;
-    }
 
 }
