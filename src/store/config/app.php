@@ -122,7 +122,8 @@ class app {
             'Pipeline'=>self::$servicePath.'pipeline',
             'Response'=>'Apix\ResponseManager',
             'Repo'=>self::$servicePath.'repository',
-            'Validator'=>'Respect\Validation\Validator'
+            'Validator'=>'Respect\Validation\Validator',
+            'dbCon'=>'\\src\\store\\config\\dbConnector'
         ];
 
     }
