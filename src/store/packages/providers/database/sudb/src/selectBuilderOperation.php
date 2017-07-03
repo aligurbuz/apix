@@ -83,7 +83,7 @@ class selectBuilderOperation {
                     if(array_key_exists(0,$model['setField'][$key]) AND array_key_exists(1,$model['setField'][$key])){
                         $varZero=explode("@",$model['setField'][$key][0]);
                         $joinInfo=explode(".",$varZero[1]);
-                        $selectData[]='(select '.implode(",",$model['setField'][$key][1]).' from '.$joinInfo[0].' where '.$varZero[1].'='.$varZero[0].') as '.$key.'';
+                        $selectData['setField']='(select '.implode(",",$model['setField'][$key][1]).' from '.$joinInfo[0].' where '.$varZero[1].'='.$varZero[0].') as '.$key.'';
                     }
                 }
 
@@ -293,8 +293,14 @@ class selectBuilderOperation {
     private function selectImplodeProcess($selectData,$table){
 
         $list=[];
-        foreach ($selectData as $value){
-            $list[]=$table.'.'.$value;
+        foreach ($selectData as $key=>$value){
+            if($key!=="setField"){
+                $list[]=$table.'.'.$value;
+            }
+            else{
+                $list[]=$value;
+            }
+
         }
         return implode(",",$list);
     }
