@@ -467,11 +467,25 @@ class manager {
                         '__classname__'=>$modelFile
                     ],$object);
                 }
+
                 if($writeInfo['status']=="noupdate"){
                     echo $this->colors->warning(' !!! '.$key.' table does not have updating information');
                 }
 
                 if($writeInfo['status']=="update"){
+
+                    if(array_key_exists('references',$writeInfo)){
+                        $time=time()+100+1;
+                        $modelFile='__'.$time.'__'.$key.'';
+                        $file->touch($path.'/'.$key.'/'.$modelFile.'.php');
+                        $this->fileProcessUpdate($key,[
+
+                            '__namespace__'=>'src\\app\\'.$this->project.'\\'.$this->version.'\\migrations\\schemas\\'.$key,
+                            '__classname__'=>$modelFile
+                        ],[
+                            'references'=>$writeInfo['references']
+                        ]);
+                    }
 
                     if(array_key_exists("diff",$writeInfo['data'])){
                         $updateData=[];
@@ -597,19 +611,26 @@ class manager {
 
         $hash=md5(json_encode($this->getFieldsFromDb($data,$table)));
 
+
+        if(array_key_exists($table,$yaml) && $yaml[$table]['references']!==md5($this->getForeignKey($table))){
+
+            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table),'references'=>md5($this->getForeignKey($table))]],$data);
+            return ['status'=>'update','data'=>[],'references'=>$this->getForeignKey($table)];
+        }
+
         if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']==$hash){
             return ['status'=>'noupdate'];
         }
 
         if((array_key_exists($table,$yaml) AND array_key_exists('hash',$yaml[$table])) AND $yaml[$table]['hash']!==$hash){
-            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table)]],$data);
+            $update=$this->updateInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table),'references'=>$yaml[$table]['references']]],$data);
             if($update['yamlStatus']){
                 return ['status'=>'update','data'=>$update['data']];
             }
             return ['status'=>'noupdate'];
         }
 
-        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table)]])){
+        if($this->setInfoYaml($table,[$table=>['hash'=>$hash,'fields'=>$this->getFieldsFromDb($data,$table)+$this->getIndexInfo($table),'references'=>md5($this->getForeignKey($table))]])){
             return ['status'=>'first'];
         }
 
@@ -1258,7 +1279,9 @@ class manager {
                 $uniqueString=','.implode(',',$unique);
             }
 
-            //dd($this->getForeignKey($table));
+            if($this->getForeignKey($table)!==NULL){
+                $uniqueString=','.$this->getForeignKey($table);
+            }
 
             return 'CREATE TABLE IF NOT EXISTS '.$table.' (
             '.implode(",
@@ -1306,12 +1329,20 @@ WHERE cols.TABLE_SCHEMA=DATABASE()
         foreach ($result as $key=>$foreigns){
             foreach ($result[$key] as $fkey=>$fval){
                 if($result[$key]['REFERENCED_TABLE_NAME']!==NULL){
-                    $foreignList[$table][$fkey]=$fval;
+                    $foreignList[$table][$result[$key]['COLUMN_NAME']][$fkey]=$fval;
                 }
             }
         }
 
-        dd($foreignList);
+        $foreignStringResult=NULL;
+        if(array_key_exists($table,$foreignList) && count($foreignList[$table])){
+
+            foreach($foreignList[$table] as $column=>$properties){
+                $foreignStringResult='CONSTRAINT '.$foreignList[$table][$column]['CONSTRAINT_NAME'].' FOREIGN KEY '.$table.'('.$foreignList[$table][$column]['COLUMN_NAME'].') REFERENCES '.$foreignList[$table][$column]['REFERENCED_TABLE_NAME'].'('.$foreignList[$table][$column]['REFERENCED_COLUMN_NAME'].') ON DELETE '.$foreignList[$table][$column]['DELETE_RULE'].' ON UPDATE '.$foreignList[$table][$column]['UPDATE_RULE'].'';
+            }
+        }
+
+        return $foreignStringResult;
     }
 
 
@@ -1333,6 +1364,10 @@ WHERE cols.TABLE_SCHEMA=DATABASE()
     public function tableFormUpdate($object,$table){
 
         $full=$this->getShowFullColumns();
+
+        if(array_key_exists("references",$object)){
+            return 'ALTER TABLE '.$table.' ADD '.$object['references'];
+        }
 
         if(array_key_exists("diff",$object)){
 
