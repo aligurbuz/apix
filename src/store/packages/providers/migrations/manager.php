@@ -1251,14 +1251,14 @@ class manager {
         }
 
 
+        $uniqueString='';
         if(count($list)){
 
             if(count($unique)){
                 $uniqueString=','.implode(',',$unique);
             }
-            else{
-                $uniqueString='';
-            }
+
+            //dd($this->getForeignKey($table));
 
             return 'CREATE TABLE IF NOT EXISTS '.$table.' (
             '.implode(",
@@ -1267,6 +1267,51 @@ class manager {
             '.$uniqueString.'
             ) ENGINE='.$statusLike[$table][0]->Engine.' DEFAULT COLLATE='.$statusLike[$table][0]->Collation.' AUTO_INCREMENT=1 ;';
         }
+    }
+
+
+    /**
+     * engine method is main method.
+     *
+     * @return class object
+     */
+    public function getForeignKey($table){
+        $foreignSql='SELECT cols.COLUMN_NAME, refs.CONSTRAINT_NAME,refs.REFERENCED_TABLE_NAME, refs.REFERENCED_COLUMN_NAME,
+  cRefs.UPDATE_RULE, cRefs.DELETE_RULE
+FROM INFORMATION_SCHEMA.`COLUMNS` as cols
+  LEFT JOIN INFORMATION_SCHEMA.`KEY_COLUMN_USAGE` AS refs
+    ON refs.TABLE_SCHEMA=cols.TABLE_SCHEMA
+       AND refs.REFERENCED_TABLE_SCHEMA=cols.TABLE_SCHEMA
+       AND refs.TABLE_NAME=cols.TABLE_NAME
+       AND refs.COLUMN_NAME=cols.COLUMN_NAME
+  LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS cRefs
+    ON cRefs.CONSTRAINT_SCHEMA=cols.TABLE_SCHEMA
+       AND cRefs.CONSTRAINT_NAME=refs.CONSTRAINT_NAME
+  LEFT JOIN INFORMATION_SCHEMA.`KEY_COLUMN_USAGE` AS links
+    ON links.TABLE_SCHEMA=cols.TABLE_SCHEMA
+       AND links.REFERENCED_TABLE_SCHEMA=cols.TABLE_SCHEMA
+       AND links.REFERENCED_TABLE_NAME=cols.TABLE_NAME
+       AND links.REFERENCED_COLUMN_NAME=cols.COLUMN_NAME
+  LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS cLinks
+    ON cLinks.CONSTRAINT_SCHEMA=cols.TABLE_SCHEMA
+       AND cLinks.CONSTRAINT_NAME=links.CONSTRAINT_NAME
+WHERE cols.TABLE_SCHEMA=DATABASE()
+      AND cols.TABLE_NAME="'.$table.'"';
+
+        $query=$this->db->prepare($foreignSql);
+        $query->execute();
+        $result=$query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $foreignList=[];
+        foreach ($result as $key=>$foreigns){
+            foreach ($result[$key] as $fkey=>$fval){
+                if($result[$key]['REFERENCED_TABLE_NAME']!==NULL){
+                    $foreignList[$table][$fkey]=$fval;
+                }
+            }
+        }
+
+        dd($foreignList);
     }
 
 
