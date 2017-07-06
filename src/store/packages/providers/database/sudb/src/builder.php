@@ -848,7 +848,6 @@ class builder {
         }
 
         return $this->allMethodProcess(function() use ($args,$model){
-            error_reporting(0);
             $result=$this->queryFormatter();
             return ['CountAllData'=>$result['getCountAllTotal']];
 
@@ -871,11 +870,10 @@ class builder {
         return $this->allMethodProcess(function(){
             $result=$this->queryFormatter();
 
-            error_reporting(0);
             if(array_key_exists(0,$result['result'])){
-                return (object)['data'=>$result['result'][0]];
+                return ['result'=>$result['result'][0]];
             }
-            return (object)[];
+            return [];
 
 
         });
@@ -899,7 +897,7 @@ class builder {
         else{
             $this->max=$args;
         }
-        return $this;
+        return $this->get();
 
     }
 
@@ -920,7 +918,7 @@ class builder {
         else{
             $this->min=$args;
         }
-        return $this;
+        return $this->get();
 
     }
 
