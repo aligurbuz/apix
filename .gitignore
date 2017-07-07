@@ -11,6 +11,7 @@ src/store/packages/providers/database/doctrine/bootstrap.php
 src/store/commands/*
 !important src/store/commands/index.html
 tests/*
+!important tests/testApplication
 !important tests/index.html
 .DS_Store
 nbproject
