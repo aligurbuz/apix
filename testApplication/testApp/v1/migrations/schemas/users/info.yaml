@@ -1,0 +1,4 @@
+users:
+    hash: 84af428ff8c17fbecc6fa03a63b9c8ad
+    fields: { Field: [id, username, email, status, createdAt, updatedAt, price], Type: [int(11), varchar(255), varchar(255), int(11), int(11), int(11), float], 'Null': ['NO', 'YES', 'YES', 'YES', 'NO', 'NO', 'NO'], Key: [PRI, UNI, '', '', UNI, '', ''], Default: [null, null, null, null, null, null, null], Extra: [auto_increment, '', '', '', '', '', ''], Comment: ['', '', '', '', '', '', ''], Collation: [null, latin1_swedish_ci, latin1_swedish_ci, null, null, null, null], users: { Key_name: [createdAt, username, username_index], Column_name: [createdAt, username, username] } }
+    references: d41d8cd98f00b204e9800998ecf8427e
