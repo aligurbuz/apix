@@ -10,8 +10,6 @@ src/store/packages/providers/database/doctrine/bootstrap.php
 !important src/store/provisions/limitation/yaml/index.html
 src/store/commands/*
 !important src/store/commands/index.html
-tests/*
-!important tests/testApplication
 !important tests/index.html
 .DS_Store
 nbproject
