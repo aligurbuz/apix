@@ -1,3 +1,0 @@
-1499434510
-cacheGET_users_indexAction
-a:2:{s:11:"environment";s:5:"local";s:8:"userList";a:5:{s:12:"CountAllData";i:3;s:9:"paginator";i:10;s:11:"currentPage";i:1;s:8:"lastPage";i:1;s:7:"results";a:3:{i:0;a:7:{s:2:"id";i:3;s:8:"username";s:6:"troyya";s:5:"email";s:20:"galiant781@gmail.com";s:6:"status";i:1;s:9:"createdAt";i:1499326936;s:9:"updatedAt";i:1499326936;s:5:"price";d:200;}i:1;a:7:{s:2:"id";i:2;s:8:"username";s:5:"yasin";s:5:"email";s:17:"vindows@gmail.com";s:6:"status";i:1;s:9:"createdAt";i:1499325302;s:9:"updatedAt";i:1499325302;s:5:"price";d:56.78;}i:2;a:7:{s:2:"id";i:1;s:8:"username";s:9:"aligurbuz";s:5:"email";s:20:"galiant781@gmail.com";s:6:"status";i:1;s:9:"createdAt";i:1499325292;s:9:"updatedAt";i:1499325292;s:5:"price";d:123.45;}}}}

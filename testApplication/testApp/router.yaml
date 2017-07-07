@@ -1,2 +1,0 @@
-users:
-    v1: { get: { methods: [index], memory: { index: 23128 } } }
