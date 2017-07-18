@@ -224,29 +224,16 @@ class branches {
         //get service name
         $service=$this->getService();
 
-        if(defined("devPackage")){
-            $sourcename='\\src\\store\\packages\\dev\\'.$service.'\\devpack\\model\\'.$this->modelDir.'\\adapter\\'.$file.'Adapter';
-        }
-        else{
-            $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\adapter\\'.$file.'Adapter';
-        }
-
         $container = \DI\ContainerBuilder::buildDevContainer();
 
-        $resolve=$container->get($sourcename);
-
-
-
-        if(!method_exists($resolve,$method)){
-            if(defined("devPackage")){
-                $sourcename='\\src\\store\\packages\\dev\\'.$service.'\\devpack\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
-            }
-            else{
-                $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
-            }
-
-            $resolve=$container->get($sourcename);
+        if(defined("devPackage")){
+            $sourcename='\\src\\store\\packages\\dev\\'.$service.'\\devpack\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
         }
+        else{
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
+        }
+
+        $resolve=$container->get($sourcename);
 
 
         if(count($arguments)){
