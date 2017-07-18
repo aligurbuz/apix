@@ -161,6 +161,16 @@ class httprequest {
     }
 
     /**
+     * get query.
+     *
+     * @return array
+     */
+    public function query(){
+
+        return $this->request->query->all();
+    }
+
+    /**
      * get content.
      *
      * @return string
