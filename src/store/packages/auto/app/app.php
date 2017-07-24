@@ -60,7 +60,7 @@ class app
          * @return array
          */
         $node=[
-            'node'=>null
+            'node'=>$this->getNodeForApp()
         ];
 
         /**
@@ -69,5 +69,30 @@ class app
          * @return array
          */
         return array_merge($app,$node);
+    }
+
+
+    /**
+     * @var method node service
+     * @return array
+     */
+    public function getNodeForApp(){
+
+        $query= $this->request->query();
+        $node=staticPathModel::getServiceNamespace('node',$query['request']);
+
+        if(class_exists($node)){
+            $methods=utils::getClassMethods($node,true);
+
+            $nodes=[];
+            foreach($methods as $method){
+                $methodAction=$method.'Action';
+               $nodes[$method]=utils::resolve($node)->$methodAction();
+            }
+            return $nodes;
+        }
+        return [];
+
+
     }
 }

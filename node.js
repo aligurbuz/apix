@@ -31,6 +31,14 @@ var express=require("express");
  */
 var app=express();
 
+/**
+ * Get config for app settings.
+ *
+ * @param {object} req
+ * @public config.js
+ */
+global.async = require("async");
+
 var http = require('http').Server(app);
 
 /**
@@ -52,16 +60,25 @@ app.use(favicon(__dirname + '/favicon.ico'));
  * @param {object} req
  * @public
  */
-app.all("/",function (request,response,next){
+app.all("/:app/:node/:token",function (request,response,next){
 
   if(request.params.name=="favicon.ico")
   {
     response.send("favicon.ico")
   }
 
-  response.setHeader('Content-Type', 'application/json');
-  response.json({"success":true,"message":"hello apix"});
+  /**
+   * Get base config for app.
+   *
+   * @param {object} req
+   * @public config.js
+   */
+  global.base = require("./src/app/"+request.params.app+"/kernel/node/app.js");
 
+  response.setHeader('Content-Type', 'application/json');
+  base.config(request,function(resultData){
+    response.json(resultData);
+  })
 });
 
 http.listen(3000);
