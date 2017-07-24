@@ -79,7 +79,10 @@ class app
     public function getNodeForApp(){
 
         $query= $this->request->query();
-        $node=staticPathModel::getServiceNamespace('node',$query['request']);
+
+        $request=(isset($query['request'])) ? $query['request'] : 'get';
+
+        $node=staticPathModel::getServiceNamespace('node',$request);
 
         if(class_exists($node)){
             $methods=utils::getClassMethods($node,true);
