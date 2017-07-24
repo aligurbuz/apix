@@ -2,6 +2,8 @@ vendor
 apix
 .idea/
 node_modules
+package-lock.json
+package.json
 .env
 src/app/*
 !important src/app/index.html
