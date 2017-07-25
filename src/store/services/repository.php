@@ -54,7 +54,7 @@ class repository {
         }
 
         if(class_exists($repoNameSpace)){
-            return \Apix\utils::resolve($repoNameSpace)->$name();
+            return \Apix\utils::resolve($repoNameSpace)->$name($arguments);
         }
         throw new \BadFunctionCallException('Not available repo you want');
 
