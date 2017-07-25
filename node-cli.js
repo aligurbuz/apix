@@ -15,6 +15,7 @@ var cli = new Cli({
 
 cli.on("board", function(){
 
-  console.log(this.argv['app']);
+  var fs = require('fs');
+  fs = require('fs');
 
 });
