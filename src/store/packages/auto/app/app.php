@@ -90,7 +90,8 @@ class app
             $nodes=[];
             foreach($methods as $method){
                 $methodAction=$method.'Action';
-               $nodes[$method]=utils::resolve($node)->$methodAction();
+                $nodeClass=utils::resolve($node);
+               $nodes[$method]=$nodeClass->$methodAction();
             }
             return $nodes;
         }
