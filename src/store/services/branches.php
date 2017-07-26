@@ -175,6 +175,11 @@ class branches {
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\'.strtolower(request).'Service';
         }
 
+
+        if(!class_exists($sourcename)){
+            throw new \InvalidArgumentException('The specified service main is not available');
+        }
+
         $container = \DI\ContainerBuilder::buildDevContainer();
         return $container->get($sourcename)->$method($arguments);
     }
@@ -201,6 +206,10 @@ class branches {
         }
         else{
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\source\\bundle\\'.$file.'\\index';
+        }
+
+        if(!class_exists($sourcename)){
+            throw new \InvalidArgumentException('The specified source is not available');
         }
 
         $container = \DI\ContainerBuilder::buildDevContainer();
@@ -231,6 +240,10 @@ class branches {
         }
         else{
             $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\'.$this->modelDir.'\\builder\\'.$file.'Builder';
+        }
+
+        if(!class_exists($sourcename)){
+            throw new \InvalidArgumentException('The specified builder is not available');
         }
 
         $resolve=$container->get($sourcename);
