@@ -5,12 +5,7 @@ use Symfony\Component\Yaml\Yaml;
 /*
  * This file is translations package for every service.
  *
- * client and browser info
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
  */
-
 class translations {
 
     /**
