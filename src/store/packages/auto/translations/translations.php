@@ -19,10 +19,16 @@ class translations {
      * @return array
      */
     public function indexAction(){
+
+        //check lang and yaml query from url
         if(\app::checkUrlParam("lang") && \app::checkUrlParam("yaml")){
-            $transfile=root.'/'.src.'/'.app.'/storage/lang/'.\app::getUrlParam("lang").'/'.\app::getUrlParam("yaml").'.yaml';
-            if(file_exists($transfile)){
-                $get=Yaml::parse(file_get_contents($transfile));
+
+            //get lang file
+            $transFile=root.'/'.src.'/'.app.'/storage/lang/'.\app::getUrlParam("lang").'/'.\app::getUrlParam("yaml").'.yaml';
+
+            //check lang file
+            if(file_exists($transFile)){
+                $get=Yaml::parse(file_get_contents($transFile));
                 return $get;
             }
         }
