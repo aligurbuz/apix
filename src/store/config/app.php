@@ -70,7 +70,8 @@ class app {
             'cache'                 =>self::$servicePath.'cache',
             'pushNotification'      =>self::$servicePath.'pushNotifications',
             'event'                 =>self::$servicePath.'event',
-            'date'                 =>self::$servicePath.'date',
+            'date'                  =>self::$servicePath.'date',
+            'sparse'                =>self::$servicePath.'sparseFilter',
         ];
 
         //if container is null,all containers are evaluated
