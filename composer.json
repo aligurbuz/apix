@@ -41,7 +41,6 @@
         "illuminate/database": "^5.4",
         "illuminate/pagination": "^5.4",
         "symfony/event-dispatcher": "^3.2",
-        "vvondra/php-daemon": "^1.0",
         "fzaninotto/faker": "^1.6",
         "spatie/array-to-xml": "^2.3",
         "facebook/graph-sdk": "^5.5",
