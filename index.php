@@ -16,7 +16,7 @@ error_reporting(0);
 define("time_start",microtime(true));
 
 //root definer: application root path
-define("root",dirname(__FILE__));
+define("root",str_replace("\\","/",dirname(__FILE__)));
 
 //shortcut for src/app path
 define("src","src/app");
