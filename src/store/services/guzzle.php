@@ -40,11 +40,16 @@ class guzzle {
      * @return guzzle class
      */
     public function get($url=null,$responseObject=null){
+
         //get response guzzle
         $response = $this->client->request("GET",$url,[]);
-        if($responseObject==null){
+
+        define('guzzleOutPutter',$responseObject,true);
+
+        if($responseObject==null OR $responseObject=='json'){
             return json_decode($response->getBody()->getContents(),1);
         }
+        return $response->getBody()->getContents();
     }
 
     /**

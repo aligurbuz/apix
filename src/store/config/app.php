@@ -72,6 +72,7 @@ class app {
             'event'                 =>self::$servicePath.'event',
             'date'                  =>self::$servicePath.'date',
             'sparse'                =>self::$servicePath.'sparseFilter',
+            'xml'                   =>self::$servicePath.'simpleXml',
         ];
 
         //if container is null,all containers are evaluated
@@ -120,6 +121,7 @@ class app {
             'Date'=>self::$servicePath.'date',
             'Collection'=>self::$servicePath.'appCollection',
             'Faker'=>self::$servicePath.'faker',
+            'Xml'=>self::$servicePath.'simpleXml',
             'Pipeline'=>self::$servicePath.'pipeline',
             'Response'=>'Apix\ResponseManager',
             'Repo'=>self::$servicePath.'repository',
