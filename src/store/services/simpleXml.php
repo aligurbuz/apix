@@ -96,7 +96,7 @@ class simpleXml {
          * simple Xml load
          * return xml
          */
-        define('guzzleOutPutter','json');
+        define('guzzleOutPutter',app('base')->response);
 
         /**
          * @var $xml
