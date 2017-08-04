@@ -395,7 +395,7 @@ class app {
          * get webservice config
          * return object
          */
-        $webServiceConfig=Utils::resolve(staticPathModel::getWebServicePath().'\\config');
+        $webServiceConfig=Utils::resolve(staticPathModel::getWebServicePath().'\\connector');
 
         /**
          * @var $webServiceConfigUrlPrefix
