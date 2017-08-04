@@ -26,12 +26,22 @@ class simpleXml {
     /**
      * @var $url
      */
+    public static $url=false;
+
+    /**
+     * @var $url
+     */
     public static $xml;
 
     /**
      * @var pointer
      */
     public static $pointer=false;
+
+    /**
+     * @var $group
+     */
+    public static $group=null;
 
 
     /**
@@ -40,6 +50,7 @@ class simpleXml {
     public static function url($url=false,$pointer=false){
 
         if($url){
+            self::$url=true;
             self::$xml=app('guzzle')->get($url,'xml');
 
             if($pointer){
@@ -54,34 +65,12 @@ class simpleXml {
 
     public static function point($point=false){
 
+        if(self::$url===false){
+            self::$pointer=true;
+        }
+
         if($point && self::$pointer){
-
-            /**
-             * get webservice config
-             * return object
-             */
-            $webServiceConfig=Utils::resolve(staticPathModel::getWebServicePath().'\\config');
-
-            /**
-             * @var $webServiceConfigUrlPrefix
-             * url config load
-             */
-            $webServiceConfigUrlPrefix=$webServiceConfig->urlPrefix;
-
-            /**
-             * set webservice config point
-             * return string
-             */
-            $webServiceConfigPoint=$point;
-            if(array_key_exists($point,$webServiceConfig->endPoints())){
-                $webServiceConfigPoint=$webServiceConfig->endPoints($point);
-            }
-
-            /**
-             * get url finally
-             */
-            $webServiceConfigUrl=$webServiceConfigUrlPrefix.''.$webServiceConfigPoint;
-            static::url($webServiceConfigUrl,true);
+            static::url(\app::getWebServiceConfigUrl(self::$group,$point),true);
         }
 
         return new static;
@@ -116,6 +105,15 @@ class simpleXml {
         return (object)json_decode($json,TRUE);
 
 
+    }
+
+
+    /**
+     * @method __callStatic
+     */
+    public static function __callStatic($group,$args){
+        self::$group=$group;
+        return new static;
     }
 
 }

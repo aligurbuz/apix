@@ -381,6 +381,48 @@ class app {
     }
 
 
+    /**
+     * get getWebServiceConfigUrl.
+     *
+     * this checks web service url for config.
+     *
+     * @param string
+     * @return request getWebServiceConfigUrl
+     */
+    public static function getWebServiceConfigUrl($group=false,$point=false){
+
+        /**
+         * get webservice config
+         * return object
+         */
+        $webServiceConfig=Utils::resolve(staticPathModel::getWebServicePath().'\\config');
+
+        /**
+         * @var $webServiceConfigUrlPrefix
+         * url config load
+         */
+        $webServiceConfigUrlPrefix=$webServiceConfig->urlPrefix;
+
+        if($group!==null){
+            $webServiceConfigUrlPrefix=$webServiceConfig->urlPrefix[$group];
+        }
+
+        /**
+         * set webservice config point
+         * return string
+         */
+        $webServiceConfigPoint=$point;
+        if(array_key_exists($point,$webServiceConfig->endPoints(null,$group))){
+            $webServiceConfigPoint=$webServiceConfig->endPoints($point,$group);
+        }
+
+        /**
+         * get url finally
+         */
+        return $webServiceConfigUrlPrefix.''.$webServiceConfigPoint;
+    }
+
+
 
 
 }
