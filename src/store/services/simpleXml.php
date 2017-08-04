@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is search class service.
+ * This file is xml class service.
  *
  * client and browser info
  *
@@ -14,9 +14,11 @@ use Apix\Utils;
 use Apix\StaticPathModel;
 
 /**
- * Represents a index class.
+ * Represents a xml class.
  *
- * main call
+ * call1 :  \Xml::url(url)->point(pointer)->get()
+ * call2 :  \Xml::url()->get()
+ * call3 :  \Xml::groupName()->point(pointer)->get()
  * return type string
  *
  */
