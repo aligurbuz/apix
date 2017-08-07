@@ -73,6 +73,7 @@ class app {
             'date'                  =>self::$servicePath.'date',
             'sparse'                =>self::$servicePath.'sparseFilter',
             'xml'                   =>self::$servicePath.'simpleXml',
+            'soap'                  =>self::$servicePath.'soapClient',
         ];
 
         //if container is null,all containers are evaluated
@@ -122,6 +123,7 @@ class app {
             'Collection'=>self::$servicePath.'appCollection',
             'Faker'=>self::$servicePath.'faker',
             'Xml'=>self::$servicePath.'simpleXml',
+            'Soap'=>self::$servicePath.'soapClient',
             'Pipeline'=>self::$servicePath.'pipeline',
             'Response'=>'Apix\ResponseManager',
             'Repo'=>self::$servicePath.'repository',
@@ -389,7 +391,7 @@ class app {
      * @param string
      * @return request getWebServiceConfigUrl
      */
-    public static function getWebServiceConfigUrl($group=false,$point=false){
+    public static function getWebServiceConfigUrl($group=false,$point=null){
 
         /**
          * get webservice config
@@ -405,6 +407,14 @@ class app {
 
         if($group!==null){
             $webServiceConfigUrlPrefix=$webServiceConfig->urlPrefix[$group];
+        }
+
+        /**
+         * if point is null
+         * return $webServiceConfigUrlPrefix
+         */
+        if($point===null){
+            return $webServiceConfigUrlPrefix;
         }
 
         /**

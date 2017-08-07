@@ -111,6 +111,17 @@ class simpleXml {
 
 
     /**
+     * @method test
+     */
+    public static function toArray($data){
+
+        $xmlToArrayResolve=new \SimpleXMLElement($data);
+        return json_decode(json_encode($xmlToArrayResolve),1);
+
+    }
+
+
+    /**
      * @method __callStatic
      */
     public static function __callStatic($group,$args){
