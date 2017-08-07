@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is xml class service.
+ * This file is soap class service.
  *
  * client and browser info
  *
@@ -14,11 +14,8 @@ use Apix\Utils;
 use Apix\StaticPathModel;
 
 /**
- * Represents a xml class.
+ * Represents a soap class.
  *
- * call1 :  \Xml::url(url)->point(pointer)->get()
- * call2 :  \Xml::url()->get()
- * call3 :  \Xml::groupName()->point(pointer)->get()
  * return type string
  *
  */
