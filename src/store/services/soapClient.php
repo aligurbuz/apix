@@ -28,7 +28,7 @@ class soapClient {
     public static $url=false;
 
     /**
-     * @var $url
+     * @var $soap
      */
     public static $soap;
 
@@ -38,7 +38,7 @@ class soapClient {
     public static $group=null;
 
     /**
-     * @var $group
+     * @var $method
      */
     public static $method=null;
 
@@ -70,7 +70,7 @@ class soapClient {
 
 
     /**
-     * @method test
+     * @method get
      */
     public static function get($data=array()){
 
