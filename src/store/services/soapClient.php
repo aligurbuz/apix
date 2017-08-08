@@ -72,7 +72,7 @@ class soapClient {
     /**
      * @method get
      */
-    public static function get($data=array()){
+    public static function get($data){
 
         /**
          * simple define load
@@ -89,6 +89,8 @@ class soapClient {
         if(method_exists(self::$soap,$soapFunction)){
             return self::$soap->$soapFunction();
         }
+
+        dd(self::$soap->__getFunctions());
 
         $soapData=self::$soap->$soapFunction($data);
 

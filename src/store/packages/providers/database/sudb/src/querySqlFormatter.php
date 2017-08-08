@@ -36,6 +36,7 @@ class querySqlFormatter {
         $this->request=new request();
         $connector=new Connector(true);
         $this->db=$connector->get();
+        $this->driver=$connector->getDriver();
 
     }
 
@@ -352,6 +353,7 @@ class querySqlFormatter {
         $showColumns->execute();
 
         $columns=$showColumns->fetchAll(\PDO::FETCH_OBJ);
+
 
         if(!$type){
             return $this->getColumnsTable($columns,$model);

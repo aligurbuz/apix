@@ -91,4 +91,8 @@ class dbConnector {
         return $this->db;
 
     }
+
+    public function getDriver(){
+        return $this->driver;
+    }
 }
