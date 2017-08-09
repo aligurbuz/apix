@@ -39,10 +39,10 @@ class guzzle {
      *
      * @return guzzle class
      */
-    public function get($url=null,$responseObject=null){
+    public function get($url=null,$responseObject=null,$params=array()){
 
         //get response guzzle
-        $response = $this->client->request("GET",$url,[]);
+        $response = $this->client->request("GET",$url,$params);
 
         define('guzzleOutPutter',$responseObject,true);
 
@@ -62,7 +62,8 @@ class guzzle {
         $response = $this->client->request("POST",$url,[
             'form_params'=>$postdata
         ]);
-        if($responseObject==null){
+
+        if($responseObject==null OR $responseObject=='json'){
             return json_decode($response->getBody()->getContents(),1);
         }
     }
