@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "09a9a08a33759e882decaf8da04db1df803710e0"
+                "reference": "8e47c27c74744e50f388404fd58019b59ee6e1c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/09a9a08a33759e882decaf8da04db1df803710e0",
-                "reference": "09a9a08a33759e882decaf8da04db1df803710e0",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/8e47c27c74744e50f388404fd58019b59ee6e1c7",
+                "reference": "8e47c27c74744e50f388404fd58019b59ee6e1c7",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-08-08 14:22:33"
+            "time": "2017-08-09 13:36:33"
         },
         {
             "name": "container-interop/container-interop",
@@ -2792,22 +2792,25 @@
         },
         {
             "name": "react/promise-timer",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise-timer.git",
-                "reference": "ddedc67bfd7f579fc83e66ff67e3564b179297dd"
+                "reference": "3bc527fbd1201a193ab41c19b9a770d71a3514af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise-timer/zipball/ddedc67bfd7f579fc83e66ff67e3564b179297dd",
-                "reference": "ddedc67bfd7f579fc83e66ff67e3564b179297dd",
+                "url": "https://api.github.com/repos/reactphp/promise-timer/zipball/3bc527fbd1201a193ab41c19b9a770d71a3514af",
+                "reference": "3bc527fbd1201a193ab41c19b9a770d71a3514af",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3",
-                "react/event-loop": "~0.4.0|~0.3.0",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3.5",
                 "react/promise": "~2.1|~1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0 || ^4.8"
             },
             "type": "library",
             "autoload": {
@@ -2838,7 +2841,7 @@
                 "timeout",
                 "timer"
             ],
-            "time": "2016-12-27 08:12:19"
+            "time": "2017-08-08 16:30:19"
         },
         {
             "name": "react/react",
