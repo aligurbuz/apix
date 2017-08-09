@@ -263,6 +263,49 @@ class branches {
     }
 
 
+    /**
+     * get branch query.
+     *
+     * @return array
+     */
+    public function branchMongo($arguments){
+
+        //get method
+        $method=$this->getMethod();
+
+        //get file name
+        $file=$this->getFile();
+
+        //get service name
+        $service=$this->getService();
+
+        $container = \DI\ContainerBuilder::buildDevContainer();
+
+        if(defined("devPackage")){
+            $sourcename='\\src\\store\\packages\\dev\\'.$service.'\\devpack\\model\\mongo\\'.$file.'Collection';
+        }
+        else{
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\model\\mongo\\'.$file.'Collection';
+        }
+
+        if(!class_exists($sourcename)){
+            throw new \InvalidArgumentException('The specified mongo builder is not available');
+        }
+
+        $resolve=$container->get($sourcename);
+
+
+        if(count($arguments)){
+            $queryBuild=$resolve->$method($arguments);
+        }
+        else{
+            $queryBuild=$resolve->$method($arguments);
+        }
+
+        return $queryBuild;
+    }
+
+
 
 
     /**
