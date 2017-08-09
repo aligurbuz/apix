@@ -60,10 +60,9 @@ class jsonClient {
          * @var set config param
          */
         if(count(self::$param)===0){
-            self::webServiceConfigMethod('setUrlGetQuery');
-            if(is_array(self::$param) AND count(self::$param)){
-                self::$param=['query'=>self::$param];
-            }
+
+            self::webServiceConfigMethod('setUrlGetQuery','query');
+            self::webServiceConfigMethod('setHeaders','headers');
 
         }
     }
@@ -103,7 +102,13 @@ class jsonClient {
 
     public static function query($query=array()){
 
-        self::$param=['query'=>$query];
+        self::$param['query']=$query;
+        return new static;
+    }
+
+    public static function headers($headers=array()){
+
+        self::$param['headers']=$headers;
         return new static;
     }
 
@@ -161,11 +166,11 @@ class jsonClient {
     /**
      *
      */
-    public static function webServiceConfigMethod($method){
+    public static function webServiceConfigMethod($method,$type){
 
         $webServiceConfig=staticPathModel::getWebServiceConfig();
         if(method_exists($webServiceConfig,$method)){
-            self::$param=$webServiceConfig->$method();
+            self::$param[$type]=$webServiceConfig->$method();
         }
     }
 
