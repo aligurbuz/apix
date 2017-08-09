@@ -52,6 +52,24 @@ class jsonClient {
 
 
     /**
+     * construct method
+     */
+    public function __construct(){
+
+        /**
+         * @var set config param
+         */
+        if(count(self::$param)===0){
+            self::webServiceConfigMethod('setUrlGetQuery');
+            if(is_array(self::$param) AND count(self::$param)){
+                self::$param=['query'=>self::$param];
+            }
+
+        }
+    }
+
+
+    /**
      * return mixed
      */
     public static function url($url=false,$pointer=false){
@@ -102,14 +120,6 @@ class jsonClient {
         define('guzzleOutPutter',app('base')->response);
 
         /**
-         * @var set config param
-         */
-        if(count(self::$param)===0){
-            self::webServiceConfigMethod('setUrlGetQuery');
-            self::$param=['query'=>self::$param];
-        }
-
-        /**
          * get finally output
          */
         return self::$json->get(self::$url,'json',self::$param);
@@ -131,6 +141,9 @@ class jsonClient {
         /**
          * get finally output
          */
+
+        self::httpBuildQuery();
+
         return self::$json->post(self::$url,$post,'json');
 
 
@@ -140,6 +153,7 @@ class jsonClient {
      * @method __callStatic
      */
     public static function __callStatic($group,$args){
+
         self::$group=$group;
         return new static;
     }
@@ -148,9 +162,32 @@ class jsonClient {
      *
      */
     public static function webServiceConfigMethod($method){
+
         $webServiceConfig=staticPathModel::getWebServiceConfig();
         if(method_exists($webServiceConfig,$method)){
             self::$param=$webServiceConfig->$method();
+        }
+    }
+
+    /**
+     *
+     */
+    private static function firstSeperate (){
+
+        $firstSeperate='?';
+        if(preg_match('@\?@is',self::$url)){
+            $firstSeperate='&';
+        }
+        return $firstSeperate;
+    }
+
+    /**
+     *
+     */
+    private static function httpBuildQuery(){
+
+        if(count(self::$param)){
+            self::$url=self::$url.''.self::firstSeperate().''.http_build_query(self::$param['query']);
         }
     }
 
