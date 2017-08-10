@@ -42,7 +42,13 @@ class guzzle {
     public function get($url=null,$responseObject=null,$params=array()){
 
         //get response guzzle
-        $response = $this->client->request("GET",$url,$params);
+        try {
+            $response = $this->client->request("GET",$url,$params);
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e) {
+            dd('Caught response: ' . $e->getResponse()->getStatusCode());
+        }
+
 
         define('guzzleOutPutter',$responseObject,true);
 

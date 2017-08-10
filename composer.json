@@ -45,7 +45,8 @@
         "spatie/array-to-xml": "^2.3",
         "facebook/graph-sdk": "^5.5",
         "league/pipeline": "^0.3.0",
-        "mongodb/mongodb": "^1.1"
+        "mongodb/mongodb": "^1.1",
+        "cboden/ratchet": "^0.3.6"
     },
     "autoload": {
         "files": ["src/helpers.php"]

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace src\store\services;
+namespace src\store\packages\providers\webservice\src;
 
 use Apix\Utils;
 use Apix\StaticPathModel;
