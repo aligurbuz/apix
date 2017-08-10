@@ -50,6 +50,11 @@ class jsonClient {
      */
     public static $param=[];
 
+    /**
+     * @var $namelist
+     */
+    public static $namelist=[];
+
 
     /**
      * construct method
@@ -124,6 +129,8 @@ class jsonClient {
          */
         define('guzzleOutPutter',app('base')->response);
 
+        self::namelist();
+
         /**
          * get finally output
          */
@@ -157,6 +164,15 @@ class jsonClient {
     /**
      * @method __callStatic
      */
+    public static function __call($namelist,$args){
+
+        self::$namelist[$namelist]=$args[0];
+        return new static;
+    }
+
+    /**
+     * @method __callStatic
+     */
     public static function __callStatic($group,$args){
 
         self::$group=$group;
@@ -170,7 +186,19 @@ class jsonClient {
 
         $webServiceConfig=staticPathModel::getWebServiceConfig();
         if(method_exists($webServiceConfig,$method)){
-            self::$param[$type]=$webServiceConfig->$method();
+
+            $queryList=$webServiceConfig->$method();
+
+
+            if(self::$group===null){
+                self::$param[$type]=$queryList;
+            }
+
+            if(isset($queryList[self::$group])){
+                self::$param[$type]=$queryList[self::$group];
+            }
+
+
         }
     }
 
@@ -193,6 +221,20 @@ class jsonClient {
 
         if(count(self::$param)){
             self::$url=self::$url.''.self::firstSeperate().''.http_build_query(self::$param['query']);
+        }
+    }
+
+    /**
+     *
+     */
+    private static function namelist(){
+
+        foreach (self::$namelist as $namekey=>$namevalue){
+
+            if(in_array(':'.$namekey,self::$param['query'])){
+                $queryNeedle=array_search(':'.$namekey,self::$param['query']);
+                self::$param['query'][$queryNeedle]=self::$namelist[$namekey];
+            }
         }
     }
 
