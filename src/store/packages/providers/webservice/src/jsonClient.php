@@ -164,7 +164,7 @@ class jsonClient {
     /**
      * @method __callStatic
      */
-    public static function __call($namelist,$args){
+    public function __call($namelist,$args){
 
         self::$namelist[$namelist]=$args[0];
         return new static;
