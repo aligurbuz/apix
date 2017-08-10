@@ -46,7 +46,7 @@ class guzzle {
             $response = $this->client->request("GET",$url,$params);
         }
         catch (\GuzzleHttp\Exception\ClientException $e) {
-            dd('Caught response: ' . $e->getResponse()->getStatusCode());
+            throw new \LogicException('Webservice caught response: ' . $e->getResponse()->getBody());
         }
 
 
