@@ -540,7 +540,25 @@ class querySqlFormatter {
             foreach ($model->createdAndUpdatedFields as $key=>$value) {
                 $data[$value]=$time;
             }
+
+            foreach ($model->createdAndUpdatedFields as $cupValue ){
+
+                $checkCreatedAndUpdatedFields=$this->db->prepare("select COLUMN_NAME from information_schema.columns where TABLE_NAME='".$model->table."' AND  COLUMN_NAME='".$cupValue."'");
+                $checkCreatedAndUpdatedFields->execute();
+                $cupResult=$checkCreatedAndUpdatedFields->fetchAll(\PDO::FETCH_OBJ);
+
+                if(count($cupResult)==0){
+                    $addColumn=$this->db->prepare("ALTER TABLE ".$model->table." ADD COLUMN ".$cupValue." INT(14)");
+                    $addColumn->execute();
+                }
+            }
+
+
+
+
         }
+
+
 
 
 
