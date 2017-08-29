@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-class __1504013865__users {
+class __1504017152__users {
 
     /**
-     * __1504013865__users migration is main method.
+     * __1504017152__users migration is main method.
      *
      * @return array
      */

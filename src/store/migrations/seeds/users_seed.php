@@ -1,4 +1,4 @@
-<?php namespace src\app\mobi\v1\migrations\seeds;
+<?php namespace src\store\migrations\seeds;
 
 /*
  * This file is migration seed for model.
@@ -20,7 +20,7 @@ class users_seed {
 
         return [
             'prepare'=>'?@@?@@?@@?@@?@@?',
-            'execute'=>'1@@usertest@@123456@@users@gmail.com@@1504007295@@1504007295'
+            'execute'=>'1@@usertest@@123456@@test@gmail.com@@1504016953@@1504016953'
         ];
     }
 
