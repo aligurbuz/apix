@@ -19,3 +19,9 @@ php:
   - 7.0
   # aliased to a recent hhvm version
   - hhvm
+
+
+  before_script:
+    - cp .env.example .env
+    - php api project create mobi
+    - php api service create mobi:stk
