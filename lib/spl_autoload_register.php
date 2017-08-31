@@ -23,6 +23,9 @@ class autoloadRegister {
     private $classPath;
 
 
+    /**
+     * spl autoload register
+     */
     public function register(){
 
         // Use default autoload implementation
@@ -32,6 +35,10 @@ class autoloadRegister {
         });
     }
 
+    /**
+     * @param $class
+     * getRegisterCallBackVar
+     */
     private function getRegisterCallBackVar($class){
 
         $this->class=$class;
@@ -39,6 +46,9 @@ class autoloadRegister {
         $this->classPath=str_replace("\\","/",$this->classPath);
     }
 
+    /**
+     * registerCallBackFormatter
+     */
     private function registerCallBackFormatter () {
 
         $this->checkAliasClassFormatter($this->classPath,function() {
@@ -47,6 +57,12 @@ class autoloadRegister {
     }
 
 
+    /**
+     * @param $class
+     * @param $callback
+     * @return mixed|void
+     * checkAliasClassFormatter
+     */
     private function checkAliasClassFormatter($class,$callback){
 
         if(!file_exists($class)){
@@ -55,18 +71,33 @@ class autoloadRegister {
         return call_user_func($callback);
     }
 
+    /**
+     * @param $class
+     * getAliasClassFormatter
+     */
     private function getAliasClassFormatter($class){
 
-        $alias=str_replace(root.'/','',$class);
-        $alias=str_replace('.php','',$alias);
-
         //check system app control for class alias
-        $systemApp=\src\store\config\app::getClassAliasLoader();
+        $getClassAliasLoader=\src\store\config\app::getClassAliasLoader();
 
         if(defined('app')){
             $appAlias='\\src\\app\\'.app.'\\'.version.'\\config\\app';
-            $systemApp=array_merge($systemApp,$appAlias::getAppClassAlias());
+            $systemApp=array_merge($getClassAliasLoader,$appAlias::getAppClassAlias());
         }
+
+        $this->setAliasClassGroup($class,$systemApp);
+
+    }
+
+    /**
+     * @param $class
+     * @param $systemApp
+     * setAliasClassGroup
+     */
+    private function setAliasClassGroup($class,$systemApp){
+
+        $alias=str_replace(root.'/','',$class);
+        $alias=str_replace('.php','',$alias);
 
         //set class_alias groups
         if(array_key_exists($alias,$systemApp)){
