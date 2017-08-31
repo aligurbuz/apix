@@ -42,8 +42,7 @@ require_once root.'/vendor/autoload.php';
 */
 
 //load spl autoload register
-require_once(root.'/lib/spl_autoload_register.php');
-echo (new autoloadRegister())->register();
+echo (new \Apix\autoloadRegister())->register();
 
 //get connection
 echo \Apix\connection::run();
