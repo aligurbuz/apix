@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: aliemirgurbuz
- * Date: 2.09.2017
- * Time: 14:01
+ * Server requirements
+ * php api server | php api server [key]
  */
 
 return [
