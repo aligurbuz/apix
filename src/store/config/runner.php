@@ -8,9 +8,5 @@ return [
     'mixed'=>[
         'php api project create mobi',
         'php api service create mobi:stk'
-    ],
-
-    'showList'=>[
-        'ls -l'
     ]
 ];
