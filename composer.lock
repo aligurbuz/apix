@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "ba9a8e65086cc50a676c4265074c22519f5712f7"
+                "reference": "a471002428d9e92e6c8288e75e1f47ba36fc25ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/ba9a8e65086cc50a676c4265074c22519f5712f7",
-                "reference": "ba9a8e65086cc50a676c4265074c22519f5712f7",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/a471002428d9e92e6c8288e75e1f47ba36fc25ba",
+                "reference": "a471002428d9e92e6c8288e75e1f47ba36fc25ba",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-09-04 13:05:51"
+            "time": "2017-09-04 18:03:52"
         },
         {
             "name": "container-interop/container-interop",
@@ -590,7 +590,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.5.0",
+            "version": "v5.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -634,7 +634,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.5.0",
+            "version": "v5.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -678,16 +678,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.5.0",
+            "version": "v5.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "0f8b6398baf4762fe147295dee156956f00a7743"
+                "reference": "679b52a11703578cbf1215095dde0a2adfbe6bea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/0f8b6398baf4762fe147295dee156956f00a7743",
-                "reference": "0f8b6398baf4762fe147295dee156956f00a7743",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/679b52a11703578cbf1215095dde0a2adfbe6bea",
+                "reference": "679b52a11703578cbf1215095dde0a2adfbe6bea",
                 "shasum": ""
             },
             "require": {
@@ -733,20 +733,20 @@
                 "orm",
                 "sql"
             ],
-            "time": "2017-08-29 19:22:34"
+            "time": "2017-09-03 15:31:52"
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.5.0",
+            "version": "v5.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
-                "reference": "5f6bd4beb6ff03c09a17aaca019e3b47c10cffe2"
+                "reference": "f7af1996811a251fb71e6725f8b677254c8f806f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pagination/zipball/5f6bd4beb6ff03c09a17aaca019e3b47c10cffe2",
-                "reference": "5f6bd4beb6ff03c09a17aaca019e3b47c10cffe2",
+                "url": "https://api.github.com/repos/illuminate/pagination/zipball/f7af1996811a251fb71e6725f8b677254c8f806f",
+                "reference": "f7af1996811a251fb71e6725f8b677254c8f806f",
                 "shasum": ""
             },
             "require": {
@@ -777,20 +777,20 @@
             ],
             "description": "The Illuminate Pagination package.",
             "homepage": "https://laravel.com",
-            "time": "2017-08-23 20:21:22"
+            "time": "2017-09-01 06:29:32"
         },
         {
             "name": "illuminate/support",
-            "version": "v5.5.0",
+            "version": "v5.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "8fd54c43171117146f7de7d5d24d59747f41bd77"
+                "reference": "6a1c08c4e89429a0333ad86c489088ceeadbcced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/8fd54c43171117146f7de7d5d24d59747f41bd77",
-                "reference": "8fd54c43171117146f7de7d5d24d59747f41bd77",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/6a1c08c4e89429a0333ad86c489088ceeadbcced",
+                "reference": "6a1c08c4e89429a0333ad86c489088ceeadbcced",
                 "shasum": ""
             },
             "require": {
@@ -834,7 +834,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2017-08-29 07:40:48"
+            "time": "2017-09-04 14:00:07"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
