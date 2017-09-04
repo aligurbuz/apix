@@ -11,9 +11,6 @@ class kernel
      */
     public $boot = [
 
-        /**
-         * check token via url
-         */
         'Apix\Boot\CheckForToken'
     ];
 
