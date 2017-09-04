@@ -1,7 +1,7 @@
 <?php
 namespace src;
 
-class Kernel
+class kernel
 {
 
     /**
@@ -11,6 +11,10 @@ class Kernel
      */
     public $boot = [
 
+        /**
+         * check token via url
+         */
+        'Apix\Boot\CheckForToken'
     ];
 
 }
