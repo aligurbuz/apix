@@ -14,7 +14,7 @@ class __1504017152__users {
     /**
      * __1504017152__users migration is main method.
      *
-     * @return array
+     * @return string
      */
     public static function up(){
 

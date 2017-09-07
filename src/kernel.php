@@ -11,7 +11,7 @@ class kernel
      */
     public $boot = [
 
-        'Apix\Boot\CheckForToken'
+        \Apix\boot\checkForToken::class
     ];
 
 }
