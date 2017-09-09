@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "b556a4d4475aeee9764d305a77609e7f34b8eeab"
+                "reference": "ce15b18cae207827dd26a73413ddcb19749f5f3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/b556a4d4475aeee9764d305a77609e7f34b8eeab",
-                "reference": "b556a4d4475aeee9764d305a77609e7f34b8eeab",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/ce15b18cae207827dd26a73413ddcb19749f5f3e",
+                "reference": "ce15b18cae207827dd26a73413ddcb19749f5f3e",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-09-07 11:11:05"
+            "time": "2017-09-09 14:16:19"
         },
         {
             "name": "container-interop/container-interop",
@@ -1775,16 +1775,16 @@
         },
         {
             "name": "spatie/array-to-xml",
-            "version": "2.6.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/array-to-xml.git",
-                "reference": "a32e51165f05d5b28ce115cc4184e578f9ee956e"
+                "reference": "abea6694036ab2d818ceb5c80485a24833a0f9cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/a32e51165f05d5b28ce115cc4184e578f9ee956e",
-                "reference": "a32e51165f05d5b28ce115cc4184e578f9ee956e",
+                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/abea6694036ab2d818ceb5c80485a24833a0f9cc",
+                "reference": "abea6694036ab2d818ceb5c80485a24833a0f9cc",
                 "shasum": ""
             },
             "require": {
@@ -1820,7 +1820,7 @@
                 "convert",
                 "xml"
             ],
-            "time": "2017-08-29 09:33:06"
+            "time": "2017-09-07 17:44:43"
         },
         {
             "name": "symfony/cache",
