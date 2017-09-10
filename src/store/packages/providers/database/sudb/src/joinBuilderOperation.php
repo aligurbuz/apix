@@ -10,6 +10,7 @@
 
 namespace src\store\packages\providers\database\sudb\src;
 use \src\store\packages\providers\database\sudb\src\querySqlFormatter as querySqlFormatter;
+use Src\Store\Services\Httprequest as Request;
 
 /**
  * Represents a index class.
@@ -77,18 +78,60 @@ class joinBuilderOperation {
     }
 
 
+    /**
+     * @param $data
+     * @return array
+     */
     public function callWithModel($data){
 
         $callWithModelArray=[];
         foreach ($data as $model=>$value){
-            if($value['auto']){
-                $callWithModelArray['joiner'][0][]=$model;
-                $callWithModelArray['joiner'][1][$model]=$value['fields'];
-                $callWithModelArray['type']=$value['join'];
-                $callWithModelArray['select'][$model]=$value['fields'];
+            $callWithModelArray=($value['auto']) ? $this->callWithModelArray($model,$value) : $this->sparseFieldsModelJoin($data);
+        }
+        return $callWithModelArray;
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    public function sparseFieldsModelJoin($data){
+
+        $queryString=(new Request())->getQueryString();
+        $callWithModelArray=[];
+
+        if(isset($queryString['relations'])){
+
+            $models=explode("-",$queryString['relations']);
+
+            foreach ($data as $model=>$value){
+
+                if(in_array($model,$models)){
+                    $callWithModelArray=$this->callWithModelArray($model,$value);
+                }
+
             }
 
         }
+
+        return $callWithModelArray;
+
+
+    }
+
+
+    /**
+     * @param $model
+     * @param $value
+     * @return array
+     */
+    private function callWithModelArray($model, $value){
+
+        $callWithModelArray=[];
+        $callWithModelArray['joiner'][0][]=$model;
+        $callWithModelArray['joiner'][1][$model]=$value['fields'];
+        $callWithModelArray['type']=$value['join'];
+        $callWithModelArray['select'][$model]=$value['fields'];
 
         return $callWithModelArray;
     }
