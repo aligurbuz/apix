@@ -7,6 +7,7 @@
 return [
     'mixed'=>[
         'php api project create mobi',
-        'php api service create mobi:stk'
+        'php api service create mobi:stk',
+        'php api model create mobi file:user table:users'
     ]
 ];

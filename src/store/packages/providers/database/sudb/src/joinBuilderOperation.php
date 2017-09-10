@@ -42,16 +42,20 @@ class joinBuilderOperation {
         $joinerModel=$model['model']->joiner;
 
         $joinerArray=[];
+
+       if(!isset($data['joiner'])){
+           $data=$this->callWithModel($joinerModel);
+       }
+
         if(array_key_exists('joiner',$data)){
-            
 
             foreach ($data['joiner'][0] as $myJoin) {
                 
-                $myJoinBuilder="\\src\\app\\mobi\\v1\\model\\sudb\\".$myJoin."";
+                $myJoinBuilder="\\src\\app\\".app."\\".version."\\model\\sudb\\".$myJoin."";
                 $myJoinClass=new $myJoinBuilder();
                 $myJoinTable=$myJoinClass->table;
                 
-                foreach ($joinerModel[$myJoin] as $key => $value) {
+                foreach ($joinerModel[$myJoin]['relations'] as $key => $value) {
                     $joinerArray['join'][] = strtoupper($data['type']) . ' JOIN ' . $myJoinTable . ' ON ' . $model['model']->table . '.' . $key . '=' . $myJoinTable . '.' . $value;
                 }
 
@@ -70,6 +74,23 @@ class joinBuilderOperation {
 
         return $joinerArray;
 
+    }
+
+
+    public function callWithModel($data){
+
+        $callWithModelArray=[];
+        foreach ($data as $model=>$value){
+            if($value['auto']){
+                $callWithModelArray['joiner'][0][]=$model;
+                $callWithModelArray['joiner'][1][$model]=$value['fields'];
+                $callWithModelArray['type']=$value['join'];
+                $callWithModelArray['select'][$model]=$value['fields'];
+            }
+
+        }
+
+        return $callWithModelArray;
     }
 
 
