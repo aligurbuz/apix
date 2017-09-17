@@ -8,6 +8,9 @@
             "email": "galiant781@gmail.com"
         }
     ],
+    "repositories": {
+        "packagist": { "url": "https://packagist.org", "type": "composer" }
+    },
     "require": {
         "apixphp/restapixlib":"dev-master",
         "php-di/php-di": "^5.4",

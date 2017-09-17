@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d34646132cefef7a7f2a0c9cf1920c72",
-    "content-hash": "519d57a254493a07b5aeef23423e84db",
+    "hash": "40c8720fe2f538677037e0533210b867",
+    "content-hash": "3ddcf9d1bcd2a9d144923a2059676b89",
     "packages": [
         {
             "name": "apixphp/restapixlib",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "edab58caf47675e5ac672bed1cc8d8a9214e28cd"
+                "reference": "7ad98681b2176d2ea4efe8f5526e65f84d482e65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/edab58caf47675e5ac672bed1cc8d8a9214e28cd",
-                "reference": "edab58caf47675e5ac672bed1cc8d8a9214e28cd",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/7ad98681b2176d2ea4efe8f5526e65f84d482e65",
+                "reference": "7ad98681b2176d2ea4efe8f5526e65f84d482e65",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-09-10 14:24:49"
+            "time": "2017-09-17 09:56:35"
         },
         {
             "name": "container-interop/container-interop",
@@ -1824,23 +1824,24 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "4f92761dc13c4e0132168964fb1c577eee96ee3c"
+                "reference": "0fb57f94f58bcadd7a11215039bc59b5000968e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/4f92761dc13c4e0132168964fb1c577eee96ee3c",
-                "reference": "4f92761dc13c4e0132168964fb1c577eee96ee3c",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/0fb57f94f58bcadd7a11215039bc59b5000968e5",
+                "reference": "0fb57f94f58bcadd7a11215039bc59b5000968e5",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
                 "psr/cache": "~1.0",
                 "psr/log": "~1.0",
-                "psr/simple-cache": "^1.0"
+                "psr/simple-cache": "^1.0",
+                "symfony/polyfill-apcu": "~1.1"
             },
             "conflict": {
                 "symfony/var-dumper": "<3.3"
@@ -1854,9 +1855,6 @@
                 "doctrine/cache": "~1.6",
                 "doctrine/dbal": "~2.4",
                 "predis/predis": "~1.0"
-            },
-            "suggest": {
-                "symfony/polyfill-apcu": "For using ApcuAdapter on HHVM"
             },
             "type": "library",
             "extra": {
@@ -1892,20 +1890,20 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2017-08-28 08:20:24"
+            "time": "2017-09-03 14:06:51"
         },
         {
             "name": "symfony/console",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "d6596cb5022b6a0bd940eae54a1de78646a5fda6"
+                "reference": "a1e1b01293a090cb9ae2ddd221a3251a4a7e4abf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/d6596cb5022b6a0bd940eae54a1de78646a5fda6",
-                "reference": "d6596cb5022b6a0bd940eae54a1de78646a5fda6",
+                "url": "https://api.github.com/repos/symfony/console/zipball/a1e1b01293a090cb9ae2ddd221a3251a4a7e4abf",
+                "reference": "a1e1b01293a090cb9ae2ddd221a3251a4a7e4abf",
                 "shasum": ""
             },
             "require": {
@@ -1960,20 +1958,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-08-27 14:52:21"
+            "time": "2017-09-06 16:40:18"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "084d804fe35808eb2ef596ec83d85d9768aa6c9d"
+                "reference": "8beb24eec70b345c313640962df933499373a944"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/084d804fe35808eb2ef596ec83d85d9768aa6c9d",
-                "reference": "084d804fe35808eb2ef596ec83d85d9768aa6c9d",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/8beb24eec70b345c313640962df933499373a944",
+                "reference": "8beb24eec70b345c313640962df933499373a944",
                 "shasum": ""
             },
             "require": {
@@ -2016,11 +2014,11 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-08-27 14:52:21"
+            "time": "2017-09-01 13:23:39"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -2083,7 +2081,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -2132,7 +2130,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -2181,16 +2179,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "14bacad23a4f075bfd3fd456755236cb261320e3"
+                "reference": "2cdc7de1921d1a1c805a13dc05e44a2cd58f5ad3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/14bacad23a4f075bfd3fd456755236cb261320e3",
-                "reference": "14bacad23a4f075bfd3fd456755236cb261320e3",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/2cdc7de1921d1a1c805a13dc05e44a2cd58f5ad3",
+                "reference": "2cdc7de1921d1a1c805a13dc05e44a2cd58f5ad3",
                 "shasum": ""
             },
             "require": {
@@ -2230,7 +2228,60 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-08-10 07:07:06"
+            "time": "2017-09-06 17:07:39"
+        },
+        {
+            "name": "symfony/polyfill-apcu",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-apcu.git",
+                "reference": "cec32398a973a9bfe9d2f94f4b5d5e186b40b698"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/cec32398a973a9bfe9d2f94f4b5d5e186b40b698",
+                "reference": "cec32398a973a9bfe9d2f94f4b5d5e186b40b698",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting apcu_* functions to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "apcu",
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2017-07-05 15:09:33"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2460,7 +2511,7 @@
         },
         {
             "name": "symfony/security-core",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
@@ -2525,7 +2576,7 @@
         },
         {
             "name": "symfony/security-csrf",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-csrf.git",
@@ -2647,7 +2698,7 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
@@ -3098,7 +3149,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
