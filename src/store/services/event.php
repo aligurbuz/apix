@@ -28,14 +28,14 @@ class event {
     /**
      * @var $path
      */
-    public $path;
+    public $queue_path;
 
     /**
      * event constructor.
      */
     public function __construct() {
 
-        $this->path=staticPathModel::getJobPath().'\apix';
+        $this->queue_path=staticPathModel::getJobPath().'\apix';
     }
 
     /**
@@ -53,14 +53,11 @@ class event {
 
         // check for task according name
         // if an task is available called name variable
-        // it returns an array
-        if(is_object($queue=$this->checkForTaskAccordingName($name))){
+        if($this->checkForTaskAccordingName($name)){
 
-            // if queue status is true
+            // if checkForTaskAccordingName is true
             // queue is run
-            if($queue->status){
-                $this->queueRun($queue);
-            }
+            $this->queueRun($name);
         }
 
         //callback return
@@ -70,28 +67,26 @@ class event {
 
     /**
      * @param $name
-     * @return object
+     * @return boolean
      */
     private function checkForTaskAccordingName($name){
 
         //if a task is available for name
-        // boolean status true other boolean status false
-        // queue param is new task
-        if(class_exists($task=$this->path.'\\'.$name.'\task')){
-            return (object)[
-                'status'=>true,
-                'queue'=>(new $task)
-            ];
+        // boolean true other boolean false
+        if(class_exists($task=$this->queue_path.'\\'.$name.'\task')){
+            return true;
         }
-        return (object)[
-            'status'=>true
-        ];
+        return false;
     }
 
     /**
-     * @param $queue
+     * @param $name
+     * process runner
+     * @return void
      */
-    private function queueRun($queue){
-        dd($queue);
+    private function queueRun($name){
+
+        $process = new Process('php api job run '.app.' '.$name);
+        $process->run();
     }
 }
