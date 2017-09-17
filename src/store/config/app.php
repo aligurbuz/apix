@@ -130,6 +130,7 @@ class app {
             'Repo'=>self::$servicePath.'repository',
             'Validator'=>'Respect\Validation\Validator',
             'dbCon'=>'\\src\\store\\config\\dbConnector',
+            'event'=>'\\src\\store\\services\\event',
             'Mongo'=>'\\src\\store\\packages\\providers\\database\\mongodb\\builder'
         ];
 

@@ -11,6 +11,11 @@
 
 namespace src\store\services;
 
+use Apix\utils;
+use Apix\staticPathModel;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
 /**
  * Represents a index class.
  *
@@ -20,39 +25,73 @@ namespace src\store\services;
 
 class event {
 
-    private $service=null;
+    /**
+     * @var $path
+     */
+    public $path;
 
     /**
-     * Constructor.
-     *
-     * @param type dependency injection and stk class
-     * main loader as construct method
+     * event constructor.
      */
-    public function __construct(){
-        $serviceBase=api.'serviceBaseController';
-        $this->service=new $serviceBase();
+    public function __construct() {
+
+        $this->path=staticPathModel::getJobPath().'\apix';
     }
 
     /**
-     * get dispatch method call.
-     * Object-oriented code has gone a long way to ensuring code extensibility.
-     * By creating classes that have well defined responsibilities, your code becomes more flexible and
-     * a developer can extend them with subclasses to modify their behaviors.
-     * But if they want to share the changes with other developers who have also made
-     * their own subclasses, code inheritance is no longer the answer.
-     *
-     * @return boolean
+     * @param null $name
+     * @param callable|null $callback
+     * @return mixed
      */
-    public function dispatch($name,$callback){
-        if(is_callable($callback)){
-            $callData=call_user_func($callback);
-            if($callData){
-                $events=$this->service->event();
-                $getEvent=$events[$name];
-                return $getEvent();
+    public function queue($name=null, callable $callback=null){
+
+        // if name variable is a closure value
+        // it throws an error as invalidArgumentException
+        if($name instanceof \Closure){
+            throw new \InvalidArgumentException('queue name is invalid');
+        }
+
+        // check for task according name
+        // if an task is available called name variable
+        // it returns an array
+        if(is_object($queue=$this->checkForTaskAccordingName($name))){
+
+            // if queue status is true
+            // queue is run
+            if($queue->status){
+                $this->queueRun($queue);
             }
         }
-        return false;
+
+        //callback return
+        return call_user_func($callback);
     }
 
+
+    /**
+     * @param $name
+     * @return object
+     */
+    private function checkForTaskAccordingName($name){
+
+        //if a task is available for name
+        // boolean status true other boolean status false
+        // queue param is new task
+        if(class_exists($task=$this->path.'\\'.$name.'\task')){
+            return (object)[
+                'status'=>true,
+                'queue'=>(new $task)
+            ];
+        }
+        return (object)[
+            'status'=>true
+        ];
+    }
+
+    /**
+     * @param $queue
+     */
+    private function queueRun($queue){
+        dd($queue);
+    }
 }
