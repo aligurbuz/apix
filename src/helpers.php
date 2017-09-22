@@ -39,7 +39,12 @@ if (!function_exists('auth')) {
     function auth()
     {
         $auth=src\store\packages\providers\auth\src\authenticate::class;
-        return apix\utils::resolve($auth);
+
+        /**
+         * @var $result \src\store\packages\providers\auth\src\authenticate
+         */
+        $result=apix\utils::resolve($auth);
+        return $result;
     }
 }
 

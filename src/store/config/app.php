@@ -74,6 +74,7 @@ class app {
             'sparse'                =>self::$servicePath.'sparseFilter',
             'xml'                   =>self::$servicePath.'simpleXml',
             'soap'                  =>self::$servicePath.'soapClient',
+            'outputResolver'        =>self::$servicePath.'outputResolver',
         ];
 
         //if container is null,all containers are evaluated
@@ -120,6 +121,7 @@ class app {
 
             //carbon get date process alias loader
             'Date'=>self::$servicePath.'date',
+            'outputResolver'=>self::$servicePath.'outputResolver',
             'Collection'=>self::$servicePath.'appCollection',
             'Faker'=>self::$servicePath.'faker',
             'XmlClient'=>'src\store\packages\providers\webservice\src\simpleXml',

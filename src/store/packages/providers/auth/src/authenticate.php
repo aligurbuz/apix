@@ -9,6 +9,8 @@
 
 namespace src\store\packages\providers\auth\src;
 
+use Src\Store\Packages\Providers\Auth\Src\Config;
+
 /**
  * Represents a authenticate class.
  *
@@ -16,9 +18,9 @@ namespace src\store\packages\providers\auth\src;
  * return type string
  */
 
-class authenticate {
+class authenticate extends Config {
 
-    public $client;
+    public $query;
 
     /**
      * authenticate construct.
@@ -26,10 +28,53 @@ class authenticate {
      */
     public function __construct(){
 
+        $this->auth=$this->getAuthList();
     }
 
-    public function attempt($data=array()){
-        return 'hello world';
+
+    /**
+     * @param $credentials
+     * @return mixed
+     */
+    public function getAuthModelQuery($credentials=array()){
+
+        /**
+         * @var $model
+         * get authenticate model
+         */
+        $model=$this->getModel();
+
+        //$credentials is array true and must be password
+        if(count($credentials) AND isset($credentials['password'])){
+
+            //config auth model properties
+            $this->query=$model::where(function($query) use($credentials) {
+
+                foreach ($credentials as $key=>$value){
+                    $query->where($key,'=',$value);
+                }
+            })->get();
+        }
+
+        return null;
+
+    }
+
+
+    /**
+     * @param array $credentials
+     * @return mixed|null|string
+     */
+    public function attempt($credentials=array()){
+
+        /**
+         * @var $authModelQuery
+         * we run model query for auth
+         */
+        $this->getAuthModelQuery($credentials);
+
+        return $this->query;
+
     }
 
 
