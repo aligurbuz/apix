@@ -35,6 +35,14 @@ if (!function_exists('environment')) {
     }
 }
 
+if (!function_exists('auth')) {
+    function auth()
+    {
+        $auth=src\store\packages\providers\auth\src\authenticate::class;
+        return apix\utils::resolve($auth);
+    }
+}
+
 
 if (!function_exists('trans')) {
     function trans($data=null,$langname=null)
