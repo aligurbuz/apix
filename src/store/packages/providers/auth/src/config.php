@@ -21,12 +21,36 @@ use Apix\StaticPathModel;
 
 class config {
 
+    //traits
+    use databaseDriver;
+
+    /**
+     * @var $query
+     * set model properties
+     */
+    public $query;
+
+
+    /**
+     * @var $auth
+     * global auth variable
+     */
     public $auth;
+
+    /**
+     * authenticate construct.
+     *
+     */
+    public function __construct(){
+
+        $this->auth=$this->getAuthList();
+    }
 
     /**
      * @return mixed|null|string
      */
     public function getAuthList(){
+
         return StaticPathModel::getConfigStaticApp('auth','array');
     }
 
@@ -34,7 +58,30 @@ class config {
      * @return mixed
      */
     public function getModel(){
+
         return $this->auth['provides']['model'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDriver(){
+
+        return $this->auth['provides']['driver'];
+    }
+
+    /**
+     * @param array $credentials
+     */
+    public function getAuthDriverModel($credentials=array()){
+
+        //get method name for driver
+        //it is database or other [like redis]
+        $driverMethod='getAuth'.$this->getDriver().'Query';
+
+        //get driver query properties
+        $this->$driverMethod($credentials);
+
     }
 
 }

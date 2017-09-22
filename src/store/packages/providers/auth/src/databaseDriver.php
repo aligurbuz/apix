@@ -18,26 +18,34 @@ use Src\Store\Packages\Providers\Auth\Src\Config;
  * return type string
  */
 
-class authenticate extends Config {
+trait databaseDriver {
 
     /**
-     * @param array $credentials
-     * @return mixed|null|string
-     * login post attempt
+     * @param $credentials
+     * @return mixed
      */
-    public function attempt($credentials=array()){
+    public function getAuthDatabaseQuery($credentials=array()){
 
         /**
-         * @var $getAuthDriverModel
-         * get driver and model query
+         * @var $model
+         * get authenticate model
          */
-        $this->getAuthDriverModel($credentials);
+        $model=$this->getModel();
 
-        return $this->query;
+        //$credentials is array true and must be password
+        if(count($credentials) AND isset($credentials['password'])){
+
+            //config auth model properties
+            $this->query=$model::where(function($query) use($credentials) {
+
+                foreach ($credentials as $key=>$value){
+                    $query->where($key,'=',$value);
+                }
+            })->get();
+        }
+
+        return null;
 
     }
-
-
-
 
 }
