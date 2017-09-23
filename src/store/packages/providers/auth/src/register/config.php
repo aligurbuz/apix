@@ -10,7 +10,6 @@
 namespace src\store\packages\providers\auth\src\register;
 
 use src\store\services\httprequest as Request;
-use src\store\packages\providers\auth\src\register\config as Config;
 
 /**
  * Represents a authenticate class.
@@ -19,56 +18,30 @@ use src\store\packages\providers\auth\src\register\config as Config;
  * return type string
  */
 
-class session extends Config {
+abstract class config {
 
     /**
-     * @var $config \src\store\packages\providers\auth\src\config
+     * @var $dataForHash
      */
-    public $config;
+    public $dataForHash=array();
 
     /**
-     * @var $data
-     */
-    public $data;
-
-    /**
-     * @var session
-     */
-    public $session;
-
-
-    /**
-     * database constructor.
      * @param $config
+     * @return string
      */
-    public function __construct($config) {
+    public function getAuthHash($config){
 
-        $this->config=$config;
-        $this->data=$this->config->query['results'][0];
-        $this->session=app('session');
+        //push to array auth credentials
+        //push to array auth client ip
+        //push to array auth client http browser info
+        $this->dataForHash              =$config->getCredentials();
+        $this->dataForHash['ip']        =(new Request())->getClientIp();
+        $this->dataForHash['agent']     =$_SERVER['HTTP_USER_AGENT'];
+
+        //set hash for dataForHash
+        //it hashes md5 and sha1
+        return md5(sha1(implode(',',$this->dataForHash)));
+
     }
-
-    /**
-     * @method register
-     */
-    public function register(){
-
-        //get hash for auth
-        $authHash=$this->getAuthHash($this->config);
-
-        //check session
-        if($this->session->has('auth')){
-
-            //session register for authHash
-            $this->session->set('auth',$authHash);
-        }
-
-        //query result
-        $this->config->query=[
-            'authToken'=>$authHash
-        ];
-    }
-
-
 
 }
