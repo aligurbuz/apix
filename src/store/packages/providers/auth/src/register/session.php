@@ -7,7 +7,7 @@
  * round-robin requests, etc) but largely it is very barebones. This was intentional. We want a common base that more sophisticated libraries can build on top of.
  */
 
-namespace src\store\packages\providers\auth\src;
+namespace src\store\packages\providers\auth\src\register;
 
 /**
  * Represents a authenticate class.
@@ -16,12 +16,17 @@ namespace src\store\packages\providers\auth\src;
  * return type string
  */
 
-class database {
+class session {
 
     /**
      * @var $config \src\store\packages\providers\auth\src\config
      */
     public $config;
+
+    /**
+     * @var $data
+     */
+    public $data;
 
 
     /**
@@ -31,34 +36,15 @@ class database {
     public function __construct($config) {
 
         $this->config=$config;
+        $this->data=$this->config->query['results'][0];
     }
 
     /**
-     * @param array $credentials
-     * @return null
+     * @method register
      */
-    public function attempt($credentials=array()){
+    public function register(){
 
-        /**
-         * @var $model
-         * get authenticate model
-         */
-        $model=$this->config->getModel();
-
-        //$credentials is array true and must be password
-        if(count($credentials)){
-
-            //config auth model properties
-            $this->config->query=$model::where(function($query) use($credentials) {
-
-                foreach ($credentials as $key=>$value){
-                    $query->where($key,'=',$value);
-                }
-            })->get();
-        }
-
-        return null;
-
+        dd($this->data);
     }
 
 }

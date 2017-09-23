@@ -24,7 +24,7 @@ class config {
      * @var $query
      * set model properties
      */
-    public $query;
+    public $query=null;
 
     /**
      * @var $guard
@@ -79,6 +79,14 @@ class config {
         return $this->auth['provides'][$this->guard]['credentials'];
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRegisterMethod(){
+
+        return $this->auth['provides'][$this->guard]['registerMethod'];
+    }
+
 
     /**
      * @param array $credentials
@@ -91,11 +99,28 @@ class config {
 
         //driver namespace
         //driver files must be in same directory
-        $driver=__NAMESPACE__.'\\'.$this->getDriver();
+        $driver=__NAMESPACE__.'\driver\\'.$this->getDriver();
+
 
         //call class for driver
         //it is database or other [like redis]
         (new $driver($this))->$method($credentials);
+
+    }
+
+
+    /**
+     * @method getAuthRegisterModel
+     */
+    public function getAuthRegisterModel(){
+
+        //register namespace
+        //register files must be in register directory
+        $driver=__NAMESPACE__.'\register\\'.$this->getRegisterMethod();
+
+        //call class for driver
+        //it is database or other [like redis]
+        (new $driver($this))->register();
 
     }
 
@@ -111,6 +136,20 @@ class config {
         //if credential array is sent as empty
         //it is assigned as credentials that in config/auth
         return (count($credentials)) ? $credentials : $this->getCredentials();
+
+    }
+
+
+    public function setAuthRegister(){
+
+        //if query variable contains error
+        //directly output null
+        if(isset($this->query['error'])){
+            return $this->query=null;
+        }
+
+        //set register driver
+        $this->getAuthRegisterModel();
 
     }
 

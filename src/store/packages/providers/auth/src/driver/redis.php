@@ -7,7 +7,7 @@
  * round-robin requests, etc) but largely it is very barebones. This was intentional. We want a common base that more sophisticated libraries can build on top of.
  */
 
-namespace src\store\packages\providers\auth\src;
+namespace src\store\packages\providers\auth\src\driver;
 
 /**
  * Represents a authenticate class.
