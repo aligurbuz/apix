@@ -30,6 +30,11 @@ class config {
      */
     public $query;
 
+    /**
+     * @var $guard
+     */
+    public $guard='default';
+
 
     /**
      * @var $auth
@@ -59,7 +64,7 @@ class config {
      */
     public function getModel(){
 
-        return $this->auth['provides']['model'];
+        return $this->auth['provides'][$this->guard]['model'];
     }
 
     /**
@@ -67,7 +72,15 @@ class config {
      */
     public function getDriver(){
 
-        return $this->auth['provides']['driver'];
+        return $this->auth['provides'][$this->guard]['driver'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCredentials(){
+
+        return $this->auth['provides'][$this->guard]['credentials'];
     }
 
     /**
@@ -81,6 +94,21 @@ class config {
 
         //get driver query properties
         $this->$driverMethod($credentials);
+
+    }
+
+
+    /**
+     * @param array $credentials
+     * @return array|mixed
+     */
+    public function checkCredentials($credentials=array()){
+
+        //if credential array is sent as isset
+        //it is assigned as normal
+        //if credential array is sent as empty
+        //it is assigned as credentials that in config/auth
+        return (count($credentials)) ? $credentials : $this->getCredentials();
 
     }
 
