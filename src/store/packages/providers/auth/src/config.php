@@ -9,7 +9,6 @@
 
 namespace src\store\packages\providers\auth\src;
 
-use Apix\Utils;
 use Apix\StaticPathModel;
 
 /**
@@ -20,9 +19,6 @@ use Apix\StaticPathModel;
  */
 
 class config {
-
-    //traits
-    use databaseDriver;
 
     /**
      * @var $query
@@ -83,17 +79,23 @@ class config {
         return $this->auth['provides'][$this->guard]['credentials'];
     }
 
+
     /**
      * @param array $credentials
+     * @param null $method
      */
-    public function getAuthDriverModel($credentials=array()){
+    public function getAuthDriverModel($credentials=array(), $method=null){
 
-        //get method name for driver
+        //check credentials for configuration
+        $credentials=$this->checkCredentials($credentials);
+
+        //driver namespace
+        //driver files must be in same directory
+        $driver=__NAMESPACE__.'\\'.$this->getDriver();
+
+        //call class for driver
         //it is database or other [like redis]
-        $driverMethod='getAuth'.$this->getDriver().'Query';
-
-        //get driver query properties
-        $this->$driverMethod($credentials);
+        (new $driver($this))->$method($credentials);
 
     }
 

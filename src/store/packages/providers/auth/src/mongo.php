@@ -9,8 +9,6 @@
 
 namespace src\store\packages\providers\auth\src;
 
-use Src\Store\Packages\Providers\Auth\Src\Config;
-
 /**
  * Represents a authenticate class.
  *
@@ -18,33 +16,30 @@ use Src\Store\Packages\Providers\Auth\Src\Config;
  * return type string
  */
 
-trait databaseDriver {
+class mongo {
 
     /**
-     * @param $credentials
-     * @return mixed
+     * @var $config \src\store\packages\providers\auth\src\config
      */
-    public function getAuthDatabaseQuery($credentials=array()){
+    public $config;
 
-        /**
-         * @var $model
-         * get authenticate model
-         */
-        $model=$this->getModel();
 
-        //$credentials is array true and must be password
-        if(count($credentials) AND isset($credentials['password'])){
+    /**
+     * database constructor.
+     * @param $config
+     */
+    public function __construct($config) {
 
-            //config auth model properties
-            $this->query=$model::where(function($query) use($credentials) {
+        $this->config=$config;
+    }
 
-                foreach ($credentials as $key=>$value){
-                    $query->where($key,'=',$value);
-                }
-            })->get();
-        }
+    /**
+     * @param array $credentials
+     * @return null
+     */
+    public function attempt($credentials=array()){
 
-        return null;
+        //make somethings
 
     }
 

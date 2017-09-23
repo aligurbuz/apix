@@ -9,8 +9,6 @@
 
 namespace src\store\packages\providers\auth\src;
 
-use Src\Store\Packages\Providers\Auth\Src\Config;
-
 /**
  * Represents a authenticate class.
  *
@@ -18,40 +16,31 @@ use Src\Store\Packages\Providers\Auth\Src\Config;
  * return type string
  */
 
-class authenticate extends Config {
+class redis {
+
+    /**
+     * @var $config \src\store\packages\providers\auth\src\config
+     */
+    public $config;
 
 
     /**
-     * @param null $guard
-     * @return $this
+     * database constructor.
+     * @param $config
      */
-    public function guard($guard=null){
+    public function __construct($config) {
 
-        //if guard variable is null,config guard is assigned it
-        //if it is not null, config guard
-        $this->guard=($guard===null) ? $this->guard: $guard;
-
-        return $this;
+        $this->config=$config;
     }
 
     /**
      * @param array $credentials
-     * @return mixed|null|string
-     * login post attempt
+     * @return null
      */
     public function attempt($credentials=array()){
 
-        /**
-         * @var $getAuthDriverModel
-         * get driver and model query
-         */
-        $this->getAuthDriverModel($credentials,'attempt');
-
-        return $this->query;
+       //make somethings
 
     }
-
-
-
 
 }
