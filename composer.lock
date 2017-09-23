@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "25707bef70ba38fa5bb903be250be8aa590b1112"
+                "reference": "6a043abea5c5a35632c73980c50c735d6928d930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/25707bef70ba38fa5bb903be250be8aa590b1112",
-                "reference": "25707bef70ba38fa5bb903be250be8aa590b1112",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/6a043abea5c5a35632c73980c50c735d6928d930",
+                "reference": "6a043abea5c5a35632c73980c50c735d6928d930",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-09-22 14:57:31"
+            "time": "2017-09-23 15:35:34"
         },
         {
             "name": "container-interop/container-interop",
