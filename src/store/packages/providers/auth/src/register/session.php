@@ -43,9 +43,9 @@ class session extends Config {
      */
     public function __construct($config) {
 
-        $this->config=$config;
-        $this->data=$this->config->query['results'][0];
-        $this->session=app('session');
+        $this->config       =$config;
+        $this->data         =$this->config->query['results'][0];
+        $this->session      =app('session');
     }
 
     /**
