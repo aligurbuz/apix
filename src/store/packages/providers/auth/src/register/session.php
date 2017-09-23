@@ -57,7 +57,7 @@ class session extends Config {
         $authHash=$this->getAuthHash($this->config);
 
         //check session
-        if($this->session->has('auth')){
+        if(!$this->session->has('auth')){
 
             //session register for authHash
             $this->session->set('auth',$authHash);
