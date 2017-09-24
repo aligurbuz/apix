@@ -25,7 +25,7 @@ class session extends Config {
     public $data;
 
     /**
-     * @var session
+     * @var $session \src\store\services\httpSession
      */
     public $session;
 
