@@ -16,13 +16,13 @@ abstract class config {
     /**
      * @var $dataForHash
      */
-    public $dataForHash=array();
+    protected $dataForHash=array();
 
     /**
      * @param $config
      * @return string
      */
-    public function getAuthHash($config){
+    protected function getAuthHash($config){
 
         /**
          * @var $config \src\store\packages\providers\auth\src\config
