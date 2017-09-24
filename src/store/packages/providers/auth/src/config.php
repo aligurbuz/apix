@@ -44,6 +44,7 @@ class config {
      */
     public function __construct(){
 
+        //get Auth List
         $this->auth=$this->getAuthList();
     }
 
@@ -52,6 +53,7 @@ class config {
      */
     public function getAuthList(){
 
+        //get config/auth as array
         return StaticPathModel::getConfigStaticApp('auth','array');
     }
 
@@ -60,6 +62,7 @@ class config {
      */
     public function getModel(){
 
+        //get model
         return $this->auth['provides'][$this->guard]['model'];
     }
 
@@ -68,6 +71,7 @@ class config {
      */
     public function getDriver(){
 
+        //get driver
         return $this->auth['provides'][$this->guard]['driver'];
     }
 
@@ -76,6 +80,7 @@ class config {
      */
     public function getCredentials(){
 
+        //get user credentials
         return $this->auth['provides'][$this->guard]['credentials'];
     }
 
@@ -84,6 +89,7 @@ class config {
      */
     public function getRegisterMethod(){
 
+        //get register method
         return $this->auth['provides'][$this->guard]['registerMethod'];
     }
 
