@@ -62,6 +62,23 @@ class session extends Config {
         ];
     }
 
+    public function check(){
+
+        if($this->session->has('auth')){
+
+            $authExplode=explode('_',$this->session->get('auth'));
+
+            //get auth information
+            $authId=$authExplode[0];
+            $authData=$authExplode[1];
+
+            //return compact for array
+            return compact('authId','authData');
+        }
+
+        return [];
+    }
+
 
 
 }

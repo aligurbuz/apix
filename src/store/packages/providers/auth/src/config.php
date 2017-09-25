@@ -52,7 +52,7 @@ class config {
     /**
      * @var $result
      */
-    public $result=null;
+    public $result=false;
 
 
     /**
@@ -122,6 +122,15 @@ class config {
     /**
      * @return mixed
      */
+    public function getTokenField(){
+
+        //get token field
+        return $this->auth['provides'][$this->guard]['token_field'];
+    }
+
+    /**
+     * @return mixed
+     */
     public function getRegisterMethod(){
 
         //get register method
@@ -142,7 +151,6 @@ class config {
         //driver files must be in same directory
         $driver=__NAMESPACE__.'\driver\\'.$this->getDriver();
 
-
         //call class for driver
         //it is database or other [like redis]
         (new $driver($this))->$method($credentials);
@@ -151,9 +159,11 @@ class config {
 
 
     /**
+     * @param $method
      * @method getAuthRegisterModel
+     * @return mixed
      */
-    public function getAuthRegisterModel(){
+    public function getAuthRegisterModel($method='register'){
 
         //register namespace
         //register files must be in register directory
@@ -161,7 +171,7 @@ class config {
 
         //call class for driver
         //it is database or other [like redis]
-        (new $driver($this))->register();
+        return (new $driver($this))->$method();
 
     }
 
@@ -183,9 +193,10 @@ class config {
 
 
     /**
+     * @param string $method
      * @method getAuthDriverBuilder
      */
-    public function getAuthDriverBuilder(){
+    public function getAuthDriverBuilder($method='attempt'){
 
         //builder namespace
         //register files must be in driver/builder directory
@@ -193,7 +204,7 @@ class config {
 
         //call class for driver
         //it is sudb as default  or other [like eloquent,doctrine]
-        (new $driver($this))->query();
+        (new $driver($this))->$method();
 
     }
 
@@ -213,16 +224,30 @@ class config {
     }
 
 
-    public function setAuthRegister(){
+    public function setAuthRegister($status=true){
 
         //if query variable contains error
         //directly output null
         if(isset($this->query['error'])){
-            return $this->query=null;
+
+            //query null
+            return $this->result=false;
         }
 
-        //set register driver
-        $this->getAuthRegisterModel();
+        if($status){
+
+            //set register driver
+            return $this->getAuthRegisterModel();
+        }
+
+        //if query is not null
+        if($this->query!==null) {
+
+            //set result true
+            $this->result=true;
+        }
+
+
 
     }
 

@@ -52,4 +52,19 @@ class database {
 
     }
 
+
+    /**
+     * @method check
+     */
+    public function check(){
+
+        //check auth in register model
+        $this->config->getAuthDriverBuilder('check');
+
+        //check login and if it is true
+        //set register process
+        $this->config->setAuthRegister(false);
+
+    }
+
 }

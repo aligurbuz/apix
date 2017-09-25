@@ -45,6 +45,23 @@ class authenticate extends Config {
     }
 
 
+    /**
+     * @method check
+     * @return null
+     */
+    public function check(){
+
+        /**
+         * @var $this->getAuthDriverModel
+         * get driver and model query
+         */
+        $this->getAuthDriverModel([],'check');
+
+        return $this->result;
+
+    }
+
+
 
 
 }
