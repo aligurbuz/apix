@@ -40,7 +40,7 @@ class authenticate extends Config {
          */
         $this->getAuthDriverModel($credentials,'attempt');
 
-        return $this->query;
+        return $this->result;
 
     }
 

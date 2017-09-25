@@ -39,22 +39,11 @@ class database {
      */
     public function attempt($credentials=array()){
 
-        /**
-         * @var $model
-         * get authenticate model
-         */
-        $model=$this->config->getModel();
-
         //$credentials is array true and must be password
-        if(count($credentials)){
+        if(count($this->config->credentials=$credentials)){
 
             //config auth model properties
-            $this->config->query=$model::where(function($query) use($credentials) {
-
-                foreach ($credentials as $key=>$value){
-                    $query->where($key,'=',$value);
-                }
-            })->get();
+            $this->config->getAuthDriverBuilder();
         }
 
         //check login and if it is true

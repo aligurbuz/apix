@@ -57,7 +57,7 @@ class session extends Config {
         }
 
         //query result
-        $this->config->query=[
+        $this->config->result=[
             'authToken'=>$this->session->get('auth')
         ];
     }

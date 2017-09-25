@@ -44,6 +44,16 @@ class config {
      */
     public $data;
 
+    /**
+     * @var $credentials
+     */
+    public $credentials;
+
+    /**
+     * @var $result
+     */
+    public $result=null;
+
 
     /**
      * authenticate construct.
@@ -71,6 +81,15 @@ class config {
 
         //get model
         return $this->auth['provides'][$this->guard]['model'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrm(){
+
+        //get model
+        return $this->auth['provides'][$this->guard]['orm'];
     }
 
     /**
@@ -152,13 +171,29 @@ class config {
      */
     public function getAuthEncryptModel(){
 
-        //register namespace
-        //register files must be in register directory
+        //encrypt namespace
+        //register files must be in encrypt directory
         $driver=__NAMESPACE__.'\encrypt\\'.$this->getEncrypt();
 
         //call class for driver
         //it is database or other [like redis]
         return (new $driver($this))->register();
+
+    }
+
+
+    /**
+     * @method getAuthDriverBuilder
+     */
+    public function getAuthDriverBuilder(){
+
+        //builder namespace
+        //register files must be in driver/builder directory
+        $driver=__NAMESPACE__.'\builder\\'.$this->getOrm();
+
+        //call class for driver
+        //it is sudb as default  or other [like eloquent,doctrine]
+        (new $driver($this))->query();
 
     }
 
