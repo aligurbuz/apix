@@ -19,6 +19,11 @@ abstract class config {
     protected $dataForHash=array();
 
     /**
+     * @var $contextHash
+     */
+    public $contextHash= array();
+
+    /**
      * @param $config
      * @return string
      */
@@ -34,9 +39,22 @@ abstract class config {
         $this->dataForHash['ip']        =(new Request())->getClientIp();
         $this->dataForHash['agent']     =$_SERVER['HTTP_USER_AGENT'];
 
+        //set context hash variable
+        $this->contextHash=$this->dataForHash;
+        $this->setContextHash('time',time());
+
         //set hash for dataForHash
         //it hashes md5 and sha1
-        return md5(sha1(implode(',',$this->dataForHash)));
+        return md5(sha1(implode(',',$this->contextHash)));
+
+    }
+
+    protected function setContextHash($key,$value){
+
+        if(!isset($this->contextHash[$key])){
+
+            $this->contextHash[$key]=$value;
+        }
 
     }
 

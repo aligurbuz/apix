@@ -46,11 +46,11 @@ class session extends Config {
      */
     public function register(){
 
-        //get hash for auth
-        $authHash=$this->getAuthHash($this->config);
-
         //check session
         if(!$this->session->has('auth')){
+
+            //get hash for auth
+            $authHash=$this->getAuthHash($this->config);
 
             //session register for authHash
             $this->session->set('auth',$authHash);
@@ -58,7 +58,7 @@ class session extends Config {
 
         //query result
         $this->config->query=[
-            'authToken'=>$authHash
+            'authToken'=>$this->session->get('auth')
         ];
     }
 
