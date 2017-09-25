@@ -88,6 +88,7 @@ abstract class config {
      */
     protected function getContextHash(){
 
+        //context hash with id algorithm
         return $this->id.'_'.md5(sha1(implode(',',$this->contextHash)));
     }
 
