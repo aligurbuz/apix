@@ -58,6 +58,10 @@ class sudb extends Config {
         })->get();
     }
 
+    /**
+     * @method check
+     * check auth from driver
+     */
     public function check(){
 
         //get model
