@@ -39,6 +39,13 @@ class config {
     public $auth;
 
     /**
+     * @var $data
+     * get auth data
+     */
+    public $data;
+
+
+    /**
      * authenticate construct.
      *
      */
@@ -87,6 +94,15 @@ class config {
     /**
      * @return mixed
      */
+    public function getEncrypt(){
+
+        //get user credentials
+        return $this->auth['provides'][$this->guard]['encrypt'];
+    }
+
+    /**
+     * @return mixed
+     */
     public function getRegisterMethod(){
 
         //get register method
@@ -127,6 +143,22 @@ class config {
         //call class for driver
         //it is database or other [like redis]
         (new $driver($this))->register();
+
+    }
+
+
+    /**
+     * @method getAuthEncryptModel
+     */
+    public function getAuthEncryptModel(){
+
+        //register namespace
+        //register files must be in register directory
+        $driver=__NAMESPACE__.'\encrypt\\'.$this->getEncrypt();
+
+        //call class for driver
+        //it is database or other [like redis]
+        return (new $driver($this))->register();
 
     }
 
