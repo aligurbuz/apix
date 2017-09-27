@@ -10,6 +10,7 @@
 namespace src\store\packages\providers\auth\src;
 
 use Apix\StaticPathModel;
+use src\store\packages\providers\database\sudb\src\utils;
 
 /**
  * Represents a authenticate class.
@@ -54,6 +55,11 @@ class config {
      */
     public $result=false;
 
+    /**
+     * @var authClass
+     */
+    public $authClass;
+
 
     /**
      * authenticate construct.
@@ -71,7 +77,11 @@ class config {
     public function getAuthList(){
 
         //get config/auth as array
-        return StaticPathModel::getConfigStaticApp('auth','array');
+        $authConfigClass=StaticPathModel::getConfigStaticApp('auth');
+        $this->authClass=utils::resolve($authConfigClass);
+
+        //auth handle return
+        return $this->authClass->handle();
     }
 
     /**
@@ -88,8 +98,14 @@ class config {
      */
     public function getOrm(){
 
-        //get model
-        return $this->auth['provides'][$this->guard]['orm'];
+        //model parse array with explode
+        $modelParseArray=explode("\\",$this->getModel());
+
+        //Pop the element off the end of array
+        array_pop($modelParseArray);
+
+        //get orm as standard
+        return end($modelParseArray);
     }
 
     /**
