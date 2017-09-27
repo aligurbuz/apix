@@ -276,6 +276,7 @@ class config {
             return $this->result=true;
         }
 
+        //result false
         return $this->result=false;
 
 

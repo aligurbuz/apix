@@ -52,6 +52,7 @@ class database {
 
     }
 
+
     /**
      * @method updateAppToken
      * @return mixed
@@ -62,6 +63,7 @@ class database {
         $this->config->getAuthDriverBuilder('updateAppToken');
 
     }
+
 
     /**
      * @method check
