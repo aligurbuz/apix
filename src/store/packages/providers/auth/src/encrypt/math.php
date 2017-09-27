@@ -29,6 +29,11 @@ class math extends Config {
      */
     public $data_id;
 
+    /**
+     * @var $request \src\store\services\httprequest
+     */
+     public $request;
+
 
     /**
      * database constructor.
@@ -38,6 +43,7 @@ class math extends Config {
 
         $this->config=$config;
         $this->data_id=$this->config->data['id'];
+        $this->request=new Request();
     }
 
     /**
@@ -45,9 +51,18 @@ class math extends Config {
      */
     public function register(){
 
-        return $this->data_id;
+        return $this->data_id * \ip2long($this->request->getClientIp());
     }
 
+    /**
+     * @param $id
+     * @method resolve
+     * @return mixed
+     */
+    public function resolve($id){
+
+        return $id / \ip2long($this->request->getClientIp());
+    }
 
 
 }

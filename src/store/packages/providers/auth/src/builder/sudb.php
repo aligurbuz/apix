@@ -36,9 +36,11 @@ class sudb extends Config {
     }
 
     /**
+     * @param $pure
      * @method register
+     * @return mixed
      */
-    public function attempt(){
+    public function attempt($pure=false){
 
         //get model
         $model=$this->model;
@@ -49,14 +51,37 @@ class sudb extends Config {
          */
         $credentials=$this->config->credentials;
 
-        //sudb orm query
-        $this->config->query=$model::where(function($query) use($credentials) {
+        //pure model query
+        //credentials coming from client
+        $query=$model::where(function($query) use($credentials) {
 
             foreach ($credentials as $key=>$value){
                 $query->where($key,'=',$value);
             }
-        })->get();
+        });
+
+        //pure true
+        if($pure){
+
+            //get pure query
+            //for update
+            return $query;
+        }
+
+        //sudb orm query
+        $this->config->query=$query->get();
+
     }
+
+    /**
+     * @method updateAppToken
+     */
+    public function updateAppToken(){
+
+        //app token update
+        $this->attempt(true)->update([$this->config->getTokenField()=>$this->config->token]);
+    }
+
 
     /**
      * @method check
@@ -77,7 +102,7 @@ class sudb extends Config {
             $this->config->query=$model::where(function($query) use($auth) {
 
                 $query->where('id','=',$auth['authId']);
-                //$query->where($this->config->getTokenField(),'=',$auth['authData']);
+                $query->where($this->config->getTokenField(),'=',$auth['token']);
 
             })->get();
 

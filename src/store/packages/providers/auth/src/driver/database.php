@@ -35,7 +35,7 @@ class database {
 
     /**
      * @param array $credentials
-     * @return null
+     * @return mixed
      */
     public function attempt($credentials=array()){
 
@@ -49,6 +49,18 @@ class database {
         //check login and if it is true
         //set register process
         $this->config->setAuthRegister();
+
+    }
+
+
+    /**
+     * @method updateAppToken
+     * @return mixed
+     */
+    public function updateAppToken(){
+
+        //config auth model properties
+        $this->config->getAuthDriverBuilder('updateAppToken');
 
     }
 

@@ -62,6 +62,20 @@ class authenticate extends Config {
     }
 
 
+    /**
+     * @method id
+     * @return integer
+     */
+    public function id(){
+
+        //take data from register model
+        $data=$this->getAuthRegisterModel('check');
+
+        //get auth id
+        return $data['authId'];
+    }
+
+
 
 
 }

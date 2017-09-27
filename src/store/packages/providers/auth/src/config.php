@@ -28,6 +28,11 @@ class config {
     public $query=null;
 
     /**
+     * @var $pureQuery
+     */
+    public $pureQuery;
+
+    /**
      * @var $guard
      */
     public $guard='default';
@@ -38,6 +43,11 @@ class config {
      * global auth variable
      */
     public $auth;
+
+    /**
+     * @var $token
+     */
+    public $token;
 
     /**
      * @var $data
@@ -141,7 +151,7 @@ class config {
     public function getTokenField(){
 
         //get token field
-        return $this->auth['provides'][$this->guard]['token_field'];
+        return $this->auth['provides'][$this->guard]['tokenField'];
     }
 
     /**
@@ -193,9 +203,12 @@ class config {
 
 
     /**
+     * @param $method
+     * @param $param
      * @method getAuthEncryptModel
+     * @return mixed
      */
-    public function getAuthEncryptModel(){
+    public function getAuthEncryptModel($method='register',$param=null){
 
         //encrypt namespace
         //register files must be in encrypt directory
@@ -203,7 +216,7 @@ class config {
 
         //call class for driver
         //it is database or other [like redis]
-        return (new $driver($this))->register();
+        return (new $driver($this))->$method($param);
 
     }
 
@@ -260,8 +273,10 @@ class config {
         if($this->query!==null) {
 
             //set result true
-            $this->result=true;
+            return $this->result=true;
         }
+
+        return $this->result=false;
 
 
 

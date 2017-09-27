@@ -54,6 +54,11 @@ class session extends Config {
 
             //session register for authHash
             $this->session->set('auth',$authHash);
+
+            //app token update
+            $this->config->token=$this->session->get('auth');
+            $this->config->getAuthDriverModel([],'updateAppToken');
+
         }
 
         //query result
@@ -62,21 +67,51 @@ class session extends Config {
         ];
     }
 
+    /**
+     * @method check
+     * @return array
+     */
     public function check(){
 
         if($this->session->has('auth')){
 
-            $authExplode=explode('_',$this->session->get('auth'));
+            $authExplode=$this->sessionAuthParse();
 
             //get auth information
-            $authId=$authExplode[0];
+            $authId=$this->config->getAuthEncryptModel('resolve',(int)$authExplode[0]);
             $authData=$authExplode[1];
+            $token=$this->session->get('auth');
 
             //return compact for array
-            return compact('authId','authData');
+            return compact('authId','authData','token');
         }
 
         return [];
+    }
+
+
+    /**
+     * @method destroy
+     * auth destroy
+     */
+    public function destroy(){
+
+        if($this->session->has('auth')){
+
+            //session auth destroy
+            $this->session->remove('auth');
+        }
+
+    }
+
+    /**
+     * @method sessionAuthParse
+     */
+    private function sessionAuthParse(){
+
+        //session auth parse
+        return explode('_',$this->session->get('auth'));
+
     }
 
 
