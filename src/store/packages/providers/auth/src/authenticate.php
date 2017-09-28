@@ -65,17 +65,41 @@ class authenticate extends Config {
 
     }
 
+    /**
+     * @method viaUrl
+     * @return null
+     */
+    public function viaUrl(){
+
+        /**
+         * @var $this->getAuthDriverModel
+         * get driver and model query
+         */
+        $this->getAuthDriverModel([],'check');
+
+        return $this->result;
+
+    }
+
 
     /**
      * @method user
-     * @return mixed
+     * @return object
      */
     public function user(){
 
         //take data
         $this->check();
 
-        return (object)$this->query['results'][0];
+        //check returned query
+        if(isset($this->query['results'])){
+
+            //get user information as object
+            return (object)$this->query['results'][0];
+        }
+
+        return null;
+
 
     }
 
