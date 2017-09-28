@@ -103,7 +103,7 @@ class sudb extends Config {
         }
 
         //check driver for auth and auth math as real calculating via client ip
-        if($auth['authMath']==$this->config->getAuthEncryptModel()){
+        if(isset($auth['authMath']) && $auth['authMath']==$this->config->getAuthEncryptModel()){
 
             //get query for auth id
             $this->config->query=$model::where(function($query) use($auth) {
@@ -115,6 +115,56 @@ class sudb extends Config {
 
         }
     }
+
+
+    /**
+     * @method persistent
+     * check auth from driver
+     */
+    public function persistent(){
+
+        //get model
+        $model=$this->model;
+
+        //get query for auth id
+        $persistentQuery=$model::where(function($query) {
+
+            $query->where($this->config->getTokenField(),'=',$this->config->getTokenPersistent());
+
+        })->get();
+
+        if(!isset($persistentQuery['error'])){
+
+            //persistent data
+            $persistentData=$persistentQuery['results'][0];
+
+            //call check method
+            $this->check();
+
+            //if query is null
+            if($this->config->query===null){
+
+                //set credentials
+                $attemptCredentials=[];
+
+                //config credentials key
+                foreach ($this->config->getCredentialsKey() as $credent){
+
+                    //set key credentials from config/auth
+                    $attemptCredentials[$credent]=$persistentData[$credent];
+                }
+
+                //set config persistent get token field from driver
+                $this->config->persistent=$persistentData[$this->config->getTokenField()];
+
+                //set new auth credentials attempt
+                $this->config->getAuthDriverModel($attemptCredentials,'attempt');
+            }
+        }
+
+
+    }
+
 
 
 

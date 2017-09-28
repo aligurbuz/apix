@@ -66,16 +66,16 @@ class authenticate extends Config {
     }
 
     /**
-     * @method viaUrl
+     * @method persistent
      * @return null
      */
-    public function viaUrl(){
+    public function persistent(){
 
         /**
          * @var $this->getAuthDriverModel
          * get driver and model query
          */
-        $this->getAuthDriverModel([],'check');
+        $this->getAuthDriverModel([],'persistent');
 
         return $this->result;
 

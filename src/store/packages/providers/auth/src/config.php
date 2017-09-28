@@ -76,6 +76,11 @@ class config {
      */
     public $request;
 
+    /**
+     * @var $persistent
+     */
+    public $persistent=null;
+
 
     /**
      * authenticate construct.
@@ -150,6 +155,25 @@ class config {
 
         //get user credentials
         return $this->auth['provides'][$this->guard]['encrypt'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPersistent(){
+
+        //get user credentials
+        return $this->auth['provides'][$this->guard]['persistent'];
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getPersistentKey(){
+
+        //get user credentials
+        return $this->auth['provides'][$this->guard]['persistentKey'];
     }
 
     /**
@@ -260,6 +284,10 @@ class config {
     }
 
 
+    /**
+     * @param bool $status
+     * @return bool|mixed
+     */
     public function setAuthRegister($status=true){
 
         //if query variable contains error
@@ -286,8 +314,43 @@ class config {
         //result false
         return $this->result=false;
 
-
-
     }
+
+    /**
+     * @method getTokenPersistent
+     * @return null
+     */
+    public function getTokenPersistent(){
+
+        //get persistent
+        $persistent=$this->getPersistent();
+
+        //get persistent Key
+        $persistentKey=$this->getPersistentKey();
+
+        //get request headers
+        $headers=$this->request->getHeaders();
+
+        if($persistent=="header" && isset($headers[$persistentKey])){
+
+            //get persistent auth
+            return $headers[$persistentKey][0];
+        }
+
+        return rand(1,999999);
+    }
+
+    /**
+     * @method getCredentialsKey
+     * @return array
+     */
+    public function getCredentialsKey(){
+
+        //get array keys from credentials
+        return array_keys($this->getCredentials());
+    }
+
+
+
 
 }

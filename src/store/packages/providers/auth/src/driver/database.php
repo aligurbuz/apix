@@ -79,4 +79,19 @@ class database {
 
     }
 
+
+    /**
+     * @method persistent
+     */
+    public function persistent(){
+
+        //check auth in register model
+        $this->config->getAuthDriverBuilder('persistent');
+
+        //check login and if it is true
+        //set register process
+        $this->config->setAuthRegister(false);
+
+    }
+
 }

@@ -29,6 +29,11 @@ class session extends Config {
      */
     public $session;
 
+    /**
+     * @var $persistent
+     */
+    public $persistent;
+
 
     /**
      * database constructor.
@@ -38,6 +43,7 @@ class session extends Config {
 
         $this->config               =$config;
         $this->session              =app('session');
+        $this->persistent           =$this->config->persistent;
     }
 
     /**
@@ -50,6 +56,9 @@ class session extends Config {
 
             //get hash for auth
             $authHash=$this->getAuthHash($this->config);
+
+            //check persistent and then real authHash
+            $authHash=($this->persistent===null) ? $authHash : $this->persistent;
 
             //session register for authHash
             $this->session->set('auth',$authHash);
@@ -111,6 +120,16 @@ class session extends Config {
 
         //session auth parse
         return explode('_',$this->session->get('auth'));
+
+    }
+
+
+    /**
+     * @method hasAuthSession
+     */
+    private function hasAuthSession(){
+
+        return $this->session->has('auth');
 
     }
 
