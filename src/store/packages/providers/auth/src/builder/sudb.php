@@ -2,7 +2,6 @@
 
 namespace src\store\packages\providers\auth\src\builder;
 
-use src\store\services\httprequest as Request;
 use src\store\packages\providers\auth\src\register\config as Config;
 
 /**
@@ -69,7 +68,8 @@ class sudb extends Config {
         }
 
         //sudb orm query
-        $this->config->query=$query->get();
+        $this->config->query    =$query->get();
+        $this->config->data     =$this->config->query['results'][0];
 
     }
 
@@ -95,8 +95,11 @@ class sudb extends Config {
         //check register method for auth
         $auth=$this->config->getAuthRegisterModel('check');
 
-        //check driver for auth
-        if(count($auth)){
+        //set config data id
+        $this->config->data['id']=$auth['authId'];
+
+        //check driver for auth and auth math as real calculating via client ip
+        if(count($auth) && $auth['authMath']==$this->config->getAuthEncryptModel()){
 
             //get query for auth id
             $this->config->query=$model::where(function($query) use($auth) {

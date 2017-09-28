@@ -11,6 +11,7 @@ namespace src\store\packages\providers\auth\src;
 
 use Apix\StaticPathModel;
 use src\store\packages\providers\database\sudb\src\utils;
+use src\store\services\httprequest as Request;
 
 /**
  * Represents a authenticate class.
@@ -70,6 +71,11 @@ class config {
      */
     public $authClass;
 
+    /**
+     * @var $request
+     */
+    public $request;
+
 
     /**
      * authenticate construct.
@@ -79,6 +85,7 @@ class config {
 
         //get Auth List
         $this->auth=$this->getAuthList();
+        $this->request=new Request();
     }
 
     /**

@@ -37,7 +37,6 @@ class session extends Config {
     public function __construct($config) {
 
         $this->config               =$config;
-        $this->config->data         =$this->config->query['results'][0];
         $this->session              =app('session');
     }
 
@@ -78,12 +77,13 @@ class session extends Config {
             $authExplode=$this->sessionAuthParse();
 
             //get auth information
+            $authMath=(int)$authExplode[0];
             $authId=$this->config->getAuthEncryptModel('resolve',(int)$authExplode[0]);
             $authData=$authExplode[1];
             $token=$this->session->get('auth');
 
             //return compact for array
-            return compact('authId','authData','token');
+            return compact('authMath','authId','authData','token');
         }
 
         return [];

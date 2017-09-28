@@ -34,6 +34,10 @@ class authenticate extends Config {
      */
     public function attempt($credentials=array()){
 
+        //destroy if there is auth session
+        //then,set register process
+        $this->getAuthRegisterModel('destroy');
+
         /**
          * @var $this->getAuthDriverModel
          * get driver and model query
