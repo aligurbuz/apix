@@ -262,7 +262,7 @@ class appCollection {
     /**
      * collection first get data.
      * The first method returns the first element in the collection that passes a given truth test:
-     * @return collection class
+     * @return mixed
      */
     public function first($data=array(),$callback=null)
     {
@@ -274,6 +274,23 @@ class appCollection {
                 return collect($data)->first();
             }
 
+        }
+        return null;
+    }
+
+
+    /**
+     * @param $data array
+     * @param $search
+     * @param $loose
+     * The search method searches the collection for the given value and returns its key if found.
+     * If the item is not found, false is returned.
+     * @return mixed
+     */
+    public function search($data=array(),$search,$loose=false)
+    {
+        if(count($data)){
+            return collect($data)->search($search,$loose);
         }
         return null;
     }
