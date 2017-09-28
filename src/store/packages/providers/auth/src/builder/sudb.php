@@ -95,11 +95,15 @@ class sudb extends Config {
         //check register method for auth
         $auth=$this->config->getAuthRegisterModel('check');
 
-        //set config data id
-        $this->config->data['id']=$auth['authId'];
+        //check authId from session
+        if(isset($auth['authId'])){
+
+            //set config data id
+            $this->config->data['id']=$auth['authId'];
+        }
 
         //check driver for auth and auth math as real calculating via client ip
-        if(count($auth) && $auth['authMath']==$this->config->getAuthEncryptModel()){
+        if($auth['authMath']==$this->config->getAuthEncryptModel()){
 
             //get query for auth id
             $this->config->query=$model::where(function($query) use($auth) {

@@ -67,16 +67,16 @@ class authenticate extends Config {
 
 
     /**
-     * @method id
-     * @return integer
+     * @method user
+     * @return mixed
      */
-    public function id(){
+    public function user(){
 
-        //take data from register model
-        $data=$this->getAuthRegisterModel('check');
+        //take data
+        $this->check();
 
-        //get auth id
-        return $data['authId'];
+        return (object)$this->query['results'][0];
+
     }
 
 
