@@ -63,8 +63,10 @@ class session extends Config {
             //session register for authHash
             $this->session->set('auth',$authHash);
 
-            //app token update
+            //app token
             $this->config->token=$this->session->get('auth');
+
+            //update app token from driver model
             $this->config->getAuthDriverModel([],'updateAppToken');
 
         }
@@ -81,14 +83,21 @@ class session extends Config {
      */
     public function check(){
 
-        if($this->session->has('auth')){
+        if($this->hasAuthSession()){
 
+            //session auth parse
             $authExplode=$this->sessionAuthParse();
 
-            //get auth information
+            //get authMath
             $authMath=(int)$authExplode[0];
+
+            //get auth id resolved via encrypt model
             $authId=$this->config->getAuthEncryptModel('resolve',(int)$authExplode[0]);
+
+            //get auth token
             $authData=$authExplode[1];
+
+            //get token from session
             $token=$this->session->get('auth');
 
             //return compact for array
@@ -105,7 +114,7 @@ class session extends Config {
      */
     public function destroy(){
 
-        if($this->session->has('auth')){
+        if($this->hasAuthSession()){
 
             //session auth destroy
             $this->session->remove('auth');
@@ -129,6 +138,7 @@ class session extends Config {
      */
     private function hasAuthSession(){
 
+        //get session auth
         return $this->session->has('auth');
 
     }
