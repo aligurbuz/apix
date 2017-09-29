@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d4c1b22e0acf5f99247a9b5d0c1d285",
-    "content-hash": "433b2a1099ed94ea8cf3c70c459c9f49",
+    "hash": "a06d964add0602041eefb27b55e3532b",
+    "content-hash": "be769d1f1b4c705dd1a81d7c866a6361",
     "packages": [
         {
             "name": "apixphp/restapixlib",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "31804cab383aa365288f8b99b6ecff9f704988b4"
+                "reference": "da08a95262f9a4919137262b9395458c99d7f7b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/31804cab383aa365288f8b99b6ecff9f704988b4",
-                "reference": "31804cab383aa365288f8b99b6ecff9f704988b4",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/da08a95262f9a4919137262b9395458c99d7f7b8",
+                "reference": "da08a95262f9a4919137262b9395458c99d7f7b8",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-09-28 14:32:05"
+            "time": "2017-09-29 12:20:25"
         },
         {
             "name": "container-interop/container-interop",

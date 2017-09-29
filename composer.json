@@ -27,7 +27,7 @@
         "symfony/debug": "^3.2",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/finder": "^3.2",
+        "symfony/finder": "^3.3",
         "symfony/security-csrf": "^3.2",
         "symfony/filesystem": "^3.2",
         "elasticsearch/elasticsearch": "~5.0",
