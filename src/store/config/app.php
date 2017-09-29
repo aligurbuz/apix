@@ -36,6 +36,14 @@ class app {
     private static $servicePath='\\src\\store\\services\\';
 
     /**
+     * Path Belonging To Service methods .
+     *
+     * @param type string
+     * general path using
+     */
+    private static $providers='\\src\\store\\packages\\providers\\';
+
+    /**
      * Constructor.
      * definition : class preloader with default
      * symfony component request class
@@ -75,6 +83,7 @@ class app {
             'xml'                   =>self::$servicePath.'simpleXml',
             'soap'                  =>self::$servicePath.'soapClient',
             'outputResolver'        =>self::$servicePath.'outputResolver',
+            'pipeline'              =>'League\Pipeline\Pipeline'
         ];
 
         //if container is null,all containers are evaluated
@@ -127,7 +136,7 @@ class app {
             'XmlClient'=>'src\store\packages\providers\webservice\src\simpleXml',
             'SoapClient'=>'src\store\packages\providers\webservice\src\soapClient',
             'JsonClient'=>'src\store\packages\providers\webservice\src\jsonClient',
-            'Pipeline'=>self::$servicePath.'pipeline',
+            'Pipeline'=>'League\Pipeline\Pipeline',
             'Response'=>'Apix\ResponseManager',
             'Repo'=>self::$servicePath.'repository',
             'Validator'=>'Respect\Validation\Validator',
