@@ -9,9 +9,8 @@
     <testsuites>
         <testsuite name="Apix Unit Test">
             <directory>
-                ./tests/
+                tests
             </directory>
-            <include>tests/apixTest.php</include>
         </testsuite>
     </testsuites>
 </phpunit>

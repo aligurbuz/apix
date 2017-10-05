@@ -104,6 +104,17 @@ class authenticate extends Config {
     }
 
 
+    /**
+     * @method logout
+     * @return object
+     */
+    public function logout(){
+
+        //auth register model destroy
+        return $this->getAuthRegisterModel('destroy');
+    }
+
+
 
 
 }

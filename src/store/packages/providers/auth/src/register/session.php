@@ -52,7 +52,7 @@ class session extends Config {
     public function register(){
 
         //check session
-        if(!$this->session->has('auth')){
+        if(!$this->hasAuthSession()){
 
             //get hash for auth
             $authHash=$this->getAuthHash($this->config);
@@ -118,7 +118,10 @@ class session extends Config {
 
             //session auth destroy
             $this->session->remove('auth');
+            return true;
         }
+
+        return false;
 
     }
 
