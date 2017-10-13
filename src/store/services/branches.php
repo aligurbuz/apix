@@ -202,10 +202,10 @@ class branches {
         $service=$this->getService();
 
         if(defined("devPackage")){
-            $sourcename='\\src\\store\\packages\\dev\\'.$service.'\\source\\bundle\\'.$file.'\\index';
+            $sourcename='\\src\\store\\packages\\dev\\'.$service.'\\source\\'.$file.'\\Index';
         }
         else{
-            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\source\\bundle\\'.$file.'\\index';
+            $sourcename='\\src\\app\\'.app.'\\'.version.'\\__call\\'.$service.'\\source\\'.$file.'\\Index';
         }
 
         if(!class_exists($sourcename)){
