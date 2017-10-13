@@ -49,6 +49,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^0.9.7",
-        "symfony/process": "^3.2"
+        "symfony/process": "^3.2",
+        "phploc/phploc": "^4.0"
     }
 }
