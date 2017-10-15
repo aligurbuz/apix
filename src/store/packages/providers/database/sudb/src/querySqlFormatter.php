@@ -30,6 +30,8 @@ class querySqlFormatter {
     private $password;
     private $db=null;
     private $request;
+    private $modelData=null;
+    private $childTableFields=[];
 
     public function __construct(){
 
@@ -50,7 +52,8 @@ class querySqlFormatter {
 
     public function getSqlPrepareFormatter($model){
 
-        ;
+        $this->modelData=$model;
+        $this->childTableFields=$this->arrayFieldData($model['model']->table,$model);
 
         if(in_array(false,$model['bool'])){
             return [
@@ -66,12 +69,12 @@ class querySqlFormatter {
 
 
         try {
-
             $prepare=$this->db->prepare($this->sqlBuilderDefinition($model));
             $prepare->execute($model['execute']);
             $result=$prepare->fetchAll(\PDO::FETCH_OBJ);
 
             if(count($result)){
+
                 return [
                     'getCountAllTotal'=>$this->getCountAllProcessor($model),
                     'paginator'=>$this->getModelOffsetPaginator($model),
@@ -81,7 +84,8 @@ class querySqlFormatter {
                     'fields'=>$this->getResultFields($result),
                     'prepare'=>$this->sqlBuilderDefinition($model),
                     'execute'=>$model['execute'],
-                    'resultDataInfo'=>$model['model']->resultDataInfo
+                    'resultDataInfo'=>$model['model']->resultDataInfo,
+                    'modelData'=>$this->modelData
                 ];
             }
 
@@ -109,6 +113,7 @@ class querySqlFormatter {
 
 
     }
+
 
     /**
      * Represents a getSqlPrepareFormatter class.
@@ -165,7 +170,6 @@ class querySqlFormatter {
             }
 
 
-
             if(array_key_exists('select',$model['join']) && $model['join']['select'][0]!==null){
 
                 $childTableFields=$this->arrayFieldData($model['model']->table,$model);
@@ -173,6 +177,7 @@ class querySqlFormatter {
                 $selectListReal=[];
                 foreach($model['join']['select'] as $fval){
                     $fvalEx=explode(".",$fval);
+                    $this->modelData['join']['selectGroup'][$fvalEx[0]][]=$fvalEx[1];
                     if(in_array($fvalEx[1],$childTableFields)){
                         $selectListReal[]=$fval.' as '.$fvalEx[0].''.ucfirst($fvalEx[1]);
                     }
@@ -198,9 +203,6 @@ class querySqlFormatter {
             $model['select']='min('.$model['min'].') as '.$model['min'];
         }
         //return select definition
-
-
-
 
         return "SELECT ".$model['select']." ".$joinSelect." FROM ".$model['model']->table." ".$join." ".$model['where']." ".$this->getGroupByProcessor($model)." ".$this->getOrderByProcessor($model)." ".$getPaginateProcessor."";
     }
@@ -982,6 +984,7 @@ class querySqlFormatter {
             }
         }
     }
+
 
 
 

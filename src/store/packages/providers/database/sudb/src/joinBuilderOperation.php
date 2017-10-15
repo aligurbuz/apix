@@ -72,7 +72,6 @@ class joinBuilderOperation {
             }
         }
 
-
         return $joinerArray;
 
     }

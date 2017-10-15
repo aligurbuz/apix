@@ -688,7 +688,7 @@ class builder {
                     $paginator=>(int)$result['paginator'],
                     $currentPage=>(int)$result['currentPage'],
                     $lastPaginator=>(int)ceil($lastpage),
-                    'results'=>$this->getColumnsType($result['result'],$result['columns'],$result['fields'])
+                    'results'=>$this->getColumnsType($result)
                 ];
             }
             else{
@@ -965,7 +965,11 @@ class builder {
      *
      * @return array
      */
-    private function getColumnsType($data,$types,$fields){
+    private function getColumnsType($result){
+
+        $data=$result['result'];
+        $types=$result['columns'];
+        $fields=$result['fields'];
         $list=[];
         if($fields!==null && $data!==false){
             foreach ($fields as $key=>$value) {
@@ -994,10 +998,44 @@ class builder {
             }
         }
 
+        return $this->resultRelationObjectGrouping($result,$list);
+
+
+    }
+
+    private function resultRelationObjectGrouping($result,$list){
+
+        if(isset($result['modelData']['join']['selectGroup'])){
+
+            $listData=[];
+            $selectGroup=$result['modelData']['join']['selectGroup'];
+
+            $groupList=[];
+            foreach ($selectGroup as $group=>$groupArray){
+
+                foreach ($groupArray as $gk=>$gv){
+                    $groupList[$gv]=$group;
+                }
+            }
+
+            foreach ($list as $key=>$data){
+
+                foreach ($list[$key] as $resultKey=>$resultData){
+
+                    if(isset($groupList[$resultKey])){
+                        $listData[$key][$groupList[$resultKey]][$resultKey]=$resultData;
+                    }
+                    else{
+                        $listData[$key][$resultKey]=$resultData;
+                    }
+
+                }
+            }
+
+            $list=$listData;
+        }
 
         return $list;
-
-
     }
 
     /**
