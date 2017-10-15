@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "f4d8331e0caa803a49450fb82f897d92a23152a5"
+                "reference": "7229bbaad85dbe74327d0e685b05b823a39b2d94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/f4d8331e0caa803a49450fb82f897d92a23152a5",
-                "reference": "f4d8331e0caa803a49450fb82f897d92a23152a5",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/7229bbaad85dbe74327d0e685b05b823a39b2d94",
+                "reference": "7229bbaad85dbe74327d0e685b05b823a39b2d94",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-10-13 09:53:30"
+            "time": "2017-10-13 14:37:58"
         },
         {
             "name": "container-interop/container-interop",
@@ -2029,16 +2029,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.4.1",
+            "version": "6.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b770d8ba7e60295ee91d69d5a5e01ae833cac220"
+                "reference": "ae6e2e062ff55263c7b04374c190aca45872b26a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b770d8ba7e60295ee91d69d5a5e01ae833cac220",
-                "reference": "b770d8ba7e60295ee91d69d5a5e01ae833cac220",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ae6e2e062ff55263c7b04374c190aca45872b26a",
+                "reference": "ae6e2e062ff55263c7b04374c190aca45872b26a",
                 "shasum": ""
             },
             "require": {
@@ -2109,7 +2109,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-10-07 17:53:53"
+            "time": "2017-10-15 06:16:19"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
