@@ -110,6 +110,9 @@ class authenticate extends Config {
      */
     public function logout(){
 
+        //update app_token
+        $this->attempt();
+
         //auth register model destroy
         return $this->getAuthRegisterModel('destroy');
     }
