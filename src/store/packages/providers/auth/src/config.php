@@ -334,7 +334,7 @@ class config {
         if($persistent=="header" && isset($headers[$persistentKey])){
 
             //get persistent auth
-            if($headers[$persistentKey][0]!==null){
+            if($headers[$persistentKey][0]!==null AND strlen(trim($headers[$persistentKey][0]))>0){
 
                 return $headers[$persistentKey][0];
             }

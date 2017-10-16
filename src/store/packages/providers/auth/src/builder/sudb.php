@@ -157,6 +157,8 @@ class sudb extends Config {
                 //set config persistent get token field from driver
                 $this->config->persistent=$persistentData[$this->config->getTokenField()];
 
+                dd($attemptCredentials);
+
                 //set new auth credentials attempt
                 $this->config->getAuthDriverModel($attemptCredentials,'attempt');
             }
