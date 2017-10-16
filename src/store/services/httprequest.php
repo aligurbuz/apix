@@ -211,7 +211,7 @@ class httprequest {
     /**
      * get only client header.
      *
-     * @return string
+     * @return array
      */
     public function getClientHeaders(){
 
@@ -226,6 +226,25 @@ class httprequest {
         }
         return $list;
 
-
     }
+
+
+    /**
+     * get only client header.
+     * @param $key string
+     * @return boolean
+     */
+    public function existHeader($key){
+
+        $header=$this->getHeaders();
+
+        if(isset($header[$key])){
+
+            return true;
+        }
+
+        return false;
+    }
+
+
 }
