@@ -334,7 +334,11 @@ class config {
         if($persistent=="header" && isset($headers[$persistentKey])){
 
             //get persistent auth
-            return $headers[$persistentKey][0];
+            if($headers[$persistentKey][0]!==null){
+
+                return $headers[$persistentKey][0];
+            }
+
         }
 
         return rand(1,999999);

@@ -95,7 +95,7 @@ class session extends Config {
             $authId=$this->config->getAuthEncryptModel('resolve',(int)$authExplode[0]);
 
             //get auth token
-            $authData=$authExplode[1];
+            $authData=(isset($authExplode[1])) ? $authExplode[1] : null;
 
             //get token from session
             $token=$this->session->get('auth');
