@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apixphp/restapixlib.git",
-                "reference": "53f7d2c6fddcca95463582e99ddf5163f161425d"
+                "reference": "9e390ab34eb0842861250d8befe8786eefb8c398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/53f7d2c6fddcca95463582e99ddf5163f161425d",
-                "reference": "53f7d2c6fddcca95463582e99ddf5163f161425d",
+                "url": "https://api.github.com/repos/apixphp/restapixlib/zipball/9e390ab34eb0842861250d8befe8786eefb8c398",
+                "reference": "9e390ab34eb0842861250d8befe8786eefb8c398",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "php",
                 "restapi"
             ],
-            "time": "2017-10-17 09:31:44"
+            "time": "2017-10-17 12:45:08"
         },
         {
             "name": "container-interop/container-interop",
@@ -644,7 +644,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.5.16",
+            "version": "v5.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -688,7 +688,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.5.16",
+            "version": "v5.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -732,16 +732,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.5.16",
+            "version": "v5.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "f3aa4ecbb188d5f02ea2624f5b739453a9b5abe5"
+                "reference": "9b3bdecfd74279d305ad1d3d56ae62b1b54a230d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/f3aa4ecbb188d5f02ea2624f5b739453a9b5abe5",
-                "reference": "f3aa4ecbb188d5f02ea2624f5b739453a9b5abe5",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/9b3bdecfd74279d305ad1d3d56ae62b1b54a230d",
+                "reference": "9b3bdecfd74279d305ad1d3d56ae62b1b54a230d",
                 "shasum": ""
             },
             "require": {
@@ -787,11 +787,11 @@
                 "orm",
                 "sql"
             ],
-            "time": "2017-10-16 12:20:11"
+            "time": "2017-10-17 12:16:50"
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.5.16",
+            "version": "v5.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -835,16 +835,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.5.16",
+            "version": "v5.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "0e5db373f0046151af5842c55fa87150267f9649"
+                "reference": "132b06edaab3808f63943004911d58785f164ab4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/0e5db373f0046151af5842c55fa87150267f9649",
-                "reference": "0e5db373f0046151af5842c55fa87150267f9649",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/132b06edaab3808f63943004911d58785f164ab4",
+                "reference": "132b06edaab3808f63943004911d58785f164ab4",
                 "shasum": ""
             },
             "require": {
@@ -888,7 +888,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2017-10-13 20:25:55"
+            "time": "2017-10-17 12:18:29"
         },
         {
             "name": "league/pipeline",
@@ -2508,16 +2508,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "1.1.13",
+            "version": "1.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "631affdbf2762c6d207921e18ab740d7eb5f7399"
+                "reference": "22f1f14430155c21c1d6ba271a652f28c5057851"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/631affdbf2762c6d207921e18ab740d7eb5f7399",
-                "reference": "631affdbf2762c6d207921e18ab740d7eb5f7399",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/22f1f14430155c21c1d6ba271a652f28c5057851",
+                "reference": "22f1f14430155c21c1d6ba271a652f28c5057851",
                 "shasum": ""
             },
             "require": {
@@ -2569,7 +2569,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2017-10-16 08:39:15"
+            "time": "2017-10-17 10:15:51"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
