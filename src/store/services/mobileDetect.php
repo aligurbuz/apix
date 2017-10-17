@@ -24,8 +24,6 @@ class mobileDetect {
 
     /**
      * Constructor.
-     *
-     * @param type dependency injection and function
      */
     public function __construct(){
 
@@ -56,23 +54,13 @@ class mobileDetect {
     }
 
     /**
-     * get isIphone.
-     *
+     * @method is
+     * @param $data
      * @return bool true|false
      */
-    public function isIphone(){
+    public function is($data){
 
-        return $this->mobile->isIphone();
-    }
-
-    /**
-     * get isAndroid.
-     *
-     * @return bool true|false
-     */
-    public function isAndroid(){
-
-        return $this->mobile->isAndroid();
+        return $this->mobile->is($data);
     }
 
 

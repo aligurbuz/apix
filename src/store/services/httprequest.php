@@ -20,12 +20,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class httprequest {
 
+    /**
+     * @var $request
+     */
     public $request;
 
     /**
      * Constructor.
-     *
-     * @param type dependency injection and function
+     * type dependency injection and function
      */
     public function __construct(){
 
@@ -35,8 +37,7 @@ class httprequest {
 
     /**
      * get client ip.
-     *
-     * @return array
+     * @return mixed
      */
     public function getClientIp(){
 
@@ -45,8 +46,7 @@ class httprequest {
 
     /**
      * get client headers.
-     *
-     * @return object
+     * @return mixed
      */
     public function getHeaders(){
 
@@ -55,8 +55,7 @@ class httprequest {
 
     /**
      * get client header key.
-     *
-     * @return object
+     * @return mixed
      */
     public function getHeader($data){
 
@@ -65,8 +64,8 @@ class httprequest {
 
     /**
      * get add headers.
-     *
-     * @return array
+     * @param $header array
+     * @return mixed
      */
     public function addHeader($header=array()){
 
@@ -75,8 +74,7 @@ class httprequest {
 
     /**
      * get full url.
-     *
-     * @return object
+     * @return mixed
      */
     public function fullUrl(){
 
@@ -85,8 +83,7 @@ class httprequest {
 
     /**
      * get http host.
-     *
-     * @return string
+     * @return mixed
      */
     public function getHost(){
 
@@ -95,8 +92,7 @@ class httprequest {
 
     /**
      * get base path.
-     *
-     * @return string
+     * @return mixed
      */
     public function getBasePath(){
 
@@ -105,8 +101,7 @@ class httprequest {
 
     /**
      * get base url.
-     *
-     * @return string
+     * @return mixed
      */
     public function getBaseUrl(){
 
@@ -140,7 +135,8 @@ class httprequest {
 
     /**
      * get getDefaultLocale url.
-     * @return bool
+     * @param $locale null|string
+     * @return mixed
      */
     public function setLocale($locale=null){
         if($locale!==null){
@@ -152,8 +148,7 @@ class httprequest {
 
     /**
      * get input.
-     *
-     * @return string
+     * @return mixed
      */
     public function input(){
 
@@ -162,8 +157,7 @@ class httprequest {
 
     /**
      * get query.
-     *
-     * @return array
+     * @return mixed
      */
     public function query(){
 
@@ -172,8 +166,7 @@ class httprequest {
 
     /**
      * get content.
-     *
-     * @return string
+     * @return mixed
      */
     public function content(){
 
@@ -183,8 +176,7 @@ class httprequest {
 
     /**
      * get input.
-     *
-     * @return string
+     * @return array
      */
     public function getQueryString($param=null){
 
@@ -210,7 +202,6 @@ class httprequest {
 
     /**
      * get only client header.
-     *
      * @return array
      */
     public function getClientHeaders(){
