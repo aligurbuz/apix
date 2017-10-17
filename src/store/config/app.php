@@ -99,7 +99,6 @@ class app {
      */
     public static function getAppDefinition(){
 
-        //get device class
         return [];
 
     }
