@@ -94,33 +94,19 @@ class app {
 
     /**
      * get definitive app.
-     * definition:classess is defined by user
-     * and it is called as IOS,MOBILE,vs..
-     * @param type dependency injection and function
+     * definition:classes is defined by manager
      * @return array
      */
     public static function getAppDefinition(){
 
         //get device class
-        $deviceClass=self::getContainer("device");
-        $device=utils::resolve($deviceClass);
-
-        //defines
-        return [
-            'MOBILE'=>$device->isMobile(),
-            'IOS'=>$device->isIphone(),
-            'ANDROID'=>$device->isAndroid(),
-            'TABLET'=>$device->isTablet()
-        ];
+        return [];
 
     }
 
-
     /**
-     * get definitive app.
-     * definition:classess is defined by user
-     * and it is called as IOS,MOBILE,vs..
-     * @param type dependency injection and function
+     * you can directly use as new \class
+     * @method getClassAliasLoader
      * @return array
      */
     public static function getClassAliasLoader(){
@@ -128,25 +114,24 @@ class app {
         //defines
         return [
 
-            //carbon get date process alias loader
-            'Date'=>self::$servicePath.'date',
-            'outputResolver'=>self::$servicePath.'outputResolver',
-            'Collection'=>self::$servicePath.'appCollection',
-            'Faker'=>self::$servicePath.'faker',
-            'XmlClient'=>'src\store\packages\providers\webservice\src\simpleXml',
-            'SoapClient'=>'src\store\packages\providers\webservice\src\soapClient',
-            'JsonClient'=>'src\store\packages\providers\webservice\src\jsonClient',
-            'Pipeline'=>'League\Pipeline\Pipeline',
-            'Response'=>'Apix\ResponseManager',
-            'Repo'=>self::$servicePath.'repository',
-            'Validator'=>'Respect\Validation\Validator',
-            'dbCon'=>'\\src\\store\\config\\dbConnector',
-            'event'=>'\\src\\store\\services\\event',
-            'Mongo'=>'\\src\\store\\packages\\providers\\database\\mongodb\\builder'
+            //alias loader list
+            'Date'                      =>self::$servicePath.'date',
+            'outputResolver'            =>self::$servicePath.'outputResolver',
+            'Collection'                =>self::$servicePath.'appCollection',
+            'Faker'                     =>self::$servicePath.'faker',
+            'XmlClient'                 =>'src\store\packages\providers\webservice\src\simpleXml',
+            'SoapClient'                =>'src\store\packages\providers\webservice\src\soapClient',
+            'JsonClient'                =>'src\store\packages\providers\webservice\src\jsonClient',
+            'Pipeline'                  =>'League\Pipeline\Pipeline',
+            'Response'                  =>'Apix\ResponseManager',
+            'Repo'                      =>self::$servicePath.'repository',
+            'Validator'                 =>'Respect\Validation\Validator',
+            'dbCon'                     =>'\\src\\store\\config\\dbConnector',
+            'event'                     =>'\\src\\store\\services\\event',
+            'Mongo'                     =>'\\src\\store\\packages\\providers\\database\\mongodb\\builder'
         ];
 
     }
-
 
 
     /**
@@ -154,19 +139,24 @@ class app {
      * definition : it tells value of key coming with post
      * access : \app::post(key);
      * outputs environment.
-     *
-     * @param string
-     * @return response post runner
+     * @param $data
+     * @return null
      */
     public static function post($data){
+
         $instance=new self;
         $request=$instance->request->input();
+
+        /**
+         * @var $request array
+         */
         if(array_key_exists($data,$request)){
             return $request[$data];
         }
         return null;
 
     }
+
 
     /**
      * response device token.
@@ -176,11 +166,11 @@ class app {
      * outputs device token.
      * device token is shown if status true
      * device token as hash is shown if status false
-     *
-     * @param string
-     * @return response generate device token runner
+     * @param array $data
+     * @param bool $status
+     * @return string
      */
-    public static function deviceToken($data=array(),$status=false){
+    public static function deviceToken($data=array(), $status=false){
         $deviceToken=$_SERVER['HTTP_USER_AGENT'];
         if(!$status){
             if(count($data)){
