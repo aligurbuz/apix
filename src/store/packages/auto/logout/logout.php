@@ -20,7 +20,7 @@ class logout
     public function indexAction()
     {
         //check auth
-        if(auth()->check()){
+        if(auth()->persistent()){
 
             //logout auth
             return ['logout'=>auth()->logout()];

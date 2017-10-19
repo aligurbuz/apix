@@ -20,7 +20,7 @@ class login
     public function indexAction()
     {
         //check auth
-        if(auth()->check()===false){
+        if(auth()->persistent()===false){
 
             //attempt auth
             return auth()->attempt();
