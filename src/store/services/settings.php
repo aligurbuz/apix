@@ -62,14 +62,6 @@ class Settings {
         //get instance
         $instance=new self;
 
-        if($default!==null){
-
-            $value=self::get($file);
-            if($value===null){
-                return $default;
-            }
-        }
-
         //file parse
         $fileParse=explode(".",$file);
 
@@ -82,8 +74,18 @@ class Settings {
             $key=$fileParse[1];
         }
 
+
         //get yaml path
         $yamlPath=$instance->settingsPath.'/'.$file.'.yml';
+
+        if($default!==null){
+
+            $value=(self::get($file)===null) ? [] : self::get($file);
+
+            if(isset($key) AND !isset($value[$key])){
+                return $default;
+            }
+        }
 
         //if there is no yaml path
         if(!file_exists($yamlPath)){
@@ -91,8 +93,9 @@ class Settings {
             return null;
         }
 
+
         //get yaml data
-        $value = Yaml::parse(file_get_contents($instance->settingsPath.'/'.$file.'.yml'));
+        $value = Yaml::parse(file_get_contents($yamlPath));
 
         if(isset($key)){
 
