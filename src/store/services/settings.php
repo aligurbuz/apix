@@ -18,6 +18,7 @@ class Settings {
         if(!file_exists($this->settingsPath)){
 
             mkdir($this->settingsPath,0777);
+            touch($this->settingsPath.'/app.dist');
         }
 
     }
@@ -53,12 +54,21 @@ class Settings {
 
     /**
      * @param $file string
+     * @param $default
      * @return string
      */
-    public static function get($file){
+    public static function get($file,$default=null){
 
         //get instance
         $instance=new self;
+
+        if($default!==null){
+
+            $value=self::get($file);
+            if($value===null){
+                return $default;
+            }
+        }
 
         //file parse
         $fileParse=explode(".",$file);
