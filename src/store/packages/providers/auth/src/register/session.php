@@ -165,6 +165,7 @@ class session extends Config {
     }
 
     /**
+     * @method getAuthHashConfigReference
      * @return string
      */
     public function getAuthHashConfigReference()

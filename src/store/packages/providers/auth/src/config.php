@@ -357,20 +357,26 @@ class config {
     }
 
     /**
+     * @method getSecurityCredentials
      * @param $token
      */
     public function getSecurityCredentials($token){
 
+        //get user data for security for token
         $userData=$this->getAuthDriverBuilder('getSecurityDataForToken',$token);
 
+        //credentials
         $credentials=[];
 
+        //config credentials key
         foreach ($this->getCredentialsKey() as $credential){
 
+            //credentials list
             $credentials[$credential]=$userData['results'][0][$credential];
         }
 
-       $this->credentials=$credentials;
+        //security credentials list
+        $this->credentials=$credentials;
     }
 
 
