@@ -103,18 +103,30 @@ class authenticate extends Config {
 
     }
 
-
     /**
      * @method logout
-     * @return object
+     * @return mixed
      */
     public function logout(){
 
-        //update app_token
-        $this->attempt();
-
         //auth register model destroy
-        return $this->getAuthRegisterModel('destroy');
+        return $this->getAuthDriverModel([],'logout');
+    }
+
+    /**
+     * @method getToken
+     * @return mixed
+     */
+    public function getToken(){
+
+        //if the user is not null
+        if($this->user()!==null){
+
+            //get token from user
+            return $this->user()->{$this->getTokenField()};
+        }
+
+        return null;
     }
 
 

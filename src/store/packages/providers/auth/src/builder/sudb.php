@@ -69,7 +69,10 @@ class sudb extends Config {
 
         //sudb orm query
         $this->config->query    =$query->get();
-        $this->config->data     =$this->config->query['results'][0];
+
+        if(isset($this->config->query['results'])){
+            $this->config->data     =$this->config->query['results'][0];
+        }
 
     }
 
@@ -80,6 +83,21 @@ class sudb extends Config {
 
         //app token update
         $this->attempt(true)->update([$this->config->getTokenField()=>$this->config->token]);
+    }
+
+
+    /**
+     * @param $token
+     * @return mixed
+     */
+    public function getSecurityDataForToken($token){
+
+        //get model
+        $model=$this->model;
+
+        $query=$model::where($this->config->getTokenField(),'=',$token)->get();
+
+        return $query;
     }
 
 

@@ -94,4 +94,25 @@ class database {
 
     }
 
+    /**
+     * @method logout
+     */
+    public function logout(){
+
+        //get token
+        $token=$this->config->getAuthRegisterModel('getAuthSession');
+
+        //get security authenticate data
+        $this->config->getSecurityCredentials($token);
+
+        //app token
+        $this->config->token=$this->config->getAuthRegisterModel('getAuthHashConfigReference');
+
+        //update app token from driver model
+        $this->config->getAuthDriverModel([],'updateAppToken');
+
+        return $this->config->getAuthRegisterModel('destroy');
+
+    }
+
 }

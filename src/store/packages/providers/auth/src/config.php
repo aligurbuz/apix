@@ -210,7 +210,7 @@ class config {
 
         //call class for driver
         //it is database or other [like redis]
-        (new $driver($this))->$method($credentials);
+        return (new $driver($this))->$method($credentials);
 
     }
 
@@ -254,9 +254,11 @@ class config {
 
     /**
      * @param string $method
+     * @param $data null
      * @method getAuthDriverBuilder
+     * @return mixed
      */
-    public function getAuthDriverBuilder($method='attempt'){
+    public function getAuthDriverBuilder($method='attempt',$data=null){
 
         //builder namespace
         //register files must be in driver/builder directory
@@ -264,7 +266,7 @@ class config {
 
         //call class for driver
         //it is sudb as default  or other [like eloquent,doctrine]
-        (new $driver($this))->$method();
+        return (new $driver($this))->$method($data);
 
     }
 
@@ -352,6 +354,23 @@ class config {
 
         //get array keys from credentials
         return array_keys($this->getCredentials());
+    }
+
+    /**
+     * @param $token
+     */
+    public function getSecurityCredentials($token){
+
+        $userData=$this->getAuthDriverBuilder('getSecurityDataForToken',$token);
+
+        $credentials=[];
+
+        foreach ($this->getCredentialsKey() as $credential){
+
+            $credentials[$credential]=$userData['results'][0][$credential];
+        }
+
+       $this->credentials=$credentials;
     }
 
 

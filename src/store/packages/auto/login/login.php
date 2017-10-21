@@ -1,14 +1,5 @@
 <?php namespace src\store\packages\auto\login;
 
-/*
- * This file is login package for every service.
- *
- * client and browser info
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 class login
 {
 
@@ -23,7 +14,13 @@ class login
         if(auth()->persistent()===false && auth()->check()===false){
 
             //attempt auth
-            return auth()->attempt();
+            if(auth()->attempt()!==false){
+
+                return [
+                    'result'=>auth()->getToken()
+                ];
+            }
+            throw new \InvalidArgumentException('Incorrect credentials');
         }
 
         //if auth is true,you logged exception

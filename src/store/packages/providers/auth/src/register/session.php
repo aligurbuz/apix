@@ -118,6 +118,7 @@ class session extends Config {
 
             //session auth destroy
             $this->session->remove('auth');
+
             return true;
         }
 
@@ -146,6 +147,30 @@ class session extends Config {
 
     }
 
+
+    /**
+     * @method getAuthSession
+     */
+    public function getAuthSession(){
+
+        if($this->hasAuthSession()){
+
+            //get session auth
+            return $this->session-> get('auth');
+        }
+
+        return null;
+
+
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthHashConfigReference()
+    {
+        return parent::getAuthHash($this->config);
+    }
 
 
 }
