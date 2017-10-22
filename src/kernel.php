@@ -11,7 +11,8 @@ class kernel
      */
     public $boot = [
 
-        \Apix\boot\checkForToken::class
+        \Apix\boot\checkForToken::class,
+        \Src\Boot\VerifyCsrfToken::class
     ];
 
 }
