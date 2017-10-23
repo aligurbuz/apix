@@ -1,7 +1,9 @@
 <?php
-namespace src\boot;
+namespace Src\Boot;
 
-class encryptKeyForUser
+use Apix\EncryptKeyForUser as EncryptService;
+
+class EncryptKeyForUser  extends EncryptService
 {
 
     /**
@@ -9,7 +11,8 @@ class encryptKeyForUser
      */
     public function boot(){
 
-        //make somethings for encrypt key for user
+        //for encrypt key for user
+        parent::boot();
     }
 
 }

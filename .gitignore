@@ -3,6 +3,7 @@ apix
 .idea/
 node_modules
 .env
+encrypt.yaml
 src/app/*
 package-lock.json
 !important src/app/index.html
