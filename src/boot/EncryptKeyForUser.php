@@ -1,7 +1,7 @@
 <?php
 namespace Src\Boot;
 
-use Apix\EncryptKeyForUser as EncryptService;
+use Apix\Boot\EncryptKeyForUser as EncryptService;
 
 class EncryptKeyForUser  extends EncryptService
 {
