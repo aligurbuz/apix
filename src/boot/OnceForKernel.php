@@ -1,7 +1,9 @@
 <?php
 namespace Src\Boot;
 
-class OnceForKernel
+use Apix\Boot\OnceForKernel as OnceService;
+
+class OnceForKernel extends OnceService
 {
 
     /**
@@ -10,6 +12,7 @@ class OnceForKernel
     public function boot(){
 
         //write once class for kernel
+        parent::boot();
     }
 
 }
