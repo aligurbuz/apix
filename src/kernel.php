@@ -13,7 +13,8 @@ class kernel
 
         \Apix\boot\checkForToken::class,
         \Src\Boot\VerifyCsrfToken::class,
-        \Src\Boot\EncryptKeyForUser::class
+        \Src\Boot\EncryptKeyForUser::class,
+        \Src\Boot\OnceForKernel::class
     ];
 
 }
