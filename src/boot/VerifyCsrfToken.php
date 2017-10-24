@@ -1,7 +1,7 @@
 <?php
-namespace src\boot;
+namespace Src\Boot;
 
-class verifyCsrfToken
+class VerifyCsrfToken
 {
 
     /**
