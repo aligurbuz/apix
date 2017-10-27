@@ -1,14 +1,7 @@
 <?php
-/*
- * This file is client and service extra branching of the repository service.
- *
- * client and repository info
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Src\Store\Services;
 
-namespace src\store\services;
+use Apix\Utils;
 
 /**
  * Represents a index class.
@@ -17,35 +10,41 @@ namespace src\store\services;
  * return type string
  */
 
-class repository {
+class Repository {
 
+    /**
+     * @var $repo null
+     */
     public static $repo=null;
+
+    /**
+     * @var $bind null
+     */
+    public static $bind=[];
 
 
     /**
-     * get repository repo name.
-     *
-     * @return array
+     * @param $name
+     * @param $arguments
+     * @return repository
      */
-    public static function __callStatic($name,$arguments=[]){
+    public static function __callStatic($name, $arguments){
+
         self::$repo=$name;
-        if(array_key_exists(0,$arguments)){
-            if($arguments[0]){
-                $instance=new self;
-                return $instance->get($arguments);
-            }
-        }
+        self::$bind=$arguments[0];
         return new self;
 
 
     }
 
+
     /**
-     * get repository class call.
-     *
-     * @return array
+     * @param $name
+     * @param array $arguments
+     * @return mixed
      */
-    public function __call($name,$arguments=[]){
+    public function __call($name, $arguments=[]){
+
         if(defined("devPackage")){
             $repoNameSpace='\\src\\store\\packages\\dev\\'.service.'\\devpack\\repository\\'.self::$repo.'\\index'; ;
         }
@@ -54,7 +53,8 @@ class repository {
         }
 
         if(class_exists($repoNameSpace)){
-            return \Apix\utils::resolve($repoNameSpace)->$name($arguments);
+
+            return Utils::makeBind($repoNameSpace,self::$bind)->$name($arguments);
         }
         throw new \BadFunctionCallException('Not available repo you want');
 
