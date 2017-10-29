@@ -31,7 +31,7 @@ class Repository {
     public static function __callStatic($name, $arguments){
 
         self::$repo=$name;
-        self::$bind=$arguments[0];
+        self::$bind=(isset($arguments[0])) ? $arguments[0] : [];
         return new self;
 
 
