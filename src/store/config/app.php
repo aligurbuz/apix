@@ -83,7 +83,7 @@ class app {
             'xml'                   =>self::$servicePath.'simpleXml',
             'soap'                  =>self::$servicePath.'soapClient',
             'outputResolver'        =>self::$servicePath.'outputResolver',
-            'pipeline'              =>'League\Pipeline\Pipeline'
+            'pipeline'              =>self::$servicePath.'pipeline',
         ];
 
         //if container is null,all containers are evaluated
