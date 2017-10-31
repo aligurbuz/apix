@@ -228,7 +228,6 @@ class App {
         $token="".staticPathModel::$appNamespace."\\".app."\\".version."\\serviceTokenController";
         $token=utils::resolve($token);
         $tokenhandle=$token->handle();
-        //$tokenexcept=$token->except();
 
         $queryParams=self::getQueryParamsFromRoute();
 
