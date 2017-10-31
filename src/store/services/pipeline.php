@@ -3,6 +3,7 @@
 namespace Src\Store\Services;
 
 use Apix\StaticPathModel;
+use Apix\Utils;
 
 class pipeline {
 
@@ -10,6 +11,11 @@ class pipeline {
      * @var $pipeline
      */
     public $pipeline;
+
+    /**
+     * @var $pipe
+     */
+    public $pipe;
 
     /**
      * pipeline constructor.
@@ -26,6 +32,30 @@ class pipeline {
      */
     public function __call($name,$args){
 
-        return $this->pipeline->{$name}();
+        $this->pipe=$name;
+        return $this->callPipes();
+    }
+
+
+    public function callPipes(){
+
+        $callPipes=$this->pipeline->{$this->pipe}();
+
+        $pipelineList=[];
+        $pipelineCallBack=[];
+        foreach ($callPipes as $key=>$pipelines){
+
+            foreach ($pipelines as $pipelineClass=>$pipelineMethod){
+
+                if(count($pipelineList)){
+
+                    $pipelineCallBack[]=call_user_func([Utils::makeBind($pipelineClass),$pipelineMethod],end($pipelineList));
+                }
+
+                $pipelineList[]=Utils::makeBind($pipelineClass)->$pipelineMethod();
+            }
+        }
+
+        return end($pipelineCallBack);
     }
 }

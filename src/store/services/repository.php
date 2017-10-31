@@ -30,12 +30,13 @@ class Repository {
      */
     public static function __callStatic($name, $arguments){
 
-        self::$repo=$name;
+        self::$repo=ucfirst($name);
         self::$bind=(isset($arguments[0])) ? $arguments[0] : [];
         return new self;
 
 
     }
+
 
 
     /**
@@ -46,10 +47,10 @@ class Repository {
     public function __call($name, $arguments=[]){
 
         if(defined("devPackage")){
-            $repoNameSpace='\\src\\store\\packages\\dev\\'.service.'\\devpack\\repository\\'.self::$repo.'\\index'; ;
+            $repoNameSpace='\\Src\\Store\\Packages\\Dev\\'.service.'\\Devpack\\Repository\\'.self::$repo.'\\index'; ;
         }
         else{
-            $repoNameSpace='\\src\\app\\'.app.'\\'.version.'\\optional\\repository\\'.self::$repo.'\\index';
+            $repoNameSpace='\\Src\\App\\'.app.'\\'.version.'\\Optional\\Repository\\'.self::$repo.'\\Index';
         }
 
         if(class_exists($repoNameSpace)){
