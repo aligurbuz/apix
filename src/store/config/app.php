@@ -1,15 +1,6 @@
 <?php
-/*
- * This file is general access configuration of the every service.
- *
- * config app returns boolean,array,string vs
- * access : for example \app::environment()
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
-namespace src\store\config;
+namespace Src\Store\Config;
 
 use Src\Store\Services\Httprequest as Request;
 use Symfony\Component\Yaml\Yaml;
@@ -17,29 +8,22 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Apix\Utils;
 use Apix\StaticPathModel;
 
-class app {
+class App {
 
     /**
      * Symfony request object.
-     *
-     * @intro request module and symfony http foundation
+     * request module and symfony http foundation
      * constructor object
      */
     public $request;
 
     /**
      * Path Belonging To Service methods .
-     *
-     * @param type string
-     * general path using
      */
     private static $servicePath='\\src\\store\\services\\';
 
     /**
-     * Path Belonging To Service methods .
-     *
-     * @param type string
-     * general path using
+     * Path Belonging To providers methods .
      */
     private static $providers='\\src\\store\\packages\\providers\\';
 
@@ -47,7 +31,6 @@ class app {
      * Constructor.
      * definition : class preloader with default
      * symfony component request class
-     * @param type dependency injection and function
      */
     public function __construct(){
 
@@ -57,9 +40,8 @@ class app {
 
     /**
      * get container.
-     * definition:classess is defined in a container
+     * definition:class is defined in a container
      * and it is called as app("device")->method()
-     * @param type dependency injection and function
      * @return array
      */
     public static function getContainer($container=null){
@@ -170,6 +152,7 @@ class app {
      * @return string
      */
     public static function deviceToken($data=array(), $status=false){
+
         $deviceToken=$_SERVER['HTTP_USER_AGENT'];
         if(!$status){
             if(count($data)){
@@ -185,7 +168,7 @@ class app {
 
     public static function dbConfig(){
 
-        $config="\\src\\app\\".app."\\".version."\\config\\database";
+        $config=StaticPathModel::$appNamespace."\\".app."\\".version."\\config\\database";
         return $config::dbsettings();
     }
 
@@ -195,9 +178,8 @@ class app {
      * definition : it checks query on url with the given param value
      * it returns boolean value (true|false) as result
      * outputs checkUrlParam.
-     *
-     * @param boolean
-     * @return response checkUrlParam runner
+     * @param $param boolean
+     * @return boolean
      */
     public static function checkUrlParam($param=null){
 
@@ -216,9 +198,8 @@ class app {
      * definition : it returns query value on url with the given param value
      * it returns null or string data as result
      * outputs getUrlParam.
-     *
-     * @param string|null
-     * @return response getUrlParam runner
+     * @param $param string|null
+     * @return mixed
      */
     public static function getUrlParam($param=null){
         if($param==null){
@@ -238,9 +219,8 @@ class app {
      * definition : it checks token on url
      * provision token rule
      * outputs token check.
-     *
      * @param string
-     * @return response token runner
+     * @return mixed
      */
     public static function checkToken($environment=null){
 
@@ -248,8 +228,7 @@ class app {
         $token="".staticPathModel::$appNamespace."\\".app."\\".version."\\serviceTokenController";
         $token=utils::resolve($token);
         $tokenhandle=$token->handle();
-        $tokenexcept=$token->except();
-
+        //$tokenexcept=$token->except();
 
         $queryParams=self::getQueryParamsFromRoute();
 
@@ -282,11 +261,9 @@ class app {
 
     /**
      * get directory name.
-     *
      * directory name
-     *
      * @param string
-     * @return directory name runner
+     * @return mixed
      */
     public static function getDirectoryName(){
 
@@ -297,11 +274,9 @@ class app {
 
     /**
      * compare with root to request uri.
-     *
      * compare request uri
-     *
      * @param string
-     * @return request uri compare runner
+     * @return mixed
      */
     public static function getServiceNameAndMethodFromRequestUri(){
 
@@ -312,11 +287,9 @@ class app {
 
     /**
      * get pure method from service
-     *
      * pure method name
-     *
      * @param string
-     * @return pure method runner
+     * @return mixed
      */
     public static function getPureMethodNameFromService(){
 
@@ -327,11 +300,9 @@ class app {
 
     /**
      * get query params
-     *
      * query params
-     *
      * @param string
-     * @return query params runner
+     * @return mixed
      */
     public static function getQueryParamsFromRoute(){
 
@@ -356,11 +327,9 @@ class app {
 
     /**
      * get request uri.
-     *
      * this checks request uri parameter.
-     *
      * @param string
-     * @return request uri runner
+     * @return mixed
      */
     public static function requestUri(){
 
@@ -370,11 +339,9 @@ class app {
 
     /**
      * get yaml file.
-     *
      * this checks request uri parameter.
-     *
-     * @param string
-     * @return request yaml runner
+     * @param $path string
+     * @return mixed
      */
     public static function getYaml($path){
 
@@ -388,11 +355,10 @@ class app {
 
     /**
      * get getWebServiceConfigUrl.
-     *
      * this checks web service url for config.
-     *
-     * @param string
-     * @return request getWebServiceConfigUrl
+     * @param bool|false $group false
+     * @param null $point
+     * @return mixed
      */
     public static function getWebServiceConfigUrl($group=false,$point=null){
 
