@@ -68,15 +68,8 @@ class dbConnector {
                     echo json_encode($connectionError);
                 }
                 else{
-                    $connectionError=[
-                        'status'=>false,
-                        'result'=>[
-                            'error'=>true,
-                            'message'=>'Error occured'
-                        ]
 
-                    ];
-                    echo json_encode($connectionError);
+                    throw new \LogicException('Production Connection Settings Error');
                 }
 
                 exit();
