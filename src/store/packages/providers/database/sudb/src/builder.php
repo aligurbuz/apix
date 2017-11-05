@@ -692,7 +692,7 @@ class builder {
                 ];
             }
             else{
-                throw new \LogicException('No data');
+                return $result['result'];
             }
 
         });
